@@ -19,6 +19,13 @@ export const apps: IApps[] = [
         ]
       },
       {
+        name: 'Accounting',
+        submenu: [
+          { name: 'Chart of Account', path: '/accounting/chart-of-account' },
+          { name: 'Cut Off', path: '/accounting/cut-off' }
+        ]
+      },
+      {
         name: 'Purchase',
         submenu: [
           { name: 'Purchase Request', path: '/purchase/purchase-request' },
@@ -43,7 +50,11 @@ export const apps: IApps[] = [
       },
       {
         name: 'Manufacture',
-        submenu: [{ name: 'Formula', path: '/purchase/formula' }]
+        submenu: [
+          { name: 'Machine', path: '/purchase/machine' },
+          { name: 'Formula', path: '/purchase/formula' },
+          { name: 'Process', path: '/purchase/process' }
+        ]
       }
     ]
   }
