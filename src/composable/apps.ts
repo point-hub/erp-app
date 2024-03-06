@@ -14,6 +14,8 @@ export const apps: IApps[] = [
           { name: 'User', path: '/master/user' },
           { name: 'Branch', path: '/master/branch' },
           { name: 'Warehouse', path: '/master/warehouse' },
+          { name: 'Supplier', path: '/master/supplier' },
+          { name: 'Customer', path: '/master/customer' },
           { name: 'Item', path: '/master/item' },
           { name: 'Allocation', path: '/master/allocation' }
         ]
