@@ -75,11 +75,6 @@ const columns = ref([
     isEditable: true
   },
   {
-    name: 'Role',
-    isShow: true,
-    isEditable: true
-  },
-  {
     name: 'Branch',
     isShow: true,
     isEditable: true

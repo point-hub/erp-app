@@ -53,9 +53,9 @@ export const apps: IApps[] = [
       {
         name: 'Manufacture',
         submenu: [
-          { name: 'Machine', path: '/purchase/machine' },
-          { name: 'Formula', path: '/purchase/formula' },
-          { name: 'Process', path: '/purchase/process' }
+          { name: 'Machine', path: '/manufacture/machine' },
+          { name: 'Formula', path: '/manufacture/formula' },
+          { name: 'Process', path: '/manufacture/process' }
         ]
       }
     ]

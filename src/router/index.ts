@@ -34,6 +34,14 @@ const router = createRouter({
           component: () => import('@/pages/master/warehouse/index.vue')
         },
         {
+          path: 'supplier',
+          component: () => import('@/pages/master/supplier/list/index.vue')
+        },
+        {
+          path: 'customer',
+          component: () => import('@/pages/master/customer/list/index.vue')
+        },
+        {
           path: 'allocation',
           component: () => import('@/pages/master/allocation/index.vue')
         },
