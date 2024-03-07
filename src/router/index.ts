@@ -23,7 +23,7 @@ const router = createRouter({
       children: [
         {
           path: 'user',
-          component: () => import('@/pages/master/user/index.vue')
+          component: () => import('@/pages/master/user/list/index.vue')
         },
         {
           path: 'branch',
