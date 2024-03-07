@@ -1,47 +1,62 @@
 <script setup lang="ts">
 import {
-  BaseAutocomplete,
+  BaseBreadcrumb,
   BaseButton,
   BaseCard,
   BaseCheckbox,
-  BaseDivider,
   BaseInput,
-  BaseModal,
   BasePagination,
   BaseTable
 } from '@point-hub/papp'
 import { computed, ref } from 'vue'
 
-// Table Header
-const options = [
-  { id: 1, label: 'Name' },
-  { id: 2, label: 'Branch' },
-  { id: 3, label: 'Warehouse' }
+const items = [
+  {
+    name: 'Master'
+  },
+  {
+    name: 'Customer',
+    path: '/master/customer'
+  }
 ]
 
-const selected = ref()
 const searchAll = ref('')
-const search = ref<string[]>([])
 
 // Table Data
-interface UserInterface {
+interface CustomerInterface {
   id: number
   name: string
-  username: string
-  role: string
-  branch: string
-  warehouse: string
+  code: string
+  address: string
+  phone: string
+  email: string
   checked?: boolean
 }
 
-const users = ref<UserInterface[]>([
+const customers = ref<CustomerInterface[]>([
   {
     id: 1,
-    name: 'Admin',
-    username: 'admin',
-    role: 'administrator',
-    branch: 'main',
-    warehouse: 'central'
+    code: 'CS0001',
+    name: 'Alvin',
+    address: '',
+    phone: '',
+    email: ''
+  },
+  {
+    id: 2,
+    code: 'CS0002',
+    name: 'Jane',
+    address: '',
+    phone: '',
+    email: ''
+  },
+  {
+    id: 1,
+    code: 'CS0003',
+    name: 'John Doe',
+    address: '',
+    phone: '',
+    email: ''
   }
 ])
 
@@ -52,12 +67,6 @@ const totalDocument = ref(1)
 
 const updateData = () => {}
 
-// Table Setting
-const showModal = ref(false)
-const openTableSetting = () => {
-  showModal.value = true
-}
-
 const columns = ref([
   {
     name: 'Checkbox',
@@ -65,33 +74,31 @@ const columns = ref([
     isEditable: true
   },
   {
+    name: 'Code',
+    isShow: true,
+    isEditable: false
+  },
+  {
     name: 'Name',
     isShow: true,
     isEditable: false
   },
   {
-    name: 'Username',
+    name: 'Address',
     isShow: true,
     isEditable: true
   },
   {
-    name: 'Branch',
+    name: 'Phone',
     isShow: true,
     isEditable: true
   },
   {
-    name: 'Warehouse',
+    name: 'Email',
     isShow: true,
     isEditable: true
   }
 ])
-
-const optionsPageSize = [
-  { value: 10, label: '10' },
-  { value: 25, label: '25' },
-  { value: 50, label: '50' },
-  { value: 100, label: '100' }
-]
 
 // Selecting Table Row
 const selectAll = computed({
@@ -100,20 +107,20 @@ const selectAll = computed({
   },
   set() {
     if (isCheckedAll()) {
-      users.value.forEach((user) => {
-        user.checked = false
+      customers.value.forEach((customer) => {
+        customer.checked = false
       })
     } else {
-      users.value.forEach((user) => {
-        user.checked = true
+      customers.value.forEach((customer) => {
+        customer.checked = true
       })
     }
   }
 })
 
 const isCheckedAll = () => {
-  for (const user of users.value) {
-    if (user.checked === undefined || user.checked === false) {
+  for (const customer of customers.value) {
+    if (customer.checked === undefined || customer.checked === false) {
       return false
     }
   }
@@ -124,7 +131,13 @@ const isCheckedAll = () => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <h1>User</h1>
+    <h1>Customer</h1>
+    <component :is="BaseBreadcrumb" :items="items" separator="angle" v-slot="{ item }">
+      <router-link v-if="item.path" :class="{ 'breadcrumb-link': item.path }" :to="item.path">
+        {{ item.name }}
+      </router-link>
+      <span v-else>{{ item.name }}</span>
+    </component>
     <component :is="BaseCard" header="s">
       <div class="flex flex-col gap-4">
         <div class="w-full flex items-center gap-4">
@@ -146,70 +159,29 @@ const isCheckedAll = () => {
             </component>
           </div>
         </div>
-        <component :is="BaseModal" :is-open="showModal" @on-close="showModal = false" size="xl">
-          <div class="max-h-90vh overflow-auto p-8 space-y-6">
-            <h2 class="text-2xl font-bold">Table Setting</h2>
-            <div class="space-y-2">
-              <h3 class="font-extrabold text-lg">Column Chooser</h3>
-              <div class="space-y-2">
-                <component
-                  v-for="(column, index) in columns"
-                  :key="index"
-                  :id="column.name"
-                  :is="BaseCheckbox"
-                  :disabled="!column.isEditable"
-                  v-model="column.isShow"
-                  :text="column.name"
-                />
-              </div>
-            </div>
-            <component :is="BaseDivider" orientation="vertical" />
-            <div class="space-y-2">
-              <h3 class="font-extrabold text-lg">Pagination</h3>
-              <component
-                :is="BaseAutocomplete"
-                v-model="selected"
-                :options="optionsPageSize"
-                placeholder="Search"
-                label="Page Size"
-                layout="horizontal"
-                description="data per page"
-              ></component>
-            </div>
-            <component
-              :is="BaseButton"
-              color="primary"
-              size="md"
-              is-block
-              @click="showModal = false"
-            >
-              Close
-            </component>
-          </div>
-        </component>
         <component :is="BaseTable">
           <thead>
             <tr>
-              <th v-if="columns[0].isShow">
+              <th v-if="columns[0].isShow" class="w-1">
                 <component :is="BaseCheckbox" v-model="selectAll" />
               </th>
-              <th v-if="columns[1].isShow">Name</th>
-              <th v-if="columns[2].isShow">Username</th>
-              <th v-if="columns[3].isShow">Role</th>
-              <th v-if="columns[4].isShow">Branch</th>
-              <th v-if="columns[5].isShow">Warehouse</th>
+              <th v-if="columns[1].isShow">{{ columns[1].name }}</th>
+              <th v-if="columns[2].isShow">{{ columns[2].name }}</th>
+              <th v-if="columns[3].isShow">{{ columns[3].name }}</th>
+              <th v-if="columns[4].isShow">{{ columns[4].name }}</th>
+              <th v-if="columns[5].isShow">{{ columns[5].name }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="index">
+            <tr v-for="(customer, index) in customers" :key="index">
               <td v-if="columns[0].isShow">
-                <component :is="BaseCheckbox" v-model="user.checked" />
+                <component :is="BaseCheckbox" v-model="customer.checked" />
               </td>
-              <td v-if="columns[1].isShow">{{ user.name }}</td>
-              <td v-if="columns[2].isShow">{{ user.username }}</td>
-              <td v-if="columns[3].isShow">{{ user.role }}</td>
-              <td v-if="columns[4].isShow">{{ user.branch }}</td>
-              <td v-if="columns[5].isShow">{{ user.warehouse }}</td>
+              <td v-if="columns[1].isShow">{{ customer.code }}</td>
+              <td v-if="columns[2].isShow">{{ customer.name }}</td>
+              <td v-if="columns[3].isShow">{{ customer.address }}</td>
+              <td v-if="columns[4].isShow">{{ customer.phone }}</td>
+              <td v-if="columns[5].isShow">{{ customer.email }}</td>
             </tr>
           </tbody>
         </component>

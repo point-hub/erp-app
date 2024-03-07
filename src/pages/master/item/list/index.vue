@@ -10,53 +10,49 @@ import {
 } from '@point-hub/papp'
 import { computed, ref } from 'vue'
 
-const items = [
+const breadcrumbs = [
   {
     name: 'Master'
   },
   {
-    name: 'Supplier',
-    path: '/master/supplier'
+    name: 'Item',
+    path: '/master/item'
   }
 ]
 
 const searchAll = ref('')
 
 // Table Data
-interface SupplierInterface {
+interface ItemInterface {
   id: number
   name: string
   code: string
-  address: string
-  phone: string
-  email: string
+  account: string
+  category: string
   checked?: boolean
 }
 
-const suppliers = ref<SupplierInterface[]>([
+const items = ref<ItemInterface[]>([
   {
     id: 1,
-    code: 'SP0001',
-    name: 'Antony',
-    address: '',
-    phone: '',
-    email: ''
+    code: 'IT0001',
+    name: 'Kopibara 70gr',
+    account: '10404 - Persediaan Barang Jadi',
+    category: 'Kopi'
   },
   {
     id: 2,
-    code: 'SP0002',
-    name: 'Bruce Jade',
-    address: '',
-    phone: '',
-    email: ''
+    code: 'IT0002',
+    name: 'Kopibara 100gr',
+    account: '10404 - Persediaan Barang Jadi',
+    category: 'Kopi'
   },
   {
     id: 1,
-    code: 'SP0003',
-    name: 'Charles',
-    address: '',
-    phone: '',
-    email: ''
+    code: 'IT0003',
+    name: 'Kopibara Yes',
+    account: '10404 - Persediaan Barang Jadi',
+    category: 'Kopi'
   }
 ])
 
@@ -84,17 +80,12 @@ const columns = ref([
     isEditable: false
   },
   {
-    name: 'Address',
+    name: 'Account',
     isShow: true,
     isEditable: true
   },
   {
-    name: 'Phone',
-    isShow: true,
-    isEditable: true
-  },
-  {
-    name: 'Email',
+    name: 'Category',
     isShow: true,
     isEditable: true
   }
@@ -107,20 +98,20 @@ const selectAll = computed({
   },
   set() {
     if (isCheckedAll()) {
-      suppliers.value.forEach((supplier) => {
-        supplier.checked = false
+      items.value.forEach((item) => {
+        item.checked = false
       })
     } else {
-      suppliers.value.forEach((supplier) => {
-        supplier.checked = true
+      items.value.forEach((item) => {
+        item.checked = true
       })
     }
   }
 })
 
 const isCheckedAll = () => {
-  for (const supplier of suppliers.value) {
-    if (supplier.checked === undefined || supplier.checked === false) {
+  for (const item of items.value) {
+    if (item.checked === undefined || item.checked === false) {
       return false
     }
   }
@@ -131,8 +122,8 @@ const isCheckedAll = () => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <h1>Supplier</h1>
-    <component :is="BaseBreadcrumb" :items="items" separator="angle" v-slot="{ item }">
+    <h1>Item</h1>
+    <component :is="BaseBreadcrumb" :items="breadcrumbs" separator="angle" v-slot="{ item }">
       <router-link v-if="item.path" :class="{ 'breadcrumb-link': item.path }" :to="item.path">
         {{ item.name }}
       </router-link>
@@ -169,19 +160,17 @@ const isCheckedAll = () => {
               <th v-if="columns[2].isShow">{{ columns[2].name }}</th>
               <th v-if="columns[3].isShow">{{ columns[3].name }}</th>
               <th v-if="columns[4].isShow">{{ columns[4].name }}</th>
-              <th v-if="columns[5].isShow">{{ columns[5].name }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(supplier, index) in suppliers" :key="index">
+            <tr v-for="(item, index) in items" :key="index">
               <td v-if="columns[0].isShow">
-                <component :is="BaseCheckbox" v-model="supplier.checked" />
+                <component :is="BaseCheckbox" v-model="item.checked" />
               </td>
-              <td v-if="columns[1].isShow">{{ supplier.code }}</td>
-              <td v-if="columns[2].isShow">{{ supplier.name }}</td>
-              <td v-if="columns[3].isShow">{{ supplier.address }}</td>
-              <td v-if="columns[4].isShow">{{ supplier.phone }}</td>
-              <td v-if="columns[5].isShow">{{ supplier.email }}</td>
+              <td v-if="columns[1].isShow">{{ item.code }}</td>
+              <td v-if="columns[2].isShow">{{ item.name }}</td>
+              <td v-if="columns[3].isShow">{{ item.account }}</td>
+              <td v-if="columns[4].isShow">{{ item.category }}</td>
             </tr>
           </tbody>
         </component>

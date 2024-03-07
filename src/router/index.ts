@@ -27,11 +27,11 @@ const router = createRouter({
         },
         {
           path: 'branch',
-          component: () => import('@/pages/master/branch/index.vue')
+          component: () => import('@/pages/master/branch/list/index.vue')
         },
         {
           path: 'warehouse',
-          component: () => import('@/pages/master/warehouse/index.vue')
+          component: () => import('@/pages/master/warehouse/list/index.vue')
         },
         {
           path: 'supplier',
@@ -43,11 +43,11 @@ const router = createRouter({
         },
         {
           path: 'allocation',
-          component: () => import('@/pages/master/allocation/index.vue')
+          component: () => import('@/pages/master/allocation/list/index.vue')
         },
         {
           path: 'item',
-          component: () => import('@/pages/master/item/index.vue')
+          component: () => import('@/pages/master/item/list/index.vue')
         }
       ]
     },

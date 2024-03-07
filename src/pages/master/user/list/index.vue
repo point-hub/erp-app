@@ -1,27 +1,26 @@
 <script setup lang="ts">
 import {
-  BaseAutocomplete,
+  BaseBreadcrumb,
   BaseButton,
   BaseCard,
   BaseCheckbox,
-  BaseDivider,
   BaseInput,
-  BaseModal,
   BasePagination,
   BaseTable
 } from '@point-hub/papp'
 import { computed, ref } from 'vue'
 
-// Table Header
-const options = [
-  { id: 1, label: 'Name' },
-  { id: 2, label: 'Branch' },
-  { id: 3, label: 'Warehouse' }
+const items = [
+  {
+    name: 'Master'
+  },
+  {
+    name: 'User',
+    path: '/master/user'
+  }
 ]
 
-const selected = ref()
 const searchAll = ref('')
-const search = ref<string[]>([])
 
 // Table Data
 interface UserInterface {
@@ -40,8 +39,8 @@ const users = ref<UserInterface[]>([
     name: 'Admin',
     username: 'admin',
     role: 'administrator',
-    branch: 'main',
-    warehouse: 'central'
+    branch: 'Main',
+    warehouse: 'Central'
   }
 ])
 
@@ -51,12 +50,6 @@ const pageSize = ref(1)
 const totalDocument = ref(1)
 
 const updateData = () => {}
-
-// Table Setting
-const showModal = ref(false)
-const openTableSetting = () => {
-  showModal.value = true
-}
 
 const columns = ref([
   {
@@ -91,13 +84,6 @@ const columns = ref([
   }
 ])
 
-const optionsPageSize = [
-  { value: 10, label: '10' },
-  { value: 25, label: '25' },
-  { value: 50, label: '50' },
-  { value: 100, label: '100' }
-]
-
 // Selecting Table Row
 const selectAll = computed({
   get() {
@@ -130,6 +116,12 @@ const isCheckedAll = () => {
 <template>
   <div class="flex flex-col gap-4">
     <h1>User</h1>
+    <component :is="BaseBreadcrumb" :items="items" separator="angle" v-slot="{ item }">
+      <router-link v-if="item.path" :class="{ 'breadcrumb-link': item.path }" :to="item.path">
+        {{ item.name }}
+      </router-link>
+      <span v-else>{{ item.name }}</span>
+    </component>
     <component :is="BaseCard" header="s">
       <div class="flex flex-col gap-4">
         <div class="w-full flex items-center gap-4">
@@ -151,51 +143,10 @@ const isCheckedAll = () => {
             </component>
           </div>
         </div>
-        <component :is="BaseModal" :is-open="showModal" @on-close="showModal = false" size="xl">
-          <div class="max-h-90vh overflow-auto p-8 space-y-6">
-            <h2 class="text-2xl font-bold">Table Setting</h2>
-            <div class="space-y-2">
-              <h3 class="font-extrabold text-lg">Column Chooser</h3>
-              <div class="space-y-2">
-                <component
-                  v-for="(column, index) in columns"
-                  :key="index"
-                  :id="column.name"
-                  :is="BaseCheckbox"
-                  :disabled="!column.isEditable"
-                  v-model="column.isShow"
-                  :text="column.name"
-                />
-              </div>
-            </div>
-            <component :is="BaseDivider" orientation="vertical" />
-            <div class="space-y-2">
-              <h3 class="font-extrabold text-lg">Pagination</h3>
-              <component
-                :is="BaseAutocomplete"
-                v-model="selected"
-                :options="optionsPageSize"
-                placeholder="Search"
-                label="Page Size"
-                layout="horizontal"
-                description="data per page"
-              ></component>
-            </div>
-            <component
-              :is="BaseButton"
-              color="primary"
-              size="md"
-              is-block
-              @click="showModal = false"
-            >
-              Close
-            </component>
-          </div>
-        </component>
         <component :is="BaseTable">
           <thead>
             <tr>
-              <th v-if="columns[0].isShow">
+              <th v-if="columns[0].isShow" class="w-1">
                 <component :is="BaseCheckbox" v-model="selectAll" />
               </th>
               <th v-if="columns[1].isShow">Name</th>

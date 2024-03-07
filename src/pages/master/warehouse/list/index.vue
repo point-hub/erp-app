@@ -15,48 +15,40 @@ const items = [
     name: 'Master'
   },
   {
-    name: 'Supplier',
-    path: '/master/supplier'
+    name: 'Warehouse',
+    path: '/master/warehouse'
   }
 ]
 
 const searchAll = ref('')
 
 // Table Data
-interface SupplierInterface {
+interface WarehouseInterface {
   id: number
   name: string
   code: string
-  address: string
-  phone: string
-  email: string
+  branch: string
   checked?: boolean
 }
 
-const suppliers = ref<SupplierInterface[]>([
+const warehouses = ref<WarehouseInterface[]>([
   {
     id: 1,
-    code: 'SP0001',
-    name: 'Antony',
-    address: '',
-    phone: '',
-    email: ''
+    code: 'WH0001',
+    name: 'Central',
+    branch: 'Main'
   },
   {
     id: 2,
-    code: 'SP0002',
-    name: 'Bruce Jade',
-    address: '',
-    phone: '',
-    email: ''
+    code: 'WH0002',
+    name: 'Jakarta',
+    branch: 'Main'
   },
   {
-    id: 1,
-    code: 'SP0003',
-    name: 'Charles',
-    address: '',
-    phone: '',
-    email: ''
+    id: 3,
+    code: 'WH0003',
+    name: 'Surabaya',
+    branch: 'Main'
   }
 ])
 
@@ -84,17 +76,7 @@ const columns = ref([
     isEditable: false
   },
   {
-    name: 'Address',
-    isShow: true,
-    isEditable: true
-  },
-  {
-    name: 'Phone',
-    isShow: true,
-    isEditable: true
-  },
-  {
-    name: 'Email',
+    name: 'Branch',
     isShow: true,
     isEditable: true
   }
@@ -107,20 +89,20 @@ const selectAll = computed({
   },
   set() {
     if (isCheckedAll()) {
-      suppliers.value.forEach((supplier) => {
-        supplier.checked = false
+      warehouses.value.forEach((warehouse) => {
+        warehouse.checked = false
       })
     } else {
-      suppliers.value.forEach((supplier) => {
-        supplier.checked = true
+      warehouses.value.forEach((warehouse) => {
+        warehouse.checked = true
       })
     }
   }
 })
 
 const isCheckedAll = () => {
-  for (const supplier of suppliers.value) {
-    if (supplier.checked === undefined || supplier.checked === false) {
+  for (const warehouse of warehouses.value) {
+    if (warehouse.checked === undefined || warehouse.checked === false) {
       return false
     }
   }
@@ -131,7 +113,7 @@ const isCheckedAll = () => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <h1>Supplier</h1>
+    <h1>Warehouse</h1>
     <component :is="BaseBreadcrumb" :items="items" separator="angle" v-slot="{ item }">
       <router-link v-if="item.path" :class="{ 'breadcrumb-link': item.path }" :to="item.path">
         {{ item.name }}
@@ -168,20 +150,16 @@ const isCheckedAll = () => {
               <th v-if="columns[1].isShow">{{ columns[1].name }}</th>
               <th v-if="columns[2].isShow">{{ columns[2].name }}</th>
               <th v-if="columns[3].isShow">{{ columns[3].name }}</th>
-              <th v-if="columns[4].isShow">{{ columns[4].name }}</th>
-              <th v-if="columns[5].isShow">{{ columns[5].name }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(supplier, index) in suppliers" :key="index">
+            <tr v-for="(warehouse, index) in warehouses" :key="index">
               <td v-if="columns[0].isShow">
-                <component :is="BaseCheckbox" v-model="supplier.checked" />
+                <component :is="BaseCheckbox" v-model="warehouse.checked" />
               </td>
-              <td v-if="columns[1].isShow">{{ supplier.code }}</td>
-              <td v-if="columns[2].isShow">{{ supplier.name }}</td>
-              <td v-if="columns[3].isShow">{{ supplier.address }}</td>
-              <td v-if="columns[4].isShow">{{ supplier.phone }}</td>
-              <td v-if="columns[5].isShow">{{ supplier.email }}</td>
+              <td v-if="columns[1].isShow">{{ warehouse.code }}</td>
+              <td v-if="columns[2].isShow">{{ warehouse.name }}</td>
+              <td v-if="columns[3].isShow">{{ warehouse.branch }}</td>
             </tr>
           </tbody>
         </component>
