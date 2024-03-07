@@ -16,7 +16,7 @@ const items = [
   },
   {
     name: 'User',
-    path: '/master/user'
+    path: '/master/allocation'
   }
 ]
 
@@ -26,21 +26,13 @@ const searchAll = ref('')
 interface UserInterface {
   id: number
   name: string
-  username: string
-  role: string
-  branch: string
-  warehouse: string
   checked?: boolean
 }
 
-const users = ref<UserInterface[]>([
+const allocations = ref<UserInterface[]>([
   {
     id: 1,
-    name: 'Admin',
-    username: 'admin',
-    role: 'administrator',
-    branch: 'main',
-    warehouse: 'central'
+    name: 'Default'
   }
 ])
 
@@ -61,26 +53,6 @@ const columns = ref([
     name: 'Name',
     isShow: true,
     isEditable: false
-  },
-  {
-    name: 'Username',
-    isShow: true,
-    isEditable: true
-  },
-  {
-    name: 'Role',
-    isShow: true,
-    isEditable: true
-  },
-  {
-    name: 'Branch',
-    isShow: true,
-    isEditable: true
-  },
-  {
-    name: 'Warehouse',
-    isShow: true,
-    isEditable: true
   }
 ])
 
@@ -91,20 +63,20 @@ const selectAll = computed({
   },
   set() {
     if (isCheckedAll()) {
-      users.value.forEach((user) => {
-        user.checked = false
+      allocations.value.forEach((allocation) => {
+        allocation.checked = false
       })
     } else {
-      users.value.forEach((user) => {
-        user.checked = true
+      allocations.value.forEach((allocation) => {
+        allocation.checked = true
       })
     }
   }
 })
 
 const isCheckedAll = () => {
-  for (const user of users.value) {
-    if (user.checked === undefined || user.checked === false) {
+  for (const allocation of allocations.value) {
+    if (allocation.checked === undefined || allocation.checked === false) {
       return false
     }
   }
@@ -150,22 +122,14 @@ const isCheckedAll = () => {
                 <component :is="BaseCheckbox" v-model="selectAll" />
               </th>
               <th v-if="columns[1].isShow">Name</th>
-              <th v-if="columns[2].isShow">Username</th>
-              <th v-if="columns[3].isShow">Role</th>
-              <th v-if="columns[4].isShow">Branch</th>
-              <th v-if="columns[5].isShow">Warehouse</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in users" :key="index">
+            <tr v-for="(allocation, index) in allocations" :key="index">
               <td v-if="columns[0].isShow">
-                <component :is="BaseCheckbox" v-model="user.checked" />
+                <component :is="BaseCheckbox" v-model="allocation.checked" />
               </td>
-              <td v-if="columns[1].isShow">{{ user.name }}</td>
-              <td v-if="columns[2].isShow">{{ user.username }}</td>
-              <td v-if="columns[3].isShow">{{ user.role }}</td>
-              <td v-if="columns[4].isShow">{{ user.branch }}</td>
-              <td v-if="columns[5].isShow">{{ user.warehouse }}</td>
+              <td v-if="columns[1].isShow">{{ allocation.name }}</td>
             </tr>
           </tbody>
         </component>
