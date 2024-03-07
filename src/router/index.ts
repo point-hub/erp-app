@@ -127,15 +127,15 @@ const router = createRouter({
       children: [
         {
           path: 'formula',
-          component: () => import('@/pages/manufacture/formula/index.vue')
+          component: () => import('@/pages/manufacture/formula/list/index.vue')
         },
         {
           path: 'machine',
-          component: () => import('@/pages/manufacture/machine/index.vue')
+          component: () => import('@/pages/manufacture/machine/list/index.vue')
         },
         {
           path: 'process',
-          component: () => import('@/pages/manufacture/process/index.vue')
+          component: () => import('@/pages/manufacture/process/list/index.vue')
         }
       ]
     }
