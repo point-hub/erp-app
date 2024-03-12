@@ -8,7 +8,10 @@ import {
   BasePagination,
   BaseTable
 } from '@point-hub/papp'
-import { computed, ref } from 'vue'
+import { watchDebounced } from '@vueuse/core'
+import { computed, onMounted, ref } from 'vue'
+
+import { useRetrieveAllApi } from './retrieve-all.api'
 
 const items = [
   {
@@ -16,11 +19,19 @@ const items = [
   },
   {
     name: 'Chart of Account',
-    path: '/master/chart-of-account'
+    path: '/accounting/chart-of-account'
   }
 ]
 
 const searchAll = ref('')
+watchDebounced(
+  searchAll,
+  async () => {
+    const data = await retrieveAllApi.send({ filter: { name: searchAll.value } })
+    chartOfAccounts.value = data.data
+  },
+  { debounce: 300, maxWait: 1000 }
+)
 
 // Table Data
 interface ChartOfAccountInterface {
@@ -32,22 +43,25 @@ interface ChartOfAccountInterface {
   checked?: boolean
 }
 
-const chartOfAccounts = ref<ChartOfAccountInterface[]>([
-  {
-    id: 1,
-    number: '10101',
-    name: 'Kas',
-    type: '',
-    subledger: ''
-  }
-])
+const chartOfAccounts = ref<ChartOfAccountInterface[]>([])
 
 // Section Pagination
 const page = ref(1)
-const pageSize = ref(1)
-const totalDocument = ref(1)
+const pageSize = ref(10)
+const totalDocument = ref(100)
+const retrieveAllApi = useRetrieveAllApi()
 
-const updateData = () => {}
+onMounted(async () => {
+  const data = await retrieveAllApi.send({ filter: { name: 'cash' } })
+  console.log(data)
+  chartOfAccounts.value = data.data
+})
+
+const updateData = async () => {
+  const data = await retrieveAllApi.send({ page: page.value })
+  console.log(data)
+  chartOfAccounts.value = data.data
+}
 
 const columns = ref([
   {

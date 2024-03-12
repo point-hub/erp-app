@@ -121,7 +121,7 @@ const router = createRouter({
       children: [
         {
           path: 'chart-of-account',
-          component: () => import('@/pages/accounting/chart-of-account/index.vue')
+          component: () => import('@/pages/accounting/chart-of-account/list/index.vue')
         },
         {
           path: 'cut-off',
