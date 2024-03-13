@@ -27,7 +27,16 @@ const searchAll = ref('')
 watchDebounced(
   searchAll,
   async () => {
-    const data = await retrieveAllApi.send({ filter: { name: searchAll.value } })
+    const data = await retrieveAllApi.send({
+      page: page.value,
+      filter: {
+        name: searchAll.value,
+        number: searchAll.value,
+        type: searchAll.value,
+        subledger: searchAll.value
+      },
+      sort: 'number'
+    })
     chartOfAccounts.value = data.data
   },
   { debounce: 300, maxWait: 1000 }
@@ -52,14 +61,33 @@ const totalDocument = ref(100)
 const retrieveAllApi = useRetrieveAllApi()
 
 onMounted(async () => {
-  const data = await retrieveAllApi.send({ filter: { name: 'cash' } })
-  console.log(data)
+  const data = await retrieveAllApi.send({
+    page: page.value,
+    filter: {
+      name: searchAll.value,
+      number: searchAll.value,
+      type: searchAll.value,
+      subledger: searchAll.value
+    },
+    sort: 'number'
+  })
   chartOfAccounts.value = data.data
+  page.value = data.pagination.page
+  pageSize.value = data.pagination.page_size
+  totalDocument.value = data.pagination.total_document
 })
 
 const updateData = async () => {
-  const data = await retrieveAllApi.send({ page: page.value })
-  console.log(data)
+  const data = await retrieveAllApi.send({
+    page: page.value,
+    filter: {
+      name: searchAll.value,
+      number: searchAll.value,
+      type: searchAll.value,
+      subledger: searchAll.value
+    },
+    sort: 'number'
+  })
   chartOfAccounts.value = data.data
 }
 
@@ -154,7 +182,7 @@ const isCheckedAll = () => {
           <thead>
             <tr>
               <th v-if="columns[0].isShow" class="w-1">
-                <component :is="BaseCheckbox" v-model="selectAll" />
+                <!-- <component :is="BaseCheckbox" v-model="selectAll" /> -->
               </th>
               <th v-if="columns[1].isShow">{{ columns[1].name }}</th>
               <th v-if="columns[2].isShow">{{ columns[2].name }}</th>
@@ -165,7 +193,7 @@ const isCheckedAll = () => {
           <tbody>
             <tr v-for="(chartOfAccount, index) in chartOfAccounts" :key="index">
               <td v-if="columns[0].isShow">
-                <component :is="BaseCheckbox" v-model="chartOfAccount.checked" />
+                <!-- <component :is="BaseCheckbox" v-model="chartOfAccount.checked" /> -->
               </td>
               <td v-if="columns[1].isShow">{{ chartOfAccount.number }}</td>
               <td v-if="columns[2].isShow">{{ chartOfAccount.name }}</td>
