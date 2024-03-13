@@ -161,10 +161,17 @@ const isCheckedAll = () => {
       <div class="flex flex-col gap-4">
         <div class="w-full flex items-center gap-4">
           <div class="w-full flex gap-2">
-            <component :is="BaseButton" color="primary" border="none" shape="sharp" class="gap-1">
+            <router-link
+              to="/accounting/chart-of-account/create"
+              :is="BaseButton"
+              color="primary"
+              border="none"
+              shape="sharp"
+              class="btn bg-primary text-white flex items-center px-4 gap-1"
+            >
               <base-icon icon="i-far-pen-to-square" />
               <span>Add</span>
-            </component>
+            </router-link>
             <component
               :is="BaseInput"
               v-model="searchAll"
