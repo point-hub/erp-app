@@ -1,0 +1,26 @@
+export default {
+  path: 'finance',
+  children: [
+    {
+      path: 'payment-orders',
+      children: [
+        {
+          path: '',
+          component: () => import('@/pages/finance/payment-orders/list/index.vue')
+        },
+        {
+          path: 'create',
+          component: () => import('@/pages/finance/payment-orders/create/index.vue')
+        },
+        {
+          path: ':id',
+          component: () => import('@/pages/finance/payment-orders/detail/index.vue')
+        },
+        {
+          path: ':id/edit',
+          component: () => import('@/pages/finance/payment-orders/edit/index.vue')
+        }
+      ]
+    }
+  ]
+}
