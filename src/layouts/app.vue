@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   AppFooter,
-  AppHeader,
   AppPreloader,
   AppSidebar,
   useMobileBreakpoint,
@@ -11,6 +10,7 @@ import {
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
+import AppHeader from '@/components/app-header.vue'
 import { apps } from '@/composable/apps'
 
 import { version } from '../../package.json'

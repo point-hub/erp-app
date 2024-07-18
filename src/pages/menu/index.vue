@@ -16,17 +16,17 @@ const menus = [
   {
     name: 'Master',
     path: '/master',
-    icon: 'i-far-lock'
+    icon: 'i-far-database'
   },
   {
     name: 'Purchasing',
     path: '/purchasing',
-    icon: 'i-far-lock'
+    icon: 'i-far-cart-arrow-down'
   },
   {
     name: 'Finance',
     path: '/finance',
-    icon: 'i-far-lock'
+    icon: 'i-far-money-check-dollar-pen'
   }
 ]
 </script>

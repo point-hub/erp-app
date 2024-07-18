@@ -70,10 +70,28 @@ const router = createRouter({
       ]
     },
     {
+      path: '/auth',
+      component: () => import('@/layouts/auth.vue'),
+      children: [
+        {
+          path: 'signin',
+          component: () => import('@/pages/signin/index.vue')
+        }
+      ]
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: () => import('@/pages/404.vue')
     }
   ]
+})
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+router.beforeEach((to, from) => {
+  if (to.query.pid == '1') {
+    // return '/master'
+    to.query.name = 'Bumi Inovasi Ganapatih'
+  }
 })
 
 export default router
