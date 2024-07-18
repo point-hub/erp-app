@@ -3,7 +3,8 @@ export default {
   children: [
     {
       path: '',
-      component: () => import('@/pages/purchasing/menu/index.vue')
+      component: () => import('@/pages/purchasing/menu/index.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 }

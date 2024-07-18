@@ -6,19 +6,23 @@ export default {
       children: [
         {
           path: '',
-          component: () => import('@/pages/finance/payment-orders/list/index.vue')
+          component: () => import('@/pages/finance/payment-orders/list/index.vue'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'create',
-          component: () => import('@/pages/finance/payment-orders/create/index.vue')
+          component: () => import('@/pages/finance/payment-orders/create/index.vue'),
+          meta: { requiresAuth: true }
         },
         {
           path: ':id',
-          component: () => import('@/pages/finance/payment-orders/detail/index.vue')
+          component: () => import('@/pages/finance/payment-orders/detail/index.vue'),
+          meta: { requiresAuth: true }
         },
         {
           path: ':id/edit',
-          component: () => import('@/pages/finance/payment-orders/edit/index.vue')
+          component: () => import('@/pages/finance/payment-orders/edit/index.vue'),
+          meta: { requiresAuth: true }
         }
       ]
     }

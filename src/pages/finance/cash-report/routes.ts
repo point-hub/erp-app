@@ -3,7 +3,8 @@ export default {
   children: [
     {
       path: 'cash-report',
-      component: () => import('@/pages/finance/cash-report/index.vue')
+      component: () => import('@/pages/finance/cash-report/index.vue'),
+      meta: { requiresAuth: true }
     }
   ]
 }

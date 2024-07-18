@@ -1,3 +1,4 @@
+import VueCookie from '@point-hub/vue-cookie'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import financeBankPaymentRoutes from '@/pages/finance/bank-payments/routes'
@@ -36,11 +37,13 @@ const router = createRouter({
         },
         {
           path: 'home',
-          component: () => import('@/pages/home/index.vue')
+          component: () => import('@/pages/home/index.vue'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'menu',
-          component: () => import('@/pages/menu/index.vue')
+          component: () => import('@/pages/menu/index.vue'),
+          meta: { requiresAuth: true }
         },
         // master routes
         masterRoutes,
@@ -86,11 +89,25 @@ const router = createRouter({
   ]
 })
 
+const isAuthenticated = async () => {
+  if (VueCookie.get('POINTHUB_ACCESS_TOKEN')) {
+    console.log('true')
+    return true
+  }
+
+  return false
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-router.beforeEach((to, from) => {
-  if (to.query.pid == '1') {
-    // return '/master'
-    to.query.name = 'Bumi Inovasi Ganapatih'
+router.beforeEach(async (to, from, next) => {
+  // 1. check if client is authenticated
+  if (to.meta.requiresAuth && !(await isAuthenticated())) {
+    console.log('sign')
+    // err 1. redirect to signin page if not authenticated
+    next(`/auth/signin?${new URLSearchParams(to.query as any).toString()}`)
+  } else {
+    console.log('sign2')
+    next()
   }
 })
 
