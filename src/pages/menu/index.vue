@@ -24,6 +24,11 @@ const menus = [
     icon: 'i-far-cart-arrow-down'
   },
   {
+    name: 'Sales',
+    path: '/sales',
+    icon: 'i-far-cart-arrow-up'
+  },
+  {
     name: 'Finance',
     path: '/finance',
     icon: 'i-far-money-check-dollar-pen'

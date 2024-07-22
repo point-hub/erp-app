@@ -32,6 +32,18 @@ export const apps: IApps[] = [
         ]
       },
       {
+        name: 'Sales',
+        submenu: [
+          { name: 'Sales Quotation', path: '/sales/sales-quotation' },
+          { name: 'Sales Orders', path: '/sales/sales-orders' },
+          { name: 'Downpayments', path: '/sales/downpayments' },
+          { name: 'Delivery Orders', path: '/sales/delivery-orders' },
+          { name: 'Delivery Notes', path: '/sales/delivery-notes' },
+          { name: 'Invoices', path: '/sales/invoices' },
+          { name: 'Payment Collections', path: '/sales/payment-collections' }
+        ]
+      },
+      {
         name: 'Finance',
         submenu: [
           { name: 'Payment Orders', path: '/finance/payment-orders' },

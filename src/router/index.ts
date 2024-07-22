@@ -23,6 +23,14 @@ import purchasingPurchaseOrderRoutes from '@/pages/purchasing/purchase-orders/ro
 import purchasingPurchaseRequestRoutes from '@/pages/purchasing/purchase-requests/routes'
 import purchasingReceiveOrderRoutes from '@/pages/purchasing/receive-orders/routes'
 import purchasingRoutes from '@/pages/purchasing/routes'
+import salesDeliveryNoteRoutes from '@/pages/sales/delivery-notes/routes'
+import salesDeliveryOrderRoutes from '@/pages/sales/delivery-orders/routes'
+import salesDownpaymentRoutes from '@/pages/sales/downpayments/routes'
+import salesInvoiceRoutes from '@/pages/sales/invoices/routes'
+import salesPaymentCollectionRoutes from '@/pages/sales/payment-collections/routes'
+import salesOrderRoutes from '@/pages/sales/payment-collections/routes'
+import salesRoutes from '@/pages/sales/routes'
+import salesQuotationRoutes from '@/pages/sales/sales-quotations/routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +70,15 @@ const router = createRouter({
         purchasingReceiveOrderRoutes,
         purchasingInvoiceRoutes,
         purchasingPaymentOrderRoutes,
+        // sales routes
+        salesRoutes,
+        salesQuotationRoutes,
+        salesOrderRoutes,
+        salesDownpaymentRoutes,
+        salesDeliveryOrderRoutes,
+        salesDeliveryNoteRoutes,
+        salesInvoiceRoutes,
+        salesPaymentCollectionRoutes,
         // finance routes
         financeRoutes,
         financePaymentOrderRoutes,
