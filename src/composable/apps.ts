@@ -34,7 +34,7 @@ export const apps: IApps[] = [
       {
         name: 'Sales',
         submenu: [
-          { name: 'Sales Quotation', path: '/sales/sales-quotation' },
+          { name: 'Sales Quotation', path: '/sales/sales-quotations' },
           { name: 'Sales Orders', path: '/sales/sales-orders' },
           { name: 'Downpayments', path: '/sales/downpayments' },
           { name: 'Delivery Orders', path: '/sales/delivery-orders' },
