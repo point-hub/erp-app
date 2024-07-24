@@ -7,7 +7,7 @@ const breadcrumbs = [
     path: '/menu'
   },
   {
-    name: 'Master'
+    name: 'Finance'
   }
 ]
 

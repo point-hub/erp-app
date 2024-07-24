@@ -32,6 +32,11 @@ const menus = [
     name: 'Finance',
     path: '/finance',
     icon: 'i-far-money-check-dollar-pen'
+  },
+  {
+    name: 'Manufacture',
+    path: '/manufacture',
+    icon: 'i-far-conveyor-belt-arm'
   }
 ]
 </script>

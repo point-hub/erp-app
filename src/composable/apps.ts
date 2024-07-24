@@ -53,6 +53,14 @@ export const apps: IApps[] = [
           { name: 'Cash Report', path: '/finance/cash-report' },
           { name: 'Bank Report', path: '/finance/bank-report' }
         ]
+      },
+      {
+        name: 'Manufacture',
+        submenu: [
+          { name: 'Machines', path: '/manufacture/machines' },
+          { name: 'Processes', path: '/manufacture/processes' },
+          { name: 'Formulas', path: '/manufacture/formulas' }
+        ]
       }
     ]
   }

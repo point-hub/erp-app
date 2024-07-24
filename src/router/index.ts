@@ -8,6 +8,10 @@ import financeCashPaymentRoutes from '@/pages/finance/cash-payments/routes'
 import financeCashReportRoutes from '@/pages/finance/cash-report/routes'
 import financePaymentOrderRoutes from '@/pages/finance/payment-orders/routes'
 import financeRoutes from '@/pages/finance/routes'
+import manufactureFormulasRoutes from '@/pages/manufacture/formulas/routes'
+import manufactureMachinesRoutes from '@/pages/manufacture/machines/routes'
+import manufactureProcessesRoutes from '@/pages/manufacture/processes/routes'
+import manufactureRoutes from '@/pages/manufacture/routes'
 import masterAllocationRoutes from '@/pages/master/allocations/routes'
 import masterBranchRoutes from '@/pages/master/branches/routes'
 import masterCustomerRoutes from '@/pages/master/customers/routes'
@@ -86,7 +90,12 @@ const router = createRouter({
         financeCashPaymentRoutes,
         financeCashReportRoutes,
         financeBankPaymentRoutes,
-        financeBankReportRoutes
+        financeBankReportRoutes,
+        // manufacture routes
+        manufactureRoutes,
+        manufactureMachinesRoutes,
+        manufactureFormulasRoutes,
+        manufactureProcessesRoutes
       ]
     },
     {
