@@ -10,7 +10,7 @@ const breadcrumbs = [
     path: '/sales'
   },
   {
-    name: 'Sales Requests'
+    name: 'Sales Quotations'
   }
 ]
 </script>

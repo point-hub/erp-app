@@ -32,8 +32,8 @@ import salesDeliveryOrderRoutes from '@/pages/sales/delivery-orders/routes'
 import salesDownpaymentRoutes from '@/pages/sales/downpayments/routes'
 import salesInvoiceRoutes from '@/pages/sales/invoices/routes'
 import salesPaymentCollectionRoutes from '@/pages/sales/payment-collections/routes'
-import salesOrderRoutes from '@/pages/sales/payment-collections/routes'
 import salesRoutes from '@/pages/sales/routes'
+import salesOrderRoutes from '@/pages/sales/sales-orders/routes'
 import salesQuotationRoutes from '@/pages/sales/sales-quotations/routes'
 
 const router = createRouter({
