@@ -34,7 +34,7 @@ watch(searchAll, () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
     <base-card>
-      <template #header>Payment Orders</template>
+      <template #header>Downpayments</template>
       <div class="my-5 flex gap-2">
         <base-button @click="onCreateClick" color="primary" shape="sharp">Create</base-button>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
