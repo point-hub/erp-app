@@ -22,12 +22,6 @@ const result = ref<any[]>([])
 onMounted(() => {
   result.value = datas.value
 })
-
-watch(searchAll, () => {
-  result.value = datas.value.filter((data) => {
-    return data.name.includes(searchAll.value)
-  })
-})
 </script>
 
 <template>

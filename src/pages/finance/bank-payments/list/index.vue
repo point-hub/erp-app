@@ -22,12 +22,6 @@ const result = ref<any[]>([])
 onMounted(() => {
   result.value = datas.value
 })
-
-watch(searchAll, () => {
-  result.value = datas.value.filter((data) => {
-    return data.name.includes(searchAll.value)
-  })
-})
 </script>
 
 <template>
@@ -36,8 +30,12 @@ watch(searchAll, () => {
     <base-card>
       <template #header>Bank Payments</template>
       <div class="my-5 flex gap-2">
-        <base-button @click="onCreateClick" color="primary" shape="sharp">Bank In</base-button>
-        <base-button @click="onCreateClick" color="primary" shape="sharp">Bank Out</base-button>
+        <base-button @click="onCreateClick" color="primary" shape="sharp" class="truncate">
+          Bank In
+        </base-button>
+        <base-button @click="onCreateClick" color="primary" shape="sharp" class="truncate">
+          Bank Out
+        </base-button>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
       </div>
       <div class="flex flex-col gap-4">
