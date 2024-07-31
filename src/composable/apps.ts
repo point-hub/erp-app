@@ -12,12 +12,15 @@ export const apps: IApps[] = [
         name: 'Master',
         submenu: [
           { name: 'Users', path: '/master/users' },
+          { name: 'Role', path: '/master/roles' },
           { name: 'Branches', path: '/master/branches' },
           { name: 'Warehouses', path: '/master/warehouses' },
           { name: 'Allocations', path: '/master/allocations' },
           { name: 'Items', path: '/master/items' },
           { name: 'Customers', path: '/master/customers' },
-          { name: 'Suppliers', path: '/master/suppliers' }
+          { name: 'Suppliers', path: '/master/suppliers' },
+          { name: 'Chart of Accounts', path: '/master/chart-of-accounts' },
+          { name: 'Setting Journals', path: '/master/setting-journals' }
         ]
       },
       {
@@ -60,6 +63,13 @@ export const apps: IApps[] = [
           { name: 'Machines', path: '/manufacture/machines' },
           { name: 'Processes', path: '/manufacture/processes' },
           { name: 'Formulas', path: '/manufacture/formulas' }
+        ]
+      },
+      {
+        name: 'Inventory',
+        submenu: [
+          { name: 'Inventory Audits', path: '/inventory/inventory-audits' },
+          { name: 'Stock Corrections', path: '/inventory/stock-corrections' }
         ]
       }
     ]

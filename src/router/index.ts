@@ -8,15 +8,21 @@ import financeCashPaymentRoutes from '@/pages/finance/cash-payments/routes'
 import financeCashReportRoutes from '@/pages/finance/cash-report/routes'
 import financePaymentOrderRoutes from '@/pages/finance/payment-orders/routes'
 import financeRoutes from '@/pages/finance/routes'
+import inventoryAuditRoutes from '@/pages/inventory/inventory-audits/routes'
+import inventoryRoutes from '@/pages/inventory/routes'
+import inventoryStockCorrectionRoutes from '@/pages/inventory/stock-corrections/routes'
 import manufactureFormulasRoutes from '@/pages/manufacture/formulas/routes'
 import manufactureMachinesRoutes from '@/pages/manufacture/machines/routes'
 import manufactureProcessesRoutes from '@/pages/manufacture/processes/routes'
 import manufactureRoutes from '@/pages/manufacture/routes'
 import masterAllocationRoutes from '@/pages/master/allocations/routes'
 import masterBranchRoutes from '@/pages/master/branches/routes'
+import masterChartOfAccountRoutes from '@/pages/master/chart-of-accounts/routes'
 import masterCustomerRoutes from '@/pages/master/customers/routes'
 import masterItemRoutes from '@/pages/master/items/routes'
+import masterRoleRoutes from '@/pages/master/roles/routes'
 import masterRoutes from '@/pages/master/routes'
+import masterSettingJournalRoutes from '@/pages/master/setting-journals/routes'
 import masterSupplierRoutes from '@/pages/master/suppliers/routes'
 import masterUserRoutes from '@/pages/master/users/routes'
 import masterWarehouseRoutes from '@/pages/master/warehouses/routes'
@@ -59,6 +65,9 @@ const router = createRouter({
         },
         // master routes
         masterRoutes,
+        masterRoleRoutes,
+        masterChartOfAccountRoutes,
+        masterSettingJournalRoutes,
         masterUserRoutes,
         masterBranchRoutes,
         masterWarehouseRoutes,
@@ -95,7 +104,11 @@ const router = createRouter({
         manufactureRoutes,
         manufactureMachinesRoutes,
         manufactureFormulasRoutes,
-        manufactureProcessesRoutes
+        manufactureProcessesRoutes,
+        // inventories routes
+        inventoryRoutes,
+        inventoryAuditRoutes,
+        inventoryStockCorrectionRoutes
       ]
     },
     {
