@@ -30,7 +30,7 @@ onMounted(() => {
 
 watch(searchAll, () => {
   result.value = datas.value.filter((data) => {
-    return data.name.includes(searchAll.value) || data.email.includes(searchAll.value)
+    return data.name.includes(searchAll.value)
   })
 })
 </script>
