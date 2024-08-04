@@ -129,7 +129,7 @@ const router = createRouter({
 })
 
 const isAuthenticated = async () => {
-  if (VueCookie.get('POINTHUB_ACCESS_TOKEN')) {
+  if (VueCookie.get('POINTHUB_ACCESS_TOKENX')) {
     console.log('true')
     return true
   }
