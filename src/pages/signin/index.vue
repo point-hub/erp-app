@@ -20,7 +20,7 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
-  if (form.data.username == 'gmbtest' && form.data.password == 'Admin123!') {
+  if (form.data.username == 'gmbtest' && form.data.password == 'Admin123!FPQOIWEW') {
     router.push('/')
     VueCookie.set('POINTHUB_ACCESS_TOKEN', 'ey72ho123jkhey82h1ou3ro1REQFJQWwe')
     return
