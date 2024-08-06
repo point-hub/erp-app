@@ -6,11 +6,12 @@ import { useToastStore } from '@/stores/toast.store'
 
 const { toastRef } = useToastStore()
 
+const password = ref()
+const errors = ref<string[]>([])
 const id = defineModel('id')
 const name = defineModel('name')
 const emit = defineEmits(['deleted'])
 
-// regenerate modal logic
 interface IData {
   id: string
   name: string
@@ -33,6 +34,14 @@ const onDelete = async () => {
   if (loadingState.value) return
   // start loading state
   loadingState.value = true
+  // password checking
+  if (password.value !== 'Admin123!') {
+    if (errors.value.length === 0) {
+      errors.value.push('Wrong Password')
+    }
+    loadingState.value = false
+    return
+  }
   // start api call
   const response = await axios.delete(`/v1/branches/${id.value}`)
   if (response.status === 200) {
@@ -59,6 +68,13 @@ defineExpose({
       <h2 class="py-4 text-2xl font-bold">Delete Branch</h2>
       <div class="space-y-8">
         <p>Are you sure you want to delete Branch "{{ name }}"?</p>
+        <base-input
+          type="password"
+          v-model="password"
+          label="Please enter your password to confirm this action"
+          :errors="errors"
+          @keyup="errors = []"
+        />
         <div class="flex gap-2">
           <base-button color="danger" size="sm" @click="onDelete()" :disabled="loadingState">
             Confirm

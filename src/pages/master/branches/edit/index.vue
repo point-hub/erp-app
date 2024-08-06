@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AxiosError } from 'axios'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -27,10 +28,27 @@ onMounted(async () => {
 })
 
 const onUpdate = async () => {
-  const response = await axios.patch(`/v1/branches/${route.params.id}`, form.data)
-  if (response.status === 200) {
-    toastRef.toast('Update success', { list: [], color: 'success' })
-    router.push('/master/branches')
+  try {
+    const response = await axios.patch(`/v1/branches/${route.params.id}`, form.data)
+    if (response.status === 200) {
+      toastRef.toast('Update success', { list: [], color: 'success' })
+      router.push('/master/branches')
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      var listErrors: string[] = []
+      const formErrors = error?.response?.data?.errors
+      if (formErrors) {
+        for (const key in formErrors) {
+          form.errors[key] = formErrors[key]
+          listErrors.push(formErrors[key])
+        }
+      }
+      toastRef.toast(error.response?.data.message, {
+        lists: listErrors.flat(),
+        color: 'danger'
+      })
+    }
   }
 }
 
