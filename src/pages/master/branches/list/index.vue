@@ -131,7 +131,7 @@ const onDelete = async () => {
       <template #header>Branches</template>
       <div class="my-5 flex gap-2">
         <router-link to="/master/branches/create">
-          <base-button color="primary" shape="sharp">Create</base-button>
+          <base-button color="info" shape="sharp">Create</base-button>
         </router-link>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
       </div>

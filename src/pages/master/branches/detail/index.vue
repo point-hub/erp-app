@@ -40,7 +40,7 @@ const onDeleted = async () => {
         </router-link>
 
         <base-button
-          color="info"
+          color="danger"
           size="sm"
           @click="
             deleteModalRef.toggleModal(true, {

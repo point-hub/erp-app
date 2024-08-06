@@ -70,20 +70,7 @@ const onDeleted = async () => {
     <base-card class="py-4!">
       <div class="flex gap-2">
         <base-button color="primary" @click="onUpdate()">Update</base-button>
-        <base-button
-          color="danger"
-          @click="
-            deleteModalRef.toggleModal(true, {
-              id: route.params.id.toString(),
-              name: form.data.name
-            })
-          "
-        >
-          Delete
-        </base-button>
       </div>
     </base-card>
-
-    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>
 </template>

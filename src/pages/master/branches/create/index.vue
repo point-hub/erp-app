@@ -55,7 +55,7 @@ const onSave = async () => {
 
     <card-form v-model:code="form.data.code" v-model:name="form.data.name" :errors="form.errors" />
 
-    <base-card>
+    <base-card class="py-4!">
       <div class="flex gap-2">
         <base-button color="primary" @click="onSave()">Save</base-button>
       </div>
