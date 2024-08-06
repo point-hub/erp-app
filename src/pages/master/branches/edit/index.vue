@@ -6,7 +6,6 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
-import DeleteModal from '../components/delete-modal.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
@@ -14,7 +13,6 @@ import { useForm } from './form'
 const route = useRoute()
 const router = useRouter()
 const { toastRef } = useToastStore()
-const deleteModalRef = ref()
 
 const form = reactive(useForm())
 
@@ -50,10 +48,6 @@ const onUpdate = async () => {
       })
     }
   }
-}
-
-const onDeleted = async () => {
-  router.push('/master/branches')
 }
 </script>
 
