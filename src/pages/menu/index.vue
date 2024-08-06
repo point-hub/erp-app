@@ -17,27 +17,27 @@ const menus = [
     name: 'Master',
     path: '/master',
     icon: 'i-far-database'
-  },
-  {
-    name: 'Purchasing',
-    path: '/purchasing',
-    icon: 'i-far-cart-arrow-down'
-  },
-  {
-    name: 'Sales',
-    path: '/sales',
-    icon: 'i-far-cart-arrow-up'
-  },
-  {
-    name: 'Finance',
-    path: '/finance',
-    icon: 'i-far-money-check-dollar-pen'
-  },
-  {
-    name: 'Manufacture',
-    path: '/manufacture',
-    icon: 'i-far-conveyor-belt-arm'
   }
+  // {
+  //   name: 'Purchasing',
+  //   path: '/purchasing',
+  //   icon: 'i-far-cart-arrow-down'
+  // },
+  // {
+  //   name: 'Sales',
+  //   path: '/sales',
+  //   icon: 'i-far-cart-arrow-up'
+  // },
+  // {
+  //   name: 'Finance',
+  //   path: '/finance',
+  //   icon: 'i-far-money-check-dollar-pen'
+  // },
+  // {
+  //   name: 'Manufacture',
+  //   path: '/manufacture',
+  //   icon: 'i-far-conveyor-belt-arm'
+  // }
 ]
 </script>
 

@@ -3,7 +3,7 @@ import VueCookie from '@point-hub/vue-cookie'
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useToastStore } from '@/stores/toast-store'
+import { useToastStore } from '@/stores/toast.store'
 
 import { useForm } from './form'
 import { usePassword } from './password'
@@ -20,7 +20,7 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
-  if (form.data.username == 'gmbtest' && form.data.password == 'Admin123!FPQOIWEW') {
+  if (form.data.username == 'gmbtest' && form.data.password == 'Admin123!') {
     router.push('/')
     VueCookie.set('POINTHUB_ACCESS_TOKEN', 'ey72ho123jkhey82h1ou3ro1REQFJQWwe')
     return

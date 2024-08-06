@@ -129,7 +129,7 @@ const router = createRouter({
 })
 
 const isAuthenticated = async () => {
-  if (VueCookie.get('POINTHUB_ACCESS_TOKENX')) {
+  if (VueCookie.get('POINTHUB_ACCESS_TOKEN')) {
     console.log('true')
     return true
   }
@@ -141,11 +141,9 @@ const isAuthenticated = async () => {
 router.beforeEach(async (to, from, next) => {
   // 1. check if client is authenticated
   if (to.meta.requiresAuth && !(await isAuthenticated())) {
-    console.log('sign')
     // err 1. redirect to signin page if not authenticated
     next(`/auth/signin?${new URLSearchParams(to.query as any).toString()}`)
   } else {
-    console.log('sign2')
     next()
   }
 })
