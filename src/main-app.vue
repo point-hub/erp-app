@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BaseToast, useDarkMode, useScreenSize } from '@point-hub/papp'
+import { useDarkMode, useScreenSize } from '@point-hub/papp'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterView } from 'vue-router'
 
@@ -23,7 +23,7 @@ onBeforeUnmount(() => {})
 
 <template>
   <RouterView />
-  <component :is="BaseToast" ref="toastRef" />
+  <base-toast ref="toastRef" />
 </template>
 
 <style scoped></style>
