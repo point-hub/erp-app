@@ -17,11 +17,11 @@ const menus = [
     path: '/master/customers',
     icon: 'i-far-users'
   },
-  {
-    name: 'Roles',
-    path: '/master/roles',
-    icon: 'i-far-id-badge'
-  },
+  // {
+  //   name: 'Roles',
+  //   path: '/master/roles',
+  //   icon: 'i-far-id-badge'
+  // },
   {
     name: 'Branches',
     path: '/master/branches',
