@@ -19,20 +19,17 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/warehouses/${route.params.id}`)).data
+  const response = (await axios.get(`/v1/supplier-groups/${route.params.id}`)).data
   formId.value = response._id
-  form.data.branch_id = response.branch._id
-  form.data.branch = response.branch
-  form.data.code = response.code
   form.data.name = response.name
 })
 
 const onUpdate = async () => {
   try {
-    const response = await axios.patch(`/v1/warehouses/${route.params.id}`, form.data)
+    const response = await axios.patch(`/v1/supplier-groups/${route.params.id}`, form.data)
     if (response.status === 200) {
       toastRef.toast('Update success', { list: [], color: 'success' })
-      router.push('/master/warehouses')
+      router.push('/master/supplier-groups')
     }
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -57,12 +54,7 @@ const onUpdate = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form
-      :form-id="route.params.id.toString()"
-      v-model:branch_id="form.data.branch_id"
-      v-model:code="form.data.code"
-      v-model:name="form.data.name"
-    />
+    <card-form :form-id="route.params.id.toString()" v-model:name="form.data.name" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">

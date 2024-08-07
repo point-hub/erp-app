@@ -50,8 +50,6 @@ onMounted(async () => {})
 <template>
   <base-card>
     <template #header>Warehouses</template>
-    {{ branch_id }}
-    {{ selected }}
 
     <div class="flex flex-col gap-4 mt-5">
       <base-autocomplete

@@ -23,6 +23,7 @@ import masterItemRoutes from '@/pages/master/items/routes'
 import masterRoleRoutes from '@/pages/master/roles/routes'
 import masterRoutes from '@/pages/master/routes'
 import masterSettingJournalRoutes from '@/pages/master/setting-journals/routes'
+import masterSupplierGroupRoutes from '@/pages/master/supplier-groups/routes'
 import masterSupplierRoutes from '@/pages/master/suppliers/routes'
 import masterUserRoutes from '@/pages/master/users/routes'
 import masterWarehouseRoutes from '@/pages/master/warehouses/routes'
@@ -72,6 +73,7 @@ const router = createRouter({
         masterBranchRoutes,
         masterWarehouseRoutes,
         masterCustomerRoutes,
+        masterSupplierGroupRoutes,
         masterSupplierRoutes,
         masterAllocationRoutes,
         masterItemRoutes,
@@ -130,7 +132,6 @@ const router = createRouter({
 
 const isAuthenticated = async () => {
   if (VueCookie.get('POINTHUB_ACCESS_TOKEN')) {
-    console.log('true')
     return true
   }
 

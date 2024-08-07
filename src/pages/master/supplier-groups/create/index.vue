@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { AxiosError } from 'axios'
-import { onMounted, reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
@@ -10,29 +10,25 @@ import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
 
-const route = useRoute()
 const router = useRouter()
 const { toastRef } = useToastStore()
-
 const form = reactive(useForm())
 
-const formId = ref()
+const showApiKeyModal = ref(false)
+const toggleApiKeyModal = (value: boolean) => {
+  let newValue = !showApiKeyModal.value
+  if (value === true) newValue = true
+  if (value === false) newValue = false
+  showApiKeyModal.value = newValue
+}
 
-onMounted(async () => {
-  const response = (await axios.get(`/v1/warehouses/${route.params.id}`)).data
-  formId.value = response._id
-  form.data.branch_id = response.branch._id
-  form.data.branch = response.branch
-  form.data.code = response.code
-  form.data.name = response.name
-})
-
-const onUpdate = async () => {
+const onSave = async () => {
   try {
-    const response = await axios.patch(`/v1/warehouses/${route.params.id}`, form.data)
-    if (response.status === 200) {
-      toastRef.toast('Update success', { list: [], color: 'success' })
-      router.push('/master/warehouses')
+    const response = await axios.post('/v1/supplier-groups', form.data)
+    if (response.status === 201) {
+      toastRef.toast('Create success', { lists: [], color: 'success' })
+      toggleApiKeyModal(true)
+      router.push('/master/supplier-groups')
     }
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -57,17 +53,14 @@ const onUpdate = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form
-      :form-id="route.params.id.toString()"
-      v-model:branch_id="form.data.branch_id"
-      v-model:code="form.data.code"
-      v-model:name="form.data.name"
-    />
+    <card-form v-model:name="form.data.name" :errors="form.errors" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">
-        <base-button color="primary" @click="onUpdate()">Update</base-button>
+        <base-button color="primary" @click="onSave()">Save</base-button>
       </div>
     </base-card>
   </div>
 </template>
+
+<style scoped lang="postcss"></style>
