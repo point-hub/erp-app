@@ -31,6 +31,21 @@ const menus = [
     name: 'Warehouses',
     path: '/master/customers',
     icon: 'i-far-warehouse'
+  },
+  {
+    name: 'Allocation Groups',
+    path: '/master/allocation-groups',
+    icon: 'i-far-files'
+  },
+  {
+    name: 'Supplier Groups',
+    path: '/master/supplier-groups',
+    icon: 'i-far-files'
+  },
+  {
+    name: 'Customer Groups',
+    path: '/master/customer-groups',
+    icon: 'i-far-files'
   }
   // {
   //   name: 'Allocations',
