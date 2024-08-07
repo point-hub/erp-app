@@ -121,7 +121,7 @@ const openMenu = (warehouse: IWarehouse, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: warehouse._id,
-    name: warehouse.name
+    name: `[${warehouse.code}] ${warehouse.name}`
   })
 }
 const onDelete = async () => {
