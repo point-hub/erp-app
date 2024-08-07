@@ -43,11 +43,11 @@ const onDelete = async () => {
     return
   }
   // start api call
-  const response = await axios.delete(`/v1/branches/${id.value}`)
+  const response = await axios.delete(`/v1/warehouses/${id.value}`)
   if (response.status === 200) {
     emit('deleted')
     password.value = ''
-    toastRef.toast(`Delete Branch "${name.value}" success`)
+    toastRef.toast(`Delete Warehouse "${name.value}" success`)
     toggleModal(false)
   }
   // stop loading state
@@ -66,9 +66,9 @@ defineExpose({
 <template>
   <base-modal :is-open="showModal" @on-close="toggleModal(false)">
     <div class="max-h-90vh overflow-auto p-4">
-      <h2 class="py-4 text-2xl font-bold">Delete Branch</h2>
+      <h2 class="py-4 text-2xl font-bold">Delete Warehouse</h2>
       <div class="space-y-8">
-        <p>Are you sure you want to delete Branch "{{ name }}"?</p>
+        <p>Are you sure you want to delete Warehouse "{{ name }}"?</p>
         <base-input
           type="password"
           v-model="password"

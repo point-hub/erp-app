@@ -13,8 +13,8 @@ export const apps: IApps[] = [
         submenu: [
           { name: 'Users', path: '/master/users' },
           { name: 'Role', path: '/master/roles' },
-          { name: 'Branches', path: '/master/branches' }
-          // { name: 'Warehouses', path: '/master/warehouses' },
+          { name: 'Branches', path: '/master/branches' },
+          { name: 'Warehouses', path: '/master/warehouses' }
           // { name: 'Allocations', path: '/master/allocations' },
           // { name: 'Items', path: '/master/items' },
           // { name: 'Customers', path: '/master/customers' },

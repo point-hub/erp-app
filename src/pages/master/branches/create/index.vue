@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AxiosError } from 'axios'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import axios from '@/axios'
@@ -21,6 +21,22 @@ const toggleApiKeyModal = (value: boolean) => {
   if (value === false) newValue = false
   showApiKeyModal.value = newValue
 }
+
+const counter = ref(0)
+onMounted(async () => {
+  const response = await axios.get('/v1/counters', {
+    params: {
+      filter: {
+        name: 'branch-code'
+      }
+    }
+  })
+
+  if (response.status === 200) {
+    counter.value += Number(response.data.data[0].count) + 1
+    form.data.code = `BR${counter.value.toString().padStart(4, '0')}`
+  }
+})
 
 const onSave = async () => {
   try {
