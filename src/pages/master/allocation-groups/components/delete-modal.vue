@@ -38,12 +38,26 @@ const onDelete = async () => {
   // start loading state
   loadingState.value = true
   // password checking
-  if (password.value !== 'Admin123!') {
-    if (errors.value.length === 0) {
-      errors.value.push('Wrong Password')
+  try {
+    const response = await axios.post(`/v1/auth/verify-password`, {
+      password: password.value
+    })
+    console.log(response)
+    if (response.data.verified === false) {
+      if (errors.value.length === 0) {
+        errors.value.push('Wrong Password')
+      }
+      loadingState.value = false
+      return
     }
-    loadingState.value = false
-    return
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      if (errors.value.length === 0) {
+        errors.value.push('Wrong Password')
+      }
+      loadingState.value = false
+      return
+    }
   }
   // start api call
   try {
