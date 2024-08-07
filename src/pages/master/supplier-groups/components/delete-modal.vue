@@ -47,13 +47,13 @@ const onDelete = async () => {
   }
   // start api call
   try {
-    const response = await axios.post(`/v1/warehouses/${id.value}/delete`, {
+    const response = await axios.post(`/v1/supplier-groups/${id.value}/delete`, {
       reason: reason.value
     })
     if (response.status === 200) {
       emit('deleted')
       password.value = ''
-      toastRef.toast(`Delete Allocation Group "${name.value}" success`, {
+      toastRef.toast(`Delete Supplier Group "${name.value}" success`, {
         lists: [],
         color: 'success'
       })
@@ -92,13 +92,13 @@ defineExpose({
 <template>
   <base-modal :is-open="showModal" @on-close="toggleModal(false)">
     <div class="max-h-90vh overflow-auto p-4">
-      <h2 class="py-4 text-2xl font-bold">Delete Allocation Group</h2>
+      <h2 class="py-4 text-2xl font-bold">Delete Supplier Group</h2>
       <div class="space-y-8">
         <p>
           Please enter your reason and password to protect you from accidentally deleting your data
         </p>
         <div class="flex flex-col">
-          <span class="font-semibold">Allocation Group</span>
+          <span class="font-semibold">Supplier Group</span>
           <span>{{ name }}</span>
         </div>
         <base-textarea

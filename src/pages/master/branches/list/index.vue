@@ -114,7 +114,7 @@ const openMenu = (branch: IBranch, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: branch._id,
-    name: branch.name
+    name: `[${branch.code}] ${branch.name}`
   })
 }
 const onDelete = async () => {

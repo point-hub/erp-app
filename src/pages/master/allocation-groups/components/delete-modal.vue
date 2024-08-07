@@ -47,7 +47,7 @@ const onDelete = async () => {
   }
   // start api call
   try {
-    const response = await axios.post(`/v1/warehouses/${id.value}/delete`, {
+    const response = await axios.post(`/v1/allocation-groups/${id.value}/delete`, {
       reason: reason.value
     })
     if (response.status === 200) {
