@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { isDate } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
-import { formatDate } from 'date-fns'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -22,14 +20,12 @@ interface IWarehouse {
   }
   code: string
   name: string
-  created_date: string
 }
 const searchAll = ref('')
 const search = ref({
-  branch: {},
+  branch: '',
   code: '',
-  name: '',
-  createdDate: ''
+  name: ''
 })
 const isLoading = ref(false)
 
@@ -88,16 +84,13 @@ const updateData = async () => {
 }
 
 const getWarehouses = async () => {
-  const date = search.value.createdDate.split('-')
   const response = await axios.get('/v1/warehouses', {
     params: {
       filter: {
         search: searchAll.value,
         code: search.value.code,
         name: search.value.name,
-        created_date: isDate(`${date[2]}-${date[1]}-${date[0]}`)
-          ? new Date(`${date[2]}-${date[1]}-${date[0]} 00:00:00`)
-          : ''
+        branch: search.value.branch
       },
       page: pagination.value.page
     }
@@ -157,7 +150,9 @@ const onDelete = async () => {
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
-              <th></th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.branch" placeholder="Search" border="none" />
+              </th>
             </tr>
           </thead>
           <tbody>
