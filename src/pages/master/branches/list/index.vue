@@ -18,12 +18,16 @@ interface IBranch {
   _id: string
   code: string
   name: string
+  address: string
+  phone: string
   created_date: string
 }
 const searchAll = ref('')
 const search = ref({
   code: '',
   name: '',
+  address: '',
+  phone: '',
   createdDate: ''
 })
 const isLoading = ref(false)
@@ -90,6 +94,8 @@ const getBranches = async () => {
         search: searchAll.value,
         code: search.value.code,
         name: search.value.name,
+        address: search.value.address,
+        phone: search.value.phone,
         created_date: isDate(`${date[2]}-${date[1]}-${date[0]}`)
           ? new Date(`${date[2]}-${date[1]}-${date[0]} 00:00:00`)
           : ''
@@ -142,6 +148,8 @@ const onDelete = async () => {
               <th class="w-1"></th>
               <th>Code</th>
               <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
               <th>Created Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
@@ -151,6 +159,12 @@ const onDelete = async () => {
               </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.address" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.phone" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
                 <base-datepicker v-model="search.createdDate" border="none" />
@@ -205,9 +219,9 @@ const onDelete = async () => {
                     {{ branch.code }}
                   </router-link>
                 </td>
-                <td>
-                  {{ branch.name }}
-                </td>
+                <td>{{ branch.name }}</td>
+                <td>{{ branch.address }}</td>
+                <td>{{ branch.phone }}</td>
                 <td>{{ formatDate(new Date(branch.created_date), 'dd-MM-yyyy') }}</td>
               </tr>
             </template>

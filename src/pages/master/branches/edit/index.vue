@@ -23,6 +23,8 @@ onMounted(async () => {
   formId.value = response._id
   form.data.code = response.code
   form.data.name = response.name
+  form.data.address = response.address
+  form.data.phone = response.phone
 })
 
 const onUpdate = async () => {
@@ -59,6 +61,8 @@ const onUpdate = async () => {
       :form-id="route.params.id.toString()"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
+      v-model:address="form.data.address"
+      v-model:phone="form.data.phone"
     />
 
     <base-card class="py-4!">
