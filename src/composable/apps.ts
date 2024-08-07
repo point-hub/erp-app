@@ -16,13 +16,13 @@ export const apps: IApps[] = [
           { name: 'Branches', path: '/master/branches' },
           { name: 'Warehouses', path: '/master/warehouses' },
           { name: 'Allocation Groups', path: '/master/allocation-groups' },
+          { name: 'Allocations', path: '/master/allocations' },
           { name: 'Supplier Groups', path: '/master/supplier-groups' },
+          { name: 'Suppliers', path: '/master/suppliers' },
           { name: 'Customer Groups', path: '/master/customer-groups' },
           { name: 'Item Categories', path: '/master/item-categories' }
-          // { name: 'Allocations', path: '/master/allocations' },
           // { name: 'Items', path: '/master/items' },
           // { name: 'Customers', path: '/master/customers' },
-          // { name: 'Suppliers', path: '/master/suppliers' },
           // { name: 'Chart of Accounts', path: '/master/chart-of-accounts' },
           // { name: 'Setting Journals', path: '/master/setting-journals' }
         ]

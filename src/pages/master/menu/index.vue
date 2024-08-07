@@ -38,9 +38,19 @@ const menus = [
     icon: 'i-far-files'
   },
   {
+    name: 'Allocations',
+    path: '/master/customers',
+    icon: 'i-far-file'
+  },
+  {
     name: 'Supplier Groups',
     path: '/master/supplier-groups',
     icon: 'i-far-files'
+  },
+  {
+    name: 'Suppliers',
+    path: '/master/suppliers',
+    icon: 'i-far-user-group-simple'
   },
   {
     name: 'Customer Groups',
@@ -53,11 +63,6 @@ const menus = [
     icon: 'i-far-files'
   }
   // {
-  //   name: 'Allocations',
-  //   path: '/master/customers',
-  //   icon: 'i-far-file'
-  // },
-  // {
   //   name: 'Items',
   //   path: '/master/customers',
   //   icon: 'i-far-boxes-stacked'
@@ -67,11 +72,6 @@ const menus = [
   //   path: '/master/customers',
   //   icon: 'i-far-user-group-crown'
   // },
-  // {
-  //   name: 'Suppliers',
-  //   path: '/master/suppliers',
-  //   icon: 'i-far-user-group-simple'
-  // }
 ]
 </script>
 
