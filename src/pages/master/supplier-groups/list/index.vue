@@ -108,8 +108,7 @@ const openMenu = (supplierGroup: ISupplierGroup, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: supplierGroup._id,
-    code: supplierGroup.code,
-    name: supplierGroup.name
+    name: `[${supplierGroup.code}] ${supplierGroup.name}`
   })
 }
 const onDelete = async () => {

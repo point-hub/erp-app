@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AxiosError } from 'axios'
 import { ref } from 'vue'
 
 import axios from '@/axios'
@@ -8,6 +9,7 @@ const { toastRef } = useToastStore()
 
 const password = ref()
 const errors = ref<string[]>([])
+const reasonErrors = ref<string[]>([])
 const id = defineModel('id')
 const name = defineModel('name')
 const emit = defineEmits(['deleted'])
@@ -28,6 +30,7 @@ const toggleModal = (state?: boolean, data?: IData) => {
   showModal.value = newValue
 }
 
+const reason = ref()
 const loadingState = ref(false)
 const onDelete = async () => {
   // prevent calling twice use loading state
@@ -43,13 +46,36 @@ const onDelete = async () => {
     return
   }
   // start api call
-  const response = await axios.delete(`/v1/customer-groups/${id.value}`)
-  if (response.status === 200) {
-    emit('deleted')
-    password.value = ''
-    toastRef.toast(`Delete Customer Group "${name.value}" success`)
-    toggleModal(false)
+  try {
+    const response = await axios.post(`/v1/warehouses/${id.value}/delete`, {
+      reason: reason.value
+    })
+    if (response.status === 200) {
+      emit('deleted')
+      password.value = ''
+      toastRef.toast(`Delete Allocation Group "${name.value}" success`, {
+        lists: [],
+        color: 'success'
+      })
+      toggleModal(false)
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      var listErrors: string[] = []
+      const formErrors = error?.response?.data?.errors
+      if (formErrors) {
+        for (const key in formErrors) {
+          reasonErrors.value = formErrors[key]
+          listErrors.push(formErrors[key])
+        }
+      }
+      toastRef.toast(error.response?.data.message, {
+        lists: listErrors.flat(),
+        color: 'danger'
+      })
+    }
   }
+
   // stop loading state
   loadingState.value = false
 }
@@ -66,13 +92,27 @@ defineExpose({
 <template>
   <base-modal :is-open="showModal" @on-close="toggleModal(false)">
     <div class="max-h-90vh overflow-auto p-4">
-      <h2 class="py-4 text-2xl font-bold">Delete Customer Group</h2>
+      <h2 class="py-4 text-2xl font-bold">Delete Allocation Group</h2>
       <div class="space-y-8">
-        <p>Are you sure you want to delete Customer Group "{{ name }}"?</p>
+        <p>
+          Please enter your reason and password to protect you from accidentally deleting your data
+        </p>
+        <div class="flex flex-col">
+          <span class="font-semibold">Allocation Group</span>
+          <span>{{ name }}</span>
+        </div>
+        <base-textarea
+          required
+          label="Reason to delete"
+          v-model="reason"
+          layout="vertical"
+          :errors="reasonErrors"
+          @keyup="reasonErrors = []"
+        />
         <base-input
           type="password"
           v-model="password"
-          label="Please enter your password to confirm this action"
+          label="Password"
           :errors="errors"
           @keyup="errors = []"
         />
