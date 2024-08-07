@@ -28,7 +28,7 @@ const onUpdate = async () => {
   try {
     const response = await axios.patch(`/v1/supplier-groups/${route.params.id}`, form.data)
     if (response.status === 200) {
-      toastRef.toast('Update success', { list: [], color: 'success' })
+      toastRef.toast('Update success', { lists: [], color: 'success' })
       router.push('/master/supplier-groups')
     }
   } catch (error) {

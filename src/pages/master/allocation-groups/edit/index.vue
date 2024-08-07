@@ -21,6 +21,7 @@ const formId = ref()
 onMounted(async () => {
   const response = (await axios.get(`/v1/allocation-groups/${route.params.id}`)).data
   formId.value = response._id
+  form.data.code = response.code
   form.data.name = response.name
 })
 
@@ -28,7 +29,7 @@ const onUpdate = async () => {
   try {
     const response = await axios.patch(`/v1/allocation-groups/${route.params.id}`, form.data)
     if (response.status === 200) {
-      toastRef.toast('Update success', { list: [], color: 'success' })
+      toastRef.toast('Update success', { lists: [], color: 'success' })
       router.push('/master/allocation-groups')
     }
   } catch (error) {
@@ -54,7 +55,11 @@ const onUpdate = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form :form-id="route.params.id.toString()" v-model:name="form.data.name" />
+    <card-form
+      :form-id="route.params.id.toString()"
+      v-model:code="form.data.code"
+      v-model:name="form.data.name"
+    />
 
     <base-card class="py-4!">
       <div class="flex gap-2">
