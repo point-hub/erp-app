@@ -1,30 +1,42 @@
 import { ref, watch } from 'vue'
 
-interface IForm {
+export interface IForm {
   [key: string]: any
+  role_id: string
+  code: string
+  name: string
   username: string
+  email: string
   password: string
-  rememberMe: boolean
 }
 
-interface IFormError {
+export interface IFormError {
   [key: string]: string[]
+  role_id: string[]
+  code: string[]
+  name: string[]
   username: string[]
+  email: string[]
   password: string[]
-  rememberMe: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
-    username: 'martien',
-    password: 'Admin123!',
-    rememberMe: false
+    role_id: '',
+    code: '',
+    name: '',
+    username: '',
+    email: '',
+    password: ''
   }
 
   const defaultFormError: IFormError = {
+    role_id: [],
+    code: [],
+    name: [],
     username: [],
-    password: [],
-    rememberMe: []
+    email: [],
+    password: []
   }
 
   const data = ref<IForm>(defaultForm)

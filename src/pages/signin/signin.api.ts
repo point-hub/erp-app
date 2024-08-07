@@ -13,6 +13,7 @@ export function useSigninApi() {
         password: data.password,
         remember_me: data.rememberMe
       })
+      console.log(response)
       toastRef.toast('Signin success', { color: 'success' })
       return response
     } catch (error) {

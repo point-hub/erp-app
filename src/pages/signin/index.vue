@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import VueCookie from '@point-hub/vue-cookie'
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useToastStore } from '@/stores/toast.store'
-
 import { useForm } from './form'
 import { usePassword } from './password'
+import { useSigninApi } from './signin.api'
 
-const { toastRef } = useToastStore()
 const form = reactive(useForm())
 const password = reactive(usePassword())
+const signinApi = useSigninApi()
 
 const router = useRouter()
 const usernameRef = ref()
@@ -20,12 +18,11 @@ onMounted(() => {
 })
 
 const onSubmit = async () => {
-  if (form.data.username == 'gmbtest' && form.data.password == 'Admin123!') {
+  const response = await signinApi.send(form.data, form.errors)
+  console.log('a', response)
+  if (response?.status === 200) {
+    console.log('b')
     router.push('/')
-    VueCookie.set('POINTHUB_ACCESS_TOKEN', 'ey72ho123jkhey82h1ou3ro1REQFJQWwe')
-    return
-  } else {
-    toastRef.toast('wrong username or password', { color: 'danger' })
   }
 }
 </script>

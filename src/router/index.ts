@@ -1,6 +1,7 @@
 import VueCookie from '@point-hub/vue-cookie'
 import { createRouter, createWebHistory } from 'vue-router'
 
+import axios from '@/axios'
 import financeBankPaymentRoutes from '@/pages/finance/bank-payments/routes'
 import financeBankReportRoutes from '@/pages/finance/bank-report/routes'
 import financeCashAdvanceRoutes from '@/pages/finance/cash-advances/routes'
@@ -135,11 +136,14 @@ const router = createRouter({
 })
 
 const isAuthenticated = async () => {
-  if (VueCookie.get('POINTHUB_ACCESS_TOKEN')) {
-    return true
+  try {
+    const response = await axios.post('/v1/auth/verify-token')
+    if (response.status === 200) {
+      return true
+    }
+  } catch (error) {
+    return false
   }
-
-  return false
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
