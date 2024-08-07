@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { isDate } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
-import { formatDate } from 'date-fns'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -18,13 +16,11 @@ interface IAllocationGroup {
   _id: string
   code: string
   name: string
-  created_date: string
 }
 const searchAll = ref('')
 const search = ref({
   code: '',
-  name: '',
-  createdDate: ''
+  name: ''
 })
 const isLoading = ref(false)
 
@@ -83,16 +79,12 @@ const updateData = async () => {
 }
 
 const getAllocationGroups = async () => {
-  const date = search.value.createdDate.split('-')
   const response = await axios.get('/v1/allocation-groups', {
     params: {
       filter: {
         search: searchAll.value,
         code: search.value.code,
-        name: search.value.name,
-        created_date: isDate(`${date[2]}-${date[1]}-${date[0]}`)
-          ? new Date(`${date[2]}-${date[1]}-${date[0]} 00:00:00`)
-          : ''
+        name: search.value.name
       },
       page: pagination.value.page
     }
@@ -143,7 +135,6 @@ const onDelete = async () => {
               <th class="w-1"></th>
               <th>Code</th>
               <th>Name</th>
-              <th>Created Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
@@ -153,15 +144,11 @@ const onDelete = async () => {
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
-              <th class="basic-table-head">
-                <base-datepicker v-model="search.createdDate" border="none" />
-              </th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="isLoading">
-              <td colspan="4">
+              <td colspan="3">
                 <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
                   <base-spinner color="primary" size="xs" /> <span>Loading</span>
                 </p>
@@ -210,7 +197,6 @@ const onDelete = async () => {
                   </router-link>
                 </td>
                 <td>{{ allocationGroup.name }}</td>
-                <td>{{ formatDate(new Date(allocationGroup.created_date), 'dd-MM-yyyy') }}</td>
               </tr>
             </template>
           </tbody>

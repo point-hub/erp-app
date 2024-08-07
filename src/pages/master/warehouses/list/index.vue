@@ -148,7 +148,6 @@ const onDelete = async () => {
               <th>Code</th>
               <th>Name</th>
               <th>Branch</th>
-              <th>Created Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
@@ -158,7 +157,6 @@ const onDelete = async () => {
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
-              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -209,9 +207,7 @@ const onDelete = async () => {
                     {{ warehouse.code }}
                   </router-link>
                 </td>
-                <td>
-                  {{ warehouse.name }}
-                </td>
+                <td>{{ warehouse.name }}</td>
                 <td>[{{ warehouse.branch.code }}] {{ warehouse.branch.name }}</td>
               </tr>
             </template>

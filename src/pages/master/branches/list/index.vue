@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { isDate } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -19,15 +18,13 @@ interface IBranch {
   name: string
   address: string
   phone: string
-  created_date: string
 }
 const searchAll = ref('')
 const search = ref({
   code: '',
   name: '',
   address: '',
-  phone: '',
-  createdDate: ''
+  phone: ''
 })
 const isLoading = ref(false)
 
@@ -86,7 +83,6 @@ const updateData = async () => {
 }
 
 const getBranches = async () => {
-  const date = search.value.createdDate.split('-')
   const response = await axios.get('/v1/branches', {
     params: {
       filter: {
@@ -94,10 +90,7 @@ const getBranches = async () => {
         code: search.value.code,
         name: search.value.name,
         address: search.value.address,
-        phone: search.value.phone,
-        created_date: isDate(`${date[2]}-${date[1]}-${date[0]}`)
-          ? new Date(`${date[2]}-${date[1]}-${date[0]} 00:00:00`)
-          : ''
+        phone: search.value.phone
       },
       page: pagination.value.page
     }
@@ -164,12 +157,11 @@ const onDelete = async () => {
               <th class="basic-table-head">
                 <base-input required v-model="search.phone" placeholder="Search" border="none" />
               </th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-if="isLoading">
-              <td colspan="4">
+              <td colspan="5">
                 <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
                   <base-spinner color="primary" size="xs" /> <span>Loading</span>
                 </p>
