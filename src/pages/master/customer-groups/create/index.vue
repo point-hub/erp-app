@@ -53,7 +53,7 @@ const onSave = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form v-model:name="form.data.name" :errors="form.errors" />
+    <card-form v-model:code="form.data.code" v-model:name="form.data.name" :errors="form.errors" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">

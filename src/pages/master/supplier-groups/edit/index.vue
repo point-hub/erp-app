@@ -21,6 +21,7 @@ const formId = ref()
 onMounted(async () => {
   const response = (await axios.get(`/v1/supplier-groups/${route.params.id}`)).data
   formId.value = response._id
+  form.data.code = response.code
   form.data.name = response.name
 })
 
@@ -54,7 +55,11 @@ const onUpdate = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form :form-id="route.params.id.toString()" v-model:name="form.data.name" />
+    <card-form
+      :form-id="route.params.id.toString()"
+      v-model:code="form.data.code"
+      v-model:name="form.data.name"
+    />
 
     <base-card class="py-4!">
       <div class="flex gap-2">

@@ -2,20 +2,24 @@ import { ref, watch } from 'vue'
 
 export interface IForm {
   [key: string]: any
+  code: string
   name: string
 }
 
 export interface IFormError {
   [key: string]: string[]
+  code: string[]
   name: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
+    code: '',
     name: ''
   }
 
   const defaultFormError: IFormError = {
+    code: [],
     name: []
   }
 

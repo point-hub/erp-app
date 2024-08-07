@@ -20,6 +20,7 @@ const formId = ref()
 onMounted(async () => {
   const response = (await axios.get(`/v1/customer-groups/${route.params.id}`)).data
   formId.value = response._id
+  form.data.code = response.code
   form.data.name = response.name
 })
 
@@ -53,7 +54,11 @@ const onDeleted = async () => {
       </div>
     </base-card>
 
-    <card-form :form-id="route.params.id.toString()" v-model:name="form.data.name" />
+    <card-form
+      :form-id="route.params.id.toString()"
+      v-model:code="form.data.code"
+      v-model:name="form.data.name"
+    />
 
     <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>

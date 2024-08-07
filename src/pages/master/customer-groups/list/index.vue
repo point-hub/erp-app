@@ -16,11 +16,13 @@ const deleteModalRef = ref()
 
 interface ICustomerGroup {
   _id: string
+  code: string
   name: string
   created_date: string
 }
 const searchAll = ref('')
 const search = ref({
+  code: '',
   name: '',
   createdDate: ''
 })
@@ -86,6 +88,7 @@ const getCustomerGroups = async () => {
     params: {
       filter: {
         search: searchAll.value,
+        code: search.value.code,
         name: search.value.name,
         created_date: isDate(`${date[2]}-${date[1]}-${date[0]}`)
           ? new Date(`${date[2]}-${date[1]}-${date[0]} 00:00:00`)
@@ -113,6 +116,7 @@ const openMenu = (customerGroup: ICustomerGroup, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: customerGroup._id,
+    code: customerGroup.code,
     name: customerGroup.name
   })
 }
@@ -137,11 +141,15 @@ const onDelete = async () => {
           <thead>
             <tr>
               <th class="w-1"></th>
+              <th>Code</th>
               <th>Name</th>
               <th>Created Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.code" placeholder="Search" border="none" />
+              </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
@@ -198,9 +206,10 @@ const onDelete = async () => {
                     :to="`/master/customer-groups/${customerGroup._id}`"
                     class="text-blue"
                   >
-                    {{ customerGroup.name }}
+                    {{ customerGroup.code }}
                   </router-link>
                 </td>
+                <td>{{ customerGroup.name }}</td>
                 <td>{{ formatDate(new Date(customerGroup.created_date), 'dd-MM-yyyy') }}</td>
               </tr>
             </template>
