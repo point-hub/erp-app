@@ -15,9 +15,11 @@ import manufactureFormulasRoutes from '@/pages/manufacture/formulas/routes'
 import manufactureMachinesRoutes from '@/pages/manufacture/machines/routes'
 import manufactureProcessesRoutes from '@/pages/manufacture/processes/routes'
 import manufactureRoutes from '@/pages/manufacture/routes'
+import masterAllocationGroupRoutes from '@/pages/master/allocation-groups/routes'
 import masterAllocationRoutes from '@/pages/master/allocations/routes'
 import masterBranchRoutes from '@/pages/master/branches/routes'
 import masterChartOfAccountRoutes from '@/pages/master/chart-of-accounts/routes'
+import masterCustomerGroupRoutes from '@/pages/master/customer-groups/routes'
 import masterCustomerRoutes from '@/pages/master/customers/routes'
 import masterItemRoutes from '@/pages/master/items/routes'
 import masterRoleRoutes from '@/pages/master/roles/routes'
@@ -73,7 +75,9 @@ const router = createRouter({
         masterBranchRoutes,
         masterWarehouseRoutes,
         masterCustomerRoutes,
+        masterCustomerGroupRoutes,
         masterSupplierGroupRoutes,
+        masterAllocationGroupRoutes,
         masterSupplierRoutes,
         masterAllocationRoutes,
         masterItemRoutes,
