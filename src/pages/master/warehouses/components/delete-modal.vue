@@ -53,6 +53,7 @@ const onDelete = async () => {
     if (response.status === 200) {
       emit('deleted')
       password.value = ''
+      reason.value = ''
       toastRef.toast(`Delete Warehouse "${name.value}" success`, { lists: [], color: 'success' })
       toggleModal(false)
     }
