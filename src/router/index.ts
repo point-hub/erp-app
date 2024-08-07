@@ -1,4 +1,3 @@
-import VueCookie from '@point-hub/vue-cookie'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import axios from '@/axios'
