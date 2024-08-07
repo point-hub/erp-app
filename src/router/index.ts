@@ -21,6 +21,7 @@ import masterBranchRoutes from '@/pages/master/branches/routes'
 import masterChartOfAccountRoutes from '@/pages/master/chart-of-accounts/routes'
 import masterCustomerGroupRoutes from '@/pages/master/customer-groups/routes'
 import masterCustomerRoutes from '@/pages/master/customers/routes'
+import masterItemCategoryRoutes from '@/pages/master/item-categories/routes'
 import masterItemRoutes from '@/pages/master/items/routes'
 import masterRoleRoutes from '@/pages/master/roles/routes'
 import masterRoutes from '@/pages/master/routes'
@@ -80,6 +81,7 @@ const router = createRouter({
         masterAllocationGroupRoutes,
         masterSupplierRoutes,
         masterAllocationRoutes,
+        masterItemCategoryRoutes,
         masterItemRoutes,
         // purchasing routes
         purchasingRoutes,

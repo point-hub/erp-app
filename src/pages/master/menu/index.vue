@@ -46,6 +46,11 @@ const menus = [
     name: 'Customer Groups',
     path: '/master/customer-groups',
     icon: 'i-far-files'
+  },
+  {
+    name: 'Item Categories',
+    path: '/master/item-categories',
+    icon: 'i-far-files'
   }
   // {
   //   name: 'Allocations',

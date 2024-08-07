@@ -17,7 +17,8 @@ export const apps: IApps[] = [
           { name: 'Warehouses', path: '/master/warehouses' },
           { name: 'Allocation Groups', path: '/master/allocation-groups' },
           { name: 'Supplier Groups', path: '/master/supplier-groups' },
-          { name: 'Customer Groups', path: '/master/customer-groups' }
+          { name: 'Customer Groups', path: '/master/customer-groups' },
+          { name: 'Item Categories', path: '/master/item-categories' }
           // { name: 'Allocations', path: '/master/allocations' },
           // { name: 'Items', path: '/master/items' },
           // { name: 'Customers', path: '/master/customers' },
