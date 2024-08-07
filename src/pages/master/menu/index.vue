@@ -14,7 +14,7 @@ const breadcrumbs = [
 const menus = [
   {
     name: 'Users',
-    path: '/master/customers',
+    path: '/master/users',
     icon: 'i-far-users'
   },
   {
@@ -29,7 +29,7 @@ const menus = [
   },
   {
     name: 'Warehouses',
-    path: '/master/customers',
+    path: '/master/warehouses',
     icon: 'i-far-warehouse'
   },
   {
