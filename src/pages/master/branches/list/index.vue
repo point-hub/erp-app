@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { isDate } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
-import { formatDate } from 'date-fns'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -150,7 +149,6 @@ const onDelete = async () => {
               <th>Name</th>
               <th>Address</th>
               <th>Phone</th>
-              <th>Created Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
@@ -165,9 +163,6 @@ const onDelete = async () => {
               </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.phone" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-datepicker v-model="search.createdDate" border="none" />
               </th>
               <th></th>
             </tr>
@@ -222,7 +217,6 @@ const onDelete = async () => {
                 <td>{{ branch.name }}</td>
                 <td>{{ branch.address }}</td>
                 <td>{{ branch.phone }}</td>
-                <td>{{ formatDate(new Date(branch.created_date), 'dd-MM-yyyy') }}</td>
               </tr>
             </template>
           </tbody>

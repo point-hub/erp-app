@@ -159,9 +159,6 @@ const onDelete = async () => {
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
               <th></th>
-              <th class="basic-table-head">
-                <base-datepicker v-model="search.createdDate" border="none" />
-              </th>
               <th></th>
             </tr>
           </thead>
@@ -216,7 +213,6 @@ const onDelete = async () => {
                   {{ warehouse.name }}
                 </td>
                 <td>[{{ warehouse.branch.code }}] {{ warehouse.branch.name }}</td>
-                <td>{{ formatDate(new Date(warehouse.created_date), 'dd-MM-yyyy') }}</td>
               </tr>
             </template>
           </tbody>
