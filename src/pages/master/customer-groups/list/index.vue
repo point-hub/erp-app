@@ -135,7 +135,6 @@ const onDelete = async () => {
               <th class="w-1"></th>
               <th>Code</th>
               <th>Name</th>
-              <th>Created Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>

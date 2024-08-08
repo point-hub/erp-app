@@ -39,7 +39,7 @@ const menus = [
   },
   {
     name: 'Allocations',
-    path: '/master/customers',
+    path: '/master/allocations',
     icon: 'i-far-file'
   },
   {
@@ -58,6 +58,11 @@ const menus = [
     icon: 'i-far-files'
   },
   {
+    name: 'Customers',
+    path: '/master/customers',
+    icon: 'i-far-user-group-crown'
+  },
+  {
     name: 'Item Categories',
     path: '/master/item-categories',
     icon: 'i-far-files'
@@ -66,11 +71,6 @@ const menus = [
   //   name: 'Items',
   //   path: '/master/customers',
   //   icon: 'i-far-boxes-stacked'
-  // },
-  // {
-  //   name: 'Customers',
-  //   path: '/master/customers',
-  //   icon: 'i-far-user-group-crown'
   // },
 ]
 </script>

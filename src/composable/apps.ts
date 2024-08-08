@@ -20,9 +20,9 @@ export const apps: IApps[] = [
           { name: 'Supplier Groups', path: '/master/supplier-groups' },
           { name: 'Suppliers', path: '/master/suppliers' },
           { name: 'Customer Groups', path: '/master/customer-groups' },
+          { name: 'Customers', path: '/master/customers' },
           { name: 'Item Categories', path: '/master/item-categories' }
           // { name: 'Items', path: '/master/items' },
-          // { name: 'Customers', path: '/master/customers' },
           // { name: 'Chart of Accounts', path: '/master/chart-of-accounts' },
           // { name: 'Setting Journals', path: '/master/setting-journals' }
         ]

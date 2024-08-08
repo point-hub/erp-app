@@ -13,7 +13,7 @@ const props = defineProps<IProps>()
   <div class="flex flex-col gap-4">
     <app-breadcrumb :breadcrumbs="breadcrumbs" />
 
-    <div class="grid cols-1 sm:cols-2 lg:cols-3 xl:cols-4 gap-4">
+    <div class="grid cols-2 sm:cols-3 lg:cols-4 xl:cols-5 gap-4">
       <base-button size="none" v-for="menu in props.menus" :key="menu" class="w-full h-full">
         <router-link :to="menu.path" class="w-full h-full">
           <base-card class="p-4! h-full">
