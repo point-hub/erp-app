@@ -27,7 +27,7 @@ const onSave = async () => {
   try {
     const response = await axios.post('/v1/suppliers', form.data)
     if (response.status === 201) {
-      toastRef.toast('Create success', { lists: [], color: 'success' })
+      toastRef.toast('Create success', { color: 'success' })
       toggleApiKeyModal(true)
       router.push('/master/suppliers')
     }

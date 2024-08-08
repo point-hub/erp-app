@@ -69,7 +69,6 @@ const onDelete = async () => {
       password.value = ''
       reason.value = ''
       toastRef.toast(`Delete Customer Group "${name.value}" success`, {
-        lists: [],
         color: 'success'
       })
       toggleModal(false)
