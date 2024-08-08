@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
+import CardBank from './card-bank.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
@@ -73,6 +74,18 @@ onMounted(async () => {
       v-model:supplier_group_id="form.data.supplier_group_id"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
+      v-model:address="form.data.address"
+      v-model:phone="form.data.phone"
+      v-model:email="form.data.email"
+      v-model:notes="form.data.notes"
+      :errors="form.errors"
+    />
+
+    <card-bank
+      v-model:branch="form.data.bank_branch"
+      v-model:name="form.data.bank_name"
+      v-model:account_name="form.data.bank_account_name"
+      v-model:account_number="form.data.bank_account_number"
       :errors="form.errors"
     />
 

@@ -7,6 +7,10 @@ import type { IFormError } from './form'
 
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
+const address = defineModel<string>('address')
+const phone = defineModel<string>('phone')
+const email = defineModel<string>('email')
+const notes = defineModel<string>('notes')
 const supplier_group_id = defineModel<string>('supplier_group_id')
 const errors = defineModel<IFormError>('errors')
 
@@ -50,6 +54,10 @@ onMounted(async () => {
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
+      <base-input v-model="address" label="Address" :errors="errors?.address" />
+      <base-input v-model="phone" label="Phone" :errors="errors?.phone" />
+      <base-input v-model="email" label="Email" :errors="errors?.email" />
+      <base-input v-model="notes" label="Notes" :errors="errors?.notes" />
     </div>
   </base-card>
 </template>
