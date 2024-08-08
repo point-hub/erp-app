@@ -68,14 +68,15 @@ watchDebounced(
 
 // Section Pagination
 const updateData = async () => {
+  await getCustomerGroups()
   router.push({
     path: '/master/customer-groups',
     query: {
       search: searchAll.value,
-      page: pagination.value.page
+      page: pagination.value.page,
+      ...route.query
     }
   })
-  await getCustomerGroups()
 }
 
 const getCustomerGroups = async () => {

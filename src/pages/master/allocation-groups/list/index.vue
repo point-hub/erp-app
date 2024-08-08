@@ -68,14 +68,15 @@ watchDebounced(
 
 // Section Pagination
 const updateData = async () => {
+  await getAllocationGroups()
   router.push({
     path: '/master/allocation-groups',
     query: {
       search: searchAll.value,
-      page: pagination.value.page
+      page: pagination.value.page,
+      ...route.query
     }
   })
-  await getAllocationGroups()
 }
 
 const getAllocationGroups = async () => {

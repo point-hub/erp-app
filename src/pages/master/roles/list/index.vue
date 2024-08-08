@@ -68,14 +68,15 @@ watchDebounced(
 
 // Section Pagination
 const updateData = async () => {
+  await getRoles()
   router.push({
     path: '/master/roles',
     query: {
       search: searchAll.value,
-      page: pagination.value.page
+      page: pagination.value.page,
+      ...route.query
     }
   })
-  await getRoles()
 }
 
 const getRoles = async () => {
