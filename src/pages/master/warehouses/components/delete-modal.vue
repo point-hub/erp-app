@@ -49,7 +49,7 @@ const onDelete = async () => {
   if (!reason.value) {
     errors.value.reason = ['The reason field is required.']
   }
-  if (errors.value?.password || errors.value?.reason) {
+  if (!errors.value?.password || !errors.value?.reason) {
     loadingState.value = false
     return
   }
