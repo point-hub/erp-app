@@ -5,7 +5,7 @@ import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
-const page = 1
+const page = ref(1)
 const searchAll = ref('')
 const isLoading = ref(false)
 
