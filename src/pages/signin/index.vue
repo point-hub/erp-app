@@ -19,9 +19,7 @@ onMounted(() => {
 
 const onSubmit = async () => {
   const response = await signinApi.send(form.data, form.errors)
-  console.log('a', response)
   if (response?.status === 200) {
-    console.log('b')
     router.push('/')
   }
 }

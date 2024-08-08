@@ -8,8 +8,13 @@ import { useToastStore } from '@/stores/toast.store'
 const { toastRef } = useToastStore()
 
 const password = ref()
-const errors = ref<string[]>([])
-const reasonErrors = ref<string[]>([])
+const errors = ref<{
+  password?: string[]
+  reason?: string[]
+}>({
+  password: [],
+  reason: []
+})
 const id = defineModel('id')
 const name = defineModel('name')
 const emit = defineEmits(['deleted'])
@@ -37,24 +42,29 @@ const onDelete = async () => {
   if (loadingState.value) return
   // start loading state
   loadingState.value = true
+  // frontend checking
+  if (!password.value) {
+    errors.value.password = ['The password field is required']
+  }
+  if (!reason.value) {
+    errors.value.reason = ['The reason field is required.']
+  }
+  if (errors.value?.password || errors.value?.reason) {
+    loadingState.value = false
+    return
+  }
   // password checking
   try {
     const response = await axios.post(`/v1/auth/verify-password`, {
       password: password.value
     })
-    console.log(response)
     if (response.data.verified === false) {
-      if (errors.value.length === 0) {
-        errors.value.push('Wrong Password')
-      }
+      errors.value.password = ['Wrong Password']
       loadingState.value = false
       return
     }
   } catch (error) {
     if (error instanceof AxiosError) {
-      if (errors.value.length === 0) {
-        errors.value.push('Wrong Password')
-      }
       loadingState.value = false
       return
     }
@@ -80,7 +90,7 @@ const onDelete = async () => {
       const formErrors = error?.response?.data?.errors
       if (formErrors) {
         for (const key in formErrors) {
-          reasonErrors.value = formErrors[key]
+          errors.value.reason = formErrors[key]
           listErrors.push(formErrors[key])
         }
       }
@@ -121,15 +131,15 @@ defineExpose({
           label="Reason to delete"
           v-model="reason"
           layout="vertical"
-          :errors="reasonErrors"
-          @keyup="reasonErrors = []"
+          :errors="errors.reason"
+          @keyup="errors.reason = []"
         />
         <base-input
           type="password"
           v-model="password"
           label="Password"
-          :errors="errors"
-          @keyup="errors = []"
+          :errors="errors.password"
+          @keyup="errors.password = []"
         />
         <div class="flex gap-2">
           <base-button color="danger" size="sm" @click="onDelete()" :disabled="loadingState">
