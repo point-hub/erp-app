@@ -33,6 +33,11 @@ const menus = [
     icon: 'i-far-warehouse'
   },
   {
+    name: 'Chart of Account',
+    path: '/master/chart-of-accounts',
+    icon: 'i-far-book'
+  },
+  {
     name: 'Allocation Groups',
     path: '/master/allocation-groups',
     icon: 'i-far-files'
@@ -40,7 +45,7 @@ const menus = [
   {
     name: 'Allocations',
     path: '/master/allocations',
-    icon: 'i-far-file'
+    icon: 'i-far-tags'
   },
   {
     name: 'Supplier Groups',
