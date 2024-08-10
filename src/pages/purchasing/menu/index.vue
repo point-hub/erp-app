@@ -15,7 +15,7 @@ const menus = [
   {
     name: 'Purchase Requests',
     path: '/purchasing/purchase-requests',
-    icon: 'i-far-file-pen'
+    icon: 'i-far-file-import'
   },
   {
     name: 'Purchase Orders',

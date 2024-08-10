@@ -40,12 +40,12 @@ const menus = [
   {
     name: 'Allocation Groups',
     path: '/master/allocation-groups',
-    icon: 'i-far-files'
+    icon: 'i-far-notes'
   },
   {
     name: 'Allocations',
     path: '/master/allocations',
-    icon: 'i-far-tags'
+    icon: 'i-far-note'
   },
   {
     name: 'Supplier Groups',
@@ -70,13 +70,13 @@ const menus = [
   {
     name: 'Item Categories',
     path: '/master/item-categories',
-    icon: 'i-far-files'
+    icon: 'i-far-tags'
+  },
+  {
+    name: 'Items',
+    path: '/master/items',
+    icon: 'i-far-boxes-stacked'
   }
-  // {
-  //   name: 'Items',
-  //   path: '/master/customers',
-  //   icon: 'i-far-boxes-stacked'
-  // },
 ]
 </script>
 

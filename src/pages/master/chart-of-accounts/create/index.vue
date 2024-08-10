@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AxiosError } from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import axios from '@/axios'
@@ -54,9 +54,12 @@ const onSave = async () => {
     <card-breadcrumbs />
 
     <card-form
-      v-model:branch_id="form.data.branch_id"
-      v-model:code="form.data.code"
+      v-model:type_id="form.data.type_id"
+      v-model:category_id="form.data.category_id"
+      v-model:number="form.data.number"
       v-model:name="form.data.name"
+      v-model:subledger="form.data.subledger"
+      v-model:increasing_in="form.data.increasing_in"
       :errors="form.errors"
     />
 

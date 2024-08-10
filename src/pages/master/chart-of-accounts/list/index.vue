@@ -182,7 +182,7 @@ const onDelete = async () => {
           </thead>
           <tbody>
             <tr v-if="isLoading">
-              <td colspan="4">
+              <td colspan="6">
                 <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
                   <base-spinner color="primary" size="xs" /> <span>Loading</span>
                 </p>

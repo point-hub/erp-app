@@ -144,7 +144,7 @@ watch(searchAll, () => {
         <base-table>
           <thead>
             <tr>
-              <th>Code</th>
+              <th class="w-30">Code</th>
               <th>Name</th>
               <th>Account</th>
             </tr>
