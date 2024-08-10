@@ -15,11 +15,17 @@ const deleteModalRef = ref()
 interface IChartOfAccount {
   _id: string
   type: {
-    code: string
+    _id: string
     name: string
   }
-  code: string
+  category: {
+    _id: string
+    name: string
+  }
+  number: string
   name: string
+  subledger: string
+  increasing_in: string
 }
 const searchAll = ref('')
 const search = ref({
@@ -27,6 +33,7 @@ const search = ref({
   category: '',
   number: '',
   name: '',
+  subledger: '',
   increasing_in: ''
 })
 const isLoading = ref(false)
@@ -91,9 +98,11 @@ const getChartOfAccounts = async () => {
     params: {
       filter: {
         search: searchAll.value,
-        code: search.value.code,
+        type: search.value.type,
+        category: search.value.category,
+        number: search.value.number,
         name: search.value.name,
-        type: search.value.type
+        subledger: search.value.subledger
       },
       page: pagination.value.page
     }
@@ -117,7 +126,7 @@ const openMenu = (chartOfAccount: IChartOfAccount, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: chartOfAccount._id,
-    name: `[${chartOfAccount.code}] ${chartOfAccount.name}`
+    name: `[${chartOfAccount.number}] ${chartOfAccount.name}`
   })
 }
 const onDelete = async () => {
@@ -141,11 +150,11 @@ const onDelete = async () => {
           <thead>
             <tr>
               <th class="w-1"></th>
-              <th>Type</th>
-              <th>Category</th>
-              <th>Number</th>
+              <th class="w-1">Type</th>
+              <th class="w-20%">Category</th>
+              <th class="w-1">Number</th>
               <th>Name</th>
-              <th>Increasing In</th>
+              <th class="w-1">Subledger</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
@@ -164,7 +173,7 @@ const onDelete = async () => {
               <th class="basic-table-head">
                 <base-input
                   required
-                  v-model="search.increasing_in"
+                  v-model="search.subledger"
                   placeholder="Search"
                   border="none"
                 />
@@ -213,16 +222,18 @@ const onDelete = async () => {
                     </template>
                   </base-popover>
                 </td>
+                <td>{{ chartOfAccount.type.name }}</td>
+                <td>{{ chartOfAccount.category.name }}</td>
                 <td>
                   <router-link
                     :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
                     class="text-blue"
                   >
-                    {{ chartOfAccount.code }}
+                    {{ chartOfAccount.number }}
                   </router-link>
                 </td>
                 <td>{{ chartOfAccount.name }}</td>
-                <td>[{{ chartOfAccount.type.code }}] {{ chartOfAccount.type.name }}</td>
+                <td>{{ chartOfAccount.subledger }}</td>
               </tr>
             </template>
           </tbody>
