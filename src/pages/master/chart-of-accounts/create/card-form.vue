@@ -62,6 +62,7 @@ const getAccountCategories = async (type_id: string) => {
 }
 
 watch(selectedType, async () => {
+  type_id.value = selectedType.value.id
   await getAccountCategories(selectedType.value.id)
 })
 
@@ -89,8 +90,15 @@ onMounted(async () => {
         :options="optionsCategory"
         :errors="errors?.category_id"
       />
-      <base-input required v-model="number" label="Code" :errors="errors?.number" />
+      <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
+      <base-input subledger v-model="subledger" label="Subledger" :errors="errors?.subledger" />
+      <base-input
+        increasing_in
+        v-model="increasing_in"
+        label="Increasing In"
+        :errors="errors?.increasing_in"
+      />
     </div>
   </base-card>
 </template>

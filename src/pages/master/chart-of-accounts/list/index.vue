@@ -6,27 +6,12 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from '@/axios'
 
 import DeleteModal from '../components/delete-modal.vue'
+import type { IChartOfAccount } from '../interface'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
 const route = useRoute()
 const router = useRouter()
 const deleteModalRef = ref()
-
-interface IChartOfAccount {
-  _id: string
-  type: {
-    _id: string
-    name: string
-  }
-  category: {
-    _id: string
-    name: string
-  }
-  number: string
-  name: string
-  subledger: string
-  increasing_in: string
-}
 const searchAll = ref('')
 const search = ref({
   type: '',
@@ -110,6 +95,7 @@ const getChartOfAccounts = async () => {
   chartOfAccounts.value = response.data.data
   pagination.value = response.data.pagination
 }
+
 const rowMenuRef = ref()
 const chartOfAccounts = ref<IChartOfAccount[]>()
 const pagination = ref({
@@ -150,8 +136,8 @@ const onDelete = async () => {
           <thead>
             <tr>
               <th class="w-1"></th>
-              <th class="w-1">Type</th>
-              <th class="w-20%">Category</th>
+              <th class="w-25">Type</th>
+              <th class="w-30">Category</th>
               <th class="w-1">Number</th>
               <th>Name</th>
               <th class="w-1">Subledger</th>
