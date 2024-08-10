@@ -43,7 +43,9 @@ const getAccountTypes = async () => {
 const getAccountCategories = async (type_id: string) => {
   const response = await axios.get('/v1/chart-of-account-categories', {
     params: {
-      type_id: type_id,
+      filter: {
+        type_id: `${type_id}`
+      },
       page: 1
     }
   })
@@ -59,9 +61,12 @@ const getAccountCategories = async (type_id: string) => {
   }
 }
 
+watch(selectedType, async () => {
+  await getAccountCategories(selectedType.value.id)
+})
+
 onMounted(async () => {
   await getAccountTypes()
-  await getAccountCategories()
 })
 </script>
 

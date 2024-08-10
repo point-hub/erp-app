@@ -141,6 +141,8 @@ const onDelete = async () => {
               <th class="w-1"></th>
               <th class="w-30">Code</th>
               <th>Name</th>
+              <th>Address</th>
+              <th>Phone</th>
               <th>Customer Group</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
@@ -150,6 +152,12 @@ const onDelete = async () => {
               </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.address" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.phone" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
                 <base-input
@@ -163,7 +171,7 @@ const onDelete = async () => {
           </thead>
           <tbody>
             <tr v-if="isLoading">
-              <td colspan="4">
+              <td colspan="6">
                 <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
                   <base-spinner color="primary" size="xs" /> <span>Loading</span>
                 </p>
@@ -209,6 +217,8 @@ const onDelete = async () => {
                   </router-link>
                 </td>
                 <td>{{ customer.name }}</td>
+                <td>{{ customer.address }}</td>
+                <td>{{ customer.phone }}</td>
                 <td>[{{ customer.customer_group.code }}] {{ customer.customer_group.name }}</td>
               </tr>
             </template>
