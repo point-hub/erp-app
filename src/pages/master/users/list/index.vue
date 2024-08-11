@@ -143,22 +143,18 @@ const onDelete = async () => {
           <thead>
             <tr>
               <th class="w-1"></th>
-              <th class="w-30">Code</th>
+              <th class="w-30">Username</th>
               <th>Name</th>
-              <th>Username</th>
               <th>Email</th>
               <th>Role</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
               <th class="basic-table-head">
-                <base-input required v-model="search.code" placeholder="Search" border="none" />
+                <base-input required v-model="search.username" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-input required v-model="search.username" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.email" placeholder="Search" border="none" />
@@ -208,11 +204,10 @@ const onDelete = async () => {
                 </td>
                 <td>
                   <router-link :to="`/master/users/${user._id}`" class="text-blue">
-                    {{ user.code }}
+                    {{ user.username }}
                   </router-link>
                 </td>
                 <td>{{ user.name }}</td>
-                <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>[{{ user.role.code }}] {{ user.role.name }}</td>
               </tr>

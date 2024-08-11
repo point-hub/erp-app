@@ -61,7 +61,6 @@ onMounted(async () => {})
         :options="options"
         :errors="errors?.role_id"
       />
-      <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input required v-model="username" label="Username" :errors="errors?.username" />
       <base-input required v-model="email" label="Email" :errors="errors?.email" />

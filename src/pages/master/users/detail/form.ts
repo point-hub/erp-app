@@ -3,7 +3,6 @@ import { ref, watch } from 'vue'
 export interface IForm {
   [key: string]: any
   role_id: string
-  code: string
   name: string
   username: string
   email: string
@@ -12,7 +11,6 @@ export interface IForm {
 export interface IFormError {
   [key: string]: string[]
   role_id: string[]
-  code: string[]
   name: string[]
   username: string[]
   email: string[]
@@ -21,7 +19,6 @@ export interface IFormError {
 export function useForm() {
   const defaultForm: IForm = {
     role_id: '',
-    code: '',
     name: '',
     username: '',
     email: ''
@@ -29,7 +26,6 @@ export function useForm() {
 
   const defaultFormError: IFormError = {
     role_id: [],
-    code: [],
     name: [],
     username: [],
     email: []

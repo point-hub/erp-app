@@ -5,7 +5,6 @@ import axios from '@/axios'
 
 import type { IFormError } from './form'
 
-const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const username = defineModel<string>('username')
 const email = defineModel<string>('email')
@@ -51,7 +50,6 @@ onMounted(async () => {
         :options="options"
         :errors="errors?.role_id"
       />
-      <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input required v-model="username" label="Username" :errors="errors?.username" />
       <base-input required v-model="email" label="Email" :errors="errors?.email" />

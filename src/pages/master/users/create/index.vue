@@ -71,7 +71,6 @@ onMounted(async () => {
 
     <card-form
       v-model:role_id="form.data.role_id"
-      v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:username="form.data.username"
       v-model:email="form.data.email"

@@ -8,6 +8,7 @@ import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
+import CardPermissions from './card-permissions.vue'
 import { useForm } from './form'
 
 const router = useRouter()
@@ -34,8 +35,12 @@ onMounted(async () => {
 
   if (response.status === 200) {
     counter.value += Number(response.data.data[0].count) + 1
-    form.data.code = `ROLE${counter.value.toString().padStart(4, '0')}`
+    form.data.code = `RL${counter.value.toString().padStart(4, '0')}`
   }
+
+  console.log('permissions')
+  const responsePermissions = (await axios.get(`/v1/permissions`)).data
+  form.data.permission = responsePermissions.data[0]
 })
 
 const onSave = async () => {
@@ -69,7 +74,11 @@ const onSave = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
+    {{ form.data }}
+
     <card-form v-model:code="form.data.code" v-model:name="form.data.name" :errors="form.errors" />
+
+    <card-permissions v-model:permission="form.data.permission" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">
