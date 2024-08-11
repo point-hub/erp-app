@@ -26,18 +26,18 @@ export const apps: IApps[] = [
           { name: 'Item Categories', path: '/master/item-categories' }
           // { name: 'Items', path: '/master/items' }
         ]
-      },
-      {
-        name: 'Purchasing',
-        submenu: [
-          // { name: 'Purchase Requests', path: '/purchasing/purchase-requests' }
-          // { name: 'Purchase Orders', path: '/purchasing/purchase-orders' },
-          // { name: 'Downpayments', path: '/purchasing/downpayments' },
-          // { name: 'Receive Orders', path: '/purchasing/receive-orders' },
-          // { name: 'Invoices', path: '/purchasing/invoices' },
-          // { name: 'Payment Orders', path: '/purchasing/payment-orders' }
-        ]
       }
+      // {
+      //   name: 'Purchasing',
+      //   submenu: [
+      //     // { name: 'Purchase Requests', path: '/purchasing/purchase-requests' }
+      //     // { name: 'Purchase Orders', path: '/purchasing/purchase-orders' },
+      //     // { name: 'Downpayments', path: '/purchasing/downpayments' },
+      //     // { name: 'Receive Orders', path: '/purchasing/receive-orders' },
+      //     // { name: 'Invoices', path: '/purchasing/invoices' },
+      //     // { name: 'Payment Orders', path: '/purchasing/payment-orders' }
+      //   ]
+      // }
       // {
       //   name: 'Sales',
       //   submenu: [

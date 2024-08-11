@@ -45,6 +45,7 @@ import salesPaymentCollectionRoutes from '@/pages/sales/payment-collections/rout
 import salesRoutes from '@/pages/sales/routes'
 import salesOrderRoutes from '@/pages/sales/sales-orders/routes'
 import salesQuotationRoutes from '@/pages/sales/sales-quotations/routes'
+import { useAuthStore } from '@/stores/auth.store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -138,8 +139,13 @@ const router = createRouter({
 
 const isAuthenticated = async () => {
   try {
+    const authStore = useAuthStore()
     const response = await axios.post('/v1/auth/verify-token')
     if (response.status === 200) {
+      authStore.update({
+        name: response.data.name,
+        permission: response.data.role.permission
+      })
       return true
     }
   } catch (error) {

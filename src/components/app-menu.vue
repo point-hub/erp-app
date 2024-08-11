@@ -3,18 +3,19 @@ import AppBreadcrumb from '@/components/app-breadcrumb.vue'
 
 interface IProps {
   breadcrumbs: { name: string; path?: string }[]
-  menus: { name: string; icon: string; path: string }[]
 }
+
+const menus = defineModel<{ name: string; icon: string; path: string }[]>('menus')
 
 const props = defineProps<IProps>()
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
-    <app-breadcrumb :breadcrumbs="breadcrumbs" />
+    <app-breadcrumb :breadcrumbs="props.breadcrumbs" />
 
     <div class="grid cols-2 sm:cols-3 lg:cols-4 xl:cols-5 gap-4">
-      <base-button size="none" v-for="menu in props.menus" :key="menu" class="w-full h-full">
+      <base-button size="none" v-for="menu in menus" :key="menu" class="w-full h-full">
         <router-link :to="menu.path" class="w-full h-full">
           <base-card class="p-4! h-full">
             <div class="flex flex-col gap-4">

@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios'
 
 import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/toast.store'
 
 const { toastRef } = useToastStore()
@@ -8,12 +9,17 @@ const { toastRef } = useToastStore()
 export function useSigninApi() {
   const send = async (data: any, errors: any) => {
     try {
+      const authStore = useAuthStore()
       const response = await axios.post('/v1/auth/signin', {
         username: data.username,
         password: data.password,
         remember_me: data.rememberMe
       })
-      console.log(response)
+
+      authStore.update({
+        name: response.data.name,
+        permission: response.data.role.permission
+      })
       toastRef.toast('Signin success', { color: 'success' })
       return response
     } catch (error) {

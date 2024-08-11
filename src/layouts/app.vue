@@ -12,6 +12,7 @@ import { useRoute } from 'vue-router'
 
 import AppHeader from '@/components/app-header.vue'
 import { apps } from '@/composable/apps'
+import { useAuthStore } from '@/stores/auth.store'
 
 import { version } from '../../package.json'
 
@@ -33,6 +34,7 @@ const onChooseApp = (path: string) => {
   }
 }
 
+const authStore = useAuthStore()
 onMounted(() => {
   for (const [index, app] of apps.entries()) {
     if (route.path.includes(app.path)) {
