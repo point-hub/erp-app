@@ -8,6 +8,7 @@ import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
+import CardPermissions from './card-permissions.vue'
 import { useForm } from './form'
 
 const route = useRoute()
@@ -23,6 +24,7 @@ onMounted(async () => {
   formId.value = response._id
   form.data.code = response.code
   form.data.name = response.name
+  form.data.permission = response.permission
 })
 
 const onUpdate = async () => {
@@ -60,6 +62,8 @@ const onUpdate = async () => {
       v-model:code="form.data.code"
       v-model:name="form.data.name"
     />
+
+    <card-permissions v-model:permission="form.data.permission" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">
