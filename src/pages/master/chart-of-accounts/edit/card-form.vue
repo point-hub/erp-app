@@ -5,46 +5,70 @@ import axios from '@/axios'
 
 import type { IFormError } from './form'
 
-const code = defineModel<string>('code')
+const type_id = defineModel<string>('type_id')
+const category_id = defineModel<string>('category_id')
+const number = defineModel<number>('number')
 const name = defineModel<string>('name')
-const branch_id = defineModel<string>('branch_id')
+const subledger = defineModel<string>('subledger')
+const increasing_in = defineModel<string>('increasing_in')
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref([])
+const optionsType = ref([])
+const selectedType = ref()
+const selectedCategory = ref()
+const optionsCategory = ref([])
 
-watch(selected, () => {
-  branch_id.value = selected.value.id ?? ''
+watch(selectedCategory, () => {
+  category_id.value = selectedCategory.value.id ?? ''
 })
 
-watch(branch_id, () => {
-  refetch()
+watch(selectedType, async () => {
+  type_id.value = selectedType.value.id
+  await getAccountCategories(selectedType.value.id)
 })
 
-const refetch = async () => {
-  const response = await axios.get('/v1/branches', {
+const getAccountTypes = async () => {
+  const response = await axios.get('/v1/chart-of-account-types', {
     params: {
       page: 1
     }
   })
-
   if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      if (branch_id.value === data._id) {
-        selected.value = {
-          id: data._id,
-          label: `[${data.code}] ${data.name}`
-        }
-      }
+    optionsType.value = response.data.data.map((data: { _id: string; name: string }) => {
       return {
         id: data._id,
-        label: `[${data.code}] ${data.name}`
+        label: `${data.name}`
       }
     })
+
+    selectedType.value = optionsType.value[0]
   }
 }
 
-onMounted(async () => {})
+const getAccountCategories = async (type_id: string) => {
+  const response = await axios.get('/v1/chart-of-account-categories', {
+    params: {
+      filter: {
+        type_id: `${type_id}`
+      },
+      page: 1
+    }
+  })
+  if (response.status === 200) {
+    optionsCategory.value = response.data.data.map((data: { _id: string; name: string }) => {
+      return {
+        id: data._id,
+        label: `${data.name}`
+      }
+    })
+
+    selectedCategory.value = optionsCategory.value[0]
+  }
+}
+
+onMounted(async () => {
+  await getAccountTypes()
+})
 </script>
 
 <template>
@@ -54,13 +78,22 @@ onMounted(async () => {})
     <div class="flex flex-col gap-4 mt-5">
       <base-autocomplete
         required
-        label="Branch"
-        v-model="selected"
-        :options="options"
-        :errors="errors?.branch_id"
+        label="Type"
+        v-model="selectedType"
+        :options="optionsType"
+        :errors="errors?.type_id"
       />
-      <base-input required v-model="code" label="Code" :errors="errors?.code" />
+      <base-autocomplete
+        required
+        label="Category"
+        v-model="selectedCategory"
+        :options="optionsCategory"
+        :errors="errors?.category_id"
+      />
+      <base-input required type="number" v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
+      <base-input v-model="subledger" label="Subledger" :errors="errors?.subledger" />
+      <base-input v-model="increasing_in" label="Increasing In" :errors="errors?.increasing_in" />
     </div>
   </base-card>
 </template>

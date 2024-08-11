@@ -21,10 +21,11 @@ const formId = ref()
 onMounted(async () => {
   const response = (await axios.get(`/v1/chart-of-accounts/${route.params.id}`)).data
   formId.value = response._id
-  form.data.branch_id = response.branch._id
-  form.data.branch = response.branch
-  form.data.code = response.code
+  form.data.type_id = response.type._id
+  form.data.category_id = response.category._id
+  form.data.number = response.number
   form.data.name = response.name
+  form.data.subledger = response.subledger
 })
 
 const onUpdate = async () => {
@@ -55,13 +56,16 @@ const onUpdate = async () => {
 
 <template>
   <div class="flex flex-col gap-4">
+    <pre><code>{{ form.data }}</code></pre>
     <card-breadcrumbs />
 
     <card-form
       :form-id="route.params.id.toString()"
-      v-model:branch_id="form.data.branch_id"
-      v-model:code="form.data.code"
+      v-model:type_id="form.data.type._id"
+      v-model:category_id="form.data.category._id"
+      v-model:number="form.data.number"
       v-model:name="form.data.name"
+      v-model:subledger="form.data.subledger"
     />
 
     <base-card class="py-4!">

@@ -89,7 +89,8 @@ const getChartOfAccounts = async () => {
         name: search.value.name,
         subledger: search.value.subledger
       },
-      page: pagination.value.page
+      page: pagination.value.page,
+      sort: 'number'
     }
   })
   chartOfAccounts.value = response.data.data
@@ -136,25 +137,25 @@ const onDelete = async () => {
           <thead>
             <tr>
               <th class="w-1"></th>
-              <th class="w-25">Type</th>
-              <th class="w-30">Category</th>
               <th class="w-1">Number</th>
               <th>Name</th>
+              <th class="w-25">Type</th>
+              <th class="w-30">Category</th>
               <th class="w-1">Subledger</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
               <th class="basic-table-head">
-                <base-input required v-model="search.type" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-input required v-model="search.category" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
                 <base-input required v-model="search.number" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.type" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input required v-model="search.category" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
                 <base-input
@@ -208,8 +209,6 @@ const onDelete = async () => {
                     </template>
                   </base-popover>
                 </td>
-                <td>{{ chartOfAccount.type.name }}</td>
-                <td>{{ chartOfAccount.category.name }}</td>
                 <td>
                   <router-link
                     :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
@@ -219,6 +218,8 @@ const onDelete = async () => {
                   </router-link>
                 </td>
                 <td>{{ chartOfAccount.name }}</td>
+                <td>{{ chartOfAccount.type.name }}</td>
+                <td>{{ chartOfAccount.category.name }}</td>
                 <td>{{ chartOfAccount.subledger }}</td>
               </tr>
             </template>

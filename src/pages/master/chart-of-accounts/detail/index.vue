@@ -20,9 +20,11 @@ const formId = ref()
 onMounted(async () => {
   const response = (await axios.get(`/v1/chart-of-accounts/${route.params.id}`)).data
   formId.value = response._id
-  form.data.branch_id = response.branch._id
-  form.data.code = response.code
+  form.data.type = response.type
+  form.data.category = response.category
+  form.data.number = response.number
   form.data.name = response.name
+  form.data.subledger = response.subledger
 })
 
 const onDeleted = async () => {
@@ -36,6 +38,10 @@ const onDeleted = async () => {
 
     <base-card class="py-4!">
       <div class="flex gap-2">
+        <router-link :to="`/master/chart-of-accounts/create`">
+          <base-button color="info" size="sm">Create</base-button>
+        </router-link>
+
         <router-link :to="`/master/chart-of-accounts/${route.params.id}/edit`">
           <base-button color="info" size="sm">Edit</base-button>
         </router-link>
@@ -46,7 +52,7 @@ const onDeleted = async () => {
           @click="
             deleteModalRef.toggleModal(true, {
               id: route.params.id.toString(),
-              name: `[${form.data.code}] ${form.data.name}`
+              name: `[${form.data.number}] ${form.data.name}`
             })
           "
         >
@@ -54,11 +60,14 @@ const onDeleted = async () => {
         </base-button>
       </div>
     </base-card>
+
     <card-form
       :form-id="route.params.id.toString()"
-      v-model:branch_id="form.data.branch_id"
-      v-model:code="form.data.code"
+      v-model:type="form.data.type.name"
+      v-model:category="form.data.category.name"
+      v-model:number="form.data.number"
       v-model:name="form.data.name"
+      v-model:subledger="form.data.subledger"
     />
 
     <delete-modal ref="deleteModalRef" @deleted="onDeleted" />

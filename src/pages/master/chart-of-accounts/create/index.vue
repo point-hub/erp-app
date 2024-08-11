@@ -53,10 +53,6 @@ const onSave = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <pre>
-      <code>{{ form }}</code>
-    </pre>
-
     <card-form
       v-model:type_id="form.data.type_id"
       v-model:category_id="form.data.category_id"
