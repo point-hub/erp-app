@@ -1,5 +1,30 @@
 <script setup lang="ts">
-const permission = defineModel<{ [key: string]: any }>('permission')
+const permission = defineModel<{ [key: string]: any }>('permission', { default: {} })
+
+const checkRows = (module: string, feature: string) => {
+  permission.value[module][feature].read = permission.value[module][feature].check
+  permission.value[module][feature].create = permission.value[module][feature].check
+  permission.value[module][feature].update = permission.value[module][feature].check
+  permission.value[module][feature].delete = permission.value[module][feature].check
+}
+
+const checkAll = (module: string, value: boolean) => {
+  const modules = Object.entries(permission.value[module] ?? {})
+  for (const [key, val] of modules) {
+    if (typeof val === 'boolean') {
+      permission.value[module][key] = value
+    } else {
+      const features = Object.entries(permission.value[module][key] ?? {})
+
+      for (const [feature] of features) {
+        if (features.length > 1) {
+          permission.value[module][key].check = value
+        }
+        permission.value[module][key][feature] = value
+      }
+    }
+  }
+}
 </script>
 
 <template>
@@ -81,12 +106,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
       <BaseTabPanels class="flex-1 text-sm p-4">
         <!-- Master -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('master', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('master', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -119,7 +162,11 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.master[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.master[key].check" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.master[key].check"
+                        class="-mr-2"
+                        @change="checkRows('master', key)"
+                      />
                     </div>
                   </td>
                   <td>
@@ -164,12 +211,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
         </BaseTabPanel>
         <!-- Purchasing -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('purchasing', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('purchasing', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -202,7 +267,11 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.purchasing[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.purchasing[key].check" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.purchasing[key].check"
+                        class="-mr-2"
+                        @change="checkRows('purchasing', key)"
+                      />
                     </div>
                   </td>
                   <td>
@@ -247,12 +316,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
         </BaseTabPanel>
         <!-- Sales -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('sales', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('sales', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -285,7 +372,11 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.sales[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.sales[key].create" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.sales[key].check"
+                        class="-mr-2"
+                        @change="checkRows('sales', key)"
+                      />
                     </div>
                   </td>
                   <td>
@@ -330,12 +421,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
         </BaseTabPanel>
         <!-- Finance -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('finance', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('finance', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -368,7 +477,11 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.finance[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.finance[key].check" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.finance[key].check"
+                        class="-mr-2"
+                        @change="checkRows('finance', key)"
+                      />
                     </div>
                   </td>
                   <td>
@@ -413,12 +526,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
         </BaseTabPanel>
         <!-- Manufacture -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('manufacture', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('manufacture', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -451,7 +582,11 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.manufacture[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.manufacture[key].check" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.manufacture[key].check"
+                        class="-mr-2"
+                        @change="checkRows('manufacture', key)"
+                      />
                     </div>
                   </td>
                   <td>
@@ -496,12 +631,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
         </BaseTabPanel>
         <!-- Inventory -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('inventory', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('inventory', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -532,9 +685,13 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                   <td>
                     <div
                       class="flex items-center justify-center"
-                      v-if="Object.entries(permission.inventory[key]).length"
+                      v-if="Object.entries(permission?.inventory[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.inventory[key].check" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.inventory[key].check"
+                        class="-mr-2"
+                        @change="checkRows('inventory', key)"
+                      />
                     </div>
                   </td>
                   <td>
@@ -579,12 +736,30 @@ const permission = defineModel<{ [key: string]: any }>('permission')
         </BaseTabPanel>
         <!-- Accounting -->
         <BaseTabPanel>
+          <div class="flex gap-4 pt-2 pb-8">
+            <base-button
+              color="primary"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('accounting', true)"
+            >
+              Select All
+            </base-button>
+            <base-button
+              color="danger"
+              shape="sharp"
+              variant="filled"
+              size="xs"
+              @click="checkAll('accounting', false)"
+            >
+              Deselect All
+            </base-button>
+          </div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
@@ -610,14 +785,18 @@ const permission = defineModel<{ [key: string]: any }>('permission')
                 <td></td>
                 <td></td>
               </tr>
-              <tr v-for="[key] in Object.entries(permission.accounting)" :key="key">
+              <tr v-for="[key] in Object.entries(permission?.accounting ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
                   <td>
                     <div
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.accounting[key] ?? {}).length > 1"
                     >
-                      <base-checkbox v-model="permission.accounting[key].check" class="-mr-2" />
+                      <base-checkbox
+                        v-model="permission.accounting[key].check"
+                        class="-mr-2"
+                        @change="checkRows('accounting', key)"
+                      />
                     </div>
                   </td>
                   <td>
