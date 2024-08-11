@@ -19,7 +19,7 @@ const datas = ref([
 
 const onCreateClick = () => {
   useToastStore()
-  toastRef.toast('Unauthorized access', { color: 'danger' })
+  toastRef.toast('Permission Denied', { color: 'danger' })
 }
 
 const result = ref<any[]>([])
