@@ -1,78 +1,30 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+const permission = defineModel<{ [key: string]: any }>('permission', { default: {} })
 
-import axios from '@/axios'
+const checkRows = (module: string, feature: string) => {
+  permission.value[module][feature].read = permission.value[module][feature].check
+  permission.value[module][feature].create = permission.value[module][feature].check
+  permission.value[module][feature].update = permission.value[module][feature].check
+  permission.value[module][feature].delete = permission.value[module][feature].check
+}
 
-import { useForm } from './form'
+const checkAll = (module: string, value: boolean) => {
+  const modules = Object.entries(permission.value[module] ?? {})
+  for (const [key, val] of modules) {
+    if (typeof val === 'boolean') {
+      permission.value[module][key] = value
+    } else {
+      const features = Object.entries(permission.value[module][key] ?? {})
 
-const route = useRoute()
-
-const form = reactive(useForm())
-
-const formId = ref()
-
-const permissions = ref([
-  {
-    feature: 'users',
-    rows: false,
-    create: false,
-    read: false,
-    edit: false,
-    delete: false
-  },
-  {
-    feature: 'roles',
-    rows: false,
-    create: false,
-    read: false,
-    edit: false,
-    delete: false
-  },
-  {
-    feature: 'Allocation Groups',
-    rows: false,
-    create: false,
-    read: false,
-    edit: false,
-    delete: false
-  },
-  {
-    feature: 'Allocations',
-    rows: false,
-    create: false,
-    read: false,
-    edit: false,
-    delete: false
-  },
-  {
-    feature: 'Supplier Groups',
-    rows: false,
-    create: false,
-    read: false,
-    edit: false,
-    delete: false
-  },
-  {
-    feature: 'Suppliers',
-    rows: false,
-    create: false,
-    read: false,
-    edit: false,
-    delete: false
+      for (const [feature] of features) {
+        if (features.length > 1) {
+          permission.value[module][key].check = value
+        }
+        permission.value[module][key][feature] = value
+      }
+    }
   }
-])
-
-watch(permissions, (val) => {
-  console.log(val)
-})
-
-onMounted(async () => {
-  const response = (await axios.get(`/v1/roles/${route.params.id}`)).data
-  formId.value = response._id
-  form.data.code = response.code
-  form.data.name = response.name
-})
+}
 </script>
 
 <template>
@@ -152,103 +104,711 @@ onMounted(async () => {
         </BaseTab>
       </BaseTabList>
       <BaseTabPanels class="flex-1 text-sm p-4">
+        <!-- Master -->
         <BaseTabPanel>
-          <div></div>
           <base-table>
             <thead>
               <tr>
-                <th class="w-0">
-                  <base-button color="primary" variant="filled" size="xs"> Select All </base-button>
-                </th>
+                <th class="w-0"></th>
                 <th>Feature</th>
                 <th class="text-center">Read</th>
                 <th class="text-center">Create</th>
-                <th class="text-center">Edit</th>
+                <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="permission in permissions" :key="permission.feature">
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
                 <td>
-                  <div class="flex items-center justify-center">
-                    <base-checkbox v-model="permission.rows" class="-mr-2" />
+                  <p class="capitalize">Master Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.master?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.master.menu" class="-mr-2" />
                   </div>
                 </td>
-                <td>
-                  <p class="capitalize">{{ permission.feature }}</p>
-                </td>
-                <td>
-                  <div class="flex items-center justify-center">
-                    <base-checkbox v-model="permission.read" class="-mr-2" />
-                  </div>
-                </td>
-                <td>
-                  <div class="flex items-center justify-center">
-                    <base-checkbox v-model="permission.create" class="-mr-2" />
-                  </div>
-                </td>
-                <td>
-                  <div class="flex items-center justify-center">
-                    <base-checkbox v-model="permission.edit" class="-mr-2" />
-                  </div>
-                </td>
-                <td>
-                  <div class="flex items-center justify-center">
-                    <base-checkbox v-model="permission.delete" class="-mr-2" />
-                  </div>
-                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.master ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.master[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.master[key].check"
+                        class="-mr-2"
+                        @change="checkRows('master', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.master[key]?.read !== undefined"
+                    >
+                      <base-checkbox disabled v-model="permission.master[key].read" class="-mr-2" />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.master[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.master[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.master[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.master[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.master[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.master[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
               </tr>
             </tbody>
           </base-table>
         </BaseTabPanel>
+        <!-- Purchasing -->
         <BaseTabPanel>
-          <h4 class="mb-4 text-2xl font-semibold">Profile</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Convallis convallis tellus id interdum
-            velit. Nunc sed blandit libero volutpat sed cras ornare arcu. Lectus arcu bibendum at
-            varius vel pharetra vel. Consectetur lorem donec massa sapien faucibus et.
-          </p>
+          <base-table>
+            <thead>
+              <tr>
+                <th class="w-0"></th>
+                <th>Feature</th>
+                <th class="text-center">Read</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
+                <td>
+                  <p class="capitalize">Purchasing Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.purchasing?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.purchasing.menu" class="-mr-2" />
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.purchasing ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.purchasing[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.purchasing[key].check"
+                        class="-mr-2"
+                        @change="checkRows('purchasing', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.purchasing[key]?.read !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.purchasing[key].read"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.purchasing[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.purchasing[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.purchasing[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.purchasing[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.purchasing[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.purchasing[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </base-table>
         </BaseTabPanel>
+        <!-- Sales -->
         <BaseTabPanel>
-          <h4 class="mb-4 text-2xl font-semibold">Contact 1</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Viverra nam libero justo laoreet sit amet.
-            Ultrices vitae auctor eu augue ut lectus arcu bibendum.
-          </p>
+          <base-table>
+            <thead>
+              <tr>
+                <th class="w-0"></th>
+                <th>Feature</th>
+                <th class="text-center">Read</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
+                <td>
+                  <p class="capitalize">Sales Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.sales?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.sales.menu" class="-mr-2" />
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.sales ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.sales[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.sales[key].check"
+                        class="-mr-2"
+                        @change="checkRows('sales', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.sales[key]?.read !== undefined"
+                    >
+                      <base-checkbox disabled v-model="permission.sales[key].read" class="-mr-2" />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.sales[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.sales[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.sales[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.sales[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.sales[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.sales[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </base-table>
         </BaseTabPanel>
+        <!-- Finance -->
         <BaseTabPanel>
-          <h4 class="mb-4 text-2xl font-semibold">Contact 2</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Viverra nam libero justo laoreet sit amet.
-            Ultrices vitae auctor eu augue ut lectus arcu bibendum.
-          </p>
+          <base-table>
+            <thead>
+              <tr>
+                <th class="w-0"></th>
+                <th>Feature</th>
+                <th class="text-center">Read</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
+                <td>
+                  <p class="capitalize">Finance Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.finance?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.finance.menu" class="-mr-2" />
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.finance ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.finance[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.finance[key].check"
+                        class="-mr-2"
+                        @change="checkRows('finance', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.finance[key]?.read !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.finance[key].read"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.finance[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.finance[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.finance[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.finance[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.finance[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.finance[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </base-table>
         </BaseTabPanel>
+        <!-- Manufacture -->
         <BaseTabPanel>
-          <h4 class="mb-4 text-2xl font-semibold">Contact 3</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Viverra nam libero justo laoreet sit amet.
-            Ultrices vitae auctor eu augue ut lectus arcu bibendum.
-          </p>
+          <base-table>
+            <thead>
+              <tr>
+                <th class="w-0"></th>
+                <th>Feature</th>
+                <th class="text-center">Read</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
+                <td>
+                  <p class="capitalize">Manufacture Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.manufacture?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.manufacture.menu" class="-mr-2" />
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.manufacture ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.manufacture[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.manufacture[key].check"
+                        class="-mr-2"
+                        @change="checkRows('manufacture', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.manufacture[key]?.read !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.manufacture[key].read"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.manufacture[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.manufacture[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.manufacture[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.manufacture[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.manufacture[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.manufacture[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </base-table>
         </BaseTabPanel>
+        <!-- Inventory -->
         <BaseTabPanel>
-          <h4 class="mb-4 text-2xl font-semibold">Contact 4</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Viverra nam libero justo laoreet sit amet.
-            Ultrices vitae auctor eu augue ut lectus arcu bibendum.
-          </p>
+          <base-table>
+            <thead>
+              <tr>
+                <th class="w-0"></th>
+                <th>Feature</th>
+                <th class="text-center">Read</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
+                <td>
+                  <p class="capitalize">Inventory Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.inventory?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.inventory.menu" class="-mr-2" />
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.inventory ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.inventory[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.inventory[key].check"
+                        class="-mr-2"
+                        @change="checkRows('inventory', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.inventory[key]?.read !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.inventory[key].read"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.inventory[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.inventory[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.inventory[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.inventory[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.inventory[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.inventory[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </base-table>
         </BaseTabPanel>
+        <!-- Accounting -->
         <BaseTabPanel>
-          <h4 class="mb-4 text-2xl font-semibold">Contact 5</h4>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Viverra nam libero justo laoreet sit amet.
-            Ultrices vitae auctor eu augue ut lectus arcu bibendum.
-          </p>
+          <base-table>
+            <thead>
+              <tr>
+                <th class="w-0"></th>
+                <th>Feature</th>
+                <th class="text-center">Read</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Update</th>
+                <th class="text-center">Delete</th>
+              </tr>
+            </thead>
+            <tbody v-if="permission">
+              <tr>
+                <td></td>
+                <td>
+                  <p class="capitalize">Accounting Menu</p>
+                </td>
+                <td>
+                  <div
+                    class="flex items-center justify-center"
+                    v-if="permission?.accounting?.menu !== undefined"
+                  >
+                    <base-checkbox disabled v-model="permission.accounting.menu" class="-mr-2" />
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr v-for="[key] in Object.entries(permission?.accounting ?? {})" :key="key">
+                <template v-if="key !== 'menu'">
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="Object.entries(permission?.accounting[key] ?? {}).length > 1"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.accounting[key].check"
+                        class="-mr-2"
+                        @change="checkRows('accounting', key)"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.accounting[key]?.read !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.accounting[key].read"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.accounting[key]?.create !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.accounting[key].create"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.accounting[key]?.update !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.accounting[key].update"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.accounting[key]?.delete !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.accounting[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                </template>
+              </tr>
+            </tbody>
+          </base-table>
         </BaseTabPanel>
       </BaseTabPanels>
     </BaseTabGroup>

@@ -6,8 +6,8 @@ import axios from '@/axios'
 
 import DeleteModal from '../components/delete-modal.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
-import CardPermissions from './card-permissions.vue'
 import CardForm from './card-form.vue'
+import CardPermissions from './card-permissions.vue'
 import { useForm } from './form'
 
 const route = useRoute()
@@ -23,13 +23,12 @@ onMounted(async () => {
   formId.value = response._id
   form.data.code = response.code
   form.data.name = response.name
+  form.data.permission = response.permission
 })
 
 const onDeleted = async () => {
   router.push('/master/roles')
 }
-
-const checkbox = ref()
 </script>
 
 <template>
@@ -63,7 +62,7 @@ const checkbox = ref()
       v-model:name="form.data.name"
     />
 
-    <card-permissions />
+    <card-permissions v-model:permission="form.data.permission" />
 
     <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>
