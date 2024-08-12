@@ -14,18 +14,28 @@ const deleteModalRef = ref()
 
 interface IItem {
   _id: string
-  branch: {
+  chart_of_account: {
+    code: string
+    name: string
+  }
+  category: {
     code: string
     name: string
   }
   code: string
   name: string
+  unit: string
+  have_production_number: boolean
+  have_an_expiry_date: boolean
 }
 const searchAll = ref('')
 const search = ref({
-  branch: '',
+  category: '',
   code: '',
-  name: ''
+  name: '',
+  unit: '',
+  have_production_number: '',
+  have_an_expiry_date: ''
 })
 const isLoading = ref(false)
 
@@ -91,7 +101,7 @@ const getItems = async () => {
         search: searchAll.value,
         code: search.value.code,
         name: search.value.name,
-        branch: search.value.branch
+        category: search.value.category
       },
       page: pagination.value.page
     }
@@ -152,7 +162,7 @@ const onDelete = async () => {
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
-                <base-input required v-model="search.branch" placeholder="Search" border="none" />
+                <base-input required v-model="search.category" placeholder="Search" border="none" />
               </th>
             </tr>
           </thead>
@@ -200,7 +210,7 @@ const onDelete = async () => {
                   </router-link>
                 </td>
                 <td>{{ item.name }}</td>
-                <td>[{{ item.branch.code }}] {{ item.branch.name }}</td>
+                <td>[{{ item.category.code }}] {{ item.category.name }}</td>
               </tr>
             </template>
           </tbody>

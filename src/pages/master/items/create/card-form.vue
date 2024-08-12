@@ -7,31 +7,37 @@ import type { IFormError } from './form'
 
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
-const branch_id = defineModel<string>('branch_id')
+const unit = defineModel<string>('unit')
+const category_id = defineModel<string>('category_id')
+const category = defineModel('category')
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref([])
+const selectedCategory = ref()
+const optionsCategory = ref([])
 
-watch(selected, () => {
-  branch_id.value = selected.value.id ?? ''
+watch(selectedCategory, () => {
+  category_id.value = selectedCategory.value.id ?? ''
+  category.value = selectedCategory.value
 })
 
 onMounted(async () => {
-  const response = await axios.get('/v1/branches', {
+  const response = await axios.get('/v1/item-categories', {
     params: {
       page: 1
     }
   })
   if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
+    optionsCategory.value = response.data.data.map(
+      (data: { _id: string; code: string; name: string }) => {
+        return {
+          id: data._id,
+          code: data.code,
+          label: `[${data.code}] ${data.name}`
+        }
       }
-    })
+    )
 
-    selected.value = options.value[0]
+    selectedCategory.value = optionsCategory.value[0]
   }
 })
 </script>
@@ -43,13 +49,14 @@ onMounted(async () => {
     <div class="flex flex-col gap-4 mt-5">
       <base-autocomplete
         required
-        label="Branch"
-        v-model="selected"
-        :options="options"
-        :errors="errors?.branch_id"
+        label="Category"
+        v-model="selectedCategory"
+        :options="optionsCategory"
+        :errors="errors?.category_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
+      <base-input required v-model="unit" label="Unit" :errors="errors?.unit" />
     </div>
   </base-card>
 </template>
