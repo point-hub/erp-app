@@ -81,5 +81,5 @@ const menus = [
 </script>
 
 <template>
-  <app-menu :breadcrumbs="breadcrumbs" :menus="menus" />
+  <app-menu :breadcrumbs="breadcrumbs" v-model:menus="menus" />
 </template>

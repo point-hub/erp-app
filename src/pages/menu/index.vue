@@ -21,11 +21,6 @@ const menus = ref([
 ])
 
 // {
-//   name: 'Purchasing',
-//   path: '/purchasing',
-//   icon: 'i-far-cart-arrow-down'
-// },
-// {
 //   name: 'Sales',
 //   path: '/sales',
 //   icon: 'i-far-cart-arrow-up'
@@ -47,6 +42,13 @@ onMounted(() => {
       name: 'Master',
       path: '/master',
       icon: 'i-far-database'
+    })
+  }
+  if (authStore.permission.purchasing.menu) {
+    menus.value.push({
+      name: 'Purchasing',
+      path: '/purchasing',
+      icon: 'i-far-cart-arrow-down'
     })
   }
 })
