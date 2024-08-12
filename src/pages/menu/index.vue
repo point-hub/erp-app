@@ -20,22 +20,6 @@ const menus = ref([
   }
 ])
 
-// {
-//   name: 'Sales',
-//   path: '/sales',
-//   icon: 'i-far-cart-arrow-up'
-// },
-// {
-//   name: 'Finance',
-//   path: '/finance',
-//   icon: 'i-far-money-check-dollar-pen'
-// },
-// {
-//   name: 'Manufacture',
-//   path: '/manufacture',
-//   icon: 'i-far-conveyor-belt-arm'
-// }
-
 onMounted(() => {
   if (authStore.permission.master.menu) {
     menus.value.push({
@@ -49,6 +33,41 @@ onMounted(() => {
       name: 'Purchasing',
       path: '/purchasing',
       icon: 'i-far-cart-arrow-down'
+    })
+  }
+  if (authStore.permission.sales.menu) {
+    menus.value.push({
+      name: 'Sales',
+      path: '/sales',
+      icon: 'i-far-cart-arrow-up'
+    })
+  }
+  if (authStore.permission.finance.menu) {
+    menus.value.push({
+      name: 'Finance',
+      path: '/finance',
+      icon: 'i-far-money-check-dollar-pen'
+    })
+  }
+  if (authStore.permission.manufacture.menu) {
+    menus.value.push({
+      name: 'Manufacture',
+      path: '/manufacture',
+      icon: 'i-far-conveyor-belt-arm'
+    })
+  }
+  if (authStore.permission.inventory.menu) {
+    menus.value.push({
+      name: 'Inventory',
+      path: '/inventory',
+      icon: 'i-far-boxes-stacked'
+    })
+  }
+  if (authStore.permission.accounting.menu) {
+    menus.value.push({
+      name: 'Accounting',
+      path: '/accounting',
+      icon: 'i-far-book'
     })
   }
 })
