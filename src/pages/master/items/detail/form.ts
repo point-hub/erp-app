@@ -2,8 +2,14 @@ import { ref, watch } from 'vue'
 
 export interface IForm {
   [key: string]: any
-  category_id: string
-  chart_of_account_id: string
+  category: {
+    code: string
+    name: string
+  }
+  chart_of_account: {
+    code: string
+    name: string
+  }
   code: string
   name: string
   unit: string
@@ -24,8 +30,14 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    category_id: '',
-    chart_of_account_id: '',
+    category: {
+      code: '',
+      name: ''
+    },
+    chart_of_account: {
+      code: '',
+      name: ''
+    },
     code: '',
     name: '',
     unit: '',

@@ -5,24 +5,25 @@ import axios from '@/axios'
 
 import type { IFormError } from './form'
 
+const category_id = defineModel<string>('category_id')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
-const branch_id = defineModel<string>('branch_id')
+const unit = defineModel<string>('unit')
 const errors = defineModel<IFormError>('errors')
 
 const selected = ref()
 const options = ref([])
 
 watch(selected, () => {
-  branch_id.value = selected.value.id ?? ''
+  category_id.value = selected.value.id ?? ''
 })
 
-watch(branch_id, () => {
+watch(category_id, () => {
   refetch()
 })
 
 const refetch = async () => {
-  const response = await axios.get('/v1/branches', {
+  const response = await axios.get('/v1/item-categories', {
     params: {
       page: 1
     }
@@ -30,7 +31,7 @@ const refetch = async () => {
 
   if (response.status === 200) {
     options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      if (branch_id.value === data._id) {
+      if (category_id.value === data._id) {
         selected.value = {
           id: data._id,
           label: `[${data.code}] ${data.name}`
@@ -54,13 +55,14 @@ onMounted(async () => {})
     <div class="flex flex-col gap-4 mt-5">
       <base-autocomplete
         required
-        label="Branch"
+        label="Category"
         v-model="selected"
         :options="options"
-        :errors="errors?.branch_id"
+        :errors="errors?.category_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
+      <base-input required v-model="unit" label="Unit" :errors="errors?.unit" />
     </div>
   </base-card>
 </template>

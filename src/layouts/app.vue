@@ -11,7 +11,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import AppHeader from '@/components/app-header.vue'
-import { useAppMenu } from '@/composable/apps'
+import { useAppMenu } from '@/composable/app-menu'
 import { useAuthStore } from '@/stores/auth.store'
 
 import { version } from '../../package.json'

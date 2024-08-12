@@ -1,43 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
-import axios from '@/axios'
-
-import type { IFormError } from './form'
-
+const category = defineModel<{
+  code: string
+  name: string
+}>('category')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
-const branch_id = defineModel<string>('branch_id')
-const errors = defineModel<IFormError>('errors')
-const branch = ref()
+const unit = defineModel<string>('unit')
 
-const selected = ref()
-const options = ref([])
-
-watch(branch_id, () => {
-  refetch()
+const categoryModel = ref()
+watch(category, () => {
+  categoryModel.value = `[${category.value?.code}] ${category.value?.name}`
 })
-
-const refetch = async () => {
-  const response = await axios.get('/v1/branches', {
-    params: {
-      page: 1
-    }
-  })
-  if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      if (data._id === branch_id.value) {
-        branch.value = `[${data.code}] ${data.name}`
-      }
-      return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
-      }
-    })
-
-    selected.value = options.value[0]
-  }
-}
 </script>
 
 <template>
@@ -45,9 +20,10 @@ const refetch = async () => {
     <template #header>Items</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-input disabled v-model="branch" label="Branch" />
-      <base-input disabled v-model="code" label="Code" :errors="errors?.code" />
-      <base-input disabled v-model="name" label="Name" :errors="errors?.name" />
+      <base-input label="Category" disabled v-model="categoryModel" />
+      <base-input label="Code" disabled v-model="code" />
+      <base-input label="Name" disabled v-model="name" />
+      <base-input label="Unit" disabled v-model="unit" />
     </div>
   </base-card>
 </template>
