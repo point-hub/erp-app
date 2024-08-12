@@ -18,8 +18,7 @@ const search = ref({
   category: '',
   number: '',
   name: '',
-  subledger: '',
-  increasing_in: ''
+  subledger: ''
 })
 const isLoading = ref(false)
 

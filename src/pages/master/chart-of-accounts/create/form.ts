@@ -7,7 +7,6 @@ export interface IForm {
   number: string
   name: string
   subledger: string
-  increasing_in: string
 }
 
 export interface IFormError {
@@ -17,7 +16,6 @@ export interface IFormError {
   number: string[]
   name: string[]
   subledger: string[]
-  increasing_in: string[]
 }
 
 export function useForm() {
@@ -26,8 +24,7 @@ export function useForm() {
     category_id: '',
     number: '',
     name: '',
-    subledger: '',
-    increasing_in: ''
+    subledger: ''
   }
 
   const defaultFormError: IFormError = {
@@ -35,8 +32,7 @@ export function useForm() {
     category_id: [],
     number: [],
     name: [],
-    subledger: [],
-    increasing_in: []
+    subledger: []
   }
 
   const data = ref<IForm>(defaultForm)

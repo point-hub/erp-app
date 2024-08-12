@@ -10,7 +10,6 @@ const category_id = defineModel<string>('category_id')
 const number = defineModel<string>('number')
 const name = defineModel<string>('name')
 const subledger = defineModel<string>('subledger')
-const increasing_in = defineModel<string>('increasing_in')
 const errors = defineModel<IFormError>('errors')
 
 const optionsType = ref([])
@@ -93,7 +92,6 @@ onMounted(async () => {
       <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input v-model="subledger" label="Subledger" :errors="errors?.subledger" />
-      <base-input v-model="increasing_in" label="Increasing In" :errors="errors?.increasing_in" />
     </div>
   </base-card>
 </template>

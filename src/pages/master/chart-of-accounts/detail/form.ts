@@ -11,7 +11,6 @@ export interface IForm {
   number: string
   name: string
   subledger: string
-  increasing_in: string
 }
 
 export function useForm() {
@@ -24,8 +23,7 @@ export function useForm() {
     },
     number: '',
     name: '',
-    subledger: '',
-    increasing_in: ''
+    subledger: ''
   }
 
   const data = ref<IForm>(defaultForm)

@@ -59,7 +59,6 @@ const onSave = async () => {
       v-model:number="form.data.number"
       v-model:name="form.data.name"
       v-model:subledger="form.data.subledger"
-      v-model:increasing_in="form.data.increasing_in"
       :errors="form.errors"
     />
 

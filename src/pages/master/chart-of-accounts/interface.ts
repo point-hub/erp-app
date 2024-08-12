@@ -11,5 +11,4 @@ export interface IChartOfAccount {
   number: string
   name: string
   subledger: string
-  increasing_in: string
 }
