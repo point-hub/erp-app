@@ -7,11 +7,11 @@ import {
   useSidebar,
   useSidebarStore
 } from '@point-hub/papp'
-import { onMounted, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 import AppHeader from '@/components/app-header.vue'
-import { apps } from '@/composable/apps'
+import { apps, useAppMenu } from '@/composable/apps'
 import { useAuthStore } from '@/stores/auth.store'
 
 import { version } from '../../package.json'
@@ -35,6 +35,8 @@ const onChooseApp = (path: string) => {
 }
 
 const authStore = useAuthStore()
+const appMenu = reactive(useAppMenu())
+
 onMounted(() => {
   for (const [index, app] of apps.entries()) {
     if (route.path.includes(app.path)) {
@@ -48,6 +50,8 @@ onMounted(() => {
 <template>
   <component :is="AppPreloader" />
 
+  <!-- <pre><code>{{ appMenu.menus }}</code></pre> -->
+
   <div class="app-layout">
     <!-- Header -->
     <component :is="AppHeader" />
@@ -57,7 +61,7 @@ onMounted(() => {
       :is="AppSidebar"
       :title="choosenTitle"
       :apps="apps"
-      :menus="apps[choosenAppIndex].menu ?? []"
+      :menus="appMenu.menus[choosenAppIndex].menu ?? []"
       :is-sidebar-open="sidebarStore.isSidebarOpen"
       :is-mobile="mobileBreakpoint.isMobile()"
       @choose="onChooseApp"

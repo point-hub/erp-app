@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppBreadcrumb from '@/components/app-breadcrumb.vue'
+
 const breadcrumbs = [
   {
     name: 'Menu',
