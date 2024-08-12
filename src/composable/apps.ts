@@ -27,6 +27,8 @@ export function useAppMenu() {
       menus.value[0].menu?.push(...seedPurchasingPermissions())
       menus.value[0].menu?.push(...seedSalesPermissions())
       menus.value[0].menu?.push(...seedFinancePermissions())
+      menus.value[0].menu?.push(...seedManufacturePermissions())
+      menus.value[0].menu?.push(...seedInventoryPermissions())
     },
     {
       immediate: true
@@ -39,6 +41,8 @@ export function useAppMenu() {
 const seedMasterPermissions = () => {
   const menu = ref<IMenu[]>([])
   const submenu = ref<ISubmenu[]>([])
+
+  console.log('permisson master', authStore?.permission)
 
   if (authStore?.permission?.master?.users?.read) {
     submenu.value?.push({ name: 'Users', path: '/master/users' })
@@ -119,7 +123,7 @@ const seedSalesPermissions = () => {
     submenu.value?.push({ name: 'Sales Orders', path: '/sales/sales-orders' })
   }
   if (authStore?.permission?.sales?.down_payments?.read) {
-    submenu.value?.push({ name: 'Downpayments', path: '/sales/downpayments' })
+    submenu.value?.push({ name: 'Down Payments', path: '/sales/down-payments' })
   }
   if (authStore?.permission?.sales?.delivery_orders?.read) {
     submenu.value?.push({ name: 'Delivery Orders', path: '/sales/delivery-orders' })
@@ -145,16 +149,16 @@ const seedFinancePermissions = () => {
   const menu = ref<IMenu[]>([])
   const submenu = ref<ISubmenu[]>([])
 
-  if (authStore?.permission?.sales?.payment_orders?.read) {
+  if (authStore?.permission?.finance?.payment_orders?.read) {
     submenu.value?.push({ name: 'Payment Orders', path: '/finance/payment-orders' })
   }
-  if (authStore?.permission?.sales?.cash_advances?.read) {
+  if (authStore?.permission?.finance?.cash_advances?.read) {
     submenu.value?.push({ name: 'Cash Advances', path: '/finance/cash-advances' })
   }
-  if (authStore?.permission?.sales?.cash_payments?.read) {
+  if (authStore?.permission?.finance?.cash_payments?.read) {
     submenu.value?.push({ name: 'Cash Payments', path: '/finance/cash-payments' })
   }
-  if (authStore?.permission?.sales?.bank_payments?.read) {
+  if (authStore?.permission?.finance?.bank_payments?.read) {
     submenu.value?.push({ name: 'Bank Payments', path: '/finance/bank-payments' })
   }
 
@@ -165,36 +169,44 @@ const seedFinancePermissions = () => {
   return menu.value
 }
 
-export const apps: IApps[] = [
-  {
-    name: 'ERP',
-    path: '/',
-    icon: 'https://assets.pointhub.net/assets/images/logo/primary/icon-rounded.png',
-    menu: [
-      {
-        name: 'Finance',
-        submenu: [
-          { name: 'Payment Orders', path: '/finance/payment-orders' },
-          { name: 'Cash Advances', path: '/finance/cash-advances' },
-          { name: 'Cash Payments', path: '/finance/cash-payments' },
-          { name: 'Bank Payments', path: '/finance/bank-payments' }
-        ]
-      }
-      // {
-      //   name: 'Manufacture',
-      //   submenu: [
-      //     { name: 'Machines', path: '/manufacture/machines' },
-      //     { name: 'Processes', path: '/manufacture/processes' },
-      //     { name: 'Formulas', path: '/manufacture/formulas' }
-      //   ]
-      // },
-      // {
-      //   name: 'Inventory',
-      //   submenu: [
-      //     { name: 'Inventory Audits', path: '/inventory/inventory-audits' },
-      //     { name: 'Stock Corrections', path: '/inventory/stock-corrections' }
-      //   ]
-      // }
-    ]
+const seedManufacturePermissions = () => {
+  const menu = ref<IMenu[]>([])
+  const submenu = ref<ISubmenu[]>([])
+
+  if (authStore?.permission?.manufacture?.machines?.read) {
+    submenu.value?.push({ name: 'Machines', path: '/manufacture/machines' })
   }
-]
+  if (authStore?.permission?.manufacture?.processes?.read) {
+    submenu.value?.push({ name: 'Processes', path: '/manufacture/processes' })
+  }
+  if (authStore?.permission?.manufacture?.formulas?.read) {
+    submenu.value?.push({ name: 'Formulas', path: '/manufacture/formulas' })
+  }
+
+  if (authStore?.permission?.manufacture?.menu) {
+    menu.value.push({ name: 'Manufacture', submenu: submenu.value })
+  }
+
+  return menu.value
+}
+
+const seedInventoryPermissions = () => {
+  const menu = ref<IMenu[]>([])
+  const submenu = ref<ISubmenu[]>([])
+
+  if (authStore?.permission?.inventory?.inventory_audits?.read) {
+    submenu.value?.push({ name: 'Inventory Audits', path: '/inventory/inventory-audits' })
+  }
+  if (authStore?.permission?.inventory?.inventory_usages?.read) {
+    submenu.value?.push({ name: 'Inventory Usages', path: '/inventory/inventory-usages' })
+  }
+  if (authStore?.permission?.inventory?.stock_corrections?.read) {
+    submenu.value?.push({ name: 'Stock Corrections', path: '/inventory/stock-corrections' })
+  }
+
+  if (authStore?.permission?.inventory?.menu) {
+    menu.value.push({ name: 'Inventory', submenu: submenu.value })
+  }
+
+  return menu.value
+}
