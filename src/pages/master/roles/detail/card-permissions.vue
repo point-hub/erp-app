@@ -1,30 +1,5 @@
 <script setup lang="ts">
 const permission = defineModel<{ [key: string]: any }>('permission', { default: {} })
-
-const checkRows = (module: string, feature: string) => {
-  permission.value[module][feature].read = permission.value[module][feature].check
-  permission.value[module][feature].create = permission.value[module][feature].check
-  permission.value[module][feature].update = permission.value[module][feature].check
-  permission.value[module][feature].delete = permission.value[module][feature].check
-}
-
-const checkAll = (module: string, value: boolean) => {
-  const modules = Object.entries(permission.value[module] ?? {})
-  for (const [key, val] of modules) {
-    if (typeof val === 'boolean') {
-      permission.value[module][key] = value
-    } else {
-      const features = Object.entries(permission.value[module][key] ?? {})
-
-      for (const [feature] of features) {
-        if (features.length > 1) {
-          permission.value[module][key].check = value
-        }
-        permission.value[module][key][feature] = value
-      }
-    }
-  }
-}
 </script>
 
 <template>
@@ -115,6 +90,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -134,6 +110,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.master ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -146,7 +123,6 @@ const checkAll = (module: string, value: boolean) => {
                         disabled
                         v-model="permission.master[key].check"
                         class="-mr-2"
-                        @change="checkRows('master', key)"
                       />
                     </div>
                   </td>
@@ -197,6 +173,18 @@ const checkAll = (module: string, value: boolean) => {
                       />
                     </div>
                   </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.master[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.master[key].approval"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
                 </template>
               </tr>
             </tbody>
@@ -213,6 +201,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -232,6 +221,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.purchasing ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -244,7 +234,6 @@ const checkAll = (module: string, value: boolean) => {
                         disabled
                         v-model="permission.purchasing[key].check"
                         class="-mr-2"
-                        @change="checkRows('purchasing', key)"
                       />
                     </div>
                   </td>
@@ -299,6 +288,18 @@ const checkAll = (module: string, value: boolean) => {
                       />
                     </div>
                   </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.purchasing[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.purchasing[key].approval"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
                 </template>
               </tr>
             </tbody>
@@ -315,6 +316,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -334,6 +336,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.sales ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -342,12 +345,7 @@ const checkAll = (module: string, value: boolean) => {
                       class="flex items-center justify-center"
                       v-if="Object.entries(permission?.sales[key] ?? {}).length > 1"
                     >
-                      <base-checkbox
-                        disabled
-                        v-model="permission.sales[key].check"
-                        class="-mr-2"
-                        @change="checkRows('sales', key)"
-                      />
+                      <base-checkbox disabled v-model="permission.sales[key].check" class="-mr-2" />
                     </div>
                   </td>
                   <td>
@@ -397,6 +395,18 @@ const checkAll = (module: string, value: boolean) => {
                       />
                     </div>
                   </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.sales[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.sales[key].approval"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
                 </template>
               </tr>
             </tbody>
@@ -413,6 +423,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -432,6 +443,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.finance ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -444,7 +456,6 @@ const checkAll = (module: string, value: boolean) => {
                         disabled
                         v-model="permission.finance[key].check"
                         class="-mr-2"
-                        @change="checkRows('finance', key)"
                       />
                     </div>
                   </td>
@@ -499,6 +510,18 @@ const checkAll = (module: string, value: boolean) => {
                       />
                     </div>
                   </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.finance[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.finance[key].approval"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
                 </template>
               </tr>
             </tbody>
@@ -515,6 +538,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -534,6 +558,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.manufacture ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -546,7 +571,6 @@ const checkAll = (module: string, value: boolean) => {
                         disabled
                         v-model="permission.manufacture[key].check"
                         class="-mr-2"
-                        @change="checkRows('manufacture', key)"
                       />
                     </div>
                   </td>
@@ -601,6 +625,18 @@ const checkAll = (module: string, value: boolean) => {
                       />
                     </div>
                   </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.manufacture[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.manufacture[key].approval"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
                 </template>
               </tr>
             </tbody>
@@ -617,6 +653,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -636,6 +673,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.inventory ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -648,7 +686,6 @@ const checkAll = (module: string, value: boolean) => {
                         disabled
                         v-model="permission.inventory[key].check"
                         class="-mr-2"
-                        @change="checkRows('inventory', key)"
                       />
                     </div>
                   </td>
@@ -703,6 +740,18 @@ const checkAll = (module: string, value: boolean) => {
                       />
                     </div>
                   </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.inventory[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.inventory[key].approval"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
                 </template>
               </tr>
             </tbody>
@@ -719,6 +768,7 @@ const checkAll = (module: string, value: boolean) => {
                 <th class="text-center">Create</th>
                 <th class="text-center">Update</th>
                 <th class="text-center">Delete</th>
+                <th class="text-center">Approval</th>
               </tr>
             </thead>
             <tbody v-if="permission">
@@ -738,6 +788,7 @@ const checkAll = (module: string, value: boolean) => {
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               <tr v-for="[key] in Object.entries(permission?.accounting ?? {})" :key="key">
                 <template v-if="key !== 'menu'">
@@ -750,7 +801,6 @@ const checkAll = (module: string, value: boolean) => {
                         disabled
                         v-model="permission.accounting[key].check"
                         class="-mr-2"
-                        @change="checkRows('accounting', key)"
                       />
                     </div>
                   </td>
@@ -801,6 +851,18 @@ const checkAll = (module: string, value: boolean) => {
                       <base-checkbox
                         disabled
                         v-model="permission.accounting[key].delete"
+                        class="-mr-2"
+                      />
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="flex items-center justify-center"
+                      v-if="permission?.accounting[key]?.approval !== undefined"
+                    >
+                      <base-checkbox
+                        disabled
+                        v-model="permission.accounting[key].approval"
                         class="-mr-2"
                       />
                     </div>
