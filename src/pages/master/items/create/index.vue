@@ -84,9 +84,7 @@ onMounted(async () => {
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
-    {{ form.data }}
-    <br />
-    {{ category }}
+
     <card-form
       v-model:category_id="form.data.category_id"
       v-model:category="category"

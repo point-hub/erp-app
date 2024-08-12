@@ -15,7 +15,7 @@ const deleteModalRef = ref()
 interface IItem {
   _id: string
   chart_of_account: {
-    code: string
+    number: string
     name: string
   }
   category: {
@@ -151,7 +151,11 @@ const onDelete = async () => {
               <th class="w-1"></th>
               <th class="w-30">Code</th>
               <th>Name</th>
-              <th>Branch</th>
+              <th>Unit</th>
+              <th>Category</th>
+              <th>Chart of Account</th>
+              <th>Production Number</th>
+              <th>Expiry Date</th>
             </tr>
             <tr class="bg-slate-50 dark:bg-slate-700">
               <th></th>
@@ -162,7 +166,34 @@ const onDelete = async () => {
                 <base-input required v-model="search.name" placeholder="Search" border="none" />
               </th>
               <th class="basic-table-head">
+                <base-input required v-model="search.unit" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
                 <base-input required v-model="search.category" placeholder="Search" border="none" />
+              </th>
+              <th class="basic-table-head">
+                <base-input
+                  required
+                  v-model="search.chart_of_account"
+                  placeholder="Search"
+                  border="none"
+                />
+              </th>
+              <th class="basic-table-head">
+                <base-input
+                  required
+                  v-model="search.have_production_number"
+                  placeholder="Search"
+                  border="none"
+                />
+              </th>
+              <th class="basic-table-head">
+                <base-input
+                  required
+                  v-model="search.have_an_expiry_date"
+                  placeholder="Search"
+                  border="none"
+                />
               </th>
             </tr>
           </thead>
@@ -210,7 +241,11 @@ const onDelete = async () => {
                   </router-link>
                 </td>
                 <td>{{ item.name }}</td>
+                <td>{{ item.unit }}</td>
                 <td>[{{ item.category.code }}] {{ item.category.name }}</td>
+                <td>[{{ item.chart_of_account.number }}] {{ item.chart_of_account.name }}</td>
+                <td>{{ item.have_production_number }}</td>
+                <td>{{ item.have_an_expiry_date }}</td>
               </tr>
             </template>
           </tbody>

@@ -2,29 +2,45 @@ import { ref, watch } from 'vue'
 
 export interface IForm {
   [key: string]: any
-  branch_id: string
+  category_id: string
+  chart_of_account_id: string
   code: string
   name: string
+  unit: string
+  have_production_number: boolean
+  have_an_expiry_date: boolean
 }
 
 export interface IFormError {
   [key: string]: string[]
-  branch_id: string[]
+  category_id: string[]
+  chart_of_account_id: string[]
   code: string[]
   name: string[]
+  unit: string[]
+  have_production_number: string[]
+  have_an_expiry_date: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
-    branch_id: '',
+    category_id: '',
+    chart_of_account_id: '',
     code: '',
-    name: ''
+    name: '',
+    unit: '',
+    have_production_number: false,
+    have_an_expiry_date: false
   }
 
   const defaultFormError: IFormError = {
-    branch_id: [],
+    category_id: [],
+    chart_of_account_id: [],
     code: [],
-    name: []
+    name: [],
+    unit: [],
+    have_production_number: [],
+    have_an_expiry_date: []
   }
 
   const data = ref<IForm>(defaultForm)

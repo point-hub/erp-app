@@ -57,11 +57,15 @@ const seedMasterPermissions = () => {
   if (authStore?.permission?.master?.warehouses?.read) {
     submenu.value?.push({ name: 'Warehouses', path: '/master/warehouses' })
   }
-  if (authStore?.permission?.master?.chart_if_accounts?.read) {
+  if (authStore?.permission?.master?.chart_of_accounts?.read) {
     submenu.value?.push({ name: 'Chart of Accounts', path: '/master/chart-of-accounts' })
   }
   if (authStore?.permission?.master?.setting_journals?.read) {
     submenu.value?.push({ name: 'Setting Journals', path: '/master/setting-journals' })
+  }
+  if (authStore?.permission?.master?.allocations?.read) {
+    submenu.value?.push({ name: 'Allocation Groups', path: '/master/allocation-groups' })
+    submenu.value?.push({ name: 'Allocation', path: '/master/allocations' })
   }
   if (authStore?.permission?.master?.suppliers?.read) {
     submenu.value?.push({ name: 'Supplier Groups', path: '/master/supplier-groups' })
