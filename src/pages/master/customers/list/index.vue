@@ -20,12 +20,16 @@ interface ICustomer {
   }
   code: string
   name: string
+  address: string
+  phone: string
 }
 const searchAll = ref('')
 const search = ref({
   customer_group: '',
   code: '',
-  name: ''
+  name: '',
+  address: '',
+  phone: ''
 })
 const isLoading = ref(false)
 

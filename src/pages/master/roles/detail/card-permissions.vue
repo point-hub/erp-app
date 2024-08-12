@@ -151,7 +151,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
@@ -249,7 +249,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
@@ -351,7 +351,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
@@ -449,7 +449,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
@@ -551,7 +551,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
@@ -653,7 +653,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
@@ -755,7 +755,7 @@ const checkAll = (module: string, value: boolean) => {
                     </div>
                   </td>
                   <td>
-                    <p class="capitalize">{{ key.replaceAll('_', ' ') }}</p>
+                    <p class="capitalize">{{ key.split('_').join(' ') }}</p>
                   </td>
                   <td>
                     <div
