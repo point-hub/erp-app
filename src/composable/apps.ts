@@ -165,6 +165,12 @@ const seedFinancePermissions = () => {
   if (authStore?.permission?.finance?.profit_and_loss?.read) {
     submenu.value?.push({ name: 'Profit & Loss', path: '/finance/profit-and-loss' })
   }
+  if (authStore?.permission?.finance?.debts_aging_report?.read) {
+    submenu.value?.push({ name: 'Debts Aging Report', path: '/finance/debts-aging-report' })
+  }
+  if (authStore?.permission?.finance?.allocation_report?.read) {
+    submenu.value?.push({ name: 'Allocation Report', path: '/finance/allocation-report' })
+  }
 
   if (authStore?.permission?.finance?.menu) {
     menu.value.push({ name: 'Finance', submenu: submenu.value })
@@ -210,6 +216,12 @@ const seedInventoryPermissions = () => {
   if (authStore?.permission?.inventory?.stock_corrections?.read) {
     submenu.value?.push({ name: 'Stock Corrections', path: '/inventory/stock-corrections' })
   }
+  if (authStore?.permission?.inventory?.transfer_items?.read) {
+    submenu.value?.push({ name: 'Transfer Items', path: '/inventory/transfer-items' })
+  }
+  if (authStore?.permission?.inventory?.receive_items?.read) {
+    submenu.value?.push({ name: 'Receive Items', path: '/inventory/receive-items' })
+  }
   if (authStore?.permission?.inventory?.inventory_report?.read) {
     submenu.value?.push({ name: 'Inventory Report', path: '/inventory/inventory-report' })
   }
@@ -238,10 +250,10 @@ const seedAccountingPermissions = () => {
     submenu.value?.push({ name: 'Subledger', path: '/accounting/subledger' })
   }
   if (authStore?.permission?.accounting?.balance_sheet?.read) {
-    submenu.value?.push({ name: 'Balanace Sheet', path: '/accounting/balance-sheet' })
+    submenu.value?.push({ name: 'Balance Sheet', path: '/accounting/balance-sheet' })
   }
   if (authStore?.permission?.accounting?.trial_balance?.read) {
-    submenu.value?.push({ name: 'Trial Balanace', path: '/accounting/trial-balance' })
+    submenu.value?.push({ name: 'Trial Balance', path: '/accounting/trial-balance' })
   }
 
   if (authStore?.permission?.accounting?.menu) {
