@@ -10,11 +10,6 @@ export default {
           meta: { requiresAuth: true }
         },
         {
-          path: 'create',
-          component: () => import('@/pages/master/setting-journals/create/index.vue'),
-          meta: { requiresAuth: true }
-        },
-        {
           path: ':id',
           component: () => import('@/pages/master/setting-journals/detail/index.vue'),
           meta: { requiresAuth: true }

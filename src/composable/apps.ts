@@ -29,6 +29,7 @@ export function useAppMenu() {
       menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
       menus.value[0].menu?.push(...seedInventoryPermissions())
+      menus.value[0].menu?.push(...seedAccountingPermissions())
     },
     {
       immediate: true
@@ -161,6 +162,9 @@ const seedFinancePermissions = () => {
   if (authStore?.permission?.finance?.bank_payments?.read) {
     submenu.value?.push({ name: 'Bank Payments', path: '/finance/bank-payments' })
   }
+  if (authStore?.permission?.finance?.profit_and_loss?.read) {
+    submenu.value?.push({ name: 'Profit & Loss', path: '/finance/profit-and-loss' })
+  }
 
   if (authStore?.permission?.finance?.menu) {
     menu.value.push({ name: 'Finance', submenu: submenu.value })
@@ -181,6 +185,9 @@ const seedManufacturePermissions = () => {
   }
   if (authStore?.permission?.manufacture?.formulas?.read) {
     submenu.value?.push({ name: 'Formulas', path: '/manufacture/formulas' })
+  }
+  if (authStore?.permission?.manufacture?.processing?.read) {
+    submenu.value?.push({ name: 'Processing', path: '/manufacture/processing' })
   }
 
   if (authStore?.permission?.manufacture?.menu) {
@@ -203,9 +210,42 @@ const seedInventoryPermissions = () => {
   if (authStore?.permission?.inventory?.stock_corrections?.read) {
     submenu.value?.push({ name: 'Stock Corrections', path: '/inventory/stock-corrections' })
   }
+  if (authStore?.permission?.inventory?.inventory_report?.read) {
+    submenu.value?.push({ name: 'Inventory Report', path: '/inventory/inventory-report' })
+  }
 
   if (authStore?.permission?.inventory?.menu) {
     menu.value.push({ name: 'Inventory', submenu: submenu.value })
+  }
+
+  return menu.value
+}
+
+const seedAccountingPermissions = () => {
+  const menu = ref<IMenu[]>([])
+  const submenu = ref<ISubmenu[]>([])
+
+  if (authStore?.permission?.accounting?.cut_offs?.read) {
+    submenu.value?.push({ name: 'Cut Offs', path: '/accounting/cut-offs' })
+  }
+  if (authStore?.permission?.accounting?.memo_journals?.read) {
+    submenu.value?.push({ name: 'Memo Journals', path: '/accounting/memo-journals' })
+  }
+  if (authStore?.permission?.accounting?.general_ledger?.read) {
+    submenu.value?.push({ name: 'General Ledger', path: '/accounting/general-ledger' })
+  }
+  if (authStore?.permission?.accounting?.subledger?.read) {
+    submenu.value?.push({ name: 'Subledger', path: '/accounting/subledger' })
+  }
+  if (authStore?.permission?.accounting?.balance_sheet?.read) {
+    submenu.value?.push({ name: 'Balanace Sheet', path: '/accounting/balance-sheet' })
+  }
+  if (authStore?.permission?.accounting?.trial_balance?.read) {
+    submenu.value?.push({ name: 'Trial Balanace', path: '/accounting/trial-balance' })
+  }
+
+  if (authStore?.permission?.accounting?.menu) {
+    menu.value.push({ name: 'Accounting', submenu: submenu.value })
   }
 
   return menu.value
