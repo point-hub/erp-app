@@ -61,7 +61,7 @@ onMounted(() => {
       icon: 'i-far-file-invoice'
     })
   }
-  if (authStore?.permission?.sales?.payment_orders?.read) {
+  if (authStore?.permission?.sales?.payment_collections?.read) {
     menus.value.push({
       name: 'Payment Collections',
       path: '/sales/payment-collections',
