@@ -7,7 +7,7 @@ export interface IForm {
     name: string
   }
   chart_of_account: {
-    code: string
+    number: string
     name: string
   }
   code: string
@@ -35,7 +35,7 @@ export function useForm() {
       name: ''
     },
     chart_of_account: {
-      code: '',
+      number: '',
       name: ''
     },
     code: '',

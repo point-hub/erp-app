@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 
 const chart_of_account = defineModel<{
-  number: number
+  number: string
   name: string
 }>('chart_of_account')
 const name = ref()

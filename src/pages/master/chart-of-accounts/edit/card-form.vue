@@ -7,7 +7,7 @@ import type { IFormError } from './form'
 
 const type_id = defineModel<string>('type_id')
 const category_id = defineModel<string>('category_id')
-const number = defineModel<number>('number')
+const number = defineModel<string>('number')
 const name = defineModel<string>('name')
 const subledger = defineModel<string>('subledger')
 const errors = defineModel<IFormError>('errors')

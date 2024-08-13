@@ -31,6 +31,7 @@ interface IItem {
 const searchAll = ref('')
 const search = ref({
   category: '',
+  chart_of_account: '',
   code: '',
   name: '',
   unit: '',

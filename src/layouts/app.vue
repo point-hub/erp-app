@@ -12,7 +12,6 @@ import { useRoute } from 'vue-router'
 
 import AppHeader from '@/components/app-header.vue'
 import { useAppMenu } from '@/composable/app-menu'
-import { useAuthStore } from '@/stores/auth.store'
 
 import { version } from '../../package.json'
 
@@ -34,7 +33,6 @@ const onChooseApp = (path: string) => {
     }
   }
 }
-const authStore = useAuthStore()
 
 onMounted(() => {
   for (const [index, app] of appMenu.menus.entries()) {

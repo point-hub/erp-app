@@ -4,7 +4,7 @@ export interface IForm {
   [key: string]: any
   type_id: string
   category_id: string
-  number: number
+  number: string
   name: string
   subledger: string
 }
@@ -22,7 +22,7 @@ export function useForm() {
   const defaultForm: IForm = {
     type_id: '',
     category_id: '',
-    number: NaN,
+    number: '',
     name: '',
     subledger: ''
   }
