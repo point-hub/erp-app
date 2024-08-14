@@ -80,7 +80,7 @@ const updateData = async () => {
 }
 
 const getCustomerGroups = async () => {
-  const response = await axios.get('/v1/customer-groups', {
+  const response = await axios.get('/v1/master/customer-groups', {
     params: {
       filter: {
         search: searchAll.value,

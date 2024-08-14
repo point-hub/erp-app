@@ -78,7 +78,7 @@ const updateData = async () => {
 }
 
 const getChartOfAccounts = async () => {
-  const response = await axios.get('/v1/chart-of-accounts', {
+  const response = await axios.get('/v1/master/chart-of-accounts', {
     params: {
       filter: {
         search: searchAll.value,

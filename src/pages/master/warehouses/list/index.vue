@@ -85,7 +85,7 @@ const updateData = async () => {
 }
 
 const getWarehouses = async () => {
-  const response = await axios.get('/v1/warehouses', {
+  const response = await axios.get('/v1/master/warehouses', {
     params: {
       filter: {
         search: searchAll.value,

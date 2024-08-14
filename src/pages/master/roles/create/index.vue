@@ -39,13 +39,13 @@ onMounted(async () => {
   }
 
   console.log('permissions')
-  const responsePermissions = (await axios.get(`/v1/permissions`)).data
+  const responsePermissions = (await axios.get(`/v1/master/permissions`)).data
   form.data.permission = responsePermissions.data[0]
 })
 
 const onSave = async () => {
   try {
-    const response = await axios.post('/v1/roles', form.data)
+    const response = await axios.post('/v1/master/roles', form.data)
     if (response.status === 201) {
       toastRef.toast('Create success', { color: 'success' })
       toggleApiKeyModal(true)

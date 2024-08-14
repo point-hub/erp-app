@@ -18,7 +18,7 @@ interface ISettingJournal {
 const isLoading = ref(false)
 
 const getSettingJournal = async () => {
-  const response = await axios.get(`/v1/setting-journals/${route.params.id}`)
+  const response = await axios.get(`/v1/master/setting-journals/${route.params.id}`)
   settingJournal.value = response.data
 }
 

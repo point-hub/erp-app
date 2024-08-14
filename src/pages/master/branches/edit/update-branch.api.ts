@@ -10,7 +10,7 @@ const { toastRef } = useToastStore()
 export function useUpdateBranchApi() {
   const send = async (_id: string, data: IForm, errors: IFormError) => {
     try {
-      const response = await axios.patch(`/v1/branches/${_id}`, data)
+      const response = await axios.patch(`/v1/master/branches/${_id}`, data)
       if (response.status === 200) {
         toastRef.toast('Update success', { color: 'success' })
         return {

@@ -10,7 +10,7 @@ const { toastRef } = useToastStore()
 export function useDeleteBranchApi() {
   const send = async (_id: string, reason: string, errors: IFormError) => {
     try {
-      const response = await axios.post(`/v1/branches/${_id}/delete`, {
+      const response = await axios.post(`/v1/master/branches/${_id}/delete`, {
         reason: reason
       })
       if (response.status === 200) {

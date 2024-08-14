@@ -22,7 +22,7 @@ watch(branch_id, () => {
 })
 
 const refetch = async () => {
-  const response = await axios.get('/v1/branches', {
+  const response = await axios.get('/v1/master/branches', {
     params: {
       page: 1
     }

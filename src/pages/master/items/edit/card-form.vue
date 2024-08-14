@@ -23,7 +23,7 @@ watch(category_id, () => {
 })
 
 const refetch = async () => {
-  const response = await axios.get('/v1/item-categories', {
+  const response = await axios.get('/v1/master/item-categories', {
     params: {
       page: 1
     }

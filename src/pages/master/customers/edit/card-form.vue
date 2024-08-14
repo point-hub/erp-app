@@ -26,7 +26,7 @@ watch(customer_group_id, () => {
 })
 
 const refetch = async () => {
-  const response = await axios.get('/v1/customer-groups', {
+  const response = await axios.get('/v1/master/customer-groups', {
     params: {
       page: 1
     }

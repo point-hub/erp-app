@@ -80,7 +80,7 @@ const updateData = async () => {
 }
 
 const getSupplierGroups = async () => {
-  const response = await axios.get('/v1/supplier-groups', {
+  const response = await axios.get('/v1/master/supplier-groups', {
     params: {
       filter: {
         search: searchAll.value,

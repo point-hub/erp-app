@@ -22,7 +22,7 @@ watch(allocation_group_id, () => {
 })
 
 const refetch = async () => {
-  const response = await axios.get('/v1/allocation-groups', {
+  const response = await axios.get('/v1/master/allocation-groups', {
     params: {
       page: 1
     }

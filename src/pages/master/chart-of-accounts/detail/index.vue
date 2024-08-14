@@ -18,7 +18,7 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/chart-of-accounts/${route.params.id}`)).data
+  const response = (await axios.get(`/v1/master/chart-of-accounts/${route.params.id}`)).data
   formId.value = response._id
   form.data.type = response.type
   form.data.category = response.category

@@ -78,7 +78,7 @@ const updateData = async () => {
 }
 
 const getSettingJournals = async () => {
-  const response = await axios.get('/v1/setting-journals', {
+  const response = await axios.get('/v1/master/setting-journals', {
     params: {
       filter: {
         search: searchAll.value,

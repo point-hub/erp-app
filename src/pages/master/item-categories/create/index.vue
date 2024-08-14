@@ -24,7 +24,7 @@ const toggleApiKeyModal = (value: boolean) => {
 
 const onSave = async () => {
   try {
-    const response = await axios.post('/v1/item-categories', form.data)
+    const response = await axios.post('/v1/master/item-categories', form.data)
     if (response.status === 201) {
       toastRef.toast('Create success', { color: 'success' })
       toggleApiKeyModal(true)

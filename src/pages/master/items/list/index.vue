@@ -96,7 +96,7 @@ const updateData = async () => {
 }
 
 const getItems = async () => {
-  const response = await axios.get('/v1/items', {
+  const response = await axios.get('/v1/master/items', {
     params: {
       filter: {
         search: searchAll.value,

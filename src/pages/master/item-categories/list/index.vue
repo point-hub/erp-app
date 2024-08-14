@@ -80,7 +80,7 @@ const updateData = async () => {
 }
 
 const getItemCategories = async () => {
-  const response = await axios.get('/v1/item-categories', {
+  const response = await axios.get('/v1/master/item-categories', {
     params: {
       filter: {
         search: searchAll.value,

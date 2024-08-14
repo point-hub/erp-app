@@ -19,7 +19,7 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/item-categories/${route.params.id}`)).data
+  const response = (await axios.get(`/v1/master/item-categories/${route.params.id}`)).data
   formId.value = response._id
   form.data.code = response.code
   form.data.name = response.name
@@ -27,7 +27,7 @@ onMounted(async () => {
 
 const onUpdate = async () => {
   try {
-    const response = await axios.patch(`/v1/item-categories/${route.params.id}`, form.data)
+    const response = await axios.patch(`/v1/master/item-categories/${route.params.id}`, form.data)
     if (response.status === 200) {
       toastRef.toast('Update success', { color: 'success' })
       router.push('/master/item-categories')

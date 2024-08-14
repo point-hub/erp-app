@@ -20,7 +20,7 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/suppliers/${route.params.id}`)).data
+  const response = (await axios.get(`/v1/master/suppliers/${route.params.id}`)).data
   formId.value = response._id
   form.data.supplier_group_id = response.supplier_group._id
   form.data.supplier_group = response.supplier_group
@@ -38,7 +38,7 @@ onMounted(async () => {
 
 const onUpdate = async () => {
   try {
-    const response = await axios.patch(`/v1/suppliers/${route.params.id}`, form.data)
+    const response = await axios.patch(`/v1/master/suppliers/${route.params.id}`, form.data)
     if (response.status === 200) {
       toastRef.toast('Update success', { color: 'success' })
       router.push('/master/suppliers')

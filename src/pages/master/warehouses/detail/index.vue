@@ -18,7 +18,7 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/warehouses/${route.params.id}`)).data
+  const response = (await axios.get(`/v1/master/warehouses/${route.params.id}`)).data
   formId.value = response._id
   form.data.branch_id = response.branch._id
   form.data.code = response.code

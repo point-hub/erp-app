@@ -3,7 +3,7 @@ import axios from '@/axios'
 export function useGetBranchApi() {
   const send = async (_id: string) => {
     try {
-      const response = await axios.get(`/v1/branches/${_id}`)
+      const response = await axios.get(`/v1/master/branches/${_id}`)
 
       return {
         _id: response.data._id,

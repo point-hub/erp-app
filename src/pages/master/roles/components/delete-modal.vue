@@ -55,7 +55,7 @@ const onDelete = async () => {
   }
   // password checking
   try {
-    const response = await axios.post(`/v1/auth/verify-password`, {
+    const response = await axios.post(`/v1/master/auth/verify-password`, {
       password: password.value
     })
     if (response.data.verified === false) {
@@ -71,7 +71,7 @@ const onDelete = async () => {
   }
   // start api call
   try {
-    const response = await axios.post(`/v1/roles/${id.value}/delete`, {
+    const response = await axios.post(`/v1/master/roles/${id.value}/delete`, {
       reason: reason.value
     })
     if (response.status === 200) {

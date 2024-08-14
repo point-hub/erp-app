@@ -19,7 +19,7 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/chart-of-accounts/${route.params.id}`)).data
+  const response = (await axios.get(`/v1/master/chart-of-accounts/${route.params.id}`)).data
   formId.value = response._id
   form.data.type_id = response.type._id
   form.data.category_id = response.category._id
@@ -30,7 +30,7 @@ onMounted(async () => {
 
 const onUpdate = async () => {
   try {
-    const response = await axios.patch(`/v1/chart-of-accounts/${route.params.id}`, form.data)
+    const response = await axios.patch(`/v1/master/chart-of-accounts/${route.params.id}`, form.data)
     if (response.status === 200) {
       toastRef.toast('Update success', { color: 'success' })
       router.push('/master/chart-of-accounts')

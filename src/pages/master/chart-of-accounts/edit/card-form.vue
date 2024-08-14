@@ -27,7 +27,7 @@ watch(selectedType, async () => {
 })
 
 const getAccountTypes = async () => {
-  const response = await axios.get('/v1/chart-of-account-types', {
+  const response = await axios.get('/v1/master/chart-of-account-typess', {
     params: {
       page: 1
     }
@@ -48,7 +48,7 @@ const getAccountTypes = async () => {
 }
 
 const getAccountCategories = async (type_id: string) => {
-  const response = await axios.get('/v1/chart-of-account-categories', {
+  const response = await axios.get('/v1/master/chart-of-account-categories', {
     params: {
       filter: {
         type_id: `${type_id}`

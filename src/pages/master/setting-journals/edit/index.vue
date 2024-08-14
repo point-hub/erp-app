@@ -29,11 +29,11 @@ const selected = ref()
 const options = ref()
 const getSettingJournal = async () => {
   formId.value = route.params.id
-  const response = await axios.get(`/v1/setting-journals/${route.params.id}`)
+  const response = await axios.get(`/v1/master/setting-journals/${route.params.id}`)
   form.data.module = response.data.module
   form.data.feature = response.data.feature
   form.data.journals = response.data.journals
-  const responseChartOfAccounts = await axios.get(`/v1/chart-of-accounts`, {
+  const responseChartOfAccounts = await axios.get(`/v1/master/chart-of-accounts`, {
     params: { page_size: 1000 }
   })
   options.value = responseChartOfAccounts.data.data.map(
@@ -69,7 +69,7 @@ const onUpdate = async () => {
       element.chart_of_account_id = element?.chart_of_account?.id
     })
 
-    const response = await axios.patch(`/v1/setting-journals/${route.params.id}`, form.data)
+    const response = await axios.patch(`/v1/master/setting-journals/${route.params.id}`, form.data)
     if (response.status === 200) {
       toastRef.toast('Update success', { color: 'success' })
       router.push('/master/setting-journals')

@@ -80,7 +80,7 @@ const updateData = async () => {
 }
 
 const getRoles = async () => {
-  const response = await axios.get('/v1/roles', {
+  const response = await axios.get('/v1/master/roles', {
     params: {
       filter: {
         search: searchAll.value,

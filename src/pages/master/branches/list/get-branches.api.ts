@@ -11,7 +11,7 @@ interface ISearch {
 export function useGetBranchesApi() {
   const send = async (search: ISearch, page: number) => {
     try {
-      const response = await axios.get('/v1/branches', {
+      const response = await axios.get('/v1/master/branches', {
         params: {
           filter: {
             search: search.all,

@@ -10,7 +10,7 @@ export function useSigninApi() {
   const send = async (data: any, errors: any) => {
     try {
       const authStore = useAuthStore()
-      const response = await axios.post('/v1/auth/signin', {
+      const response = await axios.post('/v1/master/auth/signin', {
         username: data.username,
         password: data.password,
         remember_me: data.rememberMe

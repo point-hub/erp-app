@@ -10,7 +10,7 @@ const { toastRef } = useToastStore()
 export function useCreateBranchApi() {
   const send = async (data: IForm, errors: IFormError) => {
     try {
-      const response = await axios.post('/v1/branches', data)
+      const response = await axios.post('/v1/master/branches', data)
       if (response.status === 201) {
         toastRef.toast('Create success', { color: 'success' })
         return {

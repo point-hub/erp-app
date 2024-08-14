@@ -80,7 +80,7 @@ const updateData = async () => {
 }
 
 const getAllocationGroups = async () => {
-  const response = await axios.get('/v1/allocation-groups', {
+  const response = await axios.get('/v1/master/allocation-groups', {
     params: {
       filter: {
         search: searchAll.value,

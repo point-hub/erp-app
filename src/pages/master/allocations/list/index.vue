@@ -85,7 +85,7 @@ const updateData = async () => {
 }
 
 const getAllocations = async () => {
-  const response = await axios.get('/v1/allocations', {
+  const response = await axios.get('/v1/master/allocations', {
     params: {
       filter: {
         search: searchAll.value,

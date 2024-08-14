@@ -89,7 +89,7 @@ const updateData = async () => {
 }
 
 const getCustomers = async () => {
-  const response = await axios.get('/v1/customers', {
+  const response = await axios.get('/v1/master/customers', {
     params: {
       filter: {
         search: searchAll.value,
