@@ -3,8 +3,28 @@ export default {
   children: [
     {
       path: 'machines',
-      component: () => import('@/pages/manufacture/machines/index.vue'),
-      meta: { requiresAuth: true }
+      children: [
+        {
+          path: '',
+          component: () => import('@/pages/manufacture/machines/list/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'create',
+          component: () => import('@/pages/manufacture/machines/create/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: ':id',
+          component: () => import('@/pages/manufacture/machines/detail/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: ':id/edit',
+          component: () => import('@/pages/manufacture/machines/edit/index.vue'),
+          meta: { requiresAuth: true }
+        }
+      ]
     }
   ]
 }
