@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ref, watch } from 'vue'
 
 import { useAuthStore } from '@/stores/auth.store'

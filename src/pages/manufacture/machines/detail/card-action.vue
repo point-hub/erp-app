@@ -43,7 +43,7 @@ const onDeleted = async () => {
         @click="
           deleteModalRef.toggleModal(true, {
             id: route.params.id.toString(),
-            name: `[${data.code}] ${data.name}`
+            name: `[${data?.code}] ${data?.name}`
           })
         "
       >
