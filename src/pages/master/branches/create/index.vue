@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
-import { useCreateBranchesApi } from './create-branches.api'
+import { useCreateBranchApi } from './create-branch.api'
 import { useForm } from './form'
 import { useGetCountersApi } from './get-counters.api'
 
@@ -14,7 +14,7 @@ const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
 const getCountersApi = useGetCountersApi()
-const createBranchesApi = useCreateBranchesApi()
+const createBranchesApi = useCreateBranchApi()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.branches?.create) {

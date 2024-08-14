@@ -7,14 +7,15 @@ import type { IForm, IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useCreateBranchesApi() {
-  const send = async (data: IForm, errors: IFormError) => {
+export function useUpdateBranchApi() {
+  const send = async (_id: string, data: IForm, errors: IFormError) => {
     try {
-      const response = await axios.post('/v1/branches', data)
-      if (response.status === 201) {
-        toastRef.toast('Create success', { color: 'success' })
+      const response = await axios.patch(`/v1/branches/${_id}`, data)
+      if (response.status === 200) {
+        toastRef.toast('Update success', { color: 'success' })
         return {
-          inserted_id: response.data.inserted_id
+          matched_count: response.data.matched_count,
+          modified_count: response.data.modified_count
         }
       }
     } catch (error) {
