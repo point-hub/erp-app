@@ -4,7 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete-modal.vue'
 import CardAction from './card-action.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
@@ -15,7 +14,6 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const getBranchApi = useGetBranchApi()
-const deleteModalRef = ref()
 
 const form = reactive(useForm())
 
@@ -34,19 +32,16 @@ onMounted(async () => {
     form.data.name = response.name
     form.data.address = response.address
     form.data.phone = response.phone
+    form.data.notes = response.notes
   }
 })
-
-const onDeleted = async () => {
-  router.push('/master/branches')
-}
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-action v-if="authStore.permission?.master?.branches?.read" />
+    <card-action v-if="authStore.permission?.master?.branches?.read" :data="form.data" />
 
     <card-form
       v-if="authStore.permission?.master?.branches?.read"
@@ -55,8 +50,7 @@ const onDeleted = async () => {
       v-model:name="form.data.name"
       v-model:address="form.data.address"
       v-model:phone="form.data.phone"
+      v-model:notes="form.data.notes"
     />
-
-    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>
 </template>

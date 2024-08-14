@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
 import DeleteModal from '../components/delete-modal.vue'
-import { useForm } from './form'
+import type { IForm } from './form'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const deleteModalRef = ref()
 
-const form = reactive(useForm())
+const data = defineModel<IForm>('data')
 
 const onDeleted = async () => {
   router.push('/master/branches')
@@ -36,7 +36,7 @@ const onDeleted = async () => {
         @click="
           deleteModalRef.toggleModal(true, {
             id: route.params.id.toString(),
-            name: `[${form.data.code}] ${form.data.name}`
+            name: `[${data.code}] ${data.name}`
           })
         "
       >

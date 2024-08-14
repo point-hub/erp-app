@@ -3,6 +3,7 @@ const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
 const phone = defineModel<string>('phone')
+const notes = defineModel<string>('notes')
 </script>
 
 <template>
@@ -14,6 +15,7 @@ const phone = defineModel<string>('phone')
       <base-input disabled v-model="name" label="Name" />
       <base-input disabled v-model="address" label="Address" />
       <base-input disabled v-model="phone" label="Phone" />
+      <base-textarea disabled v-model="notes" label="Notes" :minHeight="128" />
     </div>
   </base-card>
 </template>

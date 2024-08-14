@@ -32,6 +32,7 @@ onMounted(async () => {
     form.data.name = response.name
     form.data.address = response.address
     form.data.phone = response.phone
+    form.data.notes = response.notes
   }
 })
 
@@ -57,6 +58,7 @@ const onUpdate = async () => {
       v-model:name="form.data.name"
       v-model:address="form.data.address"
       v-model:phone="form.data.phone"
+      v-model:notes="form.data.notes"
     />
 
     <base-card class="py-4!" v-if="authStore.permission?.master?.branches?.update">
