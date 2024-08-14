@@ -23,7 +23,7 @@ onMounted(async () => {
   formId.value = response._id
   form.data.type_id = response.type._id
   form.data.category_id = response.category._id
-  form.data.number = response.number
+  form.data.number = response.number.toString()
   form.data.name = response.name
   form.data.subledger = response.subledger
 })
@@ -56,13 +56,12 @@ const onUpdate = async () => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <pre><code>{{ form.data }}</code></pre>
     <card-breadcrumbs />
 
     <card-form
       :form-id="route.params.id.toString()"
-      v-model:type_id="form.data.type._id"
-      v-model:category_id="form.data.category._id"
+      v-model:type_id="form.data.type_id"
+      v-model:category_id="form.data.category_id"
       v-model:number="form.data.number"
       v-model:name="form.data.name"
       v-model:subledger="form.data.subledger"

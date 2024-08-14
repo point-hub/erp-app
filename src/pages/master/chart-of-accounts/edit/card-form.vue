@@ -40,6 +40,9 @@ const getAccountTypes = async () => {
       }
     })
 
+    // for (const element of optionsType.value) {
+    // }
+
     selectedType.value = optionsType.value[0]
   }
 }
