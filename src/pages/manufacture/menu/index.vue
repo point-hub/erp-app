@@ -26,13 +26,6 @@ onMounted(() => {
       icon: 'i-far-conveyor-belt'
     })
   }
-  if (authStore?.permission?.manufacture?.formulas?.read) {
-    menus.value.push({
-      name: 'Formulas',
-      path: '/manufacture/formulas',
-      icon: 'i-far-file-check'
-    })
-  }
   if (authStore?.permission?.manufacture?.processes?.read) {
     menus.value.push({
       name: 'Processes',
@@ -40,13 +33,20 @@ onMounted(() => {
       icon: 'i-far-arrow-progress'
     })
   }
-  if (authStore?.permission?.manufacture?.processing?.read) {
-    menus.value.push({
-      name: 'Processing',
-      path: '/manufacture/processing',
-      icon: 'i-far-conveyor-belt-boxes'
-    })
-  }
+  // if (authStore?.permission?.manufacture?.formulas?.read) {
+  //   menus.value.push({
+  //     name: 'Formulas',
+  //     path: '/manufacture/formulas',
+  //     icon: 'i-far-file-check'
+  //   })
+  // }
+  // if (authStore?.permission?.manufacture?.processing?.read) {
+  //   menus.value.push({
+  //     name: 'Processing',
+  //     path: '/manufacture/processing',
+  //     icon: 'i-far-conveyor-belt-boxes'
+  //   })
+  // }
 })
 </script>
 
