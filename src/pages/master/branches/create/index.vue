@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AxiosError } from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import axios from '@/axios'
@@ -10,31 +10,22 @@ import { useToastStore } from '@/stores/toast.store'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
+import { useGetCountersApi } from './get-counters.api'
 
 const router = useRouter()
 const { toastRef } = useToastStore()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-
-const counter = ref(0)
+const getCountersApi = useGetCountersApi()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.branches?.create) {
     router.push('/unauthorized')
   }
 
-  const response = await axios.get('/v1/counters', {
-    params: {
-      filter: {
-        name: 'branch-code'
-      }
-    }
-  })
+  const response = await getCountersApi.send('branches')
 
-  if (response.status === 200) {
-    counter.value += Number(response.data.data[0].count) + 1
-    form.data.code = `BR${counter.value.toString().padStart(4, '0')}`
-  }
+  if (response) form.data.code = response
 })
 
 const onSave = async () => {

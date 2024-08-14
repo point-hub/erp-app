@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 
 import DeleteModal from '../components/delete-modal.vue'
-import { useGetBranchesApi } from './branches.api'
+import { useGetBranchesApi } from './get-branches.api'
 
 const route = useRoute()
 const router = useRouter()
