@@ -23,6 +23,13 @@ const onDeleted = async () => {
   <base-card class="py-4!">
     <div class="flex gap-2">
       <router-link
+        v-if="authStore.permission?.manufacture?.machines?.create"
+        :to="`/manufacture/machines/${route.params.id}/create`"
+      >
+        <base-button color="info" size="sm">Create</base-button>
+      </router-link>
+
+      <router-link
         v-if="authStore.permission?.manufacture?.machines?.update"
         :to="`/manufacture/machines/${route.params.id}/edit`"
       >

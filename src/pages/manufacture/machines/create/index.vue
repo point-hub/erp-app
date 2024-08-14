@@ -8,16 +8,22 @@ import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useCreateMachineApi } from './create-machine.api'
 import { useForm } from './form'
+import { useGetCountersApi } from './get-counters.api'
 
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
 const createMachinesApi = useCreateMachineApi()
+const getCountersApi = useGetCountersApi()
 
 onMounted(async () => {
   if (!authStore.permission?.manufacture?.machines?.create) {
     router.push('/unauthorized')
   }
+
+  const response = await getCountersApi.send('machines')
+
+  if (response?.code) form.data.code = response.code
 })
 
 const onSave = async () => {
