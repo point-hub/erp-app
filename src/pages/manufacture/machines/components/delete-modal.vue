@@ -57,15 +57,17 @@ const onDelete = async () => {
   }
   // password checking
   const verifyPasswordApi = useVerifyPasswordApi()
-  const responseVerifyPassword = verifyPasswordApi.send(password.value, errors.value)
+  const responseVerifyPassword = await verifyPasswordApi.send(password.value, errors.value)
   if (!responseVerifyPassword) {
     loadingState.value = false
+    return
   }
   // start api call
   const deleteMachineApi = useDeleteMachineApi()
-  const responseDelete = deleteMachineApi.send(id.value, reason.value, errors.value)
+  const responseDelete = await deleteMachineApi.send(id.value, reason.value, errors.value)
   if (!responseDelete) {
     loadingState.value = false
+    return
   }
 
   emit('deleted')

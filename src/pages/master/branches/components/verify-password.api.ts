@@ -17,6 +17,7 @@ export function useVerifyPasswordApi() {
         errors.password = ['Wrong Password']
         return
       }
+      return response
     } catch (error) {
       if (error instanceof AxiosError) {
         const listErrors: string[] = []
