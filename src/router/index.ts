@@ -131,6 +131,10 @@ const router = createRouter({
       ]
     },
     {
+      path: '/unauthorized',
+      component: () => import('@/pages/403.vue')
+    },
+    {
       path: '/:pathMatch(.*)*',
       component: () => import('@/pages/404.vue')
     }

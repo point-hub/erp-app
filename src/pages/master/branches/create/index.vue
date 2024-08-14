@@ -4,6 +4,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
@@ -13,17 +14,15 @@ import { useForm } from './form'
 const router = useRouter()
 const { toastRef } = useToastStore()
 const form = reactive(useForm())
-
-const showApiKeyModal = ref(false)
-const toggleApiKeyModal = (value: boolean) => {
-  let newValue = !showApiKeyModal.value
-  if (value === true) newValue = true
-  if (value === false) newValue = false
-  showApiKeyModal.value = newValue
-}
+const authStore = useAuthStore()
 
 const counter = ref(0)
+
 onMounted(async () => {
+  if (!authStore.permission?.master?.branches?.create) {
+    router.push('/unauthorized')
+  }
+
   const response = await axios.get('/v1/counters', {
     params: {
       filter: {
@@ -43,7 +42,6 @@ const onSave = async () => {
     const response = await axios.post('/v1/branches', form.data)
     if (response.status === 201) {
       toastRef.toast('Create success', { color: 'success' })
-      toggleApiKeyModal(true)
       router.push('/master/branches')
     }
   } catch (error) {
@@ -70,6 +68,7 @@ const onSave = async () => {
     <card-breadcrumbs />
 
     <card-form
+      v-if="authStore.permission?.master?.branches?.create"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"
@@ -77,7 +76,7 @@ const onSave = async () => {
       :errors="form.errors"
     />
 
-    <base-card class="py-4!">
+    <base-card class="py-4!" v-if="authStore.permission?.master?.branches?.create">
       <div class="flex gap-2">
         <base-button color="primary" @click="onSave()">Save</base-button>
       </div>

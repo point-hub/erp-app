@@ -3,14 +3,17 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 
 import DeleteModal from '../components/delete-modal.vue'
+import CardAction from './card-action.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
 
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
 const deleteModalRef = ref()
 
 const form = reactive(useForm())
@@ -18,6 +21,10 @@ const form = reactive(useForm())
 const formId = ref()
 
 onMounted(async () => {
+  if (!authStore.permission?.master?.branches?.read) {
+    router.push('/unauthorized')
+  }
+
   const response = (await axios.get(`/v1/branches/${route.params.id}`)).data
   formId.value = response._id
   form.data.code = response.code
@@ -35,27 +42,10 @@ const onDeleted = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <base-card class="py-4!">
-      <div class="flex gap-2">
-        <router-link :to="`/master/branches/${route.params.id}/edit`">
-          <base-button color="info" size="sm">Edit</base-button>
-        </router-link>
+    <card-action v-if="authStore.permission?.master?.branches?.read" />
 
-        <base-button
-          color="danger"
-          size="sm"
-          @click="
-            deleteModalRef.toggleModal(true, {
-              id: route.params.id.toString(),
-              name: `[${form.data.code}] ${form.data.name}`
-            })
-          "
-        >
-          Delete
-        </base-button>
-      </div>
-    </base-card>
     <card-form
+      v-if="authStore.permission?.master?.branches?.read"
       :form-id="route.params.id.toString()"
       v-model:code="form.data.code"
       v-model:name="form.data.name"

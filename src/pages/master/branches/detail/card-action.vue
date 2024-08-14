@@ -1,0 +1,48 @@
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+import { useAuthStore } from '@/stores/auth.store'
+
+import DeleteModal from '../components/delete-modal.vue'
+import { useForm } from './form'
+
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+const deleteModalRef = ref()
+
+const form = reactive(useForm())
+
+const onDeleted = async () => {
+  router.push('/master/branches')
+}
+</script>
+
+<template>
+  <base-card class="py-4!">
+    <div class="flex gap-2">
+      <router-link
+        v-if="authStore.permission?.master?.branches?.update"
+        :to="`/master/branches/${route.params.id}/edit`"
+      >
+        <base-button color="info" size="sm">Edit</base-button>
+      </router-link>
+
+      <base-button
+        v-if="authStore.permission?.master?.branches?.delete"
+        color="danger"
+        size="sm"
+        @click="
+          deleteModalRef.toggleModal(true, {
+            id: route.params.id.toString(),
+            name: `[${form.data.code}] ${form.data.name}`
+          })
+        "
+      >
+        Delete
+      </base-button>
+    </div>
+    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
+  </base-card>
+</template>
