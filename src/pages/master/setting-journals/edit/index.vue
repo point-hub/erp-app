@@ -18,6 +18,7 @@ interface ISettingJournal {
   _id: string
   module: string
   feature: string
+  journals: { [key: string]: any }
 }
 
 const isLoading = ref(false)
@@ -64,7 +65,7 @@ onMounted(async () => {
 
 const onUpdate = async () => {
   try {
-    settingJournal.value?.journals.forEach((element) => {
+    settingJournal.value?.journals.forEach((element: any) => {
       element.chart_of_account_id = element?.chart_of_account?.id
     })
 

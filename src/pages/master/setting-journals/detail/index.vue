@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import axios from '@/axios'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
 const route = useRoute()
-const router = useRouter()
 
 interface ISettingJournal {
   _id: string
   module: string
   feature: string
+  journals: { [key: string]: any }[]
 }
 
 const isLoading = ref(false)
@@ -65,7 +64,7 @@ onMounted(async () => {
               </td>
             </tr>
             <template v-if="!isLoading">
-              <tr v-for="journal in settingJournal?.journals" :key="journal">
+              <tr v-for="journal in settingJournal?.journals" :key="journal._id">
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>
