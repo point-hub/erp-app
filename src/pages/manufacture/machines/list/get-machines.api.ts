@@ -4,8 +4,6 @@ interface ISearch {
   all: string
   code: string
   name: string
-  address: string
-  phone: string
 }
 
 export function useGetMachinesApi() {
@@ -16,9 +14,7 @@ export function useGetMachinesApi() {
           filter: {
             search: search.all,
             code: search.code,
-            name: search.name,
-            address: search.address,
-            phone: search.phone
+            name: search.name
           },
           page: page
         }

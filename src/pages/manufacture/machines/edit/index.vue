@@ -30,8 +30,6 @@ onMounted(async () => {
     formId.value = response._id
     form.data.code = response.code
     form.data.name = response.name
-    form.data.address = response.address
-    form.data.phone = response.phone
     form.data.notes = response.notes
   }
 })
@@ -56,8 +54,6 @@ const onUpdate = async () => {
       :form-id="route.params.id.toString()"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
-      v-model:address="form.data.address"
-      v-model:phone="form.data.phone"
       v-model:notes="form.data.notes"
     />
 

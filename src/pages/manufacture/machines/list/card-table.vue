@@ -18,16 +18,14 @@ interface IMachine {
   _id: string
   code: string
   name: string
-  address: string
-  phone: string
+  notes: string
 }
 
 const searchAll = ref('')
 const search = ref({
   code: '',
   name: '',
-  address: '',
-  phone: ''
+  notes: ''
 })
 const machines = ref<IMachine[]>()
 const pagination = ref({
@@ -45,9 +43,7 @@ const updateRouter = () => {
       search: searchAll.value,
       page: pagination.value.page,
       'search.code': search.value.code,
-      'search.name': search.value.name,
-      'search.address': search.value.address,
-      'search.phone': search.value.phone
+      'search.name': search.value.name
     }
   })
 }
@@ -114,8 +110,6 @@ onMounted(async () => {
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.code = route.query['search.code']?.toString() ?? ''
   search.value.name = route.query['search.name']?.toString() ?? ''
-  search.value.address = route.query['search.address']?.toString() ?? ''
-  search.value.phone = route.query['search.phone']?.toString() ?? ''
   pagination.value.page = Number(route.query.page ?? 1)
   // call api
   const response = await getMachinesApi.send(
@@ -165,8 +159,6 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Code</th>
             <th>Name</th>
-            <th>Address</th>
-            <th>Phone</th>
           </tr>
           <tr class="bg-slate-50 dark:bg-slate-700">
             <th></th>
@@ -176,17 +168,11 @@ const onDelete = async () => {
             <th class="basic-table-head">
               <base-input required v-model="search.name" placeholder="Search" border="none" />
             </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.address" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.phone" placeholder="Search" border="none" />
-            </th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="isLoading">
-            <td colspan="5">
+            <td colspan="3">
               <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
                 <base-spinner color="primary" size="xs" /> <span>Loading</span>
               </p>
@@ -233,8 +219,6 @@ const onDelete = async () => {
                 </router-link>
               </td>
               <td>{{ machine.name }}</td>
-              <td>{{ machine.address }}</td>
-              <td>{{ machine.phone }}</td>
             </tr>
           </template>
         </tbody>

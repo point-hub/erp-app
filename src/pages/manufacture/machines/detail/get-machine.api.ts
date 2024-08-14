@@ -9,8 +9,6 @@ export function useGetMachineApi() {
         _id: response.data._id,
         code: response.data.code,
         name: response.data.name,
-        address: response.data.address,
-        phone: response.data.phone,
         notes: response.data.notes
       }
     } catch (error) {

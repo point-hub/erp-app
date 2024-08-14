@@ -4,8 +4,6 @@ export interface IForm {
   [key: string]: any
   code: string
   name: string
-  address: string
-  phone: string
   notes: string
 }
 
@@ -13,8 +11,6 @@ export interface IFormError {
   [key: string]: string[]
   code: string[]
   name: string[]
-  address: string[]
-  phone: string[]
   notes: string[]
 }
 
@@ -22,16 +18,12 @@ export function useForm() {
   const defaultForm: IForm = {
     code: '',
     name: '',
-    address: '',
-    phone: '',
     notes: ''
   }
 
   const defaultFormError: IFormError = {
     code: [],
     name: [],
-    address: [],
-    phone: [],
     notes: []
   }
 
