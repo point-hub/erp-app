@@ -12,7 +12,9 @@ export function useGetCountersApi() {
       })
 
       if (response.status === 200) {
-        return `${response.data.data[0].code}${(Number(response.data.data[0].count) + 1).toString().padStart(4, '0')}`
+        return {
+          code: `${response.data.data[0].code}${(Number(response.data.data[0].count) + 1).toString().padStart(4, '0')}`
+        }
       }
     } catch (error) {
       console.log(error)

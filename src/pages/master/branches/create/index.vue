@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { AxiosError } from 'axios'
 import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
-import axios from '@/axios'
 import { useAuthStore } from '@/stores/auth.store'
-import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
+import { useCreateBranchesApi } from './create-branches.api'
 import { useForm } from './form'
 import { useGetCountersApi } from './get-counters.api'
 
 const router = useRouter()
-const { toastRef } = useToastStore()
 const form = reactive(useForm())
 const authStore = useAuthStore()
 const getCountersApi = useGetCountersApi()
+const createBranchesApi = useCreateBranchesApi()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.branches?.create) {
@@ -25,32 +23,17 @@ onMounted(async () => {
 
   const response = await getCountersApi.send('branches')
 
-  if (response) form.data.code = response
+  if (response?.code) form.data.code = response.code
 })
 
 const onSave = async () => {
-  try {
-    const response = await axios.post('/v1/branches', form.data)
-    if (response.status === 201) {
-      toastRef.toast('Create success', { color: 'success' })
-      router.push('/master/branches')
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      var listErrors: string[] = []
-      const formErrors = error?.response?.data?.errors
-      if (formErrors) {
-        for (const key in formErrors) {
-          form.errors[key] = formErrors[key]
-          listErrors.push(formErrors[key])
-        }
-      }
-      toastRef.toast(error.response?.data.message, {
-        lists: listErrors.flat(),
-        color: 'danger'
-      })
-    }
+  if (!authStore.permission?.master?.branches?.create) {
+    router.push('/unauthorized')
   }
+
+  const response = await createBranchesApi.send(form.data, form.errors)
+
+  if (response?.inserted_id) router.push('/master/branches')
 }
 </script>
 
