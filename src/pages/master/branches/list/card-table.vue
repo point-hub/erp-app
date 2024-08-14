@@ -123,8 +123,7 @@ onMounted(async () => {
   pagination.value = response?.pagination
 })
 
-// open row menu
-const openMenu = (branch: IBranch, index: number) => {
+const onDeleteModal = (branch: IBranch, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: branch._id,
@@ -132,7 +131,6 @@ const openMenu = (branch: IBranch, index: number) => {
   })
 }
 
-// delete
 const onDelete = async () => {
   // call api
   const response = await getBranchesApi.send(
@@ -206,7 +204,11 @@ const onDelete = async () => {
                           </base-button>
                         </router-link>
                         <base-divider orientation="vertical" class="my-1!"></base-divider>
-                        <base-button variant="text" color="danger" @click="openMenu(branch, index)">
+                        <base-button
+                          variant="text"
+                          color="danger"
+                          @click="onDeleteModal(branch, index)"
+                        >
                           <div class="flex gap-2 w-full">
                             <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
                             <p>Delete</p>
