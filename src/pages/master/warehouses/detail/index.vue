@@ -2,65 +2,55 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete-modal.vue'
+import CardAction from './card-action.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
+import { useGetWarehouseApi } from './get-warehouse.api'
 
 const route = useRoute()
 const router = useRouter()
-const deleteModalRef = ref()
+const authStore = useAuthStore()
+const getWarehouseApi = useGetWarehouseApi()
 
 const form = reactive(useForm())
 
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/master/warehouses/${route.params.id}`)).data
-  formId.value = response._id
-  form.data.branch_id = response.branch._id
-  form.data.code = response.code
-  form.data.name = response.name
-})
+  if (!authStore.permission?.master?.warehouses?.read) {
+    router.push('/unauthorized')
+  }
 
-const onDeleted = async () => {
-  router.push('/master/warehouses')
-}
+  const response = await getWarehouseApi.send(route.params.id.toString())
+
+  if (response) {
+    formId.value = response._id
+    form.data.code = response.code
+    form.data.name = response.name
+    form.data.address = response.address
+    form.data.phone = response.phone
+    form.data.notes = response.notes
+  }
+})
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <base-card class="py-4!">
-      <div class="flex gap-2">
-        <router-link :to="`/master/warehouses/${route.params.id}/edit`">
-          <base-button color="info" size="sm">Edit</base-button>
-        </router-link>
+    <card-action v-if="authStore.permission?.master?.warehouses?.read" :data="form.data" />
 
-        <base-button
-          color="danger"
-          size="sm"
-          @click="
-            deleteModalRef.toggleModal(true, {
-              id: route.params.id.toString(),
-              name: `[${form.data.code}] ${form.data.name}`
-            })
-          "
-        >
-          Delete
-        </base-button>
-      </div>
-    </base-card>
     <card-form
+      v-if="authStore.permission?.master?.warehouses?.read"
       :form-id="route.params.id.toString()"
-      v-model:branch_id="form.data.branch_id"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
+      v-model:address="form.data.address"
+      v-model:phone="form.data.phone"
+      v-model:notes="form.data.notes"
     />
-
-    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>
 </template>

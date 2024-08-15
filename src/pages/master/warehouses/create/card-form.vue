@@ -1,37 +1,41 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import axios from '@/axios'
-
 import type { IFormError } from './form'
+import { type ISearch, useGetBranchesApi } from './get-branches.api'
 
+const branch_id = defineModel<string>('branch_id')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
-const branch_id = defineModel<string>('branch_id')
+const address = defineModel<string>('address')
+const phone = defineModel<string>('phone')
+const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref([])
+const selectedBranch = ref()
+const optionsBranch = ref([])
 
-watch(selected, () => {
-  branch_id.value = selected.value.id ?? ''
+const getBranchesApi = useGetBranchesApi()
+
+watch(selectedBranch, () => {
+  branch_id.value = selectedBranch.value.id ?? ''
 })
 
+const search: ISearch = {
+  all: ''
+}
+
 onMounted(async () => {
-  const response = await axios.get('/v1/master/branches', {
-    params: {
-      page: 1
-    }
-  })
-  if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
+  const response = await getBranchesApi.send(search, 1)
+  if (response?.data) {
+    optionsBranch.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
         id: data._id,
         label: `[${data.code}] ${data.name}`
       }
     })
 
-    selected.value = options.value[0]
+    selectedBranch.value = optionsBranch.value[0]
   }
 })
 </script>
@@ -44,12 +48,15 @@ onMounted(async () => {
       <base-autocomplete
         required
         label="Branch"
-        v-model="selected"
-        :options="options"
+        v-model="selectedBranch"
+        :options="optionsBranch"
         :errors="errors?.branch_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
+      <base-input v-model="address" label="Address" :errors="errors?.address" />
+      <base-input v-model="phone" label="Phone" :errors="errors?.phone" />
+      <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>
 </template>
