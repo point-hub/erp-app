@@ -15,29 +15,26 @@ const deleteModalRef = ref()
 const data = defineModel<IForm>('data')
 
 const onDeleted = async () => {
-  router.push('/master/branches')
+  router.push('/master/roles')
 }
 </script>
 
 <template>
   <base-card class="py-4!">
     <div class="flex gap-2">
-      <router-link
-        v-if="authStore.permission?.master?.branches?.create"
-        :to="`/master/branches/create`"
-      >
+      <router-link v-if="authStore.permission?.master?.roles?.create" :to="`/master/roles/create`">
         <base-button color="info" size="sm">Create</base-button>
       </router-link>
 
       <router-link
-        v-if="authStore.permission?.master?.branches?.update"
-        :to="`/master/branches/${route.params.id}/edit`"
+        v-if="authStore.permission?.master?.roles?.update"
+        :to="`/master/roles/${route.params.id}/edit`"
       >
         <base-button color="info" size="sm">Edit</base-button>
       </router-link>
 
       <base-button
-        v-if="authStore.permission?.master?.branches?.delete"
+        v-if="authStore.permission?.master?.roles?.delete"
         color="danger"
         size="sm"
         @click="

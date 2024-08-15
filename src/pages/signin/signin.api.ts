@@ -20,6 +20,7 @@ export function useSigninApi() {
         name: response.data.name,
         permission: response.data.role.permission
       })
+
       toastRef.toast('Signin success', { color: 'success' })
       return response
     } catch (error) {

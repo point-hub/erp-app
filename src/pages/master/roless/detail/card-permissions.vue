@@ -5,7 +5,6 @@ const permission = defineModel<{ [key: string]: any }>('permission', { default: 
 <template>
   <base-card>
     <template #header>Permissions</template>
-
     <BaseTabGroup as="div" class="dark:bg-slate-800">
       <BaseTabList class="tablist">
         <BaseTab as="template" v-slot="{ selected }">

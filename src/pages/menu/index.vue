@@ -21,49 +21,49 @@ const menus = ref([
 ])
 
 onMounted(() => {
-  if (authStore.permission.master.menu) {
+  if (authStore.permission?.master?.menu) {
     menus.value.push({
       name: 'Master',
       path: '/master',
       icon: 'i-far-database'
     })
   }
-  // if (authStore.permission.purchasing.menu) {
+  // if (authStore.permission?.purchasing?.menu) {
   //   menus.value.push({
   //     name: 'Purchasing',
   //     path: '/purchasing',
   //     icon: 'i-far-cart-arrow-down'
   //   })
   // }
-  // if (authStore.permission.sales.menu) {
+  // if (authStore.permission?.sales?.menu) {
   //   menus.value.push({
   //     name: 'Sales',
   //     path: '/sales',
   //     icon: 'i-far-cart-arrow-up'
   //   })
   // }
-  // if (authStore.permission.finance.menu) {
+  // if (authStore.permission?.finance?.menu) {
   //   menus.value.push({
   //     name: 'Finance',
   //     path: '/finance',
   //     icon: 'i-far-money-check-dollar-pen'
   //   })
   // }
-  if (authStore.permission.manufacture.menu) {
+  if (authStore.permission?.manufacture?.menu) {
     menus.value.push({
       name: 'Manufacture',
       path: '/manufacture',
       icon: 'i-far-conveyor-belt-arm'
     })
   }
-  // if (authStore.permission.inventory.menu) {
+  // if (authStore.permission?.inventory?.menu) {
   //   menus.value.push({
   //     name: 'Inventory',
   //     path: '/inventory',
   //     icon: 'i-far-boxes-stacked'
   //   })
   // }
-  // if (authStore.permission.accounting.menu) {
+  // if (authStore.permission?.accounting?.menu) {
   //   menus.value.push({
   //     name: 'Accounting',
   //     path: '/accounting',

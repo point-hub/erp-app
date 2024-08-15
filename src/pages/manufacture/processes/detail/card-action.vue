@@ -24,7 +24,7 @@ const onDeleted = async () => {
     <div class="flex gap-2">
       <router-link
         v-if="authStore.permission?.manufacture?.processes?.create"
-        :to="`/manufacture/processes/${route.params.id}/create`"
+        :to="`/manufacture/processes/create`"
       >
         <base-button color="info" size="sm">Create</base-button>
       </router-link>

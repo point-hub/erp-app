@@ -4,7 +4,8 @@ export interface IForm {
   [key: string]: any
   code: string
   name: string
-  permission: { [key: string]: any }
+  permission: { [key: string]: boolean | { [key: string]: boolean } }
+  notes: string
 }
 
 export interface IFormError {
@@ -12,19 +13,23 @@ export interface IFormError {
   code: string[]
   name: string[]
   permission: string[]
+  notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
     code: '',
     name: '',
-    permission: {}
+    permission: {},
+    phone: '',
+    notes: ''
   }
 
   const defaultFormError: IFormError = {
     code: [],
     name: [],
-    permission: []
+    permission: [],
+    notes: []
   }
 
   const data = ref<IForm>(defaultForm)

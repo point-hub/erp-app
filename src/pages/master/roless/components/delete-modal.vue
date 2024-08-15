@@ -1,21 +1,22 @@
 <script setup lang="ts">
+import { AxiosError } from 'axios'
 import { ref } from 'vue'
 
+import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
-
-import { useDeleteRoleApi } from './delete-branch.api'
-import type { IFormError } from './form'
-import { useVerifyPasswordApi } from './verify-password.api'
 
 const { toastRef } = useToastStore()
 
 const password = ref()
-const errors = ref<IFormError>({
+const errors = ref<{
+  password?: string[]
+  reason?: string[]
+}>({
   password: [],
   reason: []
 })
-const id = defineModel<string>('id')
-const name = defineModel<string>('name')
+const id = defineModel('id')
+const name = defineModel('name')
 const emit = defineEmits(['deleted'])
 
 interface IData {
@@ -29,15 +30,12 @@ const toggleModal = (state?: boolean, data?: IData) => {
     name.value = data.name
   }
   let newValue = !showModal.value
-  if (state === true) {
-    newValue = true
-    loadingState.value = false
-  }
+  if (state === true) newValue = true
   if (state === false) newValue = false
   showModal.value = newValue
 }
 
-const reason = ref<string>()
+const reason = ref()
 const loadingState = ref(false)
 const onDelete = async () => {
   // prevent calling twice use loading state
@@ -51,30 +49,56 @@ const onDelete = async () => {
   if (!reason.value) {
     errors.value.reason = ['The reason field is required.']
   }
-  if (!id.value || !password.value || !reason.value) {
+  if (!errors.value?.password || !errors.value?.reason) {
     loadingState.value = false
     return
   }
   // password checking
-  const verifyPasswordApi = useVerifyPasswordApi()
-  const responseVerifyPassword = await verifyPasswordApi.send(password.value, errors.value)
-  if (!responseVerifyPassword) {
-    loadingState.value = false
-    return
+  try {
+    const response = await axios.post(`/v1/master/auth/verify-password`, {
+      password: password.value
+    })
+    if (response.data.verified === false) {
+      errors.value.password = ['Wrong Password']
+      loadingState.value = false
+      return
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      loadingState.value = false
+      return
+    }
   }
   // start api call
-  const deleteRoleApi = useDeleteRoleApi()
-  const responseDelete = await deleteRoleApi.send(id.value, reason.value, errors.value)
-  if (!responseDelete) {
-    loadingState.value = false
-    return
+  try {
+    const response = await axios.post(`/v1/master/roles/${id.value}/delete`, {
+      reason: reason.value
+    })
+    if (response.status === 200) {
+      emit('deleted')
+      password.value = ''
+      reason.value = ''
+      toastRef.toast(`Delete Role "${name.value}" success`, {
+        color: 'success'
+      })
+      toggleModal(false)
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      var listErrors: string[] = []
+      const formErrors = error?.response?.data?.errors
+      if (formErrors) {
+        for (const key in formErrors) {
+          errors.value.reason = formErrors[key]
+          listErrors.push(formErrors[key])
+        }
+      }
+      toastRef.toast(error.response?.data.message, {
+        lists: listErrors.flat(),
+        color: 'danger'
+      })
+    }
   }
-
-  emit('deleted')
-  password.value = ''
-  reason.value = ''
-  toastRef.toast(`Delete Role "${name.value}" success`, { color: 'success' })
-  toggleModal(false)
 
   // stop loading state
   loadingState.value = false

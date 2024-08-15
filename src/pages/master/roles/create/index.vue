@@ -1,72 +1,48 @@
 <script setup lang="ts">
-import { AxiosError } from 'axios'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
-import axios from '@/axios'
-import { useToastStore } from '@/stores/toast.store'
+import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import CardPermissions from './card-permissions.vue'
+import { useCreateRoleApi } from './create-role.api'
 import { useForm } from './form'
+import { useGetCountersApi } from './get-counters.api'
+import { useGetPermissionsApi } from './get-permissions.api'
 
 const router = useRouter()
-const { toastRef } = useToastStore()
 const form = reactive(useForm())
+const authStore = useAuthStore()
+const getCountersApi = useGetCountersApi()
+const getPermissionsApi = useGetPermissionsApi()
+const createRolesApi = useCreateRoleApi()
 
-const showApiKeyModal = ref(false)
-const toggleApiKeyModal = (value: boolean) => {
-  let newValue = !showApiKeyModal.value
-  if (value === true) newValue = true
-  if (value === false) newValue = false
-  showApiKeyModal.value = newValue
-}
-
-const counter = ref(0)
 onMounted(async () => {
-  const response = await axios.get('/v1/counters', {
-    params: {
-      filter: {
-        name: 'role-code'
-      }
-    }
-  })
-
-  if (response.status === 200) {
-    counter.value += Number(response.data.data[0].count) + 1
-    form.data.code = `RL${counter.value.toString().padStart(4, '0')}`
+  if (!authStore.permission?.master?.roles?.create) {
+    router.push('/unauthorized')
   }
 
-  console.log('permissions')
-  const responsePermissions = (await axios.get(`/v1/master/permissions`)).data
-  form.data.permission = responsePermissions.data[0]
+  const responsePermissions = await getPermissionsApi.send()
+
+  if (responsePermissions) {
+    form.data.permission = responsePermissions
+  }
+
+  const response = await getCountersApi.send('roles')
+
+  if (response?.code) form.data.code = response.code
 })
 
 const onSave = async () => {
-  try {
-    const response = await axios.post('/v1/master/roles', form.data)
-    if (response.status === 201) {
-      toastRef.toast('Create success', { color: 'success' })
-      toggleApiKeyModal(true)
-      router.push('/master/roles')
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      var listErrors: string[] = []
-      const formErrors = error?.response?.data?.errors
-      if (formErrors) {
-        for (const key in formErrors) {
-          form.errors[key] = formErrors[key]
-          listErrors.push(formErrors[key])
-        }
-      }
-      toastRef.toast(error.response?.data.message, {
-        lists: listErrors.flat(),
-        color: 'danger'
-      })
-    }
+  if (!authStore.permission?.master?.roles?.create) {
+    router.push('/unauthorized')
   }
+
+  const response = await createRolesApi.send(form.data, form.errors)
+
+  if (response?.inserted_id) router.push('/master/roles')
 }
 </script>
 
@@ -74,11 +50,19 @@ const onSave = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form v-model:code="form.data.code" v-model:name="form.data.name" :errors="form.errors" />
+    <card-form
+      v-if="authStore.permission?.master?.roles?.create"
+      v-model:code="form.data.code"
+      v-model:name="form.data.name"
+      v-model:address="form.data.address"
+      v-model:phone="form.data.phone"
+      v-model:notes="form.data.notes"
+      :errors="form.errors"
+    />
 
-    <card-permissions v-model:permission="form.data.permission" />
+    <card-permissions v-model:permission="form.data.permission" :errors="form.errors" />
 
-    <base-card class="py-4!">
+    <base-card class="py-4!" v-if="authStore.permission?.master?.roles?.create">
       <div class="flex gap-2">
         <base-button color="primary" @click="onSave()">Save</base-button>
       </div>
