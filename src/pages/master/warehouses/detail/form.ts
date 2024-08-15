@@ -2,6 +2,7 @@ import { ref } from 'vue'
 
 export interface IForm {
   [key: string]: any
+  branch: string
   code: string
   name: string
   address: string
@@ -11,6 +12,7 @@ export interface IForm {
 
 export function useForm() {
   const defaultForm: IForm = {
+    branch: '',
     code: '',
     name: '',
     address: '',

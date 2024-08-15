@@ -28,6 +28,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
+    form.data.branch = `[${response.branch.code}] ${response.branch.name}`
     form.data.code = response.code
     form.data.name = response.name
     form.data.address = response.address
@@ -46,6 +47,7 @@ onMounted(async () => {
     <card-form
       v-if="authStore.permission?.master?.warehouses?.read"
       :form-id="route.params.id.toString()"
+      v-model:branch="form.data.branch"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"

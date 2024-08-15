@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const branch = defineModel<string>('branch')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -11,6 +12,7 @@ const notes = defineModel<string>('notes')
     <template #header>Warehouses</template>
 
     <div class="flex flex-col gap-4 mt-5">
+      <base-input disabled v-model="branch" label="Branch" />
       <base-input disabled v-model="code" label="Code" />
       <base-input disabled v-model="name" label="Name" />
       <base-input disabled v-model="address" label="Address" />

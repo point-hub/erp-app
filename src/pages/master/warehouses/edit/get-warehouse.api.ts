@@ -7,6 +7,7 @@ export function useGetWarehouseApi() {
 
       return {
         _id: response.data._id,
+        branch: response.data.branch,
         code: response.data.code,
         name: response.data.name,
         address: response.data.address,

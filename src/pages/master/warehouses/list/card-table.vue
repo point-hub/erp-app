@@ -16,6 +16,11 @@ const getWarehousesApi = useGetWarehousesApi()
 
 interface IWarehouse {
   _id: string
+  branch: {
+    _id: string
+    code: string
+    name: string
+  }
   code: string
   name: string
   address: string
@@ -24,6 +29,7 @@ interface IWarehouse {
 
 const searchAll = ref('')
 const search = ref({
+  branch: '',
   code: '',
   name: '',
   address: '',
@@ -44,6 +50,7 @@ const updateRouter = () => {
     query: {
       search: searchAll.value,
       page: pagination.value.page,
+      'search.branch': search.value.branch,
       'search.code': search.value.code,
       'search.name': search.value.name,
       'search.address': search.value.address,
@@ -112,6 +119,7 @@ const onPageUpdate = async () => {
 onMounted(async () => {
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
+  search.value.branch = route.query['search.branch']?.toString() ?? ''
   search.value.code = route.query['search.code']?.toString() ?? ''
   search.value.name = route.query['search.name']?.toString() ?? ''
   search.value.address = route.query['search.address']?.toString() ?? ''
@@ -165,6 +173,7 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Code</th>
             <th>Name</th>
+            <th>Branch</th>
             <th>Address</th>
             <th>Phone</th>
           </tr>
@@ -175,6 +184,9 @@ const onDelete = async () => {
             </th>
             <th class="basic-table-head">
               <base-input required v-model="search.name" placeholder="Search" border="none" />
+            </th>
+            <th class="basic-table-head">
+              <base-input required v-model="search.branch" placeholder="Search" border="none" />
             </th>
             <th class="basic-table-head">
               <base-input required v-model="search.address" placeholder="Search" border="none" />
@@ -193,7 +205,7 @@ const onDelete = async () => {
             </td>
           </tr>
           <template v-if="!isLoading">
-            <tr v-for="(branch, index) in warehouses" :key="index">
+            <tr v-for="(warehouse, index) in warehouses" :key="index">
               <td>
                 <base-popover placement="bottom" ref="rowMenuRef">
                   <base-button size="xs" @click="rowMenuRef[index].toggle()">
@@ -202,7 +214,7 @@ const onDelete = async () => {
                   <template #content>
                     <base-card class="py-1! px-2! text-sm">
                       <div class="flex flex-col">
-                        <router-link :to="`/master/warehouses/${branch._id}`">
+                        <router-link :to="`/master/warehouses/${warehouse._id}`">
                           <base-button variant="text" color="info">
                             <div class="flex gap-2 w-full">
                               <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
@@ -215,7 +227,7 @@ const onDelete = async () => {
                           v-if="authStore.permission?.master?.warehouses?.delete"
                           variant="text"
                           color="danger"
-                          @click="onDeleteModal(branch, index)"
+                          @click="onDeleteModal(warehouse, index)"
                         >
                           <div class="flex gap-2 w-full">
                             <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
@@ -228,13 +240,14 @@ const onDelete = async () => {
                 </base-popover>
               </td>
               <td>
-                <router-link :to="`/master/warehouses/${branch._id}`" class="text-blue">
-                  {{ branch.code }}
+                <router-link :to="`/master/warehouses/${warehouse._id}`" class="text-blue">
+                  {{ warehouse.code }}
                 </router-link>
               </td>
-              <td>{{ branch.name }}</td>
-              <td>{{ branch.address }}</td>
-              <td>{{ branch.phone }}</td>
+              <td>{{ warehouse.name }}</td>
+              <td>[{{ warehouse.branch.code }}] {{ warehouse.branch.name }}</td>
+              <td>{{ warehouse.address }}</td>
+              <td>{{ warehouse.phone }}</td>
             </tr>
           </template>
         </tbody>

@@ -12,10 +12,9 @@ const phone = defineModel<string>('phone')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
+const getBranchesApi = useGetBranchesApi()
 const selectedBranch = ref()
 const optionsBranch = ref([])
-
-const getBranchesApi = useGetBranchesApi()
 
 watch(selectedBranch, () => {
   branch_id.value = selectedBranch.value.id ?? ''
