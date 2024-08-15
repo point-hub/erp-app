@@ -11,7 +11,7 @@ const breadcrumbs: IBreadcrumb[] = [
     path: '/menu'
   },
   {
-    name: 'Master',
+    name: 'Manufacture',
     path: '/manufacture'
   },
   {
