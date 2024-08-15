@@ -10,6 +10,7 @@ const category_id = defineModel<string>('category_id')
 const number = defineModel<string>('number')
 const name = defineModel<string>('name')
 const subledger = defineModel<string>('subledger')
+const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
 const optionsType = ref([])
@@ -27,7 +28,7 @@ watch(selectedType, async () => {
 })
 
 const getAccountTypes = async () => {
-  const response = await axios.get('/v1/master/chart-of-account-typess', {
+  const response = await axios.get('/v1/master/chart-of-account-types', {
     params: {
       page: 1
     }
@@ -92,6 +93,7 @@ onMounted(async () => {
       <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input v-model="subledger" label="Subledger" :errors="errors?.subledger" />
+      <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>
 </template>

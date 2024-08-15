@@ -53,14 +53,14 @@ onMounted(async () => {
   const response = await axios.get('/v1/counters', {
     params: {
       filter: {
-        name: 'warehouse-code'
+        name: 'warehouses'
       }
     }
   })
 
   if (response.status === 200) {
     counter.value += Number(response.data.data[0].count) + 1
-    form.data.code = `WH${counter.value.toString().padStart(4, '0')}`
+    form.data.code = `W${counter.value.toString().padStart(4, '0')}`
   }
 })
 </script>

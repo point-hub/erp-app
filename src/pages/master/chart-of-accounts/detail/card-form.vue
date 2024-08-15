@@ -4,6 +4,7 @@ const category = defineModel<string>('category')
 const number = defineModel<string>('number')
 const name = defineModel<string>('name')
 const subledger = defineModel<string>('subledger')
+const notes = defineModel<string>('notes')
 </script>
 
 <template>
@@ -16,6 +17,7 @@ const subledger = defineModel<string>('subledger')
       <base-input disabled label="Number" v-model="number" />
       <base-input disabled label="Name" v-model="name" />
       <base-input disabled label="Subledger" v-model="subledger" />
+      <base-textarea disabled label="Notes" v-model="notes" :minHeight="128" />
     </div>
   </base-card>
 </template>

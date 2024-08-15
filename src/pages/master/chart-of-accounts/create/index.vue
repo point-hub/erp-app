@@ -1,51 +1,25 @@
 <script setup lang="ts">
-import { AxiosError } from 'axios'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
-import axios from '@/axios'
-import { useToastStore } from '@/stores/toast.store'
+import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
+import { useCreateChartOfAccountApi } from './create-chart-of-account.api'
 import { useForm } from './form'
 
 const router = useRouter()
-const { toastRef } = useToastStore()
 const form = reactive(useForm())
-
-const showApiKeyModal = ref(false)
-const toggleApiKeyModal = (value: boolean) => {
-  let newValue = !showApiKeyModal.value
-  if (value === true) newValue = true
-  if (value === false) newValue = false
-  showApiKeyModal.value = newValue
-}
+const authStore = useAuthStore()
+const createChartOfAccountApi = useCreateChartOfAccountApi()
 
 const onSave = async () => {
-  try {
-    const response = await axios.post('/v1/master/chart-of-accounts', form.data)
-    if (response.status === 201) {
-      toastRef.toast('Create success', { color: 'success' })
-      toggleApiKeyModal(true)
-      router.push('/master/chart-of-accounts')
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      var listErrors: string[] = []
-      const formErrors = error?.response?.data?.errors
-      if (formErrors) {
-        for (const key in formErrors) {
-          form.errors[key] = formErrors[key]
-          listErrors.push(formErrors[key])
-        }
-      }
-      toastRef.toast(error.response?.data.message, {
-        lists: listErrors.flat(),
-        color: 'danger'
-      })
-    }
+  if (!authStore.permission?.master?.branches?.create) {
+    router.push('/unauthorized')
   }
+  const response = await createChartOfAccountApi.send(form.data, form.errors)
+  if (response?.inserted_id) router.push('/master/chart-of-accounts')
 }
 </script>
 
@@ -59,6 +33,7 @@ const onSave = async () => {
       v-model:number="form.data.number"
       v-model:name="form.data.name"
       v-model:subledger="form.data.subledger"
+      v-model:notes="form.data.notes"
       :errors="form.errors"
     />
 

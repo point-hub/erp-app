@@ -27,7 +27,7 @@ watch(selectedType, async () => {
 })
 
 const getAccountTypes = async () => {
-  const response = await axios.get('/v1/master/chart-of-account-typess', {
+  const response = await axios.get('/v1/master/chart-of-account-types', {
     params: {
       page: 1
     }

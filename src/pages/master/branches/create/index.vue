@@ -20,9 +20,7 @@ onMounted(async () => {
   if (!authStore.permission?.master?.branches?.create) {
     router.push('/unauthorized')
   }
-
   const response = await getCountersApi.send('branches')
-
   if (response?.code) form.data.code = response.code
 })
 
@@ -30,9 +28,7 @@ const onSave = async () => {
   if (!authStore.permission?.master?.branches?.create) {
     router.push('/unauthorized')
   }
-
   const response = await createBranchesApi.send(form.data, form.errors)
-
   if (response?.inserted_id) router.push('/master/branches')
 }
 </script>
