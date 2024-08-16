@@ -15,18 +15,21 @@ const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
 const getBranchesApi = useGetBranchesApi()
-const selectedBranch = ref()
-const optionsBranch = ref([])
+const selectedBranch = ref<{ id: string; label: string }>({ id: '', label: '' })
+const optionsBranch = ref<{ id: string; label: string }[]>([])
 
 watch(selectedBranch, () => {
-  branch_id.value = selectedBranch.value.id ?? ''
+  branch_id.value = selectedBranch.value.id
+})
+
+watch(branch, () => {
+  selectedBranch.value = {
+    id: branch.value?._id ?? '',
+    label: `[${branch.value?.code}] ${branch.value?.name}`
+  }
 })
 
 onMounted(async () => {
-  selectedBranch.value = {
-    id: branch.value?._id,
-    label: `[${branch.value?.code}] ${branch.value?.name}`
-  }
   const response = await getBranchesApi.send({ all: '' }, 1)
   if (response?.data) {
     optionsBranch.value = response.data.map((data: { _id: string; code: string; name: string }) => {
@@ -40,14 +43,17 @@ onMounted(async () => {
 
 const searchBranch = ref('')
 const isLoadingBranchOptions = ref<boolean>(false)
+
+watch(searchBranch, () => {
+  // start loading without debounced for smooth ux
+  isLoadingBranchOptions.value = true
+})
+
 watchDebounced(
   searchBranch,
   async (newVal) => {
-    // start loading
-    isLoadingBranchOptions.value = true
     // call api
-    const response = await getBranchesApi.send({ all: newVal }, 1)
-
+    const response = await getBranchesApi.send({ label: newVal }, 1)
     if (response?.data) {
       optionsBranch.value = response.data.map(
         (data: { _id: string; code: string; name: string }) => {

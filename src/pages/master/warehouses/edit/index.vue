@@ -18,6 +18,7 @@ const updateWarehouseApi = useUpdateWarehouseApi()
 
 const form = reactive(useForm())
 const formId = ref()
+const branch = ref()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.warehouses?.update) {
@@ -28,12 +29,13 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.branch = response.branch
+    form.data.branch_id = response.branch._id
     form.data.code = response.code
     form.data.name = response.name
     form.data.address = response.address
     form.data.phone = response.phone
     form.data.notes = response.notes
+    branch.value = response.branch
   }
 })
 
@@ -55,7 +57,8 @@ const onUpdate = async () => {
     <card-form
       v-if="authStore.permission?.master?.warehouses?.update"
       :form-id="route.params.id.toString()"
-      v-model:branch="form.data.branch"
+      v-model:branch_id="form.data.branch_id"
+      v-model:branch="branch"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"
