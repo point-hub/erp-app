@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
 import type { IFormError } from './form'
-import { type ISearch, useGetBranchesApi } from './get-branches.api'
+import { useGetBranchesApi } from './get-branches.api'
 
 const branch_id = defineModel<string>('branch_id')
 const code = defineModel<string>('code')
@@ -16,16 +17,41 @@ const getBranchesApi = useGetBranchesApi()
 const selectedBranch = ref()
 const optionsBranch = ref([])
 
-watch(selectedBranch, () => {
-  branch_id.value = selectedBranch.value.id ?? ''
+const searchBranch = ref('')
+const isLoadingBranchOptions = ref<boolean>(false)
+
+watch(searchBranch, () => {
+  // start loading without debounced for smooth ux
+  isLoadingBranchOptions.value = true
 })
 
-const search: ISearch = {
-  all: ''
-}
+watchDebounced(
+  searchBranch,
+  async (newVal) => {
+    // call api
+    const response = await getBranchesApi.send({ label: newVal }, 1)
+    if (response?.data) {
+      optionsBranch.value = response.data.map(
+        (data: { _id: string; code: string; name: string }) => {
+          return {
+            id: data._id,
+            label: `[${data.code}] ${data.name}`
+          }
+        }
+      )
+    }
+    // finish loading
+    isLoadingBranchOptions.value = false
+  },
+  { debounce: 500, maxWait: 1000 }
+)
+
+watch(selectedBranch, () => {
+  branch_id.value = selectedBranch.value.id
+})
 
 onMounted(async () => {
-  const response = await getBranchesApi.send(search, 1)
+  const response = await getBranchesApi.send({ label: '' }, 1)
   if (response?.data) {
     optionsBranch.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
@@ -48,6 +74,7 @@ onMounted(async () => {
         required
         label="Branch"
         v-model="selectedBranch"
+        v-model:query="searchBranch"
         :options="optionsBranch"
         :errors="errors?.branch_id"
       />

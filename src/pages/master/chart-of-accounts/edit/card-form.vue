@@ -6,7 +6,9 @@ import axios from '@/axios'
 import type { IFormError } from './form'
 
 const type_id = defineModel<string>('type_id')
+const type = defineModel<{ _id: string; name: string }>('type')
 const category_id = defineModel<string>('category_id')
+const category = defineModel<{ _id: string; name: string }>('category')
 const number = defineModel<string>('number')
 const name = defineModel<string>('name')
 const subledger = defineModel<string>('subledger')
@@ -17,6 +19,20 @@ const optionsType = ref([])
 const selectedType = ref()
 const selectedCategory = ref()
 const optionsCategory = ref([])
+
+watch(type, () => {
+  selectedType.value = {
+    id: type.value?._id,
+    label: `${type.value?.name}`
+  }
+})
+
+watch(category, () => {
+  selectedCategory.value = {
+    id: category.value?._id,
+    label: `${category.value?.name}`
+  }
+})
 
 watch(selectedCategory, () => {
   category_id.value = selectedCategory.value.id ?? ''
@@ -61,8 +77,6 @@ const getAccountCategories = async (type_id: string) => {
         label: `${data.name}`
       }
     })
-
-    selectedCategory.value = optionsCategory.value[0]
   }
 }
 

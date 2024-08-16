@@ -17,6 +17,8 @@ const { toastRef } = useToastStore()
 const form = reactive(useForm())
 
 const formId = ref()
+const type = ref<{ _id: string; name: string }>()
+const category = ref<{ _id: string; name: string }>()
 
 onMounted(async () => {
   const response = (await axios.get(`/v1/master/chart-of-accounts/${route.params.id}`)).data
@@ -26,6 +28,9 @@ onMounted(async () => {
   form.data.number = response.number.toString()
   form.data.name = response.name
   form.data.subledger = response.subledger
+  form.data.notes = response.notes
+  type.value = response.type
+  category.value = response.category
 })
 
 const onUpdate = async () => {
@@ -66,6 +71,8 @@ const onUpdate = async () => {
       v-model:name="form.data.name"
       v-model:subledger="form.data.subledger"
       v-model:notes="form.data.notes"
+      v-model:type="type"
+      v-model:category="category"
     />
 
     <base-card class="py-4!">

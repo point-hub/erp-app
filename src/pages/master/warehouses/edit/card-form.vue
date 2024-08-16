@@ -30,7 +30,7 @@ watch(branch, () => {
 })
 
 onMounted(async () => {
-  const response = await getBranchesApi.send({ all: '' }, 1)
+  const response = await getBranchesApi.send({ label: '' }, 1)
   if (response?.data) {
     optionsBranch.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
@@ -53,7 +53,7 @@ watchDebounced(
   searchBranch,
   async (newVal) => {
     // call api
-    const response = await getBranchesApi.send({ label: newVal }, 1)
+    const response = await getBranchesApi.send({ all: newVal }, 1)
     if (response?.data) {
       optionsBranch.value = response.data.map(
         (data: { _id: string; code: string; name: string }) => {
