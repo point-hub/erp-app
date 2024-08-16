@@ -65,6 +65,7 @@ const onUpdate = async () => {
       v-model:number="form.data.number"
       v-model:name="form.data.name"
       v-model:subledger="form.data.subledger"
+      v-model:notes="form.data.notes"
     />
 
     <base-card class="py-4!">
