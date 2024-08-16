@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
 import axios from '@/axios'
 
 import type { IFormError } from './form'
+import { useGetChartOfAccountCategoriesApi } from './get-categories.api'
 
 const type_id = defineModel<string>('type_id')
 const type = defineModel<{ _id: string; name: string }>('type')
@@ -83,6 +85,32 @@ const getAccountCategories = async (type_id: string) => {
 onMounted(async () => {
   await getAccountTypes()
 })
+
+const searchCategory = ref('')
+const isLoadingCategoryOptions = ref<boolean>(false)
+const getCategoriesApi = useGetChartOfAccountCategoriesApi()
+watch(searchCategory, () => {
+  // start loading without debounced for smooth ux
+  isLoadingCategoryOptions.value = true
+})
+watchDebounced(
+  searchCategory,
+  async (newVal) => {
+    // call api
+    const response = await getCategoriesApi.send(newVal, 1)
+    if (response?.data) {
+      optionsCategory.value = response.data.map((data: { _id: string; name: string }) => {
+        return {
+          id: data._id,
+          label: `${data.name}`
+        }
+      })
+    }
+    // finish loading
+    isLoadingCategoryOptions.value = false
+  },
+  { debounce: 500, maxWait: 1000 }
+)
 </script>
 
 <template>
@@ -97,14 +125,17 @@ onMounted(async () => {
         :options="optionsType"
         :errors="errors?.type_id"
       />
+      {{ searchCategory }}
       <base-autocomplete
         required
         label="Category"
         v-model="selectedCategory"
+        v-model:query="searchCategory"
+        v-model:is-loading="isLoadingCategoryOptions"
         :options="optionsCategory"
         :errors="errors?.category_id"
       />
-      <base-input required type="number" v-model="number" label="Number" :errors="errors?.number" />
+      <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input v-model="subledger" label="Subledger" :errors="errors?.subledger" />
       <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
