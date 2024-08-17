@@ -16,8 +16,8 @@ interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    username: '',
-    password: '',
+    username: 'gmbtest',
+    password: 'Admin123!',
     rememberMe: false
   }
 

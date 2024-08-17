@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core'
-import { onMounted, ref, watch } from 'vue'
+import { ref } from 'vue'
+
+import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/branch-autocomplete.vue'
 
 import type { IFormError } from './form'
-import { useGetBranchesApi } from './get-branches.api'
 
 const branch_id = defineModel<string>('branch_id')
 const code = defineModel<string>('code')
@@ -13,56 +13,7 @@ const phone = defineModel<string>('phone')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const getBranchesApi = useGetBranchesApi()
 const selectedBranch = ref()
-const optionsBranch = ref([])
-
-const searchBranch = ref('')
-const isLoadingBranchOptions = ref<boolean>(false)
-
-watch(searchBranch, () => {
-  // start loading without debounced for smooth ux
-  isLoadingBranchOptions.value = true
-})
-
-watchDebounced(
-  searchBranch,
-  async (newVal) => {
-    // call api
-    const response = await getBranchesApi.send({ label: newVal }, 1)
-    if (response?.data) {
-      optionsBranch.value = response.data.map(
-        (data: { _id: string; code: string; name: string }) => {
-          return {
-            id: data._id,
-            label: `[${data.code}] ${data.name}`
-          }
-        }
-      )
-    }
-    // finish loading
-    isLoadingBranchOptions.value = false
-  },
-  { debounce: 500, maxWait: 1000 }
-)
-
-watch(selectedBranch, () => {
-  branch_id.value = selectedBranch.value.id
-})
-
-onMounted(async () => {
-  const response = await getBranchesApi.send({ label: '' }, 1)
-  if (response?.data) {
-    optionsBranch.value = response.data.map((data: { _id: string; code: string; name: string }) => {
-      return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
-      }
-    })
-
-    selectedBranch.value = optionsBranch.value[0]
-  }
-})
 </script>
 
 <template>
@@ -70,12 +21,11 @@ onMounted(async () => {
     <template #header>Warehouses</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-autocomplete
+      <branch-autocomplete
         required
         label="Branch"
-        v-model="selectedBranch"
-        v-model:query="searchBranch"
-        :options="optionsBranch"
+        v-model="branch_id"
+        v-model:selected="selectedBranch"
         :errors="errors?.branch_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
