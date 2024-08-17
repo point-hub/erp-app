@@ -1,26 +1,12 @@
 import axios from '@/axios'
 
-export interface ISearch {
-  all?: string
-  label?: string
-  code?: string
-  name?: string
-  address?: string
-  phone?: string
-}
-
 export function useGetBranchesApi() {
-  const send = async (search: ISearch, page: number) => {
+  const send = async (search: string, page: number) => {
     try {
       const response = await axios.get('/v1/master/branches', {
         params: {
           filter: {
-            search: search.all,
-            label: search.label,
-            code: search.code,
-            name: search.name,
-            address: search.address,
-            phone: search.phone
+            label: search
           },
           page: page
         }
