@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
 
-import DeleteModal from '../components/delete-modal.vue'
+import DeleteModal from '../components/delete/delete-modal.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
 const route = useRoute()
@@ -119,7 +119,8 @@ const openMenu = (user: IUser, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: user._id,
-    name: `[${user.code}] ${user.name}`
+    name: `${user.name}`,
+    username: `${user.username}`
   })
 }
 const onDelete = async () => {

@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
 
-import DeleteModal from '../components/delete-modal.vue'
+import DeleteModal from '../components/delete/delete-modal.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
@@ -47,7 +47,8 @@ const onDeleted = async () => {
           @click="
             deleteModalRef.toggleModal(true, {
               id: route.params.id.toString(),
-              name: `[${form.data.code}] ${form.data.name}`
+              name: `${form.data.name}`,
+              username: `${form.data.username}`
             })
           "
         >
