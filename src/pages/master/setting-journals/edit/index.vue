@@ -140,7 +140,7 @@ const onUpdate = async () => {
               </td>
             </tr>
             <template v-if="!isLoading">
-              <tr v-for="journal in form.data.journals" :key="journal">
+              <tr v-for="journal in form.data.journals" :key="journal.id">
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>

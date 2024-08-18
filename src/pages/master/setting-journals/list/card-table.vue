@@ -7,7 +7,6 @@ import { useGetSettingJournalsApi } from './get-setting-journals.api'
 
 const route = useRoute()
 const router = useRouter()
-const deleteModalRef = ref()
 const getSettingJournalsApi = useGetSettingJournalsApi()
 
 interface ISettingJournal {
@@ -104,8 +103,6 @@ onMounted(async () => {
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.module = route.query['search.module']?.toString() ?? ''
   search.value.feature = route.query['search.feature']?.toString() ?? ''
-  search.value.address = route.query['search.address']?.toString() ?? ''
-  search.value.phone = route.query['search.phone']?.toString() ?? ''
   pagination.value.page = Number(route.query.page ?? 1)
   // call api
   const response = await getSettingJournalsApi.send(
@@ -115,24 +112,6 @@ onMounted(async () => {
   settingJournals.value = response?.data
   pagination.value = response?.pagination
 })
-
-const onDeleteModal = (settingJournal: ISettingJournal, index: number) => {
-  rowMenuRef.value[index].toggle(false)
-  deleteModalRef.value.toggleModal(true, {
-    id: settingJournal._id,
-    feature: `[${settingJournal.module}] ${settingJournal.feature}`
-  })
-}
-
-const onDelete = async () => {
-  // call api
-  const response = await getSettingJournalsApi.send(
-    { all: searchAll.value, ...search.value },
-    pagination.value.page
-  )
-  settingJournals.value = response?.data
-  pagination.value = response?.pagination
-}
 </script>
 
 <template>
@@ -212,7 +191,6 @@ const onDelete = async () => {
         @update:model-value="onPageUpdate()"
       />
     </div>
-    <delete-modal ref="deleteModalRef" @deleted="onDelete" />
   </base-card>
 </template>
 
