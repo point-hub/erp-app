@@ -6,8 +6,10 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
+import CardBranches from './card-branches.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
+import CardWarehouses from './card-warehouses.vue'
 import { useForm } from './form'
 
 const route = useRoute()
@@ -26,6 +28,10 @@ onMounted(async () => {
   form.data.name = response.name
   form.data.username = response.username
   form.data.email = response.email
+  form.data.default_branch = response.default_branch
+  form.data.default_warehouse = response.default_warehouse
+  form.data.branches = response.branches
+  form.data.warehouses = response.warehouses
 })
 
 const onUpdate = async () => {
@@ -64,6 +70,18 @@ const onUpdate = async () => {
       v-model:name="form.data.name"
       v-model:username="form.data.username"
       v-model:email="form.data.email"
+    />
+
+    <card-branches
+      v-model:default_branch="form.data.default_branch"
+      v-model:branches="form.data.branches"
+      :errors="form.errors"
+    />
+
+    <card-warehouses
+      v-model:default_warehouse="form.data.default_warehouse"
+      v-model:warehouses="form.data.warehouses"
+      :errors="form.errors"
     />
 
     <base-card class="py-4!">
