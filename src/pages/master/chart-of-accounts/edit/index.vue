@@ -4,6 +4,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
@@ -13,6 +14,7 @@ import { useForm } from './form'
 const route = useRoute()
 const router = useRouter()
 const { toastRef } = useToastStore()
+const authStore = useAuthStore()
 
 const form = reactive(useForm())
 
@@ -21,6 +23,10 @@ const type = ref<{ _id: string; name: string }>()
 const category = ref<{ _id: string; name: string }>()
 
 onMounted(async () => {
+  if (!authStore.permission?.master?.chart_of_accounts?.update) {
+    router.push('/unauthorized')
+  }
+
   const response = (await axios.get(`/v1/master/chart-of-accounts/${route.params.id}`)).data
   formId.value = response._id
   form.data.type_id = response.type._id

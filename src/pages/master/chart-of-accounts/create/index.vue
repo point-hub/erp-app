@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -13,6 +13,12 @@ const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
 const createChartOfAccountApi = useCreateChartOfAccountApi()
+
+onMounted(async () => {
+  if (!authStore.permission?.master?.chart_of_accounts?.create) {
+    router.push('/unauthorized')
+  }
+})
 
 const onSave = async () => {
   if (!authStore.permission?.master?.branches?.create) {

@@ -4,11 +4,13 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 
 import DeleteModal from '../components/delete/delete-modal.vue'
 import type { IChartOfAccount } from '../interface'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
+const authStore = useAuthStore()
 const route = useRoute()
 const router = useRouter()
 const deleteModalRef = ref()
@@ -103,11 +105,15 @@ const pagination = ref({
   page_size: 10,
   total_document: 0
 })
+
 onMounted(async () => {
-  searchAll.value = route.query.search?.toString() ?? ''
-  pagination.value.page = Number(route.query.page ?? 1)
+  if (!authStore.permission?.master?.chart_of_accounts?.read) {
+    router.push('/unauthorized')
+  }
+
   await getChartOfAccounts()
 })
+
 const openMenu = (chartOfAccount: IChartOfAccount, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
@@ -115,6 +121,7 @@ const openMenu = (chartOfAccount: IChartOfAccount, index: number) => {
     name: `[${chartOfAccount.number}] ${chartOfAccount.name}`
   })
 }
+
 const onDelete = async () => {
   await getChartOfAccounts()
 }
