@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
 
-import DeleteModal from '../components/delete-modal.vue'
+import DeleteModal from '../components/delete/delete-modal.vue'
 import type { IChartOfAccount } from '../interface'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 

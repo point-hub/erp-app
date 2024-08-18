@@ -48,7 +48,8 @@ watch(selectedType, async () => {
 const getAccountTypes = async () => {
   const response = await axios.get('/v1/master/chart-of-account-types', {
     params: {
-      page: 1
+      page: 1,
+      page_size: 9999
     }
   })
   if (response.status === 200) {
@@ -58,8 +59,6 @@ const getAccountTypes = async () => {
         label: `${data.name}`
       }
     })
-
-    selectedType.value = optionsType.value[0]
   }
 }
 
@@ -69,7 +68,8 @@ const getAccountCategories = async (type_id: string) => {
       filter: {
         type_id: `${type_id}`
       },
-      page: 1
+      page: 1,
+      page_size: 9999
     }
   })
   if (response.status === 200) {
@@ -85,32 +85,6 @@ const getAccountCategories = async (type_id: string) => {
 onMounted(async () => {
   await getAccountTypes()
 })
-
-const searchCategory = ref('')
-const isLoadingCategoryOptions = ref<boolean>(false)
-const getCategoriesApi = useGetChartOfAccountCategoriesApi()
-watch(searchCategory, () => {
-  // start loading without debounced for smooth ux
-  isLoadingCategoryOptions.value = true
-})
-watchDebounced(
-  searchCategory,
-  async (newVal) => {
-    // call api
-    const response = await getCategoriesApi.send(newVal, 1)
-    if (response?.data) {
-      optionsCategory.value = response.data.map((data: { _id: string; name: string }) => {
-        return {
-          id: data._id,
-          label: `${data.name}`
-        }
-      })
-    }
-    // finish loading
-    isLoadingCategoryOptions.value = false
-  },
-  { debounce: 500, maxWait: 1000 }
-)
 </script>
 
 <template>
@@ -125,13 +99,11 @@ watchDebounced(
         :options="optionsType"
         :errors="errors?.type_id"
       />
-      {{ searchCategory }}
+
       <base-autocomplete
         required
         label="Category"
         v-model="selectedCategory"
-        v-model:query="searchCategory"
-        v-model:is-loading="isLoadingCategoryOptions"
         :options="optionsCategory"
         :errors="errors?.category_id"
       />

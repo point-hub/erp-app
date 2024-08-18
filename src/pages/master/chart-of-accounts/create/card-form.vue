@@ -24,13 +24,15 @@ watch(selectedCategory, () => {
 
 watch(selectedType, async () => {
   type_id.value = selectedType.value.id
+  selectedCategory.value = { label: '' }
   await getAccountCategories(selectedType.value.id)
 })
 
 const getAccountTypes = async () => {
   const response = await axios.get('/v1/master/chart-of-account-types', {
     params: {
-      page: 1
+      page: 1,
+      page_size: 9999
     }
   })
   if (response.status === 200) {
@@ -40,8 +42,6 @@ const getAccountTypes = async () => {
         label: `${data.name}`
       }
     })
-
-    selectedType.value = optionsType.value[0]
   }
 }
 
@@ -51,7 +51,8 @@ const getAccountCategories = async (type_id: string) => {
       filter: {
         type_id: `${type_id}`
       },
-      page: 1
+      page: 1,
+      page_size: 9999
     }
   })
   if (response.status === 200) {
@@ -61,8 +62,6 @@ const getAccountCategories = async (type_id: string) => {
         label: `${data.name}`
       }
     })
-
-    selectedCategory.value = optionsCategory.value[0]
   }
 }
 
