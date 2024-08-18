@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { AxiosError } from 'axios'
 import { ref } from 'vue'
 
-import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
+
+import { useDeleteAllocationGroupApi } from './delete.api'
+import type { IFormError } from './form'
+import { useVerifyPasswordApi } from './verify-password.api'
 
 const { toastRef } = useToastStore()
 
 const password = ref()
-const errors = ref<{
-  password?: string[]
-  reason?: string[]
-}>({
+const errors = ref<IFormError>({
   password: [],
   reason: []
 })
-const id = defineModel('id')
-const name = defineModel('name')
+const id = defineModel<string>('id')
+const name = defineModel<string>('name')
 const emit = defineEmits(['deleted'])
 
 interface IData {
@@ -30,12 +29,15 @@ const toggleModal = (state?: boolean, data?: IData) => {
     name.value = data.name
   }
   let newValue = !showModal.value
-  if (state === true) newValue = true
+  if (state === true) {
+    newValue = true
+    loadingState.value = false
+  }
   if (state === false) newValue = false
   showModal.value = newValue
 }
 
-const reason = ref()
+const reason = ref<string>()
 const loadingState = ref(false)
 const onDelete = async () => {
   // prevent calling twice use loading state
@@ -49,56 +51,30 @@ const onDelete = async () => {
   if (!reason.value) {
     errors.value.reason = ['The reason field is required.']
   }
-  if (!errors.value?.password || !errors.value?.reason) {
+  if (!id.value || !password.value || !reason.value) {
     loadingState.value = false
     return
   }
   // password checking
-  try {
-    const response = await axios.post(`/v1/master/auth/verify-password`, {
-      password: password.value
-    })
-    if (response.data.verified === false) {
-      errors.value.password = ['Wrong Password']
-      loadingState.value = false
-      return
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      loadingState.value = false
-      return
-    }
+  const verifyPasswordApi = useVerifyPasswordApi()
+  const responseVerifyPassword = await verifyPasswordApi.send(password.value, errors.value)
+  if (!responseVerifyPassword) {
+    loadingState.value = false
+    return
   }
   // start api call
-  try {
-    const response = await axios.post(`/v1/master/allocation-groups/${id.value}/delete`, {
-      reason: reason.value
-    })
-    if (response.status === 200) {
-      emit('deleted')
-      password.value = ''
-      reason.value = ''
-      toastRef.toast(`Delete Allocation Group "${name.value}" success`, {
-        color: 'success'
-      })
-      toggleModal(false)
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      var listErrors: string[] = []
-      const formErrors = error?.response?.data?.errors
-      if (formErrors) {
-        for (const key in formErrors) {
-          errors.value.reason = formErrors[key]
-          listErrors.push(formErrors[key])
-        }
-      }
-      toastRef.toast(error.response?.data.message, {
-        lists: listErrors.flat(),
-        color: 'danger'
-      })
-    }
+  const deleteAllocationGroupApi = useDeleteAllocationGroupApi()
+  const responseDelete = await deleteAllocationGroupApi.send(id.value, reason.value, errors.value)
+  if (!responseDelete) {
+    loadingState.value = false
+    return
   }
+
+  emit('deleted')
+  password.value = ''
+  reason.value = ''
+  toastRef.toast(`Delete Allocation Group "${name.value}" success`, { color: 'success' })
+  toggleModal(false)
 
   // stop loading state
   loadingState.value = false
