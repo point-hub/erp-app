@@ -6,6 +6,8 @@ import { useGetBranchesApi } from './get-branches.api'
 
 const _id = defineModel<string>()
 const selected = defineModel<{ id: string; label: string }>('selected')
+const required = defineModel<boolean>('required')
+const label = defineModel<string>('label', { default: 'Branch' })
 const errors = ref<string[]>([])
 
 const getBranchesApi = useGetBranchesApi()
@@ -55,8 +57,8 @@ onMounted(async () => {
 
 <template>
   <base-autocomplete
-    required
-    label="Branch"
+    :required="required"
+    :label="label"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

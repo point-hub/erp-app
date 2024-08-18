@@ -6,8 +6,10 @@ import { useRouter } from 'vue-router'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
+import CardBranches from './card-branches.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
+import CardWarehouses from './card-warehouses.vue'
 import { useForm } from './form'
 
 const router = useRouter()
@@ -48,21 +50,7 @@ const onSave = async () => {
   }
 }
 
-const counter = ref(0)
-onMounted(async () => {
-  const response = await axios.get('/v1/counters', {
-    params: {
-      filter: {
-        name: 'user-code'
-      }
-    }
-  })
-
-  if (response.status === 200) {
-    counter.value += Number(response.data.data[0].count) + 1
-    form.data.code = `USER${counter.value.toString().padStart(4, '0')}`
-  }
-})
+onMounted(async () => {})
 </script>
 
 <template>
@@ -75,6 +63,18 @@ onMounted(async () => {
       v-model:username="form.data.username"
       v-model:email="form.data.email"
       v-model:password="form.data.password"
+      :errors="form.errors"
+    />
+
+    <card-branches
+      v-model:default_branch="form.data.default_branch"
+      v-model:branches="form.data.branches"
+      :errors="form.errors"
+    />
+
+    <card-warehouses
+      v-model:default_warehouse="form.data.default_warehouse"
+      v-model:warehouses="form.data.warehouses"
       :errors="form.errors"
     />
 

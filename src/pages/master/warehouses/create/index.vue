@@ -2,26 +2,26 @@
 import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { useCountersApi } from '@/api/counters.api'
 import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useCreateWarehouseApi } from './create-warehouse.api'
 import { useForm } from './form'
-import { useGetCountersApi } from './get-counters.api'
 
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const getCountersApi = useGetCountersApi()
+const countersApi = useCountersApi()
 const createWarehousesApi = useCreateWarehouseApi()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.warehouses?.create) {
     router.push('/unauthorized')
   }
-  const response = await getCountersApi.send('warehouses')
-  if (response?.code) form.data.code = response.code
+  const code = await countersApi.getCode('warehouses')
+  if (code) form.data.code = code
 })
 
 const onSave = async () => {
