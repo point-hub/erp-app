@@ -22,6 +22,7 @@ const formId = ref()
 
 onMounted(async () => {
   const response = (await axios.get(`/v1/master/users/${route.params.id}`)).data
+
   formId.value = response._id
   form.data.role_id = response.role._id
   form.data.role = response.role
@@ -67,6 +68,7 @@ const onUpdate = async () => {
     <card-form
       :form-id="route.params.id.toString()"
       v-model:role_id="form.data.role_id"
+      v-model:role="form.data.role"
       v-model:name="form.data.name"
       v-model:username="form.data.username"
       v-model:email="form.data.email"

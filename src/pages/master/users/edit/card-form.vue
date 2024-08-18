@@ -1,52 +1,25 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
-import axios from '@/axios'
+import RoleAutocomplete from '@/pages/master/roles/components/autocomplete/role-autocomplete.vue'
 
 import type { IFormError } from './form'
 
-const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const username = defineModel<string>('username')
 const email = defineModel<string>('email')
 const role_id = defineModel<string>('role_id')
+const role = defineModel<{ _id: string; code: string; name: string }>('role')
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref([])
+const selected = ref<{ id: string; label: string }>({ id: '', label: '' })
 
-watch(selected, () => {
-  role_id.value = selected.value.id ?? ''
-})
-
-watch(role_id, () => {
-  refetch()
-})
-
-const refetch = async () => {
-  const response = await axios.get('/v1/master/roles', {
-    params: {
-      page: 1
-    }
-  })
-
-  if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      if (role_id.value === data._id) {
-        selected.value = {
-          id: data._id,
-          label: `[${data.code}] ${data.name}`
-        }
-      }
-      return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
-      }
-    })
+watch(role, () => {
+  selected.value = {
+    id: `${role.value?._id}`,
+    label: `[${role.value?.code}] ${role.value?.name}`
   }
-}
-
-onMounted(async () => {})
+})
 </script>
 
 <template>
@@ -54,11 +27,11 @@ onMounted(async () => {})
     <template #header>Users</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-autocomplete
+      <role-autocomplete
         required
         label="Role"
-        v-model="selected"
-        :options="options"
+        v-model="role_id"
+        v-model:selected="selected"
         :errors="errors?.role_id"
       />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
