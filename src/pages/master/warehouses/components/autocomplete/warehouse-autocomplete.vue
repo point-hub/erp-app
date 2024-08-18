@@ -5,6 +5,7 @@ import { onMounted, ref, watch } from 'vue'
 import { useGetWarehousesApi } from './get-warehouses.api'
 
 const _id = defineModel<string>()
+const required = defineModel<boolean>('required', { default: false })
 const selected = defineModel<{ id: string; label: string }>('selected')
 const errors = ref<string[]>([])
 
@@ -22,10 +23,6 @@ const apiCall = async () => {
         label: `[${data.code}] ${data.name}`
       }
     })
-
-    if (!selected.value?.id) {
-      selected.value = options.value[0]
-    }
   }
   // finish loading
   isLoading.value = false
@@ -55,7 +52,7 @@ onMounted(async () => {
 
 <template>
   <base-autocomplete
-    required
+    :required="required"
     label="Warehouse"
     v-model="selected"
     v-model:query="search"

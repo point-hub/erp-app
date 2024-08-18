@@ -6,7 +6,7 @@ import { useGetBranchesApi } from './get-branches.api'
 
 const _id = defineModel<string>()
 const selected = defineModel<{ id: string; label: string }>('selected')
-const required = defineModel<boolean>('required')
+const required = defineModel<boolean>('required', { default: false })
 const label = defineModel<string>('label', { default: 'Branch' })
 const errors = ref<string[]>([])
 
@@ -24,10 +24,6 @@ const apiCall = async () => {
         label: `[${data.code}] ${data.name}`
       }
     })
-
-    if (!selected.value?.id) {
-      selected.value = options.value[0]
-    }
   }
   // finish loading
   isLoading.value = false

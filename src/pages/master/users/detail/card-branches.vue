@@ -8,7 +8,7 @@ import { useGetBranchesApi } from './get-branches.api'
 
 const getBranchesApi = useGetBranchesApi()
 
-const default_branch = defineModel<string>('default_branch')
+const default_branch = defineModel<string>('default_branch', { default: {} })
 const branches = defineModel<string[]>('branches', { default: [] })
 const errors = defineModel<IFormError>('errors')
 
@@ -19,50 +19,32 @@ onMounted(async () => {
   const response = await getBranchesApi.send('')
   if (response?.data) {
     options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+      const index = branches.value.findIndex((branch) => data._id === branch)
+      let checked = false
+      if (index !== -1) {
+        checked = true
+      }
+
+      if (default_branch.value === data._id) {
+        selected.value = {
+          id: data._id,
+          label: `[${data.code}] ${data.name}`
+        }
+      }
       return {
         id: data._id,
-        label: `[${data.code}] ${data.name}`
+        label: `[${data.code}] ${data.name}`,
+        checked: checked
       }
     })
-
-    for (const option of options.value) {
-      if (default_branch.value === option.id) {
-        option.checked = true
-      }
-    }
-
-    selected.value = options.value[0]
   }
 })
 
-const onChecked = (option: { id: string; label: string; checked: boolean }) => {
-  if (option.checked) {
-    branches.value.push(option.id)
-    return
-  }
-
-  // if option unchecked remove branch id from array
-  const index = branches.value.findIndex((branch) => branch === option.id)
-  if (index !== -1) {
-    branches.value.splice(index, 1)
-
-    if (option.id === default_branch.value) {
-      default_branch.value = ''
-      selected.value = { id: '', label: '', checked: false }
-    }
-  }
-}
-
-watch(default_branch, () => {
-  if (!default_branch.value) return
-
-  const index = branches.value.findIndex((branch) => default_branch.value === branch)
-  if (index === -1 && default_branch.value) {
-    branches.value.push(default_branch.value)
-    for (const option of options.value) {
-      if (option.id === default_branch.value) {
-        option.checked = true
-      }
+watch(branches, () => {
+  for (const option of options.value) {
+    const index = branches.value.findIndex((branch) => option.id === branch)
+    if (index !== -1) {
+      option.checked = true
     }
   }
 })
@@ -75,6 +57,7 @@ watch(default_branch, () => {
     <div class="flex flex-col gap-4 mt-5">
       <branch-autocomplete
         label="Default Branch"
+        disabled
         v-model="default_branch"
         v-model:selected="selected"
         :errors="errors?.default_branch"
@@ -91,7 +74,7 @@ watch(default_branch, () => {
           <tr v-for="option in options" :key="option.id">
             <td>
               <div class="flex items-center justify-center">
-                <base-checkbox v-model="option.checked" @change="onChecked(option)" class="-mr-2" />
+                <base-checkbox disabled v-model="option.checked" class="-mr-2" />
               </div>
             </td>
             <td>{{ option.label }}</td>

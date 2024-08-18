@@ -5,7 +5,6 @@ import axios from '@/axios'
 
 import type { IFormError } from './form'
 
-const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const username = defineModel<string>('username')
 const email = defineModel<string>('email')
