@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
 import axios from '@/axios'
 
 import type { IFormError } from './form'
-import { useGetChartOfAccountCategoriesApi } from './get-categories.api'
 
 const type_id = defineModel<string>('type_id')
 const type = defineModel<{ _id: string; name: string }>('type')
