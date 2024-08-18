@@ -2,6 +2,7 @@
 import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { useCountersApi } from '@/api/counters.api'
 import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
@@ -9,13 +10,12 @@ import CardForm from './card-form.vue'
 import CardPermissions from './card-permissions.vue'
 import { useCreateRoleApi } from './create-role.api'
 import { useForm } from './form'
-import { useGetCountersApi } from './get-counters.api'
 import { useGetPermissionsApi } from './get-permissions.api'
 
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const getCountersApi = useGetCountersApi()
+const countersApi = useCountersApi()
 const getPermissionsApi = useGetPermissionsApi()
 const createRolesApi = useCreateRoleApi()
 
@@ -25,14 +25,12 @@ onMounted(async () => {
   }
 
   const responsePermissions = await getPermissionsApi.send()
-
   if (responsePermissions) {
     form.data.permission = responsePermissions
   }
 
-  const response = await getCountersApi.send('roles')
-
-  if (response?.code) form.data.code = response.code
+  const code = await countersApi.getCode('roles')
+  if (code) form.data.code = code
 })
 
 const onSave = async () => {
@@ -41,7 +39,6 @@ const onSave = async () => {
   }
 
   const response = await createRolesApi.send(form.data, form.errors)
-
   if (response?.inserted_id) router.push('/master/roles')
 }
 </script>
