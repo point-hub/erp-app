@@ -4,6 +4,8 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
+import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/chart-of-account-autocomplete.vue'
+import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/toast.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
@@ -14,52 +16,70 @@ const { toastRef } = useToastStore()
 const route = useRoute()
 const router = useRouter()
 
+interface IJournal {
+  _id?: string
+  description?: string
+  account?: string
+  subledger?: string
+  position?: string
+  editable?: boolean
+  chart_of_account_id?: string
+  chart_of_account?: {
+    _id: string
+    id: string
+    label: string
+    number: string
+    name: string
+  }
+}
+
 interface ISettingJournal {
   _id: string
   module: string
   feature: string
-  journals: { [key: string]: any }
+  journals: IJournal[]
 }
 
 const isLoading = ref(false)
 const form = reactive(useForm())
+const authStore = useAuthStore()
 
 const formId = ref()
-const selected = ref()
-const options = ref()
 const getSettingJournal = async () => {
   formId.value = route.params.id
   const response = await axios.get(`/v1/master/setting-journals/${route.params.id}`)
   form.data.module = response.data.module
   form.data.feature = response.data.feature
-  form.data.journals = response.data.journals
-  const responseChartOfAccounts = await axios.get(`/v1/master/chart-of-accounts`, {
-    params: { page_size: 1000 }
-  })
-  options.value = responseChartOfAccounts.data.data.map(
-    (data: { _id: string; number: string; name: string }) => {
-      for (const element of form.data.journals) {
-        console.log(element.chart_of_account_id, data._id, element.chart_of_account_id === data._id)
-        if (data._id === element.chart_of_account._id) {
-          selected.value = {
-            id: data._id,
-            label: `[${data.number}] ${data.name}`
-          }
-        }
-      }
-      return {
-        id: data._id,
-        label: `[${data.number}] ${data.name}`
+
+  form.data.journals = response.data.journals.map((data: IJournal) => {
+    let chart_of_account = { id: '', label: '' }
+    if (data.chart_of_account?._id) {
+      chart_of_account = {
+        id: data.chart_of_account?._id,
+        label: `[${data.chart_of_account?.number}] ${data.chart_of_account?.name}`
       }
     }
-  )
 
-  settingJournal.value = response.data
+    return {
+      _id: data._id,
+      description: data.description,
+      account: data.account,
+      subledger: data.subledger,
+      editable: data.editable,
+      position: data.position,
+      chart_of_subledger_id: data.chart_of_account_id,
+      chart_of_account: chart_of_account
+    }
+  })
 }
 
 const settingJournal = ref<ISettingJournal>()
 
 onMounted(async () => {
+  if (!authStore.permission?.master?.setting_journals?.update) {
+    router.push('/unauthorized')
+  }
+
   await getSettingJournal()
 })
 
@@ -120,25 +140,29 @@ const onUpdate = async () => {
               </td>
             </tr>
             <template v-if="!isLoading">
-              <tr v-for="journal in settingJournal?.journals" :key="journal">
+              <tr v-for="journal in form.data.journals" :key="journal">
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>
+                  <p class="text-xs mt-5" v-if="journal.subledger">
+                    Subledger: {{ journal.subledger }}
+                  </p>
                 </td>
                 <td class="uppercase">
                   <span v-if="journal.editable" class="absolute">
-                    <base-autocomplete
-                      v-model="journal.chart_of_account"
-                      :options="options"
-                      border="none"
-                    ></base-autocomplete>
+                    <chart-of-account-autocomplete
+                      v-model="journal.chart_of_account_id"
+                      v-model:selected="journal.chart_of_account"
+                      :subledger="journal.subledger"
+                      label=""
+                    ></chart-of-account-autocomplete>
                   </span>
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'debit' ? 'xxx' : '' }}
+                  {{ journal.position === 'Debit' ? 'xxx' : '' }}
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'credit' ? 'xxx' : '' }}
+                  {{ journal.position === 'Credit' ? 'xxx' : '' }}
                 </td>
               </tr>
             </template>

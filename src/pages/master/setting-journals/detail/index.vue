@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
 const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
 
 interface ISettingJournal {
   _id: string
@@ -25,6 +28,10 @@ const getSettingJournal = async () => {
 const settingJournal = ref<ISettingJournal>()
 
 onMounted(async () => {
+  if (!authStore.permission?.master?.setting_journals?.read) {
+    router.push('/unauthorized')
+  }
+
   await getSettingJournal()
 })
 </script>
@@ -33,7 +40,7 @@ onMounted(async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <base-card class="py-4!">
+    <base-card class="py-4!" v-if="authStore.permission?.master?.setting_journals?.update">
       <div class="flex gap-2">
         <router-link :to="`/master/setting-journals/${route.params.id}/edit`">
           <base-button color="info" size="sm">Edit</base-button>
@@ -68,17 +75,20 @@ onMounted(async () => {
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>
+                  <p class="text-xs mt-5" v-if="journal.subledger">
+                    Subledger: {{ journal.subledger }}
+                  </p>
                 </td>
-                <td class="uppercase">
-                  <span v-if="Object.keys(journal.chart_of_account).length">
+                <td>
+                  <span v-if="journal.editable && Object.keys(journal.chart_of_account).length">
                     [{{ journal.chart_of_account.number }}] {{ journal.chart_of_account.name }}
                   </span>
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'debit' ? 'xxx' : '' }}
+                  {{ journal.position === 'Debit' ? 'xxx' : '' }}
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'credit' ? 'xxx' : '' }}
+                  {{ journal.position === 'Credit' ? 'xxx' : '' }}
                 </td>
               </tr>
             </template>
