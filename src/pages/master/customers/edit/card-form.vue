@@ -1,54 +1,33 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
-import axios from '@/axios'
+import CustomerGroupAutocomplete from '@/pages/master/customer-groups/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
+const customer_group_id = defineModel<string>('customer_group_id')
+const customer_group = defineModel<{ _id: string; code: string; name: string }>('customer_group')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
-const customer_group_id = defineModel<string>('customer_group_id')
 const address = defineModel<string>('address')
 const phone = defineModel<string>('phone')
 const email = defineModel<string>('email')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref([])
-
-watch(selected, () => {
-  customer_group_id.value = selected.value.id ?? ''
+const selectedCustomerGroup = ref<{ id: string; label: string; code: string }>({
+  id: '',
+  label: '',
+  code: ''
 })
 
-watch(customer_group_id, () => {
-  refetch()
-})
-
-const refetch = async () => {
-  const response = await axios.get('/v1/master/customer-groups', {
-    params: {
-      page: 1
-    }
-  })
-
-  if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      if (customer_group_id.value === data._id) {
-        selected.value = {
-          id: data._id,
-          label: `[${data.code}] ${data.name}`
-        }
-      }
-      return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
-      }
-    })
+watch(customer_group, () => {
+  selectedCustomerGroup.value = {
+    id: `${customer_group.value?._id}`,
+    label: `[${customer_group.value?.code}] ${customer_group.value?.name}`,
+    code: `${customer_group.value?.code}`
   }
-}
-
-onMounted(async () => {})
+})
 </script>
 
 <template>
@@ -56,19 +35,19 @@ onMounted(async () => {})
     <template #header>Customers</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-autocomplete
+      <customer-group-autocomplete
         required
         label="Customer Group"
-        v-model="selected"
-        :options="options"
+        v-model="customer_group_id"
+        v-model:selected="selectedCustomerGroup"
         :errors="errors?.customer_group_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input v-model="address" label="Address" :errors="errors?.address" />
       <base-input v-model="phone" label="Phone" :errors="errors?.phone" />
-      <base-input v-model="email" label="Email" :errors="errors?.email" />
-      <base-input v-model="notes" label="Notes" :errors="errors?.notes" />
+      <base-input type="email" v-model="email" label="Email" :errors="errors?.email" />
+      <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>
 </template>

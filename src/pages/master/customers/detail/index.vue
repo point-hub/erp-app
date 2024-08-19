@@ -2,71 +2,58 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete-modal.vue'
+import CardAction from './card-action.vue'
 import CardBank from './card-bank.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
+import { useGetCustomerApi } from './retrieve.api'
 
 const route = useRoute()
 const router = useRouter()
-const deleteModalRef = ref()
+const authStore = useAuthStore()
+const getCustomerApi = useGetCustomerApi()
 
 const form = reactive(useForm())
 
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/master/customers/${route.params.id}`)).data
-  formId.value = response._id
-  form.data.customer_group_id = response.customer_group._id
-  form.data.code = response.code
-  form.data.name = response.name
-  form.data.address = response.address
-  form.data.phone = response.phone
-  form.data.email = response.email
-  form.data.notes = response.notes
-  form.data.bank_name = response.bank_name
-  form.data.bank_branch = response.bank_branch
-  form.data.bank_account_name = response.bank_account_name
-  form.data.bank_account_number = response.bank_account_number
-})
+  if (!authStore.permission?.master?.customers?.read) {
+    router.push('/unauthorized')
+  }
 
-const onDeleted = async () => {
-  router.push('/master/customers')
-}
+  const response = await getCustomerApi.send(route.params.id.toString())
+
+  if (response) {
+    formId.value = response._id
+    form.data.customer_group = `[${response.customer_group.code}] ${response.customer_group.name}`
+    form.data.code = response.code
+    form.data.name = response.name
+    form.data.address = response.address
+    form.data.phone = response.phone
+    form.data.email = response.email
+    form.data.notes = response.notes
+    form.data.bank_name = response.bank_name
+    form.data.bank_branch = response.bank_branch
+    form.data.bank_account_name = response.bank_account_name
+    form.data.bank_account_number = response.bank_account_number
+  }
+})
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <base-card class="py-4!">
-      <div class="flex gap-2">
-        <router-link :to="`/master/customers/${route.params.id}/edit`">
-          <base-button color="info" size="sm">Edit</base-button>
-        </router-link>
-
-        <base-button
-          color="danger"
-          size="sm"
-          @click="
-            deleteModalRef.toggleModal(true, {
-              id: route.params.id.toString(),
-              name: `[${form.data.code}] ${form.data.name}`
-            })
-          "
-        >
-          Delete
-        </base-button>
-      </div>
-    </base-card>
+    <card-action v-if="authStore.permission?.master?.customers?.read" :data="form.data" />
 
     <card-form
+      v-if="authStore.permission?.master?.customers?.read"
       :form-id="route.params.id.toString()"
-      v-model:customer_group_id="form.data.customer_group_id"
+      v-model:customer_group="form.data.customer_group"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"
@@ -76,13 +63,10 @@ const onDeleted = async () => {
     />
 
     <card-bank
-      v-model:branch="form.data.bank_branch"
       v-model:name="form.data.bank_name"
+      v-model:branch="form.data.bank_branch"
       v-model:account_name="form.data.bank_account_name"
       v-model:account_number="form.data.bank_account_number"
-      :errors="form.errors"
     />
-
-    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>
 </template>
