@@ -2,26 +2,24 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetAllocationGroupsApi } from './retrieve-all.api'
+import { useGetAllocationsApi } from './retrieve-all.api'
 
 const _id = defineModel<string>()
-const selected = defineModel<{ id: string; label: string; code: string }>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Allocation Group' })
+const selected = defineModel<{ id: string; label: string }>('selected')
 const errors = ref<string[]>([])
 
-const getAllocationGroupsApi = useGetAllocationGroupsApi()
+const getAllocationsApi = useGetAllocationsApi()
 const search = ref('')
 const options = ref([])
 const isLoading = ref<boolean>(false)
 
 const apiCall = async () => {
-  const response = await getAllocationGroupsApi.send(search.value, 1)
+  const response = await getAllocationsApi.send(search.value, 1)
   if (response?.data) {
     options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
         id: data._id,
-        code: `${data.code}`,
         label: `[${data.code}] ${data.name}`
       }
     })
@@ -55,7 +53,7 @@ onMounted(async () => {
 <template>
   <base-autocomplete
     :required="required"
-    :label="label"
+    label="Allocation"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

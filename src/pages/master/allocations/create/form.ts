@@ -5,6 +5,7 @@ export interface IForm {
   allocation_group_id: string
   code: string
   name: string
+  notes: string
 }
 
 export interface IFormError {
@@ -12,19 +13,22 @@ export interface IFormError {
   allocation_group_id: string[]
   code: string[]
   name: string[]
+  notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
     allocation_group_id: '',
     code: '',
-    name: ''
+    name: '',
+    notes: ''
   }
 
   const defaultFormError: IFormError = {
     allocation_group_id: [],
     code: [],
-    name: []
+    name: [],
+    notes: []
   }
 
   const data = ref<IForm>(defaultForm)

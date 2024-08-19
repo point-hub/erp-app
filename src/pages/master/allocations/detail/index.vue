@@ -2,65 +2,53 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete-modal.vue'
+import CardAction from './card-action.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
+import { useGetAllocationApi } from './retrieve.api'
 
 const route = useRoute()
 const router = useRouter()
-const deleteModalRef = ref()
+const authStore = useAuthStore()
+const getAllocationApi = useGetAllocationApi()
 
 const form = reactive(useForm())
 
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/master/allocations/${route.params.id}`)).data
-  formId.value = response._id
-  form.data.allocation_group_id = response.allocation_group._id
-  form.data.code = response.code
-  form.data.name = response.name
-})
+  if (!authStore.permission?.master?.allocations?.read) {
+    router.push('/unauthorized')
+  }
 
-const onDeleted = async () => {
-  router.push('/master/allocations')
-}
+  const response = await getAllocationApi.send(route.params.id.toString())
+
+  if (response) {
+    formId.value = response._id
+    form.data.allocation_group = `[${response.allocation_group.code}] ${response.allocation_group.name}`
+    form.data.code = response.code
+    form.data.name = response.name
+    form.data.notes = response.notes
+  }
+})
 </script>
 
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <base-card class="py-4!">
-      <div class="flex gap-2">
-        <router-link :to="`/master/allocations/${route.params.id}/edit`">
-          <base-button color="info" size="sm">Edit</base-button>
-        </router-link>
+    <card-action v-if="authStore.permission?.master?.allocations?.read" :data="form.data" />
 
-        <base-button
-          color="danger"
-          size="sm"
-          @click="
-            deleteModalRef.toggleModal(true, {
-              id: route.params.id.toString(),
-              name: `[${form.data.code}] ${form.data.name}`
-            })
-          "
-        >
-          Delete
-        </base-button>
-      </div>
-    </base-card>
     <card-form
+      v-if="authStore.permission?.master?.allocations?.read"
       :form-id="route.params.id.toString()"
-      v-model:allocation_group_id="form.data.allocation_group_id"
+      v-model:allocation_group="form.data.allocation_group"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
+      v-model:notes="form.data.notes"
     />
-
-    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
   </div>
 </template>
