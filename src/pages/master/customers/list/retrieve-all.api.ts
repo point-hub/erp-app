@@ -4,6 +4,9 @@ interface ISearch {
   all: string
   code: string
   name: string
+  address: string
+  phone: string
+  customer_group: string
 }
 
 export function useGetCustomersApi() {
@@ -14,7 +17,10 @@ export function useGetCustomersApi() {
           filter: {
             search: search.all,
             code: search.code,
-            name: search.name
+            name: search.name,
+            address: search.address,
+            phone: search.phone,
+            customer_group: search.customer_group
           },
           page: page
         }

@@ -23,13 +23,17 @@ interface ISupplier {
   }
   code: string
   name: string
+  address: string
+  phone: string
 }
 
 const searchAll = ref('')
 const search = ref({
   supplier_group: '',
   code: '',
-  name: ''
+  name: '',
+  address: '',
+  phone: ''
 })
 const suppliers = ref<ISupplier[]>()
 const pagination = ref({
@@ -48,7 +52,9 @@ const updateRouter = () => {
       page: pagination.value.page,
       'search.supplier_group': search.value.supplier_group,
       'search.code': search.value.code,
-      'search.name': search.value.name
+      'search.name': search.value.name,
+      'search.address': search.value.address,
+      'search.phone': search.value.phone
     }
   })
 }
@@ -116,6 +122,8 @@ onMounted(async () => {
   search.value.supplier_group = route.query['search.supplier_group']?.toString() ?? ''
   search.value.code = route.query['search.code']?.toString() ?? ''
   search.value.name = route.query['search.name']?.toString() ?? ''
+  search.value.address = route.query['search.address']?.toString() ?? ''
+  search.value.phone = route.query['search.phone']?.toString() ?? ''
   pagination.value.page = Number(route.query.page ?? 1)
   // call api
   const response = await getSuppliersApi.send(
@@ -165,6 +173,8 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Code</th>
             <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
             <th>Supplier Group</th>
           </tr>
           <tr class="bg-slate-50 dark:bg-slate-700">
@@ -174,6 +184,12 @@ const onDelete = async () => {
             </th>
             <th class="basic-table-head">
               <base-input required v-model="search.name" placeholder="Search" border="none" />
+            </th>
+            <th class="basic-table-head">
+              <base-input required v-model="search.address" placeholder="Search" border="none" />
+            </th>
+            <th class="basic-table-head">
+              <base-input required v-model="search.phone" placeholder="Search" border="none" />
             </th>
             <th class="basic-table-head">
               <base-input
@@ -234,6 +250,8 @@ const onDelete = async () => {
                 </router-link>
               </td>
               <td>{{ supplier.name }}</td>
+              <td>{{ supplier.address }}</td>
+              <td>{{ supplier.phone }}</td>
               <td>[{{ supplier.supplier_group.code }}] {{ supplier.supplier_group.name }}</td>
             </tr>
           </template>
