@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-
-import type { IFormError } from './form'
-
 const have_production_number = defineModel<boolean>('have_production_number')
 const have_an_expiry_date = defineModel<boolean>('have_an_expiry_date')
-const errors = defineModel<IFormError>('errors')
-
-onMounted(async () => {})
 </script>
 
 <template>
@@ -28,7 +21,6 @@ onMounted(async () => {})
           v-model="have_production_number"
           layout="horizontal"
           description="Check this option if you want to track production number in this item "
-          :errors="errors?.have_production_number"
         />
       </div>
 
@@ -41,7 +33,6 @@ onMounted(async () => {})
           v-model="have_an_expiry_date"
           layout="horizontal"
           description="Check this option if you want to track expiry date in this item"
-          :errors="errors?.have_an_expiry_date"
         />
       </div>
     </div>
