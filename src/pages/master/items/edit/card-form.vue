@@ -1,51 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-
-import axios from '@/axios'
+import ItemCategoryAutocomplete from '@/pages/master/item-categories/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const category_id = defineModel<string>('category_id')
+const category = defineModel<{ id: string; label: string; code: string }>('category')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const unit = defineModel<string>('unit')
+const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
-
-const selected = ref()
-const options = ref([])
-
-watch(selected, () => {
-  category_id.value = selected.value.id ?? ''
-})
-
-watch(category_id, () => {
-  refetch()
-})
-
-const refetch = async () => {
-  const response = await axios.get('/v1/master/item-categories', {
-    params: {
-      page: 1
-    }
-  })
-
-  if (response.status === 200) {
-    options.value = response.data.data.map((data: { _id: string; code: string; name: string }) => {
-      if (category_id.value === data._id) {
-        selected.value = {
-          id: data._id,
-          label: `[${data.code}] ${data.name}`
-        }
-      }
-      return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
-      }
-    })
-  }
-}
-
-onMounted(async () => {})
 </script>
 
 <template>
@@ -53,16 +17,17 @@ onMounted(async () => {})
     <template #header>Items</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-autocomplete
+      <item-category-autocomplete
         required
         label="Category"
-        v-model="selected"
-        :options="options"
+        v-model="category_id"
+        v-model:selected="category"
         :errors="errors?.category_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
-      <base-input required v-model="unit" label="Unit" :errors="errors?.unit" />
+      <base-input v-model="unit" label="Unit" :errors="errors?.unit" />
+      <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>
 </template>

@@ -1,38 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { watch } from 'vue'
 
-import axios from '@/axios'
+import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/chart-of-account-autocomplete.vue'
 
 import type { IFormError } from './form'
 
-const chart_of_account_id = defineModel<string>('chart_of_account_id')
+const chart_of_account_id = defineModel<string>()
 const errors = defineModel<IFormError>('errors')
-
-const selected = ref()
-const options = ref([])
+const selected = defineModel<{ id: string; label: string }>('selected')
 
 watch(selected, () => {
-  chart_of_account_id.value = selected.value.id ?? ''
-})
-
-onMounted(async () => {
-  const response = await axios.get('/v1/master/chart-of-accounts', {
-    params: {
-      page: 1
-    }
-  })
-  if (response.status === 200) {
-    options.value = response.data.data.map(
-      (data: { _id: string; number: string; name: string }) => {
-        return {
-          id: data._id,
-          label: `[${data.number}] ${data.name}`
-        }
-      }
-    )
-
-    selected.value = options.value[0]
-  }
+  chart_of_account_id.value = selected.value?.id ?? ''
 })
 </script>
 
@@ -45,10 +23,11 @@ onMounted(async () => {
     </p>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-autocomplete
+      <chart-of-account-autocomplete
         required
-        v-model="selected"
-        :options="options"
+        v-model="chart_of_account_id"
+        v-model:selected="selected"
+        subledger="Item"
         :errors="errors?.chart_of_account_id"
       />
     </div>

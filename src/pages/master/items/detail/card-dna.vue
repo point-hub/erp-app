@@ -19,20 +19,31 @@ onMounted(async () => {})
       option is permanent and cannot be changed.
     </p>
     <div class="flex flex-col gap-4 mt-5">
-      <base-checkbox
-        label="Production Number"
-        v-model="have_production_number"
-        layout="horizontal"
-        description="Check this option if you want to track production number in this item"
-        :errors="errors?.have_production_number"
-      />
-      <base-checkbox
-        label="Expiry Date"
-        v-model="have_an_expiry_date"
-        layout="horizontal"
-        description="Check this option if you want to track expiry date in this item"
-        :errors="errors?.have_an_expiry_date"
-      />
+      <div class="flex gap-2">
+        <base-icon icon="i-far-barcode-read" class="mt-1" />
+        <base-checkbox
+          disabled
+          class="w-full"
+          label="Production Number"
+          v-model="have_production_number"
+          layout="horizontal"
+          description="Check this option if you want to track production number in this item "
+          :errors="errors?.have_production_number"
+        />
+      </div>
+
+      <div class="flex gap-2">
+        <base-icon icon="i-far-alarm-clock" class="mt-1" />
+        <base-checkbox
+          disabled
+          class="w-full"
+          label="Expiry Date"
+          v-model="have_an_expiry_date"
+          layout="horizontal"
+          description="Check this option if you want to track expiry date in this item"
+          :errors="errors?.have_an_expiry_date"
+        />
+      </div>
     </div>
   </base-card>
 </template>

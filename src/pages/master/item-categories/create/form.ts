@@ -4,23 +4,27 @@ export interface IForm {
   [key: string]: any
   code: string
   name: string
+  notes: string
 }
 
 export interface IFormError {
   [key: string]: string[]
   code: string[]
   name: string[]
+  notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
     code: '',
-    name: ''
+    name: '',
+    notes: ''
   }
 
   const defaultFormError: IFormError = {
     code: [],
-    name: []
+    name: [],
+    notes: []
   }
 
   const data = ref<IForm>(defaultForm)
