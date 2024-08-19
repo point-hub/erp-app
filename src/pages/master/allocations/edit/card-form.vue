@@ -14,12 +14,17 @@ const name = defineModel<string>('name')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const selectedAllocationGroup = ref<{ id: string; label: string }>({ id: '', label: '' })
+const selectedAllocationGroup = ref<{ id: string; label: string; code: string }>({
+  id: '',
+  label: '',
+  code: ''
+})
 
 watch(allocation_group, () => {
   selectedAllocationGroup.value = {
     id: `${allocation_group.value?._id}`,
-    label: `[${allocation_group.value?.code}] ${allocation_group.value?.name}`
+    label: `[${allocation_group.value?.code}] ${allocation_group.value?.name}`,
+    code: `${allocation_group.value?.code}`
   }
 })
 </script>
