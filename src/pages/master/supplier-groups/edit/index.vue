@@ -1,53 +1,51 @@
 <script setup lang="ts">
-import { AxiosError } from 'axios'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import axios from '@/axios'
-import { useToastStore } from '@/stores/toast.store'
+import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import { useForm } from './form'
+import { useGetSupplierGroupApi } from './retrieve.api'
+import { useUpdateSupplierGroupApi } from './update.api'
 
 const route = useRoute()
 const router = useRouter()
-const { toastRef } = useToastStore()
+const authStore = useAuthStore()
+const getSupplierGroupApi = useGetSupplierGroupApi()
+const updateSupplierGroupApi = useUpdateSupplierGroupApi()
 
 const form = reactive(useForm())
-
 const formId = ref()
 
 onMounted(async () => {
-  const response = (await axios.get(`/v1/master/supplier-groups/${route.params.id}`)).data
-  formId.value = response._id
-  form.data.code = response.code
-  form.data.name = response.name
+  if (!authStore.permission?.master?.suppliers?.update) {
+    router.push('/unauthorized')
+  }
+
+  const response = await getSupplierGroupApi.send(route.params.id.toString())
+
+  if (response) {
+    formId.value = response._id
+    form.data.code = response.code
+    form.data.name = response.name
+    form.data.notes = response.notes
+  }
 })
 
 const onUpdate = async () => {
-  try {
-    const response = await axios.patch(`/v1/master/supplier-groups/${route.params.id}`, form.data)
-    if (response.status === 200) {
-      toastRef.toast('Update success', { color: 'success' })
-      router.push('/master/supplier-groups')
-    }
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      var listErrors: string[] = []
-      const formErrors = error?.response?.data?.errors
-      if (formErrors) {
-        for (const key in formErrors) {
-          form.errors[key] = formErrors[key]
-          listErrors.push(formErrors[key])
-        }
-      }
-      toastRef.toast(error.response?.data.message, {
-        lists: listErrors.flat(),
-        color: 'danger'
-      })
-    }
+  if (!authStore.permission?.master?.suppliers?.update) {
+    router.push('/unauthorized')
   }
+
+  const response = await updateSupplierGroupApi.send(
+    route.params.id.toString(),
+    form.data,
+    form.errors
+  )
+
+  if (response) router.push('/master/supplier-groups')
 }
 </script>
 
@@ -56,12 +54,14 @@ const onUpdate = async () => {
     <card-breadcrumbs />
 
     <card-form
+      v-if="authStore.permission?.master?.suppliers?.update"
       :form-id="route.params.id.toString()"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
+      v-model:notes="form.data.notes"
     />
 
-    <base-card class="py-4!">
+    <base-card class="py-4!" v-if="authStore.permission?.master?.suppliers?.update">
       <div class="flex gap-2">
         <base-button color="primary" @click="onUpdate()">Update</base-button>
       </div>

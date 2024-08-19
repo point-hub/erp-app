@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { IFormError } from './form'
-
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
-const errors = defineModel<IFormError>('errors')
+const notes = defineModel<string>('notes')
 </script>
 
 <template>
@@ -11,8 +9,9 @@ const errors = defineModel<IFormError>('errors')
     <template #header>Supplier Groups</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-input disabled v-model="code" label="Code" :errors="errors?.code" />
-      <base-input disabled v-model="name" label="Name" :errors="errors?.name" />
+      <base-input disabled v-model="code" label="Code" />
+      <base-input disabled v-model="name" label="Name" />
+      <base-textarea disabled v-model="notes" label="Notes" :minHeight="128" />
     </div>
   </base-card>
 </template>
