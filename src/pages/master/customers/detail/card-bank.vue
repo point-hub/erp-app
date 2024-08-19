@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const branch = defineModel<string>('branch')
 const name = defineModel<string>('name')
+const branch = defineModel<string>('branch')
 const account_name = defineModel<string>('account_name')
 const account_number = defineModel<string>('account_number')
 </script>

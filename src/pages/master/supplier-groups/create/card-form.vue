@@ -8,7 +8,7 @@ const name = defineModel<string>('name')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const helpers = ref(['This code is used to generate item code based on the selected category'])
+const helpers = ref(['This code is used to generate supplier code based on the selected group'])
 
 watch(code, () => {
   code.value = code.value?.toUpperCase() ?? ''
