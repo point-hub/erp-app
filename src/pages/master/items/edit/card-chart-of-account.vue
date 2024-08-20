@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 
-import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/autocomplete.vue'
+import ChartOfAccountAutocomplete, {
+  type ISelectedChartOfAccount
+} from '@/pages/master/chart-of-accounts/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const chart_of_account_id = defineModel<string>()
 const errors = defineModel<IFormError>('errors')
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelectedChartOfAccount>('selected')
 
 watch(selected, () => {
-  chart_of_account_id.value = selected.value?.id ?? ''
+  chart_of_account_id.value = selected.value?._id ?? ''
 })
 </script>
 

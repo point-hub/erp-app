@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
+import BranchAutocomplete, {
+  type ISelectedBranch
+} from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
@@ -14,12 +16,14 @@ const phone = defineModel<string>('phone')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const selectedBranch = ref<{ id: string; label: string }>({ id: '', label: '' })
+const selectedBranch = ref<ISelectedBranch>()
 
 watch(branch, () => {
   selectedBranch.value = {
-    id: `${branch.value?._id}`,
-    label: `[${branch.value?.code}] ${branch.value?.name}`
+    _id: `${branch.value?._id}`,
+    label: `[${branch.value?.code}] ${branch.value?.name}`,
+    code: `${branch.value?.code}`,
+    name: `${branch.value?.name}`
   }
 })
 </script>

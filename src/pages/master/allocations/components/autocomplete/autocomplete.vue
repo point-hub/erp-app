@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetAllocationsApi } from './retrieve-all.api'
 
-interface ISelected {
+export interface ISelectedAllocation {
   _id: string
   label: string
   code: string
@@ -13,7 +13,7 @@ interface ISelected {
 
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<ISelected>('selected')
+const selected = defineModel<ISelectedAllocation>('selected')
 const errors = ref<string[]>([])
 
 const getAllocationsApi = useGetAllocationsApi()
@@ -24,7 +24,7 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getAllocationsApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: ISelected) => {
+    options.value = response.data.map((data: ISelectedAllocation) => {
       return {
         _id: data._id,
         label: `[${data.code}] ${data.name}`,

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import RoleAutocomplete from '@/pages/master/roles/components/autocomplete/autocomplete.vue'
+import RoleAutocomplete, {
+  type ISelectedRole
+} from '@/pages/master/roles/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
@@ -12,12 +14,14 @@ const role_id = defineModel<string>('role_id')
 const role = defineModel<{ _id: string; code: string; name: string }>('role')
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref<{ id: string; label: string }>({ id: '', label: '' })
+const selected = ref<ISelectedRole>()
 
 watch(role, () => {
   selected.value = {
-    id: `${role.value?._id}`,
-    label: `[${role.value?.code}] ${role.value?.name}`
+    _id: `${role.value?._id}`,
+    label: `[${role.value?.code}] ${role.value?.name}`,
+    code: `${role.value?.code}`,
+    name: `${role.value?.name}`
   }
 })
 </script>

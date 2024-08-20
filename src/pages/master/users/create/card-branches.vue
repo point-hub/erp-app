@@ -20,8 +20,8 @@ const default_branch = defineModel<string>('default_branch')
 const branches = defineModel<string[]>('branches', { default: [] })
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref<[]>([])
+const selected = ref<IOption>()
+const options = ref<IOption[]>([])
 
 onMounted(async () => {
   const response = await getBranchesApi.send('')
@@ -31,7 +31,8 @@ onMounted(async () => {
         _id: data._id,
         label: `[${data.code}] ${data.name}`,
         code: `${data.code}`,
-        name: `${data.name}`
+        name: `${data.name}`,
+        checked: false
       }
     })
 
@@ -56,7 +57,7 @@ const onChecked = (option: IOption) => {
 
     if (option._id === default_branch.value) {
       default_branch.value = ''
-      selected.value = { _id: '', label: '', checked: false }
+      selected.value = { _id: '', label: '', code: '', name: '', checked: false }
     }
   }
 }

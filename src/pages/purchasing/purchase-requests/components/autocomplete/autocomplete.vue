@@ -2,30 +2,22 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetRolesApi } from './retrieve-all.api'
-
-export interface ISelectedRole {
-  _id: string
-  label: string
-  code: string
-  name: string
-}
+import { useGetWarehousesApi } from './retrieve-all.api'
 
 const _id = defineModel<string>()
-const selected = defineModel<ISelectedRole>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Role' })
+const selected = defineModel<{ id: string; label: string }>('selected')
 const errors = ref<string[]>([])
 
-const getRolesApi = useGetRolesApi()
+const getWarehousesApi = useGetWarehousesApi()
 const search = ref('')
 const options = ref([])
 const isLoading = ref<boolean>(false)
 
 const apiCall = async () => {
-  const response = await getRolesApi.send(search.value, 1)
+  const response = await getWarehousesApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: ISelectedRole) => {
+    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
         _id: data._id,
         label: `[${data.code}] ${data.name}`,
@@ -52,7 +44,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?._id
+  _id.value = selected.value?.id
 })
 
 onMounted(async () => {
@@ -63,7 +55,7 @@ onMounted(async () => {
 <template>
   <base-autocomplete
     :required="required"
-    :label="label"
+    label="Warehouse"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

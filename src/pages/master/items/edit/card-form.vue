@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import ItemCategoryAutocomplete from '@/pages/master/item-categories/components/autocomplete/autocomplete.vue'
+import ItemCategoryAutocomplete, {
+  type ISelectedItemCategory
+} from '@/pages/master/item-categories/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const category_id = defineModel<string>('category_id')
-const category = defineModel<{ id: string; label: string; code: string }>('category')
+const category = defineModel<ISelectedItemCategory>('category')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const unit = defineModel<string>('unit')

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import CustomerGroupAutocomplete from '@/pages/master/customer-groups/components/autocomplete/autocomplete.vue'
+import CustomerGroupAutocomplete, {
+  type ISelectedCustomerGroup
+} from '@/pages/master/customer-groups/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const customer_group_id = defineModel<string>('customer_group_id')
-const customer_group = defineModel<{ _id: string; code: string; name: string }>('customer_group')
+const customer_group = defineModel<ISelectedCustomerGroup>('customer_group')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -15,17 +17,19 @@ const email = defineModel<string>('email')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const selectedCustomerGroup = ref<{ id: string; label: string; code: string }>({
-  id: '',
+const selectedCustomerGroup = ref<ISelectedCustomerGroup>({
+  _id: '',
   label: '',
-  code: ''
+  code: '',
+  name: ''
 })
 
 watch(customer_group, () => {
   selectedCustomerGroup.value = {
-    id: `${customer_group.value?._id}`,
+    _id: `${customer_group.value?._id}`,
     label: `[${customer_group.value?.code}] ${customer_group.value?.name}`,
-    code: `${customer_group.value?.code}`
+    code: `${customer_group.value?.code}`,
+    name: `${customer_group.value?.name}`
   }
 })
 </script>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import SupplierGroupAutocomplete from '@/pages/master/supplier-groups/components/autocomplete/autocomplete.vue'
+import SupplierGroupAutocomplete, {
+  type ISelectedSupplierGroup
+} from '@/pages/master/supplier-groups/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
@@ -15,17 +17,19 @@ const email = defineModel<string>('email')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
-const selectedSupplierGroup = ref<{ id: string; label: string; code: string }>({
-  id: '',
+const selectedSupplierGroup = ref<ISelectedSupplierGroup>({
+  _id: '',
   label: '',
-  code: ''
+  code: '',
+  name: ''
 })
 
 watch(supplier_group, () => {
   selectedSupplierGroup.value = {
-    id: `${supplier_group.value?._id}`,
+    _id: `${supplier_group.value?._id}`,
     label: `[${supplier_group.value?.code}] ${supplier_group.value?.name}`,
-    code: `${supplier_group.value?.code}`
+    code: `${supplier_group.value?.code}`,
+    name: `${supplier_group.value?.name}`
   }
 })
 </script>

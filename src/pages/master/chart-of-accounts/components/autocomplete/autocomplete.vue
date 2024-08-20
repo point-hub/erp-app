@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetChartOfAccountsApi } from './retrieve-all.api'
 
-interface ISelected {
+export interface ISelectedChartOfAccount {
   _id: string
   label: string
   number: string
@@ -12,7 +12,7 @@ interface ISelected {
 }
 
 const _id = defineModel<string>()
-const selected = defineModel<ISelected>('selected')
+const selected = defineModel<ISelectedChartOfAccount>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const subledger = defineModel<string>('subledger', { default: '' })
 const label = defineModel<string>('label', { default: 'Chart of Account' })
@@ -32,7 +32,7 @@ const apiCall = async () => {
     1
   )
   if (response?.data) {
-    options.value = response.data.map((data: ISelected) => {
+    options.value = response.data.map((data: ISelectedChartOfAccount) => {
       return {
         _id: data._id,
         label: `[${data.number}] ${data.name}`,

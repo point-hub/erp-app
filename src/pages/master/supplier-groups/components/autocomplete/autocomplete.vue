@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetSupplierGroupsApi } from './retrieve-all.api'
 
-interface ISelected {
+export interface ISelectedSupplierGroup {
   _id: string
   label: string
   code: string
@@ -12,7 +12,7 @@ interface ISelected {
 }
 
 const _id = defineModel<string>()
-const selected = defineModel<ISelected>('selected')
+const selected = defineModel<ISelectedSupplierGroup>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const label = defineModel<string>('label', { default: 'Supplier Group' })
 const errors = ref<string[]>([])
@@ -25,7 +25,7 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getSupplierGroupsApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: ISelected) => {
+    options.value = response.data.map((data: ISelectedSupplierGroup) => {
       return {
         _id: data._id,
         code: `${data.code}`,
