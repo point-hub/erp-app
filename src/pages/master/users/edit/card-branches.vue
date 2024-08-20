@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/branch-autocomplete.vue'
+import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 import { useGetBranchesApi } from './get-branches.api'

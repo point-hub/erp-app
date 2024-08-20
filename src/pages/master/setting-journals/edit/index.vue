@@ -4,7 +4,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
-import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/chart-of-account-autocomplete.vue'
+import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/autocomplete.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/toast.store'
 

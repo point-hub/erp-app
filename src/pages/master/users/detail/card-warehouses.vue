@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import WarehouseAutocomplete from '@/pages/master/warehouses/components/autocomplete/warehouse-autocomplete.vue'
+import WarehouseAutocomplete from '@/pages/master/warehouses/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 import { useGetWarehousesApi } from './get-warehouses.api'

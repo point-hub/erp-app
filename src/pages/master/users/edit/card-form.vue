@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-import RoleAutocomplete from '@/pages/master/roles/components/autocomplete/role-autocomplete.vue'
+import RoleAutocomplete from '@/pages/master/roles/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 

@@ -20,6 +20,7 @@
     "@point-hub/papp": "^0.0.54",
     "@point-hub/vue-cookie": "^0.2.1",
     "axios": "^1.7.4",
+    "date-fns": "^3.6.0",
     "pinia": "^2.2.2",
     "vue": "^3.4.38",
     "vue-router": "^4.4.3"

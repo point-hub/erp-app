@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import WarehouseAutocomplete from '@/pages/master/warehouses/components/autocomplete/warehouse-autocomplete.vue'
+import WarehouseAutocomplete from '@/pages/master/warehouses/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 import { useGetWarehousesApi } from './get-warehouses.api'
+
+interface IOption {
+  _id: string
+  label: string
+  code: string
+  name: string
+  checked: boolean
+}
 
 const getWarehousesApi = useGetWarehousesApi()
 
@@ -12,43 +20,43 @@ const default_warehouse = defineModel<string>('default_warehouse')
 const warehouses = defineModel<string[]>('warehouses', { default: [] })
 const errors = defineModel<IFormError>('errors')
 
-const selected = ref()
-const options = ref<{ id: string; label: string; checked: boolean }[]>([])
+const selected = ref<IOption>()
+const options = ref<IOption[]>([])
 
 onMounted(async () => {
   const response = await getWarehousesApi.send('')
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: IOption) => {
       return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
+        _id: data._id,
+        label: `[${data.code}] ${data.name}`,
+        code: `${data.code}`,
+        name: `${data.name}`
       }
     })
 
     for (const option of options.value) {
-      if (default_warehouse.value === option.id) {
+      if (default_warehouse.value === option._id) {
         option.checked = true
       }
     }
-
-    selected.value = options.value[0]
   }
 })
 
-const onChecked = (option: { id: string; label: string; checked: boolean }) => {
+const onChecked = (option: IOption) => {
   if (option.checked) {
-    warehouses.value.push(option.id)
+    warehouses.value.push(option._id)
     return
   }
 
   // if option unchecked remove warehouse id from array
-  const index = warehouses.value.findIndex((warehouse) => warehouse === option.id)
+  const index = warehouses.value.findIndex((warehouse) => warehouse === option._id)
   if (index !== -1) {
     warehouses.value.splice(index, 1)
 
-    if (option.id === default_warehouse.value) {
+    if (option._id === default_warehouse.value) {
       default_warehouse.value = ''
-      selected.value = { id: '', label: '', checked: false }
+      selected.value = { _id: '', label: '', code: '', name: '', checked: false }
     }
   }
 }
@@ -60,7 +68,7 @@ watch(default_warehouse, () => {
   if (index === -1 && default_warehouse.value) {
     warehouses.value.push(default_warehouse.value)
     for (const option of options.value) {
-      if (option.id === default_warehouse.value) {
+      if (option._id === default_warehouse.value) {
         option.checked = true
       }
     }
@@ -89,7 +97,7 @@ watch(default_warehouse, () => {
           </tr>
         </thead>
         <tbody v-if="warehouses">
-          <tr v-for="option in options" :key="option.id">
+          <tr v-for="option in options" :key="option._id">
             <td>
               <div class="flex items-center justify-center">
                 <base-checkbox v-model="option.checked" @change="onChecked(option)" class="-mr-2" />

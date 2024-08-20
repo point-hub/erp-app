@@ -4,8 +4,16 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetUsersApi } from './get-users.api'
 
+interface ISelected {
+  _id: string
+  label: string
+  name: string
+  username: string
+  email: string
+}
+
 const _id = defineModel<string>()
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelected>('selected')
 const errors = ref<string[]>([])
 
 const getUsersApi = useGetUsersApi()
@@ -16,16 +24,15 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getUsersApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelected) => {
       return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
+        label: `${data.name}`,
+        _id: `${data._id}`,
+        name: `${data.name}`,
+        username: `${data.username}`,
+        email: `${data.email}`
       }
     })
-
-    if (!selected.value?.id) {
-      selected.value = options.value[0]
-    }
   }
   // finish loading
   isLoading.value = false
@@ -45,7 +52,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AxiosError } from 'axios'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import axios from '@/axios'
@@ -16,20 +16,11 @@ const router = useRouter()
 const { toastRef } = useToastStore()
 const form = reactive(useForm())
 
-const showApiKeyModal = ref(false)
-const toggleApiKeyModal = (value: boolean) => {
-  let newValue = !showApiKeyModal.value
-  if (value === true) newValue = true
-  if (value === false) newValue = false
-  showApiKeyModal.value = newValue
-}
-
 const onSave = async () => {
   try {
     const response = await axios.post('/v1/master/auth/signup', form.data)
     if (response.status === 201) {
       toastRef.toast('Create success', { color: 'success' })
-      toggleApiKeyModal(true)
       router.push('/master/users')
     }
   } catch (error) {

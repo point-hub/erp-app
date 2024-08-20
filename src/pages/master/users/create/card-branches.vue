@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/branch-autocomplete.vue'
+import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 import { useGetBranchesApi } from './get-branches.api'
+
+interface IOption {
+  _id: string
+  label: string
+  code: string
+  name: string
+  checked: boolean
+}
 
 const getBranchesApi = useGetBranchesApi()
 
@@ -13,42 +21,42 @@ const branches = defineModel<string[]>('branches', { default: [] })
 const errors = defineModel<IFormError>('errors')
 
 const selected = ref()
-const options = ref<{ id: string; label: string; checked: boolean }[]>([])
+const options = ref<[]>([])
 
 onMounted(async () => {
   const response = await getBranchesApi.send('')
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: IOption) => {
       return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
+        _id: data._id,
+        label: `[${data.code}] ${data.name}`,
+        code: `${data.code}`,
+        name: `${data.name}`
       }
     })
 
     for (const option of options.value) {
-      if (default_branch.value === option.id) {
+      if (default_branch.value === option._id) {
         option.checked = true
       }
     }
-
-    selected.value = options.value[0]
   }
 })
 
-const onChecked = (option: { id: string; label: string; checked: boolean }) => {
+const onChecked = (option: IOption) => {
   if (option.checked) {
-    branches.value.push(option.id)
+    branches.value.push(option._id)
     return
   }
 
   // if option unchecked remove branch id from array
-  const index = branches.value.findIndex((branch) => branch === option.id)
+  const index = branches.value.findIndex((branch) => branch === option._id)
   if (index !== -1) {
     branches.value.splice(index, 1)
 
-    if (option.id === default_branch.value) {
+    if (option._id === default_branch.value) {
       default_branch.value = ''
-      selected.value = { id: '', label: '', checked: false }
+      selected.value = { _id: '', label: '', checked: false }
     }
   }
 }
@@ -60,7 +68,7 @@ watch(default_branch, () => {
   if (index === -1 && default_branch.value) {
     branches.value.push(default_branch.value)
     for (const option of options.value) {
-      if (option.id === default_branch.value) {
+      if (option._id === default_branch.value) {
         option.checked = true
       }
     }
@@ -88,7 +96,7 @@ watch(default_branch, () => {
           </tr>
         </thead>
         <tbody v-if="branches">
-          <tr v-for="option in options" :key="option.id">
+          <tr v-for="option in options" :key="option._id">
             <td>
               <div class="flex items-center justify-center">
                 <base-checkbox v-model="option.checked" @change="onChecked(option)" class="-mr-2" />

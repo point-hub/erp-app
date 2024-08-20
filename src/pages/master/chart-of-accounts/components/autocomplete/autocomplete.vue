@@ -2,26 +2,42 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetRolesApi } from './get-roles.api'
+import { useGetChartOfAccountsApi } from './retrieve-all.api'
+
+interface ISelected {
+  _id: string
+  label: string
+  number: string
+  name: string
+}
 
 const _id = defineModel<string>()
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelected>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Role' })
+const subledger = defineModel<string>('subledger', { default: '' })
+const label = defineModel<string>('label', { default: 'Chart of Account' })
 const errors = ref<string[]>([])
 
-const getRolesApi = useGetRolesApi()
+const getChartOfAccountsApi = useGetChartOfAccountsApi()
 const search = ref('')
 const options = ref([])
 const isLoading = ref<boolean>(false)
 
 const apiCall = async () => {
-  const response = await getRolesApi.send(search.value, 1)
+  const response = await getChartOfAccountsApi.send(
+    {
+      label: search.value,
+      subledger: subledger.value
+    },
+    1
+  )
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelected) => {
       return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
+        _id: data._id,
+        label: `[${data.number}] ${data.name}`,
+        number: `${data.number}`,
+        name: `${data.name}`
       }
     })
   }
@@ -43,7 +59,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {

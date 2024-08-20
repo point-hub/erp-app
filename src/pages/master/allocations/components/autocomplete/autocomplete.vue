@@ -4,9 +4,17 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetAllocationsApi } from './retrieve-all.api'
 
+interface ISelected {
+  id: string
+  _id: string
+  label: string
+  code: string
+  name: string
+}
+
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelected>('selected')
 const errors = ref<string[]>([])
 
 const getAllocationsApi = useGetAllocationsApi()
@@ -20,7 +28,10 @@ const apiCall = async () => {
     options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
         id: data._id,
-        label: `[${data.code}] ${data.name}`
+        _id: data._id,
+        label: `[${data.code}] ${data.name}`,
+        code: `${data.code}`,
+        name: `${data.name}`
       }
     })
   }

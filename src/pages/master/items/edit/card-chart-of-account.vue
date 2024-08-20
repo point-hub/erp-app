@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 
-import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/chart-of-account-autocomplete.vue'
+import ChartOfAccountAutocomplete from '@/pages/master/chart-of-accounts/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 

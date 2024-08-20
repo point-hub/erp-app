@@ -2,33 +2,34 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetChartOfAccountsApi } from './get-chart-of-accounts.api'
+import { useGetWarehousesApi } from './retrieve-all.api'
+
+export interface ISelectedWarehouse {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
 
 const _id = defineModel<string>()
-const selected = defineModel<{ id: string; label: string }>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const subledger = defineModel<string>('subledger', { default: '' })
-const label = defineModel<string>('label', { default: 'Chart of Account' })
+const selected = defineModel<ISelectedWarehouse>('selected')
 const errors = ref<string[]>([])
 
-const getChartOfAccountsApi = useGetChartOfAccountsApi()
+const getWarehousesApi = useGetWarehousesApi()
 const search = ref('')
 const options = ref([])
 const isLoading = ref<boolean>(false)
 
 const apiCall = async () => {
-  const response = await getChartOfAccountsApi.send(
-    {
-      label: search.value,
-      subledger: subledger.value
-    },
-    1
-  )
+  const response = await getWarehousesApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; number: string; name: string }) => {
+    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
-        id: data._id,
-        label: `[${data.number}] ${data.name}`
+        _id: data._id,
+        label: `[${data.code}] ${data.name}`,
+        code: `${data.code}`,
+        name: `${data.name}`
       }
     })
   }
@@ -50,7 +51,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {
@@ -61,7 +62,7 @@ onMounted(async () => {
 <template>
   <base-autocomplete
     :required="required"
-    :label="label"
+    label="Warehouse"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

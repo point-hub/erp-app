@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/branch-autocomplete.vue'
+import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 

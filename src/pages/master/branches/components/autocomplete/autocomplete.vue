@@ -2,10 +2,17 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetBranchesApi } from './get-branches.api'
+import { useGetBranchesApi } from './retrieve-all.api'
+
+export interface ISelectedBranch {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
 
 const _id = defineModel<string>()
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelectedBranch>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const label = defineModel<string>('label', { default: 'Branch' })
 const errors = ref<string[]>([])
@@ -20,8 +27,10 @@ const apiCall = async () => {
   if (response?.data) {
     options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
       return {
-        id: data._id,
-        label: `[${data.code}] ${data.name}`
+        _id: `${data._id}`,
+        label: `[${data.code}] ${data.name}`,
+        code: `${data.code}`,
+        name: `${data.name}`
       }
     })
   }
@@ -43,7 +52,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {
