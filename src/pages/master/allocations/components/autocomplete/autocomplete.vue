@@ -5,7 +5,6 @@ import { onMounted, ref, watch } from 'vue'
 import { useGetAllocationsApi } from './retrieve-all.api'
 
 interface ISelected {
-  id: string
   _id: string
   label: string
   code: string
@@ -25,9 +24,8 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getAllocationsApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelected) => {
       return {
-        id: data._id,
         _id: data._id,
         label: `[${data.code}] ${data.name}`,
         code: `${data.code}`,
@@ -53,7 +51,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {

@@ -4,9 +4,16 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetCustomersApi } from './retrieve-all.api'
 
+interface ISelected {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
+
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelected>('selected')
 const errors = ref<string[]>([])
 
 const getCustomersApi = useGetCustomersApi()
@@ -17,9 +24,11 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getCustomersApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelected) => {
       return {
-        id: data._id,
+        _id: data._id,
+        code: data.code,
+        name: data.name,
         label: `[${data.code}] ${data.name}`
       }
     })
@@ -42,7 +51,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {
