@@ -69,7 +69,7 @@ const isLoading = ref(false)
 
 const updateRouter = () => {
   router.push({
-    path: '/purchasing/purchase-orders',
+    path: '/purchasing/down-payments',
     query: {
       search: searchAll.value,
       page: pagination.value.page,
@@ -182,7 +182,7 @@ const onDelete = async () => {
 
     <div class="my-5 flex gap-2">
       <router-link
-        to="/purchasing/purchase-orders/create"
+        to="/purchasing/down-payments/create"
         v-if="authStore.permission?.purchasing?.purchase_orders?.create"
       >
         <base-button color="info" shape="sharp">Create</base-button>
@@ -196,11 +196,8 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Form</th>
             <th>Date</th>
-            <th>Required Date</th>
             <th>Branch</th>
-            <th>Item</th>
-            <th>Notes</th>
-            <th>Quantity</th>
+            <th>Value</th>
             <th>Approval Status</th>
             <th>Form Status</th>
           </tr>
@@ -237,7 +234,7 @@ const onDelete = async () => {
                 <td></td>
                 <td>
                   <!-- <router-link
-                    :to="`/purchasing/purchase-orders/${purchaseRequest._id}`"
+                    :to="`/purchasing/down-payments/${purchaseRequest._id}`"
                     class="text-blue"
                   > -->
                   UNDEFINED
@@ -246,8 +243,6 @@ const onDelete = async () => {
                 <td>{{ format(new Date(purchaseRequest.created_date), 'dd-MM-yyyy') }}</td>
                 <td>{{ purchaseRequest.required_date }}</td>
                 <td>[{{ purchaseRequest.branch.code }}] {{ purchaseRequest.branch.name }}</td>
-                <td>[{{ item.item.code }}] {{ item.item.name }}</td>
-                <td>{{ item.notes }}</td>
                 <td>{{ item.quantity }} {{ item.item.unit }}</td>
                 <td><base-badge color="warning">pending</base-badge></td>
                 <td><base-badge color="warning">open</base-badge></td>

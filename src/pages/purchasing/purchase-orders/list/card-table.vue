@@ -196,11 +196,12 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Form</th>
             <th>Date</th>
-            <th>Required Date</th>
+            <th>Supplier</th>
             <th>Branch</th>
             <th>Item</th>
             <th>Notes</th>
             <th>Quantity</th>
+            <th>Price</th>
             <th>Approval Status</th>
             <th>Form Status</th>
           </tr>
@@ -248,6 +249,7 @@ const onDelete = async () => {
                 <td>[{{ purchaseRequest.branch.code }}] {{ purchaseRequest.branch.name }}</td>
                 <td>[{{ item.item.code }}] {{ item.item.name }}</td>
                 <td>{{ item.notes }}</td>
+                <td>{{ item.quantity }} {{ item.item.unit }}</td>
                 <td>{{ item.quantity }} {{ item.item.unit }}</td>
                 <td><base-badge color="warning">pending</base-badge></td>
                 <td><base-badge color="warning">open</base-badge></td>

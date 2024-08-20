@@ -196,7 +196,6 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Form</th>
             <th>Date</th>
-            <th>Required Date</th>
             <th>Branch</th>
             <th>Item</th>
             <th>Notes</th>

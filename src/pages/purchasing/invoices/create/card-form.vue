@@ -16,7 +16,7 @@ const errors = defineModel<IFormError>('errors')
 
 <template>
   <base-card>
-    <template #header>Purchase Orders</template>
+    <template #header>Invoices</template>
 
     <div class="flex flex-col gap-4 mt-5">
       <branch-autocomplete

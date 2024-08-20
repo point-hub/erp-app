@@ -27,7 +27,7 @@ const onSave = async () => {
     router.push('/unauthorized')
   }
   const response = await createWarehousesApi.send(form.data, form.errors)
-  if (response?.inserted_id) router.push('/purchasing/purchase-orders')
+  if (response?.inserted_id) router.push('/purchasing/down-payments')
 }
 </script>
 

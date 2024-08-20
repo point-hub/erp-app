@@ -10,7 +10,7 @@ const { toastRef } = useToastStore()
 export function useDeleteWarehouseApi() {
   const send = async (_id: string, reason: string, errors: IFormError) => {
     try {
-      const response = await axios.post(`/v1/purchasing/purchase-orders/${_id}/delete`, {
+      const response = await axios.post(`/v1/purchasing/invoices/${_id}/delete`, {
         reason: reason
       })
       if (response.status === 200) {

@@ -11,8 +11,8 @@ const breadcrumbs = [
     path: '/purchasing'
   },
   {
-    name: 'Purchase Orders',
-    path: '/purchasing/purchase-orders'
+    name: 'Invoices',
+    path: '/purchasing/invoices'
   },
   {
     name: 'Create'

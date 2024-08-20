@@ -10,7 +10,7 @@ const { toastRef } = useToastStore()
 export function useVerifyPasswordApi() {
   const send = async (password: string, errors: IFormError) => {
     try {
-      const response = await axios.post(`/v1/purchase-orders/auth/verify-password`, {
+      const response = await axios.post(`/v1/invoices/auth/verify-password`, {
         password: password
       })
       if (response.data.verified === false) {

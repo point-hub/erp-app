@@ -69,7 +69,7 @@ const isLoading = ref(false)
 
 const updateRouter = () => {
   router.push({
-    path: '/purchasing/purchase-orders',
+    path: '/purchasing/invoices',
     query: {
       search: searchAll.value,
       page: pagination.value.page,
@@ -178,11 +178,11 @@ const onDelete = async () => {
 
 <template>
   <base-card>
-    <template #header>Purchase Orders</template>
+    <template #header>Invoices</template>
 
     <div class="my-5 flex gap-2">
       <router-link
-        to="/purchasing/purchase-orders/create"
+        to="/purchasing/invoices/create"
         v-if="authStore.permission?.purchasing?.purchase_orders?.create"
       >
         <base-button color="info" shape="sharp">Create</base-button>
@@ -196,11 +196,12 @@ const onDelete = async () => {
             <th class="w-1"></th>
             <th class="w-30">Form</th>
             <th>Date</th>
-            <th>Required Date</th>
+            <th>Supplier</th>
             <th>Branch</th>
             <th>Item</th>
             <th>Notes</th>
             <th>Quantity</th>
+            <th>Price</th>
             <th>Approval Status</th>
             <th>Form Status</th>
           </tr>
@@ -237,7 +238,7 @@ const onDelete = async () => {
                 <td></td>
                 <td>
                   <!-- <router-link
-                    :to="`/purchasing/purchase-orders/${purchaseRequest._id}`"
+                    :to="`/purchasing/invoices/${purchaseRequest._id}`"
                     class="text-blue"
                   > -->
                   UNDEFINED

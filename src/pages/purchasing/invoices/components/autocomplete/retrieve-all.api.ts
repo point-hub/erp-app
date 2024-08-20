@@ -3,7 +3,7 @@ import axios from '@/axios'
 export function useGetWarehousesApi() {
   const send = async (search: string, page: number) => {
     try {
-      const response = await axios.get('/v1/purchasing/purchase-orders', {
+      const response = await axios.get('/v1/purchasing/invoices', {
         params: {
           filter: {
             label: search

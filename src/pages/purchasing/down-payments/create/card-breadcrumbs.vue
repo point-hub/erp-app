@@ -12,7 +12,7 @@ const breadcrumbs = [
   },
   {
     name: 'Down Payments',
-    path: '/purchasing/purchase-orders'
+    path: '/purchasing/down-payments'
   },
   {
     name: 'Create'

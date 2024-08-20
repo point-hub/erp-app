@@ -11,7 +11,7 @@ interface ISearch {
 export function useGetWarehousesApi() {
   const send = async (search: ISearch, page: number) => {
     try {
-      const response = await axios.get('/v1/purchasing/purchase-orders', {
+      const response = await axios.get('/v1/purchasing/invoices', {
         params: {
           filter: {
             search: search.all,

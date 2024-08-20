@@ -11,7 +11,7 @@ export function useCreateWarehouseApi() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const send = async (data: IForm, errors: IFormError) => {
     try {
-      const response = await axios.post('/v1/purchasing/purchase-orders', data)
+      const response = await axios.post('/v1/purchasing/invoices', data)
       if (response.status === 201) {
         toastRef.toast('Create success', { color: 'success' })
         return {
