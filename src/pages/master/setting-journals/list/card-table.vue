@@ -171,14 +171,16 @@ onMounted(async () => {
                 </base-popover>
               </td>
               <td>
+                {{ settingJournal.module }}
+              </td>
+              <td>
                 <router-link
                   :to="`/master/setting-journals/${settingJournal._id}`"
                   class="text-blue"
                 >
-                  {{ settingJournal.module }}
+                  {{ settingJournal.feature }}
                 </router-link>
               </td>
-              <td>{{ settingJournal.feature }}</td>
             </tr>
           </template>
         </tbody>

@@ -11,7 +11,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 onMounted(async () => {
-  if (!authStore.permission?.master?.branches?.read) {
+  if (!authStore.permission?.master?.setting_journals?.read) {
     router.push('/unauthorized')
   }
 })

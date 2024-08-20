@@ -21,7 +21,7 @@ onMounted(async () => {
 })
 
 const onSave = async () => {
-  if (!authStore.permission?.master?.branches?.create) {
+  if (!authStore.permission?.master?.chart_of_accounts?.create) {
     router.push('/unauthorized')
   }
   const response = await createChartOfAccountApi.send(form.data, form.errors)
