@@ -4,8 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetItemsApi } from './retrieve-all.api'
 
-interface ISelected {
-  id: string
+export interface ISelectedItem {
   _id: string
   label: string
   code: string
@@ -15,7 +14,7 @@ interface ISelected {
 
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<ISelected>('selected')
+const selected = defineModel<ISelectedItem>('selected')
 const errors = ref<string[]>([])
 
 const getItemsApi = useGetItemsApi()
@@ -26,17 +25,15 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getItemsApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map(
-      (data: { _id: string; code: string; name: string; unit: string }) => {
-        return {
-          label: `[${data.code}] ${data.name}`,
-          _id: data._id,
-          code: data.code,
-          name: data.name,
-          unit: data.unit
-        }
+    options.value = response.data.map((data: ISelectedItem) => {
+      return {
+        _id: data._id,
+        label: `[${data.code}] ${data.name}`,
+        code: data.code,
+        name: data.name,
+        unit: data.unit
       }
-    )
+    })
   }
   // finish loading
   isLoading.value = false
@@ -56,7 +53,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {

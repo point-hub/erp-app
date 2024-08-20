@@ -15,6 +15,22 @@ const authStore = useAuthStore()
 const deleteModalRef = ref()
 const getWarehousesApi = useGetWarehousesApi()
 
+interface IPurchaseRequestItem {
+  item: {
+    _id: string
+    code: string
+    name: string
+    unit: string
+  }
+  quantity: string
+  notes: string
+  allocation: {
+    _id: string
+    code: string
+    name: string
+  }
+}
+
 interface IPurchaseRequest {
   _id: string
   required_date: string
@@ -24,21 +40,7 @@ interface IPurchaseRequest {
     code: string
     name: string
   }
-  items: {
-    item: {
-      _id: string
-      code: string
-      name: string
-      unit: string
-    }
-    quantity: string
-    notes: string
-    allocation: {
-      _id: string
-      code: string
-      name: string
-    }
-  }
+  items: IPurchaseRequestItem[]
   notes: string
   approval_to: {
     _id: string
