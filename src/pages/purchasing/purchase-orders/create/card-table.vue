@@ -36,6 +36,7 @@ const addMore = () => {
     },
     notes: '',
     quantity: 0,
+    price: 0,
     allocation: {
       _id: '',
       label: '',

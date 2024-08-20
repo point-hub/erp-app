@@ -11,6 +11,7 @@ interface IItem {
   }
   notes: string
   quantity: number
+  price: number
   allocation: {
     _id: string
     label: string
