@@ -4,11 +4,14 @@ import VueCookie from '@point-hub/vue-cookie'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { useAuthStore } from '@/stores/auth.store'
+
 const { isDarkMode, toggleDarkMode } = useDarkMode()
 const sidebarStore = useSidebarStore()
 const router = useRouter()
 
 const accountPopoverRef = ref()
+const authStore = useAuthStore()
 
 const onSignout = () => {
   router.push('/auth/signin')
@@ -34,7 +37,7 @@ const onSignout = () => {
           <button type="button" class="flex gap-2" @click="accountPopoverRef.toggle()">
             <div class="hidden lg:flex flex-col justify-center items-end">
               <p class="text-sm truncate font-semibold">GMB</p>
-              <p class="text-sm truncate">gmbtest</p>
+              <p class="text-sm truncate">{{ authStore.name }}</p>
             </div>
             <base-avatar
               size="xs"
