@@ -126,11 +126,11 @@ onMounted(async () => {
   pagination.value = response?.pagination
 })
 
-const onDeleteModal = (branch: IRole, index: number) => {
+const onDeleteModal = (role: IRole, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
-    id: branch._id,
-    name: `[${branch.code}] ${branch.name}`
+    id: role._id,
+    name: `[${role.code}] ${role.name}`
   })
 }
 
@@ -182,7 +182,7 @@ const onDelete = async () => {
             </td>
           </tr>
           <template v-if="!isLoading">
-            <tr v-for="(branch, index) in roles" :key="index">
+            <tr v-for="(role, index) in roles" :key="index">
               <td>
                 <base-popover placement="bottom" ref="rowMenuRef">
                   <base-button size="xs" @click="rowMenuRef[index].toggle()">
@@ -191,7 +191,7 @@ const onDelete = async () => {
                   <template #content>
                     <base-card class="py-1! px-2! text-sm">
                       <div class="flex flex-col">
-                        <router-link :to="`/master/roles/${branch._id}`">
+                        <router-link :to="`/master/roles/${role._id}`">
                           <base-button variant="text" color="info">
                             <div class="flex gap-2 w-full">
                               <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
@@ -204,7 +204,7 @@ const onDelete = async () => {
                           v-if="authStore.permission?.master?.roles?.delete"
                           variant="text"
                           color="danger"
-                          @click="onDeleteModal(branch, index)"
+                          @click="onDeleteModal(role, index)"
                         >
                           <div class="flex gap-2 w-full">
                             <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
@@ -217,11 +217,11 @@ const onDelete = async () => {
                 </base-popover>
               </td>
               <td>
-                <router-link :to="`/master/roles/${branch._id}`" class="text-blue">
-                  {{ branch.code }}
+                <router-link :to="`/master/roles/${role._id}`" class="text-blue">
+                  {{ role.code }}
                 </router-link>
               </td>
-              <td>{{ branch.name }}</td>
+              <td>{{ role.name }}</td>
             </tr>
           </template>
         </tbody>
