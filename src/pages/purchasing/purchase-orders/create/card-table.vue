@@ -14,6 +14,7 @@ interface IItem {
   }
   notes: string
   quantity: number
+  price: number
   allocation: {
     _id: string
     label: string
@@ -68,6 +69,7 @@ onMounted(() => {
             <th class="min-w-80">Item</th>
             <th class="">Notes</th>
             <th class="">Quantity</th>
+            <th class="">Price</th>
             <th class="">Allocation</th>
             <th class=""></th>
           </tr>
@@ -80,6 +82,7 @@ onMounted(() => {
             <td><item-autocomplete label="" border="full" v-model:selected="item.item" /></td>
             <td><base-input border="full" v-model="item.notes" /></td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
+            <td><base-input-number border="full" v-model="item.price" /></td>
             <td>
               <allocation-autocomplete
                 label=""
