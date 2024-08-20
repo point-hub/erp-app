@@ -11,7 +11,7 @@ const breadcrumbs = [
     path: '/purchasing'
   },
   {
-    name: 'Receive Orders'
+    name: 'Down Payments'
   }
 ]
 </script>
