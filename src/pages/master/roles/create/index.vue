@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import CardPermissions from './card-permissions.vue'
-import { useCreateRoleApi } from './create-role.api'
+import { useCreateRoleApi } from './create.api'
 import { useForm } from './form'
 import { useGetPermissionsApi } from './get-permissions.api'
 

@@ -9,7 +9,7 @@ import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import CardPermissions from './card-permissions.vue'
 import { useForm } from './form'
-import { useGetRoleApi } from './get-role.api'
+import { useGetRoleApi } from './retrieve.api'
 
 const route = useRoute()
 const router = useRouter()

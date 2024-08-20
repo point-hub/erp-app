@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 
 import DeleteModal from '../components/delete/delete-modal.vue'
-import { useGetRolesApi } from './get-roles.api'
+import { useGetRolesApi } from './retrieve-all.api'
 
 const route = useRoute()
 const router = useRouter()
