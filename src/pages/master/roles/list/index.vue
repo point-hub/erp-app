@@ -20,7 +20,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
-    <card-table v-if="authStore.permission?.master?.roles?.read" />
+    <card-table />
   </div>
 </template>
 
