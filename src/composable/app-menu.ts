@@ -25,7 +25,7 @@ export function useAppMenu() {
     () => {
       menus.value[0].menu = [{ name: 'Home', path: '/home' }]
       menus.value[0].menu?.push(...seedMasterPermissions())
-      // menus.value[0].menu?.push(...seedPurchasingPermissions())
+      menus.value[0].menu?.push(...seedPurchasingPermissions())
       // menus.value[0].menu?.push(...seedSalesPermissions())
       // menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
@@ -43,8 +43,6 @@ export function useAppMenu() {
 const seedMasterPermissions = () => {
   const menu = ref<IMenu[]>([])
   const submenu = ref<ISubmenu[]>([])
-
-  console.log('permisson master', authStore?.permission)
 
   if (authStore?.permission?.master?.users?.read) {
     submenu.value?.push({ name: 'Users', path: '/master/users' })
@@ -107,9 +105,9 @@ const seedPurchasingPermissions = () => {
   if (authStore?.permission?.purchasing?.invoices?.read) {
     submenu.value?.push({ name: 'Invoices', path: '/purchasing/invoices' })
   }
-  if (authStore?.permission?.purchasing?.payment_orders?.read) {
-    submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
-  }
+  // if (authStore?.permission?.purchasing?.payment_orders?.read) {
+  //   submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
+  // }
 
   if (authStore?.permission?.purchasing?.menu) {
     menu.value.push({ name: 'Purchasing', submenu: submenu.value })

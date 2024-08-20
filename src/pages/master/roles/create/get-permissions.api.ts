@@ -6,7 +6,7 @@ export function useGetPermissionsApi() {
       const response = await axios.get('/v1/master/permissions')
 
       if (response.status === 200) {
-        return response.data.data[0]
+        return response.data
       }
     } catch (error) {
       console.log(error)
