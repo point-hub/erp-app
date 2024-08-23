@@ -43,6 +43,26 @@ watch(selectedType, async () => {
   await getAccountCategories(selectedType.value.id)
 })
 
+watch(subledger, () => {
+  selectedSubledger.value = { label: subledger }
+})
+
+const selectedSubledger = ref()
+const optionsSubledger = ref([
+  { label: 'Item' },
+  { label: 'Supplier' },
+  { label: 'Customer' },
+  { label: 'Expedition' },
+  { label: 'Fixed Asset' }
+])
+
+watch(
+  () => selectedSubledger.value,
+  () => {
+    subledger.value = selectedSubledger.value.label
+  }
+)
+
 const getAccountTypes = async () => {
   const response = await axios.get('/v1/master/chart-of-account-types', {
     params: {
@@ -107,7 +127,13 @@ onMounted(async () => {
       />
       <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
-      <base-input v-model="subledger" label="Subledger" :errors="errors?.subledger" />
+      <base-autocomplete
+        required
+        label="Subledger"
+        v-model="selectedSubledger"
+        :options="optionsSubledger"
+        :errors="errors?.subledger"
+      />
       <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>

@@ -19,11 +19,11 @@ const selectedCategory = ref()
 const optionsCategory = ref([])
 const selectedSubledger = ref()
 const optionsSubledger = ref([
-  { _id: 'Item', label: 'Item' },
-  { _id: 'Supplier', label: 'Supplier' },
-  { _id: 'Customer', label: 'Customer' },
-  { _id: 'Expedition', label: 'Expedition' },
-  { _id: 'Fixed Asset', label: 'Fixed Asset' }
+  { label: 'Item' },
+  { label: 'Supplier' },
+  { label: 'Customer' },
+  { label: 'Expedition' },
+  { label: 'Fixed Asset' }
 ])
 
 watch(selectedCategory, () => {
@@ -36,9 +36,12 @@ watch(selectedType, async () => {
   await getAccountCategories(selectedType.value.id)
 })
 
-watch(selectedSubledger, () => {
-  subledger.value = selectedSubledger.value._id
-})
+watch(
+  () => selectedSubledger.value,
+  () => {
+    subledger.value = selectedSubledger.value.label
+  }
+)
 
 const getAccountTypes = async () => {
   const response = await axios.get('/v1/master/chart-of-account-types', {
@@ -106,7 +109,7 @@ onMounted(async () => {
       <base-autocomplete
         required
         label="Subledger"
-        v-model="selectedSubledger.label"
+        v-model="selectedSubledger"
         :options="optionsSubledger"
         :errors="errors?.subledger"
       />
