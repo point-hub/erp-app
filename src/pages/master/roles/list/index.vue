@@ -20,6 +20,23 @@ onMounted(() => {
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
+    <base-card
+      ><table>
+        <tr>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>ASDJOAHIFHJPEQ</td>
+          <td>XCDQPIJ)#!) 0931u 0j1rj13ir13jo</td>
+          <td>XCDQPIJ)#!) 0931u 0j1rj13ir13jo</td>
+          <td>XCDQPIJ)#!) 0931u 0j1rj13ir13jo</td>
+          <td>XCDQPIJ)#!) 0931u 0j1rj13ir13jo</td>
+        </tr>
+      </table></base-card
+    >
     <card-table />
   </div>
 </template>

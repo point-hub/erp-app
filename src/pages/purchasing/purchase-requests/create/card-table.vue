@@ -2,6 +2,7 @@
 import { onMounted } from 'vue'
 
 import AllocationAutocomplete from '@/pages/master/allocations/components/autocomplete/autocomplete.vue'
+import ItemCategoryAutocomplete from '@/pages/master/item-categories/components/autocomplete/autocomplete.vue'
 import ItemAutocomplete from '@/pages/master/items/components/autocomplete/autocomplete.vue'
 
 interface IItem {
@@ -61,23 +62,25 @@ onMounted(() => {
 <template>
   <base-card>
     <div class="flex flex-col gap-4">
-      <base-table>
+      <base-table class="pb-40">
         <thead>
           <tr>
             <th class="w-1">#</th>
             <th class="min-w-80">Item</th>
-            <th class="">Notes</th>
-            <th class="">Quantity</th>
-            <th class="">Allocation</th>
-            <th class=""></th>
+            <th class="min-w-80">Notes</th>
+            <th class="min-w-80">Quantity</th>
+            <th class="min-w-80">Allocation</th>
+            <th class="min-w-80"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index">
+          <tr v-for="(item, index) in items" :key="index" class="relative">
             <td>
               <span>{{ index + 1 }}</span>
             </td>
-            <td><item-autocomplete label="" border="full" v-model:selected="item.item" /></td>
+            <td>
+              <item-category-autocomplete label="" border="full" v-model:selected="item.item" />
+            </td>
             <td><base-input border="full" v-model="item.notes" /></td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
             <td>

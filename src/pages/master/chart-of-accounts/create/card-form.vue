@@ -17,6 +17,14 @@ const optionsType = ref([])
 const selectedType = ref()
 const selectedCategory = ref()
 const optionsCategory = ref([])
+const selectedSubledger = ref()
+const optionsSubledger = ref([
+  { _id: 'Item', label: 'Item' },
+  { _id: 'Supplier', label: 'Supplier' },
+  { _id: 'Customer', label: 'Customer' },
+  { _id: 'Expedition', label: 'Expedition' },
+  { _id: 'Fixed Asset', label: 'Fixed Asset' }
+])
 
 watch(selectedCategory, () => {
   category_id.value = selectedCategory.value.id ?? ''
@@ -26,6 +34,10 @@ watch(selectedType, async () => {
   type_id.value = selectedType.value.id
   selectedCategory.value = { label: '' }
   await getAccountCategories(selectedType.value.id)
+})
+
+watch(selectedSubledger, () => {
+  subledger.value = selectedSubledger.value._id
 })
 
 const getAccountTypes = async () => {
@@ -91,7 +103,13 @@ onMounted(async () => {
       />
       <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
-      <base-input v-model="subledger" label="Subledger" :errors="errors?.subledger" />
+      <base-autocomplete
+        required
+        label="Subledger"
+        v-model="selectedSubledger.label"
+        :options="optionsSubledger"
+        :errors="errors?.subledger"
+      />
       <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>

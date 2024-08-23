@@ -13,8 +13,8 @@ export function useAppMenu() {
       icon: 'https://assets.pointhub.net/assets/images/logo/primary/icon-rounded.png',
       menu: [
         {
-          name: 'Home',
-          path: '/home'
+          name: '',
+          path: '/'
         }
       ]
     }
@@ -27,7 +27,7 @@ export function useAppMenu() {
       menus.value[0].menu?.push(...seedMasterPermissions())
       menus.value[0].menu?.push(...seedPurchasingPermissions())
       // menus.value[0].menu?.push(...seedSalesPermissions())
-      // menus.value[0].menu?.push(...seedFinancePermissions())
+      menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
       // menus.value[0].menu?.push(...seedInventoryPermissions())
       // menus.value[0].menu?.push(...seedAccountingPermissions())
@@ -105,9 +105,9 @@ const seedPurchasingPermissions = () => {
   if (authStore?.permission?.purchasing?.invoices?.read) {
     submenu.value?.push({ name: 'Invoices', path: '/purchasing/invoices' })
   }
-  // if (authStore?.permission?.purchasing?.payment_orders?.read) {
-  //   submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
-  // }
+  if (authStore?.permission?.purchasing?.payment_orders?.read) {
+    submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
+  }
 
   if (authStore?.permission?.purchasing?.menu) {
     menu.value.push({ name: 'Purchasing', submenu: submenu.value })
@@ -165,15 +165,15 @@ const seedFinancePermissions = () => {
   if (authStore?.permission?.finance?.bank_payments?.read) {
     submenu.value?.push({ name: 'Bank Payments', path: '/finance/bank-payments' })
   }
-  if (authStore?.permission?.finance?.profit_and_loss?.read) {
-    submenu.value?.push({ name: 'Profit & Loss', path: '/finance/profit-and-loss' })
-  }
-  if (authStore?.permission?.finance?.debts_aging_report?.read) {
-    submenu.value?.push({ name: 'Debts Aging Report', path: '/finance/debts-aging-report' })
-  }
-  if (authStore?.permission?.finance?.allocation_report?.read) {
-    submenu.value?.push({ name: 'Allocation Report', path: '/finance/allocation-report' })
-  }
+  // if (authStore?.permission?.finance?.profit_and_loss?.read) {
+  //   submenu.value?.push({ name: 'Profit & Loss', path: '/finance/profit-and-loss' })
+  // }
+  // if (authStore?.permission?.finance?.debts_aging_report?.read) {
+  //   submenu.value?.push({ name: 'Debts Aging Report', path: '/finance/debts-aging-report' })
+  // }
+  // if (authStore?.permission?.finance?.allocation_report?.read) {
+  //   submenu.value?.push({ name: 'Allocation Report', path: '/finance/allocation-report' })
+  // }
 
   if (authStore?.permission?.finance?.menu) {
     menu.value.push({ name: 'Finance', submenu: submenu.value })

@@ -30,12 +30,12 @@ onMounted(() => {
     <base-card>
       <template #header>Cash Payments</template>
       <div class="my-5 flex gap-2">
-        <base-button @click="onCreateClick" color="primary" shape="sharp" class="truncate">
-          Cash In
-        </base-button>
-        <base-button @click="onCreateClick" color="primary" shape="sharp" class="truncate">
-          Cash Out
-        </base-button>
+        <router-link to="/purchasing/purchase-requests/create">
+          <base-button color="info" shape="sharp" class="truncate">Cash In</base-button>
+        </router-link>
+        <router-link to="/purchasing/purchase-requests/create">
+          <base-button color="info" shape="sharp" class="truncate">Cash Out</base-button>
+        </router-link>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
       </div>
       <div class="flex flex-col gap-4">

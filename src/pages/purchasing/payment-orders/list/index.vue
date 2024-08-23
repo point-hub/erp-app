@@ -30,7 +30,9 @@ onMounted(() => {
     <base-card>
       <template #header>Payment Orders</template>
       <div class="my-5 flex gap-2">
-        <base-button @click="onCreateClick" color="primary" shape="sharp">Create</base-button>
+        <router-link to="/purchasing/purchase-requests/create">
+          <base-button color="info" shape="sharp" class="truncate">Create</base-button>
+        </router-link>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
       </div>
       <div class="flex flex-col gap-4">
