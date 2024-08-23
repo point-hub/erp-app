@@ -133,7 +133,10 @@ const onDelete = async () => {
     <base-card>
       <template #header>Chart of Accounts</template>
       <div class="my-5 flex gap-2">
-        <router-link to="/master/chart-of-accounts/create">
+        <router-link
+          to="/master/chart-of-accounts/create"
+          v-if="authStore.permission?.master?.chart_of_accounts?.create"
+        >
           <base-button color="info" shape="sharp">Create</base-button>
         </router-link>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
