@@ -226,7 +226,14 @@ const onDelete = async () => {
                     {{ chartOfAccount.number }}
                   </router-link>
                 </td>
-                <td>{{ chartOfAccount.name }}</td>
+                <td>
+                  <router-link
+                    :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
+                    class="text-blue"
+                  >
+                    {{ chartOfAccount.name }}
+                  </router-link>
+                </td>
                 <td>{{ chartOfAccount.type.name }}</td>
                 <td>{{ chartOfAccount.category.name }}</td>
                 <td>{{ chartOfAccount.subledger }}</td>
