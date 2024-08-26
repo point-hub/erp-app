@@ -62,7 +62,7 @@ onMounted(() => {
 <template>
   <base-card>
     <div class="flex flex-col gap-4">
-      <base-table class="pb-40">
+      <base-table>
         <thead>
           <tr>
             <th class="w-1">#</th>
@@ -76,18 +76,19 @@ onMounted(() => {
         <tbody>
           <tr v-for="(item, index) in items" :key="index" class="relative">
             <td>
-              <span>{{ index + 1 }}</span>
+              <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
               <item-choosen title="Item" v-model:selected="selected" border="full" />
             </td>
             <td><base-input border="full" v-model="item.notes" /></td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
-            <td></td>
+            <td><item-choosen title="Item" v-model:selected="selected" border="full" /></td>
             <td>
-              <base-button class="px-1!" @click="removeItem(index)">
-                <base-icon icon="i-far-trash"></base-icon>
+              <base-button class="px-0! mt-1" @click="removeItem(index)">
+                <div class="flex flex-1 h-full w-full mt-1 p-0! m-0! text-white"></div>
               </base-button>
+              <base-icon icon="i-far-trash" class="bg-red text-slate-100"></base-icon>
             </td>
           </tr>
         </tbody>

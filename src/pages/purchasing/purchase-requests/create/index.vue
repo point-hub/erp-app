@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth.store'
 import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
-import CardTable from './card-table.vue'
+import CardItems from './card-items.vue'
 import { useCreateWarehouseApi } from './create.api'
 import { useForm } from './form'
 
@@ -41,7 +41,7 @@ const onSave = async () => {
       :errors="form.errors"
     />
 
-    <card-table v-model:items="form.data.items" />
+    <card-items v-model:items="form.data.items" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"
