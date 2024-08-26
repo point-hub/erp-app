@@ -79,6 +79,7 @@ const onUpdate = async () => {
       v-model:name="form.data.name"
       v-model:unit="form.data.unit"
       v-model:notes="form.data.notes"
+      :errors="form.errors"
     />
 
     <card-chart-of-account

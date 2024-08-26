@@ -79,6 +79,7 @@ const onUpdate = async () => {
       v-model:notes="form.data.notes"
       v-model:type="type"
       v-model:category="category"
+      :errors="form.errors"
     />
 
     <base-card class="py-4!">

@@ -59,6 +59,7 @@ const onUpdate = async () => {
       v-model:address="form.data.address"
       v-model:phone="form.data.phone"
       v-model:notes="form.data.notes"
+      :errors="form.errors"
     />
 
     <base-card class="py-4!" v-if="authStore.permission?.master?.branches?.update">

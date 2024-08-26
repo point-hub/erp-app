@@ -128,7 +128,6 @@ onMounted(async () => {
       <base-input required v-model="number" label="Number" :errors="errors?.number" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-autocomplete
-        required
         label="Subledger"
         v-model="selectedSubledger"
         :options="optionsSubledger"

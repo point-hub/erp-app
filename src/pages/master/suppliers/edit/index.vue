@@ -71,6 +71,7 @@ const onUpdate = async () => {
       v-model:phone="form.data.phone"
       v-model:email="form.data.email"
       v-model:notes="form.data.notes"
+      :errors="form.errors"
     />
 
     <card-bank
