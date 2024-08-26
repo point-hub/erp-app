@@ -67,7 +67,7 @@ const getSettingJournal = async () => {
       subledger: data.subledger,
       editable: data.editable,
       position: data.position,
-      chart_of_subledger_id: data.chart_of_account_id,
+      chart_of_account_id: data.chart_of_account._id,
       chart_of_account: chart_of_account
     }
   })
@@ -122,7 +122,6 @@ const onUpdate = async () => {
       <h3 class="capitalize">{{ form.data.module }} | {{ form.data.feature }}</h3>
 
       <div class="flex flex-col gap-4 my-5">
-        <!-- {{ form.errors }} -->
         <base-table>
           <thead>
             <tr>
@@ -149,7 +148,7 @@ const onUpdate = async () => {
                     Subledger: {{ journal.subledger }}
                   </p>
                 </td>
-                <td class="uppercase w-100">
+                <td class="w-100">
                   <span v-if="journal.editable" class="absolute">
                     <chart-of-account-autocomplete
                       label=""
