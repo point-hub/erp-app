@@ -232,7 +232,11 @@ const onDelete = async () => {
                   {{ branch.code }}
                 </router-link>
               </td>
-              <td>{{ branch.name }}</td>
+              <td>
+                <router-link :to="`/master/branches/${branch._id}`" class="text-blue">
+                  {{ branch.name }}
+                </router-link>
+              </td>
               <td>{{ branch.address }}</td>
               <td>{{ branch.phone }}</td>
             </tr>

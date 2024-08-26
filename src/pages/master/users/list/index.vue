@@ -208,7 +208,11 @@ const onDelete = async () => {
                     {{ user.username }}
                   </router-link>
                 </td>
-                <td>{{ user.name }}</td>
+                <td>
+                  <router-link :to="`/master/users/${user._id}`" class="text-blue">
+                    {{ user.name }}
+                  </router-link>
+                </td>
                 <td>{{ user.email }}</td>
                 <td>[{{ user.role.code }}] {{ user.role.name }}</td>
               </tr>

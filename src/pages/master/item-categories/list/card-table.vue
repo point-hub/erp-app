@@ -216,7 +216,11 @@ const onDelete = async () => {
                   {{ itemCategory.code }}
                 </router-link>
               </td>
-              <td>{{ itemCategory.name }}</td>
+              <td>
+                <router-link :to="`/master/item-categories/${itemCategory._id}`" class="text-blue">
+                  {{ itemCategory.name }}
+                </router-link>
+              </td>
             </tr>
           </template>
         </tbody>

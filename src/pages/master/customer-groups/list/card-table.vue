@@ -216,7 +216,11 @@ const onDelete = async () => {
                   {{ customerGroup.code }}
                 </router-link>
               </td>
-              <td>{{ customerGroup.name }}</td>
+              <td>
+                <router-link :to="`/master/customer-groups/${customerGroup._id}`" class="text-blue">
+                  {{ customerGroup.name }}
+                </router-link>
+              </td>
             </tr>
           </template>
         </tbody>

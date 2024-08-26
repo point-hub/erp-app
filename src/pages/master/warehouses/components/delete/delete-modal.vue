@@ -103,7 +103,6 @@ defineExpose({
         </div>
         <base-textarea
           required
-          :maxlength="255"
           label="Reason to delete"
           :maxlength="1000"
           v-model="reason"

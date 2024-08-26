@@ -219,7 +219,14 @@ const onDelete = async () => {
                   {{ allocationGroup.code }}
                 </router-link>
               </td>
-              <td>{{ allocationGroup.name }}</td>
+              <td>
+                <router-link
+                  :to="`/master/allocation-groups/${allocationGroup._id}`"
+                  class="text-blue"
+                >
+                  {{ allocationGroup.name }}
+                </router-link>
+              </td>
             </tr>
           </template>
         </tbody>

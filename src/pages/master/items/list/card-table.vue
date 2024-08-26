@@ -270,7 +270,11 @@ const onDelete = async () => {
                   {{ item.code }}
                 </router-link>
               </td>
-              <td>{{ item.name }}</td>
+              <td>
+                <router-link :to="`/master/items/${item._id}`" class="text-blue">
+                  {{ item.name }}
+                </router-link>
+              </td>
               <td>{{ item.unit }}</td>
               <td>[{{ item.category.code }}] {{ item.category.name }}</td>
               <td>[{{ item.chart_of_account.number }}] {{ item.chart_of_account.name }}</td>
