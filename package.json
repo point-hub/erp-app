@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@point-hub/js-utils": "^0.0.3",
-    "@point-hub/papp": "^0.0.56",
+    "@point-hub/papp": "^0.0.59",
     "@point-hub/vue-cookie": "^0.2.1",
     "axios": "^1.7.4",
     "date-fns": "^3.6.0",

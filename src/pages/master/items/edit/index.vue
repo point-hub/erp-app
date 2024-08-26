@@ -30,21 +30,22 @@ onMounted(async () => {
 
   const response = await getItemApi.send(route.params.id.toString())
 
+  console.log(response)
+
   if (response) {
     category.value = {
-      id: response.category._id,
+      _id: response.category._id,
       label: `[${response.category.code}] ${response.category.name}`,
       code: response.category.code
     }
     chart_of_account.value = {
-      id: response.chart_of_account._id,
+      _id: response.chart_of_account._id,
       label: `[${response.chart_of_account.number}] ${response.chart_of_account.name}`
     }
 
     formId.value = response._id
-    form.data.category_id = response.category._id
-    form.data.chart_of_account_id = response.chart_of_account._id
-    form.data.chart_of_account = response.chart_of_account
+    form.data.category_id = category.value._id
+    form.data.chart_of_account_id = chart_of_account.value._id
     form.data.code = response.code
     form.data.name = response.name
     form.data.unit = response.unit

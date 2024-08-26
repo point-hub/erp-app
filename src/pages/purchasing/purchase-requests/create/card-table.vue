@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
-import AllocationAutocomplete from '@/pages/master/allocations/components/autocomplete/autocomplete.vue'
-import ItemCategoryAutocomplete from '@/pages/master/item-categories/components/autocomplete/autocomplete.vue'
-import ItemAutocomplete from '@/pages/master/items/components/autocomplete/autocomplete.vue'
+import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
 interface IItem {
   item: {
@@ -53,6 +51,8 @@ const removeItem = (index: number) => {
   items.value.splice(index, 1)
 }
 
+const selected = ref()
+
 onMounted(() => {
   clearAll()
   addMore()
@@ -66,11 +66,11 @@ onMounted(() => {
         <thead>
           <tr>
             <th class="w-1">#</th>
-            <th class="min-w-80">Item</th>
-            <th class="min-w-80">Notes</th>
-            <th class="min-w-80">Quantity</th>
-            <th class="min-w-80">Allocation</th>
-            <th class="min-w-80"></th>
+            <th>Item</th>
+            <th>Notes</th>
+            <th>Quantity</th>
+            <th>Allocation</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -79,18 +79,11 @@ onMounted(() => {
               <span>{{ index + 1 }}</span>
             </td>
             <td>
-              <item-category-autocomplete label="" border="full" v-model:selected="item.item" />
+              <item-choosen title="Item" v-model:selected="selected" border="full" />
             </td>
             <td><base-input border="full" v-model="item.notes" /></td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
-            <td>
-              <allocation-autocomplete
-                label=""
-                border="full"
-                v-model="item.allocation._id"
-                v-model:selected="item.allocation"
-              />
-            </td>
+            <td></td>
             <td>
               <base-button class="px-1!" @click="removeItem(index)">
                 <base-icon icon="i-far-trash"></base-icon>
