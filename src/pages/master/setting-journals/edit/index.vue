@@ -119,9 +119,10 @@ const onUpdate = async () => {
 
     <base-card>
       <template #header>Setting Journals</template>
-      <h3 class="capitalize">{{ settingJournal?.module }} | {{ settingJournal?.feature }}</h3>
+      <h3 class="capitalize">{{ form.data.module }} | {{ form.data.feature }}</h3>
 
       <div class="flex flex-col gap-4 my-5">
+        <!-- {{ form.errors }} -->
         <base-table>
           <thead>
             <tr>
@@ -140,7 +141,7 @@ const onUpdate = async () => {
               </td>
             </tr>
             <template v-if="!isLoading">
-              <tr v-for="journal in form.data.journals" :key="journal.id">
+              <tr v-for="(journal, index) in form.data.journals" :key="journal.id">
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>
@@ -148,14 +149,17 @@ const onUpdate = async () => {
                     Subledger: {{ journal.subledger }}
                   </p>
                 </td>
-                <td class="uppercase">
+                <td class="uppercase w-100">
                   <span v-if="journal.editable" class="absolute">
                     <chart-of-account-autocomplete
+                      label=""
                       v-model="journal.chart_of_account_id"
                       v-model:selected="journal.chart_of_account"
                       :subledger="journal.subledger"
-                      label=""
-                    ></chart-of-account-autocomplete>
+                      :errors="form.errors[`journals.${index}.chart_of_account_id`]"
+                      border="full"
+                      class="w-100"
+                    />
                   </span>
                 </td>
                 <td class="text-right">
