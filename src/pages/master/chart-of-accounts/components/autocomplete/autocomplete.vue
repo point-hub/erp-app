@@ -11,14 +11,13 @@ export interface ISelectedChartOfAccount {
   name: string
 }
 
-const props = defineProps<{ border: 'full' | 'simple' | 'none' }>()
-
 const _id = defineModel<string>()
 const selected = defineModel<ISelectedChartOfAccount>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const subledger = defineModel<string>('subledger', { default: '' })
 const label = defineModel<string>('label', { default: 'Chart of Account' })
-const errors = defineModel<IFormError>('errors')
+const border = defineModel<'full' | 'simple' | 'none'>('border')
+const errors = defineModel<string[]>('errors')
 
 const getChartOfAccountsApi = useGetChartOfAccountsApi()
 const search = ref('')
@@ -75,7 +74,7 @@ onMounted(async () => {
     :label="label"
     v-model="selected"
     v-model:query="search"
-    :border="props.border"
+    :border="border"
     :is-loading="isLoading"
     :options="options"
     :errors="errors"
