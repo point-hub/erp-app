@@ -18,36 +18,33 @@ const getWarehousesApi = useGetWarehousesApi()
 interface IFormulaItem {
   item: {
     _id: string
+    label: string
     code: string
     name: string
     unit: string
   }
   quantity: string
-  notes: string
-  allocation: {
-    _id: string
-    code: string
-    name: string
-  }
 }
 
 interface IFormula {
   _id: string
-  required_date: string
-  created_date: string
-  branch: {
+  name: string
+  process: {
     _id: string
+    label: string
     code: string
     name: string
   }
-  items: IFormulaItem[]
-  notes: string
   approval_to: {
     _id: string
-    email: string
+    label: string
     username: string
     name: string
+    email: string
   }
+  finished_goods: IFormulaItem[]
+  raw_materials: IFormulaItem[]
+  notes: string
 }
 
 const searchAll = ref('')
@@ -241,24 +238,25 @@ const onDelete = async () => {
           </tr>
           <template v-if="!isLoading">
             <template v-for="formula in formulas">
-              <tr v-for="(item, index) in formula.items" :key="index">
+              <tr v-for="(item, index) in formula.raw_materials" :key="index">
                 <td></td>
                 <td>
-                  <!-- <router-link
-                    :to="`/manufacture/formulas/${formula._id}`"
-                    class="text-blue"
-                  > -->
-                  UNDEFINED
-                  <!-- </router-link> -->
+                  <router-link :to="`/manufacture/formulas/${formula._id}`" class="text-blue">
+                    {{ formula.name }}
+                  </router-link>
                 </td>
-                <td>{{ format(new Date(formula.created_date), 'dd-MM-yyyy') }}</td>
-                <td>{{ formula.required_date }}</td>
-                <td>[{{ formula.branch.code }}] {{ formula.branch.name }}</td>
-                <td>[{{ item.item.code }}] {{ item.item.name }}</td>
-                <td>{{ item.notes }}</td>
-                <td>{{ item.quantity }} {{ item.item.unit }}</td>
+                <td>{{ formula.notes }}</td>
+                <td class="text-left bg-red-100 dark:bg-red-800">
+                  {{ formula.finished_goods[0].item.label }}
+                </td>
+                <td class="text-left bg-red-100 dark:bg-red-800">
+                  {{ formula.finished_goods[0].quantity }} {{ formula.finished_goods[0].item.unit }}
+                </td>
+                <td class="text-left bg-green-100 dark:bg-green-800">{{ item.item.label }}</td>
+                <td class="text-left bg-green-100 dark:bg-green-800">
+                  {{ item.quantity }} {{ item.item.unit }}
+                </td>
                 <td><base-badge color="warning">pending</base-badge></td>
-                <td><base-badge color="warning">open</base-badge></td>
               </tr>
             </template>
           </template>

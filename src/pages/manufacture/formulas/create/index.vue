@@ -9,13 +9,13 @@ import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardFinishedGoods from './card-finished-goods.vue'
 import CardForm from './card-form.vue'
 import CardRawMaterials from './card-raw-materials.vue'
-import { useCreateWarehouseApi } from './create.api'
+import { useCreateFormulaApi } from './create.api'
 import { useForm } from './form'
 
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const createWarehousesApi = useCreateWarehouseApi()
+const createFormulaApi = useCreateFormulaApi()
 
 onMounted(async () => {
   if (!authStore.permission?.manufacture?.formulas?.create) {
@@ -27,7 +27,7 @@ const onSave = async () => {
   if (!authStore.permission?.manufacture?.formulas?.create) {
     router.push('/unauthorized')
   }
-  const response = await createWarehousesApi.send(form.data, form.errors)
+  const response = await createFormulaApi.send(form.data, form.errors)
   if (response?.inserted_id) router.push('/manufacture/formulas')
 }
 </script>

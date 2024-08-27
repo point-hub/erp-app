@@ -11,14 +11,7 @@ interface IItem {
     name: string
     unit: string
   }
-  notes: string
   quantity: number
-  allocation: {
-    _id: string
-    label: string
-    code: string
-    name: string
-  }
 }
 
 const items = defineModel<IItem[]>('items', { default: [] })
@@ -32,14 +25,7 @@ const addMore = () => {
       name: '',
       unit: ''
     },
-    notes: '',
-    quantity: 0,
-    allocation: {
-      _id: '',
-      label: '',
-      code: '',
-      name: ''
-    }
+    quantity: 0
   })
 }
 
@@ -50,8 +36,6 @@ const clearAll = () => {
 const removeItem = (index: number) => {
   items.value.splice(index, 1)
 }
-
-const selected = ref()
 
 onMounted(() => {
   clearAll()
@@ -78,7 +62,7 @@ onMounted(() => {
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
-              <item-choosen title="Item" v-model:selected="selected" border="full" />
+              <item-choosen title="Item" v-model:selected="item.item" border="full" />
             </td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
             <td>

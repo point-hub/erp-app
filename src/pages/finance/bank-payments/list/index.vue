@@ -1,22 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { useToastStore } from '@/stores/toast.store'
-
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
 const page = ref(1)
 const searchAll = ref('')
 const isLoading = ref(false)
 
-const { toastRef } = useToastStore()
-
 const datas = ref([])
-
-const onCreateClick = () => {
-  useToastStore()
-  toastRef.toast('Permission Denied', { color: 'danger' })
-}
 
 const result = ref<any[]>([])
 onMounted(() => {
