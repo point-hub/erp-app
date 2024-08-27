@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 
 import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
@@ -11,44 +11,31 @@ interface IItem {
     name: string
     unit: string
   }
-  notes: string
   quantity: number
-  allocation: {
-    _id: string
-    label: string
-    code: string
-    name: string
-  }
 }
 
 const items = defineModel<IItem[]>('items', {
-  default: [
-    {
-      item: {
-        _id: '',
-        label: '',
-        code: '',
-        name: '',
-        unit: ''
-      },
-      notes: '',
-      quantity: 0,
-      allocation: {
-        _id: '',
-        label: '',
-        code: '',
-        name: ''
-      }
-    }
-  ]
+  default: []
 })
 
-const selected = ref()
+onMounted(() => {
+  items.value.push({
+    item: {
+      _id: '',
+      label: '',
+      code: '',
+      name: '',
+      unit: ''
+    },
+    quantity: 0
+  })
+})
 </script>
 
 <template>
   <base-card>
     <template #header>Finished Goods</template>
+
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
@@ -64,7 +51,7 @@ const selected = ref()
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
-              <item-choosen title="Item" v-model:selected="selected" border="full" />
+              <item-choosen title="Item" v-model:selected="item.item" border="full" />
             </td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
           </tr>

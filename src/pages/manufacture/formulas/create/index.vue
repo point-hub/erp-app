@@ -8,7 +8,7 @@ import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardFinishedGoods from './card-finished-goods.vue'
 import CardForm from './card-form.vue'
-import CardItems from './card-items.vue'
+import CardRawMaterials from './card-raw-materials.vue'
 import { useCreateWarehouseApi } from './create.api'
 import { useForm } from './form'
 
@@ -37,15 +37,14 @@ const onSave = async () => {
     <card-breadcrumbs />
 
     <card-form
-      v-model:machine="form.data.machine"
       v-model:process="form.data.process"
-      v-model:required_date="form.data.required_date"
+      v-model:name="form.data.name"
       :errors="form.errors"
     />
 
-    <card-finished-goods v-model:items="form.data.items" />
+    <card-finished-goods v-model:items="form.data.finished_goods" />
 
-    <card-items v-model:items="form.data.finished_goods" />
+    <card-raw-materials v-model:items="form.data.raw_materials" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"

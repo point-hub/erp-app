@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MachineAutocomplete from '@/pages/manufacture/machines/components/autocomplete/autocomplete.vue'
 import ProcessAutocomplete from '@/pages/manufacture/processes/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
@@ -13,7 +12,6 @@ interface ISelected {
 
 const name = defineModel<string>('name')
 const process = defineModel<ISelected>('process')
-const machine = defineModel<ISelected>('machine')
 const errors = defineModel<IFormError>('errors')
 </script>
 
@@ -28,13 +26,6 @@ const errors = defineModel<IFormError>('errors')
         label="Process"
         v-model:selected="process"
         :errors="errors?.process"
-      />
-      <machine-autocomplete
-        required
-        layout="horizontal"
-        label="Machine"
-        v-model:selected="machine"
-        :errors="errors?.machine"
       />
       <base-input v-model="name" label="Name" layout="horizontal" required />
     </div>

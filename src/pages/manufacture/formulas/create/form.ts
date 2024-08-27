@@ -1,4 +1,3 @@
-import { format } from 'date-fns/format'
 import { ref } from 'vue'
 
 interface IItem {
@@ -9,14 +8,7 @@ interface IItem {
     name: string
     unit: string
   }
-  notes: string
   quantity: number
-  allocation: {
-    _id: string
-    label: string
-    code: string
-    name: string
-  }
 }
 
 interface IBranch {
@@ -35,36 +27,36 @@ interface IApprovalTo {
 }
 
 export interface IForm {
-  required_date?: string
-  machine?: IBranch
+  name?: string
   process?: IBranch
   finished_goods?: IItem[]
-  items?: IItem[]
+  raw_materials?: IItem[]
   approval_to?: IApprovalTo
   notes?: string
 }
 
 export interface IFormError {
-  machine: string[]
+  name: string[]
   process: string[]
-  required_date: string[]
   finished_goods: string[]
-  items: string[]
+  raw_materials: string[]
   approval_to: string[]
   notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
-    required_date: format(new Date(), 'dd-MM-yyyy')
+    name: '',
+    finished_goods: [],
+    raw_materials: [],
+    notes: ''
   }
 
   const defaultFormError: IFormError = {
-    machine: [],
+    name: [],
     process: [],
-    required_date: [],
     finished_goods: [],
-    items: [],
+    raw_materials: [],
     approval_to: [],
     notes: []
   }
