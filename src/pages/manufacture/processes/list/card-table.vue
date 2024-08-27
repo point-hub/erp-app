@@ -218,7 +218,11 @@ const onDelete = async () => {
                   {{ process.code }}
                 </router-link>
               </td>
-              <td>{{ process.name }}</td>
+              <td>
+                <router-link :to="`/manufacture/processes/${process._id}`" class="text-blue">
+                  {{ process.name }}
+                </router-link>
+              </td>
             </tr>
           </template>
         </tbody>
