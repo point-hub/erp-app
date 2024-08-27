@@ -35,6 +35,8 @@ const onSave = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
+    {{ authStore }}
+
     <card-form
       v-model:branch="form.data.branch"
       v-model:required_date="form.data.required_date"

@@ -192,9 +192,9 @@ const seedManufacturePermissions = () => {
   if (authStore?.permission?.manufacture?.processes?.read) {
     submenu.value?.push({ name: 'Processes', path: '/manufacture/processes' })
   }
-  // if (authStore?.permission?.manufacture?.formulas?.read) {
-  //   submenu.value?.push({ name: 'Formulas', path: '/manufacture/formulas' })
-  // }
+  if (authStore?.permission?.manufacture?.formulas?.read) {
+    submenu.value?.push({ name: 'Formulas', path: '/manufacture/formulas' })
+  }
   // if (authStore?.permission?.manufacture?.processing?.read) {
   //   submenu.value?.push({ name: 'Processing', path: '/manufacture/processing' })
   // }

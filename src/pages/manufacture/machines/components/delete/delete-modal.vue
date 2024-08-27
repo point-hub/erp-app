@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { useToastStore } from '@/stores/toast.store'
 
-import { useDeleteMachineApi } from './delete-machine.api'
+import { useDeleteMachineApi } from './delete.api'
 import type { IFormError } from './form'
 import { useVerifyPasswordApi } from './verify-password.api'
 

@@ -16,6 +16,8 @@ export function useSigninApi() {
         remember_me: data.rememberMe
       })
 
+      console.log(response)
+
       authStore.update({
         name: response.data.name,
         permission: response.data.role.permission

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import AppBreadcrumb from '@/components/app-breadcrumb.vue'
+
 const breadcrumbs = [
   {
     name: 'Menu',
     path: '/menu'
   },
   {
-    name: 'Manufacture',
+    name: 'Purchasing',
     path: '/manufacture'
   },
   {
     name: 'Formulas',
-    path: '/manufacture/bank-payments'
+    path: '/manufacture/formulas'
   },
   {
     name: 'Create'

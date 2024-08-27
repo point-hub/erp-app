@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { useToastStore } from '@/stores/toast.store'
 
-import { useDeleteProcessApi } from './delete-process.api'
+import { useDeleteWarehouseApi } from './delete-warehouse.api'
 import type { IFormError } from './form'
 import { useVerifyPasswordApi } from './verify-password.api'
 
@@ -63,8 +63,8 @@ const onDelete = async () => {
     return
   }
   // start api call
-  const deleteProcessApi = useDeleteProcessApi()
-  const responseDelete = await deleteProcessApi.send(id.value, reason.value, errors.value)
+  const deleteWarehouseApi = useDeleteWarehouseApi()
+  const responseDelete = await deleteWarehouseApi.send(id.value, reason.value, errors.value)
   if (!responseDelete) {
     loadingState.value = false
     return
@@ -73,7 +73,7 @@ const onDelete = async () => {
   emit('deleted')
   password.value = ''
   reason.value = ''
-  toastRef.toast(`Delete Process "${name.value}" success`, { color: 'success' })
+  toastRef.toast(`Delete Warehouse "${name.value}" success`, { color: 'success' })
   toggleModal(false)
 
   // stop loading state
@@ -92,13 +92,13 @@ defineExpose({
 <template>
   <base-modal :is-open="showModal" @on-close="toggleModal(false)">
     <div class="max-h-90vh overflow-auto p-4">
-      <h2 class="py-4 text-2xl font-bold">Delete Process</h2>
+      <h2 class="py-4 text-2xl font-bold">Delete Warehouse</h2>
       <div class="space-y-8">
         <p>
           Please enter your reason and password to protect you from accidentally deleting your data
         </p>
         <div class="flex flex-col">
-          <span class="font-semibold">Process</span>
+          <span class="font-semibold">Warehouse</span>
           <span>{{ name }}</span>
         </div>
         <base-textarea

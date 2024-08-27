@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete-modal.vue'
+import DeleteModal from '../components/delete/delete-modal.vue'
 import type { IForm } from './form'
 
 const route = useRoute()
