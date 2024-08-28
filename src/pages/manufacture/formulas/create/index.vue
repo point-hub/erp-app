@@ -41,7 +41,6 @@ const onSave = async () => {
       v-model:name="form.data.name"
       :errors="form.errors"
     />
-    <pre><code>{{ form.data }}</code></pre>
 
     <card-finished-goods v-model:items="form.data.finished_goods" />
 
