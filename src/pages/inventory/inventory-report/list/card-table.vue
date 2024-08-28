@@ -202,13 +202,13 @@ const onDelete = async () => {
           </template>
         </tbody>
       </base-table>
-      <base-pagination
+      <!-- <base-pagination
         v-if="!isLoading"
         v-model="pagination.page"
         :page-size="pagination.page_size"
         :total-document="pagination.total_document"
         @update:model-value="onPageUpdate()"
-      />
+      /> -->
     </div>
     <delete-modal ref="deleteModalRef" @deleted="onDelete" />
   </base-card>
