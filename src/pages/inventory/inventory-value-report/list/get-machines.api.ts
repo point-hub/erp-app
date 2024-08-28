@@ -10,7 +10,7 @@ interface ISearch {
 }
 
 export function useGetMachinesApi() {
-  const send = async (search: ISearch, page: number) => {
+  const send = async (search: ISearch, page = 1) => {
     try {
       const response = await axios.get('/v1/inventory/inventory-report', {
         params: {
