@@ -29,7 +29,7 @@ export function useAppMenu() {
       // menus.value[0].menu?.push(...seedSalesPermissions())
       menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
-      // menus.value[0].menu?.push(...seedInventoryPermissions())
+      menus.value[0].menu?.push(...seedInventoryPermissions())
       // menus.value[0].menu?.push(...seedAccountingPermissions())
     },
     {
@@ -210,23 +210,29 @@ const seedInventoryPermissions = () => {
   const menu = ref<IMenu[]>([])
   const submenu = ref<ISubmenu[]>([])
 
-  if (authStore?.permission?.inventory?.inventory_audits?.read) {
-    submenu.value?.push({ name: 'Inventory Audits', path: '/inventory/inventory-audits' })
-  }
-  if (authStore?.permission?.inventory?.inventory_usages?.read) {
-    submenu.value?.push({ name: 'Inventory Usages', path: '/inventory/inventory-usages' })
-  }
-  if (authStore?.permission?.inventory?.stock_corrections?.read) {
-    submenu.value?.push({ name: 'Stock Corrections', path: '/inventory/stock-corrections' })
-  }
-  if (authStore?.permission?.inventory?.transfer_items?.read) {
-    submenu.value?.push({ name: 'Transfer Items', path: '/inventory/transfer-items' })
-  }
-  if (authStore?.permission?.inventory?.receive_items?.read) {
-    submenu.value?.push({ name: 'Receive Items', path: '/inventory/receive-items' })
-  }
+  // if (authStore?.permission?.inventory?.inventory_audits?.read) {
+  //   submenu.value?.push({ name: 'Inventory Audits', path: '/inventory/inventory-audits' })
+  // }
+  // if (authStore?.permission?.inventory?.inventory_usages?.read) {
+  //   submenu.value?.push({ name: 'Inventory Usages', path: '/inventory/inventory-usages' })
+  // }
+  // if (authStore?.permission?.inventory?.stock_corrections?.read) {
+  //   submenu.value?.push({ name: 'Stock Corrections', path: '/inventory/stock-corrections' })
+  // }
+  // if (authStore?.permission?.inventory?.transfer_items?.read) {
+  //   submenu.value?.push({ name: 'Transfer Items', path: '/inventory/transfer-items' })
+  // }
+  // if (authStore?.permission?.inventory?.receive_items?.read) {
+  //   submenu.value?.push({ name: 'Receive Items', path: '/inventory/receive-items' })
+  // }
   if (authStore?.permission?.inventory?.inventory_report?.read) {
     submenu.value?.push({ name: 'Inventory Report', path: '/inventory/inventory-report' })
+  }
+  if (authStore?.permission?.inventory?.inventory_report?.read) {
+    submenu.value?.push({
+      name: 'Inventory Value Report',
+      path: '/inventory/inventory-value-report'
+    })
   }
 
   if (authStore?.permission?.inventory?.menu) {

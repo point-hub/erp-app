@@ -4,31 +4,36 @@ import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
-import CardFinishedGoods from './card-finished-goods.vue'
 import CardForm from './card-form.vue'
-import CardRawMaterials from './card-raw-materials.vue'
-import { useCreateFormulaApi } from './create.api'
+import { useCreateMachineApi } from './create-machine.api'
 import { useForm } from './form'
+import { useGetCountersApi } from './get-counters.api'
 
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const createFormulaApi = useCreateFormulaApi()
+const createMachinesApi = useCreateMachineApi()
+const getCountersApi = useGetCountersApi()
 
 onMounted(async () => {
-  if (!authStore.permission?.manufacture?.formulas?.create) {
+  if (!authStore.permission?.inventory?.inventory_report?.create) {
     router.push('/unauthorized')
   }
+
+  const response = await getCountersApi.send('inventory-report')
+
+  if (response?.code) form.data.code = response.code
 })
 
 const onSave = async () => {
-  if (!authStore.permission?.manufacture?.formulas?.create) {
+  if (!authStore.permission?.inventory?.inventory_report?.create) {
     router.push('/unauthorized')
   }
-  const response = await createFormulaApi.send(form.data, form.errors)
-  if (response?.inserted_id) router.push('/manufacture/formulas')
+
+  const response = await createMachinesApi.send(form.data, form.errors)
+
+  if (response?.inserted_id) router.push('/inventory/inventory-report')
 }
 </script>
 
@@ -37,23 +42,14 @@ const onSave = async () => {
     <card-breadcrumbs />
 
     <card-form
-      v-model:process="form.data.process"
+      v-if="authStore.permission?.inventory?.inventory_report?.create"
+      v-model:code="form.data.code"
       v-model:name="form.data.name"
-      :errors="form.errors"
-    />
-    <pre><code>{{ form.data }}</code></pre>
-
-    <card-finished-goods v-model:items="form.data.finished_goods" />
-
-    <card-raw-materials v-model:items="form.data.raw_materials" />
-
-    <card-approval
-      v-model:approval_to="form.data.approval_to"
       v-model:notes="form.data.notes"
       :errors="form.errors"
     />
 
-    <base-card class="py-4!">
+    <base-card class="py-4!" v-if="authStore.permission?.inventory?.inventory_report?.create">
       <div class="flex gap-2">
         <base-button color="primary" @click="onSave()">Save</base-button>
       </div>

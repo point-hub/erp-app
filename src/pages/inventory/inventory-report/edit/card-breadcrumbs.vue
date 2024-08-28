@@ -1,0 +1,33 @@
+<script setup lang="ts">
+import { useRoute } from 'vue-router'
+
+import AppBreadcrumb, { type IBreadcrumb } from '@/components/app-breadcrumb.vue'
+
+const route = useRoute()
+
+const breadcrumbs: IBreadcrumb[] = [
+  {
+    name: 'Menu',
+    path: '/menu'
+  },
+  {
+    name: 'Inventory',
+    path: '/inventory'
+  },
+  {
+    name: 'Machines',
+    path: '/inventory/inventory-report'
+  },
+  {
+    name: `${route.params.id}`,
+    path: `/inventory/inventory-report/${route.params.id}`
+  },
+  {
+    name: 'Edit'
+  }
+]
+</script>
+
+<template>
+  <app-breadcrumb :breadcrumbs="breadcrumbs" />
+</template>

@@ -9,6 +9,8 @@ import financeCashReportRoutes from '@/pages/finance/cash-report/routes'
 import financePaymentOrderRoutes from '@/pages/finance/payment-orders/routes'
 import financeRoutes from '@/pages/finance/routes'
 import inventoryAuditRoutes from '@/pages/inventory/inventory-audits/routes'
+import inventoryReportRoutes from '@/pages/inventory/inventory-report/routes'
+import inventoryValueReportRoutes from '@/pages/inventory/inventory-value-report/routes'
 import inventoryRoutes from '@/pages/inventory/routes'
 import inventoryStockCorrectionRoutes from '@/pages/inventory/stock-corrections/routes'
 import manufactureFormulasRoutes from '@/pages/manufacture/formulas/routes'
@@ -117,7 +119,9 @@ const router = createRouter({
         // inventories routes
         inventoryRoutes,
         inventoryAuditRoutes,
-        inventoryStockCorrectionRoutes
+        inventoryStockCorrectionRoutes,
+        inventoryReportRoutes,
+        inventoryValueReportRoutes
       ]
     },
     {
