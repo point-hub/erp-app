@@ -32,7 +32,7 @@ watchDebounced(
     pagination.value.page = 1
     // update url query params
     router.push({
-      path: '/master/chart-of-accounts',
+      path: '/master/chart-of-accounts/tree',
       query: {
         search: searchAll.value,
         page: pagination.value.page
@@ -53,7 +53,7 @@ watchDebounced(
     pagination.value.page = 1
     // update url query params
     router.push({
-      path: '/master/chart-of-accounts',
+      path: '/master/chart-of-accounts/tree',
       query: {
         search: searchAll.value,
         page: pagination.value.page
@@ -70,7 +70,7 @@ watchDebounced(
 const updateData = async () => {
   await getChartOfAccounts()
   router.push({
-    path: '/master/chart-of-accounts',
+    path: '/master/chart-of-accounts/tree',
     query: {
       search: searchAll.value,
       page: pagination.value.page,
@@ -91,7 +91,8 @@ const getChartOfAccounts = async () => {
         subledger: search.value.subledger
       },
       page: pagination.value.page,
-      sort: 'number'
+      page_size: 9999,
+      sort: 'category,number'
     }
   })
   chartOfAccounts.value = response.data.data
@@ -125,6 +126,17 @@ const openMenu = (chartOfAccount: IChartOfAccount, index: number) => {
 const onDelete = async () => {
   await getChartOfAccounts()
 }
+
+let itCategory = ''
+const isCategory = (_id: string) => {
+  console.log(itCategory, _id)
+  if (itCategory !== _id) {
+    itCategory = _id
+    return true
+  }
+
+  return false
+}
 </script>
 
 <template>
@@ -139,51 +151,19 @@ const onDelete = async () => {
         >
           <base-button color="info" shape="sharp">Create</base-button>
         </router-link>
-        <!-- <router-link
-          to="/master/chart-of-accounts/tree"
+        <router-link
+          to="/master/chart-of-accounts"
           v-if="authStore.permission?.master?.chart_of_accounts?.read"
         >
           <base-button color="info" shape="sharp">
-            <base-icon icon="i-far-list-tree" class="h-6" />
+            <base-icon icon="i-far-list" class="h-6" />
           </base-button>
-        </router-link> -->
+        </router-link>
         <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
       </div>
       <div class="flex flex-col gap-4">
+        <div></div>
         <base-table>
-          <thead>
-            <tr>
-              <th class="w-1"></th>
-              <th class="w-1">Number</th>
-              <th>Name</th>
-              <th class="w-25">Type</th>
-              <th class="w-30">Category</th>
-              <th class="w-1">Subledger</th>
-            </tr>
-            <tr class="bg-slate-50 dark:bg-slate-700">
-              <th></th>
-              <th class="basic-table-head">
-                <base-input required v-model="search.number" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-input required v-model="search.name" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-input required v-model="search.type" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-input required v-model="search.category" placeholder="Search" border="none" />
-              </th>
-              <th class="basic-table-head">
-                <base-input
-                  required
-                  v-model="search.subledger"
-                  placeholder="Search"
-                  border="none"
-                />
-              </th>
-            </tr>
-          </thead>
           <tbody>
             <tr v-if="isLoading">
               <td colspan="6">
@@ -193,59 +173,23 @@ const onDelete = async () => {
               </td>
             </tr>
             <template v-if="!isLoading">
-              <tr v-for="(chartOfAccount, index) in chartOfAccounts" :key="index">
-                <td>
-                  <base-popover placement="bottom" ref="rowMenuRef">
-                    <base-button size="xs" @click="rowMenuRef[index].toggle()">
-                      <base-icon class="text-xl" icon="i-ph-dots-three-bold"></base-icon>
-                    </base-button>
-                    <template #content>
-                      <base-card class="py-1! px-2! text-sm">
-                        <div class="flex flex-col">
-                          <router-link :to="`/master/chart-of-accounts/${chartOfAccount._id}`">
-                            <base-button variant="text" color="info">
-                              <div class="flex gap-2 w-full">
-                                <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
-                                <p>Manage</p>
-                              </div>
-                            </base-button>
-                          </router-link>
-                          <base-divider orientation="vertical" class="my-1!"></base-divider>
-                          <base-button
-                            variant="text"
-                            color="danger"
-                            @click="openMenu(chartOfAccount, index)"
-                          >
-                            <div class="flex gap-2 w-full">
-                              <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
-                              <p>Delete</p>
-                            </div>
-                          </base-button>
-                        </div>
-                      </base-card>
-                    </template>
-                  </base-popover>
-                </td>
-                <td class="font-mono">
-                  <router-link
-                    :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
-                    class="text-blue"
-                  >
-                    {{ chartOfAccount.number }}
-                  </router-link>
-                </td>
-                <td>
-                  <router-link
-                    :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
-                    class="text-blue"
-                  >
-                    {{ chartOfAccount.name }}
-                  </router-link>
-                </td>
-                <td>{{ chartOfAccount.type.name }}</td>
-                <td>{{ chartOfAccount.category.name }}</td>
-                <td>{{ chartOfAccount.subledger }}</td>
-              </tr>
+              <template v-for="(chartOfAccount, index) in chartOfAccounts" :key="index">
+                <tr v-if="isCategory(chartOfAccount.category._id)">
+                  <th class="w-1">{{ chartOfAccount.category.name }}</th>
+                  <th class="w-1"></th>
+                </tr>
+                <tr>
+                  <td>
+                    <router-link
+                      :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
+                      class="text-blue"
+                    >
+                      <span class="font-mono">[{{ chartOfAccount.number }}] </span>
+                      <span>{{ chartOfAccount.name }}</span>
+                    </router-link>
+                  </td>
+                </tr>
+              </template>
             </template>
           </tbody>
         </base-table>

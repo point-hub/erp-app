@@ -7,7 +7,7 @@ export function useGetChartOfAccountsApi() {
         params: {
           filter: filter,
           page: page,
-          page_size: 1000
+          page_size: 9999
         }
       })
 

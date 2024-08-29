@@ -11,7 +11,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(() => {
-  if (!authStore.permission?.inventory?.inventory_report?.read) {
+  if (!authStore.permission?.inventory?.inventory_value_report?.read) {
     router.push('/unauthorized')
   }
 })

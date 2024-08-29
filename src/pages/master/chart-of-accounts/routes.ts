@@ -10,6 +10,11 @@ export default {
           meta: { requiresAuth: true }
         },
         {
+          path: 'tree',
+          component: () => import('@/pages/master/chart-of-accounts/tree/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
           path: 'create',
           component: () => import('@/pages/master/chart-of-accounts/create/index.vue'),
           meta: { requiresAuth: true }

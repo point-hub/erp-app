@@ -1,6 +1,6 @@
 import presetPappIcon from '@point-hub/preset-papp-icon'
 import TransformerDirectives from '@unocss/transformer-directives'
-import { defineConfig, presetUno,presetWebFonts } from 'unocss'
+import { defineConfig, presetUno, presetWebFonts } from 'unocss'
 
 export default defineConfig({
   presets: [
@@ -11,7 +11,8 @@ export default defineConfig({
       fonts: {
         inter: 'Inter',
         roboto: 'Roboto',
-        'roboto-mono': 'Roboto Mono'
+        mono: 'Roboto Mono',
+        'nerko-one': 'Nerko One'
       }
     })
   ],

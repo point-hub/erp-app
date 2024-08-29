@@ -23,6 +23,9 @@ interface IJournal {
   subledger?: string
   position?: string
   editable?: boolean
+  category?: boolean
+  type?: boolean
+  value?: number
   chart_of_account_id?: string
   chart_of_account?: {
     _id: string
@@ -66,6 +69,9 @@ const getSettingJournal = async () => {
       account: data.account,
       subledger: data.subledger,
       editable: data.editable,
+      category: data.category,
+      type: data.type,
+      value: data.value,
       position: data.position,
       chart_of_account_id: data.chart_of_account?._id,
       chart_of_account: chart_of_account
@@ -154,7 +160,7 @@ const onUpdate = async () => {
                       label=""
                       v-model="journal.chart_of_account_id"
                       v-model:selected="journal.chart_of_account"
-                      :subledger="journal.subledger"
+                      :category="journal.category"
                       :errors="form.errors[`journals.${index}.chart_of_account_id`]"
                       border="full"
                       class="w-100"
@@ -162,10 +168,10 @@ const onUpdate = async () => {
                   </span>
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'Debit' ? 'xxx' : '' }}
+                  {{ journal.position.toLowerCase() === 'debit' ? journal.value : '' }}
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'Credit' ? 'xxx' : '' }}
+                  {{ journal.position.toLowerCase() === 'credit' ? journal.value : '' }}
                 </td>
               </tr>
             </template>

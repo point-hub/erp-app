@@ -47,8 +47,6 @@ onMounted(() => {
 <template>
   <component :is="AppPreloader" />
 
-  <!-- <pre><code>{{ appMenu.menus }}</code></pre> -->
-
   <div class="app-layout">
     <!-- Header -->
     <component :is="AppHeader" />
