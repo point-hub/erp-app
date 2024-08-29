@@ -32,7 +32,6 @@ const apiCall = async () => {
       label: search.value,
       subledger: subledger.value,
       category: category.value,
-      type: type.value,
       type: type.value
     },
     1
