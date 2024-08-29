@@ -19,41 +19,41 @@ const breadcrumbs = [
 const menus = ref<any[]>([])
 
 onMounted(() => {
-  if (authStore?.permission?.inventory?.inventory_audits?.read) {
-    menus.value.push({
-      name: 'Inventory Audits',
-      path: '/inventory/inventory-audits',
-      icon: 'i-far-file'
-    })
-  }
-  if (authStore?.permission?.inventory?.inventory_usages?.read) {
-    menus.value.push({
-      name: 'Inventory Usages',
-      path: '/inventory/inventory-usages',
-      icon: 'i-far-file'
-    })
-  }
-  if (authStore?.permission?.inventory?.stock_corrections?.read) {
-    menus.value.push({
-      name: 'Stock Corrections',
-      path: '/inventory/stock-corrections',
-      icon: 'i-far-file'
-    })
-  }
-  if (authStore?.permission?.inventory?.transfer_items?.read) {
-    menus.value.push({
-      name: 'Transfer Items',
-      path: '/inventory/transfer-items',
-      icon: 'i-far-file'
-    })
-  }
-  if (authStore?.permission?.inventory?.receive_items?.read) {
-    menus.value.push({
-      name: 'Receive Items',
-      path: '/inventory/receive-items',
-      icon: 'i-far-file'
-    })
-  }
+  // if (authStore?.permission?.inventory?.inventory_audits?.read) {
+  //   menus.value.push({
+  //     name: 'Inventory Audits',
+  //     path: '/inventory/inventory-audits',
+  //     icon: 'i-far-file'
+  //   })
+  // }
+  // if (authStore?.permission?.inventory?.inventory_usages?.read) {
+  //   menus.value.push({
+  //     name: 'Inventory Usages',
+  //     path: '/inventory/inventory-usages',
+  //     icon: 'i-far-file'
+  //   })
+  // }
+  // if (authStore?.permission?.inventory?.stock_corrections?.read) {
+  //   menus.value.push({
+  //     name: 'Stock Corrections',
+  //     path: '/inventory/stock-corrections',
+  //     icon: 'i-far-file'
+  //   })
+  // }
+  // if (authStore?.permission?.inventory?.transfer_items?.read) {
+  //   menus.value.push({
+  //     name: 'Transfer Items',
+  //     path: '/inventory/transfer-items',
+  //     icon: 'i-far-file'
+  //   })
+  // }
+  // if (authStore?.permission?.inventory?.receive_items?.read) {
+  //   menus.value.push({
+  //     name: 'Receive Items',
+  //     path: '/inventory/receive-items',
+  //     icon: 'i-far-file'
+  //   })
+  // }
   if (authStore?.permission?.inventory?.inventory_report?.read) {
     menus.value.push({
       name: 'Inventory Report',
