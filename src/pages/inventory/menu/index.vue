@@ -61,6 +61,13 @@ onMounted(() => {
       icon: 'i-far-file'
     })
   }
+  if (authStore?.permission?.inventory?.inventory_value_report?.read) {
+    menus.value.push({
+      name: 'Inventory Value Report',
+      path: '/inventory/inventory-value-report',
+      icon: 'i-far-file'
+    })
+  }
 })
 </script>
 
