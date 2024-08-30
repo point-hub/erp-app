@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { numberFormat } from '@point-hub/js-utils'
 import { AxiosError } from 'axios'
 import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -23,8 +24,8 @@ interface IJournal {
   subledger?: string
   position?: string
   editable?: boolean
-  category?: boolean
-  type?: boolean
+  category?: string
+  type?: string
   value?: number
   chart_of_account_id?: string
   chart_of_account?: {
@@ -150,9 +151,14 @@ const onUpdate = async () => {
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>
-                  <p class="text-xs mt-5" v-if="journal.subledger">
-                    Subledger: {{ journal.subledger }}
-                  </p>
+                  <div class="mt-2">
+                    <p class="text-xs" v-if="journal.category">
+                      <span class="font-semibold">Category:</span> {{ journal.category }}
+                    </p>
+                    <p class="text-xs" v-if="journal.subledger">
+                      <span class="font-semibold">Subledger:</span> {{ journal.subledger }}
+                    </p>
+                  </div>
                 </td>
                 <td class="w-100">
                   <span v-if="journal.editable" class="absolute">
@@ -160,7 +166,7 @@ const onUpdate = async () => {
                       label=""
                       v-model="journal.chart_of_account_id"
                       v-model:selected="journal.chart_of_account"
-                      :category="journal.category"
+                      :category-code="journal.category"
                       :errors="form.errors[`journals.${index}.chart_of_account_id`]"
                       border="full"
                       class="w-100"
@@ -168,10 +174,16 @@ const onUpdate = async () => {
                   </span>
                 </td>
                 <td class="text-right">
-                  {{ journal.position.toLowerCase() === 'debit' ? journal.value : '' }}
+                  {{
+                    journal.position.toLowerCase() === 'debit' ? numberFormat(journal.value, 2) : ''
+                  }}
                 </td>
                 <td class="text-right">
-                  {{ journal.position.toLowerCase() === 'credit' ? journal.value : '' }}
+                  {{
+                    journal.position.toLowerCase() === 'credit'
+                      ? numberFormat(journal.value, 2)
+                      : ''
+                  }}
                 </td>
               </tr>
             </template>

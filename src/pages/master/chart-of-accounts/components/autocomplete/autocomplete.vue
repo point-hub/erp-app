@@ -15,7 +15,9 @@ const _id = defineModel<string>()
 const selected = defineModel<ISelectedChartOfAccount>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const subledger = defineModel<string>('subledger', { default: '' })
+const typeCode = defineModel<string>('typeCode', { default: '' })
 const type = defineModel<string>('type', { default: '' })
+const categoryCode = defineModel<string>('categoryCode', { default: '' })
 const category = defineModel<string>('category', { default: '' })
 const label = defineModel<string>('label', { default: 'Chart of Account' })
 const border = defineModel<'full' | 'simple' | 'none'>('border')
@@ -31,7 +33,9 @@ const apiCall = async () => {
     {
       label: search.value,
       subledger: subledger.value,
+      category_code: categoryCode.value,
       category: category.value,
+      type_code: typeCode.value,
       type: type.value
     },
     1
