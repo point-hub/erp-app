@@ -175,14 +175,12 @@ const onUpdate = async () => {
                 </td>
                 <td class="text-right">
                   {{
-                    journal.position.toLowerCase() === 'debit' ? numberFormat(journal.value, 2) : ''
+                    journal.position.toLowerCase() === 'debit' ? numberFormat(journal.value) : ''
                   }}
                 </td>
                 <td class="text-right">
                   {{
-                    journal.position.toLowerCase() === 'credit'
-                      ? numberFormat(journal.value, 2)
-                      : ''
+                    journal.position.toLowerCase() === 'credit' ? numberFormat(journal.value) : ''
                   }}
                 </td>
               </tr>
