@@ -34,8 +34,7 @@ const onSave = async () => {
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
-
-    {{ authStore }}
+    <pre><code>{{ authStore }}</code></pre>
 
     <card-form
       v-model:branch="form.data.branch"

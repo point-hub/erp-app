@@ -93,18 +93,18 @@ watchDebounced(
   { debounce: 500, maxWait: 1000 }
 )
 
-// Section Pagination
-const onPageUpdate = async () => {
-  // call api
-  const response = await getMachinesApi.send(
-    { all: searchAll.value, ...search.value },
-    pagination.value.page
-  )
-  machines.value = response?.data
-  pagination.value = response?.pagination
-  // update url query params
-  updateRouter()
-}
+// // Section Pagination
+// const onPageUpdate = async () => {
+//   // call api
+//   const response = await getMachinesApi.send(
+//     { all: searchAll.value, ...search.value },
+//     pagination.value.page
+//   )
+//   machines.value = response?.data
+//   pagination.value = response?.pagination
+//   // update url query params
+//   updateRouter()
+// }
 
 onMounted(async () => {
   // set default value

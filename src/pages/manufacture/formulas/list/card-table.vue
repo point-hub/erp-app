@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 

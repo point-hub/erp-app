@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
 import BranchAutocomplete, {
   type ISelectedBranch
 } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'

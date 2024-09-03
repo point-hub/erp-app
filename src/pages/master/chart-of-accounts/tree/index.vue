@@ -6,14 +6,12 @@ import { useRoute, useRouter } from 'vue-router'
 import axios from '@/axios'
 import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete/delete-modal.vue'
 import type { IChartOfAccount } from '../interface'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 
 const authStore = useAuthStore()
 const route = useRoute()
 const router = useRouter()
-const deleteModalRef = ref()
 const searchAll = ref('')
 const search = ref({
   type: '',
@@ -99,7 +97,6 @@ const getChartOfAccounts = async () => {
   pagination.value = response.data.pagination
 }
 
-const rowMenuRef = ref()
 const chartOfAccounts = ref<IChartOfAccount[]>()
 const pagination = ref({
   page: 1,
@@ -115,21 +112,9 @@ onMounted(async () => {
   await getChartOfAccounts()
 })
 
-const openMenu = (chartOfAccount: IChartOfAccount, index: number) => {
-  rowMenuRef.value[index].toggle(false)
-  deleteModalRef.value.toggleModal(true, {
-    id: chartOfAccount._id,
-    name: `[${chartOfAccount.number}] ${chartOfAccount.name}`
-  })
-}
-
-const onDelete = async () => {
-  await getChartOfAccounts()
-}
-
+// grouping list by category
 let itCategory = ''
 const isCategory = (_id: string) => {
-  console.log(itCategory, _id)
   if (itCategory !== _id) {
     itCategory = _id
     return true
@@ -202,8 +187,6 @@ const isCategory = (_id: string) => {
         />
       </div>
     </base-card>
-
-    <delete-modal ref="deleteModalRef" @deleted="onDelete" />
   </div>
 </template>
 
