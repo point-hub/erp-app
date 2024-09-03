@@ -8,24 +8,13 @@ import BranchAutocomplete, {
 import type { IFormError } from './form'
 
 const branch_id = defineModel<string>('branch_id')
-const branch = defineModel<{ _id: string; code: string; name: string }>('branch')
+const branch = defineModel<ISelectedBranch>('branch')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
 const phone = defineModel<string>('phone')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
-
-const selectedBranch = ref<ISelectedBranch>()
-
-watch(branch, () => {
-  selectedBranch.value = {
-    _id: `${branch.value?._id}`,
-    label: `[${branch.value?.code}] ${branch.value?.name}`,
-    code: `${branch.value?.code}`,
-    name: `${branch.value?.name}`
-  }
-})
 </script>
 
 <template>
@@ -37,7 +26,7 @@ watch(branch, () => {
         required
         label="Branch"
         v-model="branch_id"
-        v-model:selected="selectedBranch"
+        v-model:selected="branch"
         :errors="errors?.branch_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />

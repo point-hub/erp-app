@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
 import CustomerGroupAutocomplete, {
   type ISelectedCustomerGroup
 } from '@/pages/master/customer-groups/components/autocomplete/autocomplete.vue'
@@ -16,22 +14,6 @@ const phone = defineModel<string>('phone')
 const email = defineModel<string>('email')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
-
-const selectedCustomerGroup = ref<ISelectedCustomerGroup>({
-  _id: '',
-  label: '',
-  code: '',
-  name: ''
-})
-
-watch(customer_group, () => {
-  selectedCustomerGroup.value = {
-    _id: `${customer_group.value?._id}`,
-    label: `[${customer_group.value?.code}] ${customer_group.value?.name}`,
-    code: `${customer_group.value?.code}`,
-    name: `${customer_group.value?.name}`
-  }
-})
 </script>
 
 <template>
@@ -43,7 +25,7 @@ watch(customer_group, () => {
         required
         label="Customer Group"
         v-model="customer_group_id"
-        v-model:selected="selectedCustomerGroup"
+        v-model:selected="customer_group"
         :errors="errors?.customer_group_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />

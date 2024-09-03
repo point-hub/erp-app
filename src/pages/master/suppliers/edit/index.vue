@@ -41,6 +41,7 @@ onMounted(async () => {
     form.data.bank_branch = response.bank_branch
     form.data.bank_account_name = response.bank_account_name
     form.data.bank_account_number = response.bank_account_number
+
     supplier_group.value = response.supplier_group
   }
 })

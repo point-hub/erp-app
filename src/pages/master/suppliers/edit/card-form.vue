@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
 import SupplierGroupAutocomplete, {
   type ISelectedSupplierGroup
 } from '@/pages/master/supplier-groups/components/autocomplete/autocomplete.vue'
@@ -8,7 +6,7 @@ import SupplierGroupAutocomplete, {
 import type { IFormError } from './form'
 
 const supplier_group_id = defineModel<string>('supplier_group_id')
-const supplier_group = defineModel<{ _id: string; code: string; name: string }>('supplier_group')
+const supplier_group = defineModel<ISelectedSupplierGroup>('supplier_group')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -16,22 +14,6 @@ const phone = defineModel<string>('phone')
 const email = defineModel<string>('email')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
-
-const selectedSupplierGroup = ref<ISelectedSupplierGroup>({
-  _id: '',
-  label: '',
-  code: '',
-  name: ''
-})
-
-watch(supplier_group, () => {
-  selectedSupplierGroup.value = {
-    _id: `${supplier_group.value?._id}`,
-    label: `[${supplier_group.value?.code}] ${supplier_group.value?.name}`,
-    code: `${supplier_group.value?.code}`,
-    name: `${supplier_group.value?.name}`
-  }
-})
 </script>
 
 <template>
@@ -43,7 +25,7 @@ watch(supplier_group, () => {
         required
         label="Supplier Group"
         v-model="supplier_group_id"
-        v-model:selected="selectedSupplierGroup"
+        v-model:selected="supplier_group"
         :errors="errors?.supplier_group_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />

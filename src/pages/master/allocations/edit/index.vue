@@ -33,6 +33,7 @@ onMounted(async () => {
     form.data.code = response.code
     form.data.name = response.name
     form.data.notes = response.notes
+
     allocation_group.value = response.allocation_group
   }
 })

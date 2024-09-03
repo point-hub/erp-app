@@ -30,19 +30,7 @@ onMounted(async () => {
 
   const response = await getItemApi.send(route.params.id.toString())
 
-  console.log(response)
-
   if (response) {
-    category.value = {
-      _id: response.category._id,
-      label: `[${response.category.code}] ${response.category.name}`,
-      code: response.category.code
-    }
-    chart_of_account.value = {
-      _id: response.chart_of_account._id,
-      label: `[${response.chart_of_account.number}] ${response.chart_of_account.name}`
-    }
-
     formId.value = response._id
     form.data.category_id = category.value._id
     form.data.chart_of_account_id = chart_of_account.value._id
@@ -52,6 +40,9 @@ onMounted(async () => {
     form.data.notes = response.notes
     form.data.have_production_number = response.have_production_number
     form.data.have_an_expiry_date = response.have_an_expiry_date
+
+    category.value = response.category
+    chart_of_account.value = response.chart_of_account
   }
 })
 

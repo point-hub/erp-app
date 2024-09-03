@@ -16,6 +16,7 @@ const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
 const selected = defineModel<ISelectedItem>('selected')
 const errors = ref<string[]>([])
+const border = defineModel<'full' | 'simple' | 'none'>('border')
 
 const getItemsApi = useGetItemsApi()
 const search = ref('')
@@ -71,6 +72,6 @@ onMounted(async () => {
     :required="required"
     :options="options"
     :errors="errors"
-    border="full"
+    :border="border"
   />
 </template>

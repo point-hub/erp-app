@@ -1,34 +1,23 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
-import AllocationGroupAutocomplete from '@/pages/master/allocation-groups/components/autocomplete/autocomplete.vue'
+import AllocationGroupAutocomplete, {
+  type ISelectedAllocationGroup
+} from '@/pages/master/allocation-groups/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const allocation_group_id = defineModel<string>('allocation_group_id')
-const allocation_group = defineModel<{ _id: string; code: string; name: string }>(
-  'allocation_group'
-)
+const allocation_group = defineModel<ISelectedAllocationGroup>('allocation_group', {
+  default: {
+    _id: '',
+    label: '',
+    code: '',
+    name: ''
+  }
+})
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
-
-const selectedAllocationGroup = ref<{ _id: string; label: string; code: string; name: string }>({
-  _id: '',
-  label: '',
-  code: '',
-  name: ''
-})
-
-watch(allocation_group, () => {
-  selectedAllocationGroup.value = {
-    _id: `${allocation_group.value?._id}`,
-    label: `[${allocation_group.value?.code}] ${allocation_group.value?.name}`,
-    code: `${allocation_group.value?.code}`,
-    name: `${allocation_group.value?.name}`
-  }
-})
 </script>
 
 <template>
@@ -40,7 +29,7 @@ watch(allocation_group, () => {
         required
         label="Allocation Group"
         v-model="allocation_group_id"
-        v-model:selected="selectedAllocationGroup"
+        v-model:selected="allocation_group"
         :errors="errors?.allocation_group_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />

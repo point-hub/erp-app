@@ -30,7 +30,7 @@ export function useAppMenu() {
       menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
       menus.value[0].menu?.push(...seedInventoryPermissions())
-      // menus.value[0].menu?.push(...seedAccountingPermissions())
+      menus.value[0].menu?.push(...seedAccountingPermissions())
     },
     {
       immediate: true
@@ -264,7 +264,6 @@ const seedAccountingPermissions = () => {
   if (authStore?.permission?.accounting?.trial_balance?.read) {
     submenu.value?.push({ name: 'Trial Balance', path: '/accounting/trial-balance' })
   }
-
   if (authStore?.permission?.accounting?.menu) {
     menu.value.push({ name: 'Accounting', submenu: submenu.value })
   }
