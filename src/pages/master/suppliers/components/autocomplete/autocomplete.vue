@@ -29,7 +29,7 @@ const apiCall = async () => {
         id: data._id,
         code: data.code,
         name: data.name,
-        label: `[${data.code}] ${data.name}`
+        label: data.label
       }
     })
   }

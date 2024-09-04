@@ -6,14 +6,7 @@ import AllocationGroupAutocomplete, {
 import type { IFormError } from './form'
 
 const allocation_group_id = defineModel<string>('allocation_group_id')
-const allocation_group = defineModel<ISelectedAllocationGroup>('allocation_group', {
-  default: {
-    _id: '',
-    label: '',
-    code: '',
-    name: ''
-  }
-})
+const allocation_group = defineModel<ISelectedAllocationGroup>('allocation_group')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const notes = defineModel<string>('notes')

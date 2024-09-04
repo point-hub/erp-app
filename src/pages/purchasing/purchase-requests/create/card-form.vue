@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
+import BranchAutocomplete, {
+  type ISelectedBranch
+} from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
-interface ISelected {
-  _id: string
-  label: string
-  code: string
-  name: string
-}
-
 const required_date = defineModel<string>('required_date')
-const branch = defineModel<ISelected>('branch')
+const options = defineModel<ISelectedBranch[]>('options')
+const branch = defineModel<ISelectedBranch>('branch')
 const errors = defineModel<IFormError>('errors')
 </script>
 
@@ -25,6 +21,7 @@ const errors = defineModel<IFormError>('errors')
         layout="horizontal"
         label="Branch"
         v-model:selected="branch"
+        v-model:options="options"
         :errors="errors?.branch"
       />
       <base-datepicker

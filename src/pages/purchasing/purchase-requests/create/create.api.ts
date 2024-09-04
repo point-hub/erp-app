@@ -7,7 +7,7 @@ import type { IForm, IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useCreateWarehouseApi() {
+export function useCreatePurchaseRequestApi() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const send = async (data: IForm, errors: IFormError) => {
     try {

@@ -2,7 +2,7 @@ import { ref, watch } from 'vue'
 
 export interface IForm {
   [key: string]: any
-  role_id: string
+  role: string
   default_branch: string
   default_warehouse: string
   branches: string[]
@@ -15,7 +15,7 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
-  role_id: string[]
+  role: string[]
   default_branch: string[]
   default_warehouse: string[]
   branches: string[]
@@ -28,7 +28,7 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    role_id: '',
+    role: '',
     default_branch: '',
     default_warehouse: '',
     branches: [],
@@ -40,7 +40,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
-    role_id: [],
+    role: [],
     default_branch: [],
     default_warehouse: [],
     branches: [],

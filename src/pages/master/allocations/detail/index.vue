@@ -28,7 +28,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.allocation_group = `[${response.allocation_group.code}] ${response.allocation_group.name}`
+    form.data.allocation_group = response.allocation_group.label
     form.data.code = response.code
     form.data.name = response.name
     form.data.notes = response.notes

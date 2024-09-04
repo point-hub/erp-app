@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 
-import WarehouseAutocomplete from '@/pages/master/warehouses/components/autocomplete/autocomplete.vue'
+import WarehouseAutocomplete, {
+  type ISelectedWarehouse
+} from '@/pages/master/warehouses/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 import { useGetWarehousesApi } from './get-warehouses.api'
@@ -18,7 +20,7 @@ const options = ref<{ id: string; label: string; checked: boolean }[]>([])
 onMounted(async () => {
   const response = await getWarehousesApi.send('')
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelectedWarehouse) => {
       const index = warehouses.value.findIndex((warehouse) => data._id === warehouse)
       let checked = false
       if (index !== -1) {
@@ -28,12 +30,12 @@ onMounted(async () => {
       if (default_warehouse.value === data._id) {
         selected.value = {
           id: data._id,
-          label: `[${data.code}] ${data.name}`
+          label: data.label
         }
       }
       return {
         id: data._id,
-        label: `[${data.code}] ${data.name}`,
+        label: data.label,
         checked: checked
       }
     })

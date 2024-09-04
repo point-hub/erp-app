@@ -28,7 +28,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.branch = `[${response.branch.code}] ${response.branch.name}`
+    form.data.branch = response.branch.label
     form.data.code = response.code
     form.data.name = response.name
     form.data.address = response.address

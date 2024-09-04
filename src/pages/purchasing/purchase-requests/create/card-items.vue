@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
+import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
 import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
 interface IItem {
@@ -83,7 +84,7 @@ onMounted(() => {
             </td>
             <td><base-input border="full" v-model="item.notes" /></td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
-            <td><item-choosen title="Item" v-model:selected="selected" border="full" /></td>
+            <td><allocation-choosen v-model:selected="selected" border="full" /></td>
             <td>
               <base-button class="px-0! mt-1" @click="removeItem(index)">
                 <div class="flex flex-1 h-full w-full mt-1 p-0! m-0! text-white"></div>

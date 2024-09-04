@@ -12,6 +12,7 @@ export interface ISelectedBranch {
 }
 
 const _id = defineModel<string>()
+const options = defineModel<ISelectedBranch[]>('options')
 const selected = defineModel<ISelectedBranch>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const label = defineModel<string>('label', { default: 'Branch' })
@@ -19,18 +20,18 @@ const errors = ref<string[]>([])
 
 const getBranchesApi = useGetBranchesApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedBranch[]>()
 
 const apiCall = async () => {
   const response = await getBranchesApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelectedBranch) => {
       return {
-        _id: `${data._id}`,
-        label: `[${data.code}] ${data.name}`,
-        code: `${data.code}`,
-        name: `${data.name}`
+        _id: data._id,
+        label: data.label,
+        code: data.code,
+        name: data.name
       }
     })
   }
@@ -40,23 +41,31 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  isLoading.value = true
+  if (!localOptions.value) {
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 watch(selected, () => {
-  _id.value = selected.value?._id
+  if (selected.value) _id.value = selected.value._id
 })
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 

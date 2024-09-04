@@ -32,8 +32,8 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.category_id = category.value._id
-    form.data.chart_of_account_id = chart_of_account.value._id
+    form.data.category_id = response.category._id
+    form.data.chart_of_account_id = response.chart_of_account._id
     form.data.code = response.code
     form.data.name = response.name
     form.data.unit = response.unit

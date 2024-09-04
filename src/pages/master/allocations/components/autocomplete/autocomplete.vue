@@ -12,14 +12,16 @@ export interface ISelectedAllocation {
 }
 
 const _id = defineModel<string>()
-const required = defineModel<boolean>('required', { default: false })
+const options = defineModel<ISelectedAllocation[]>('options')
 const selected = defineModel<ISelectedAllocation>('selected')
+const required = defineModel<boolean>('required', { default: false })
+const label = defineModel<string>('label', { default: 'Branch' })
 const errors = ref<string[]>([])
 
 const getAllocationsApi = useGetAllocationsApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedAllocation[]>()
 
 const apiCall = async () => {
   const response = await getAllocationsApi.send(search.value, 1)
@@ -27,9 +29,9 @@ const apiCall = async () => {
     options.value = response.data.map((data: ISelectedAllocation) => {
       return {
         _id: data._id,
-        label: `[${data.code}] ${data.name}`,
-        code: `${data.code}`,
-        name: `${data.name}`
+        label: data.label,
+        code: data.code,
+        name: data.name
       }
     })
   }
@@ -39,13 +41,17 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  isLoading.value = true
+  if (!localOptions.value) {
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
@@ -55,14 +61,18 @@ watch(selected, () => {
 })
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 
 <template>
   <base-autocomplete
     :required="required"
-    label="Allocation"
+    :label="label"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

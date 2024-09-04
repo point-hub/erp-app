@@ -29,10 +29,10 @@ onMounted(async () => {
   form.data.name = response.name
   form.data.username = response.username
   form.data.email = response.email
-  form.data.default_branch = response.default_branch
-  form.data.default_warehouse = response.default_warehouse
-  form.data.branches = response.branches
-  form.data.warehouses = response.warehouses
+  form.data.default_branch = response.default_branch._id
+  form.data.default_warehouse = response.default_warehouse._id
+  form.data.branches = response.branches.map((obj: { _id: string }) => obj._id)
+  form.data.warehouses = response.warehouses.map((obj: { _id: string }) => obj._id)
 })
 
 const onUpdate = async () => {

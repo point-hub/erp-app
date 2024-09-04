@@ -151,6 +151,7 @@ const isAuthenticated = async () => {
     const response = await axios.post('/v1/master/auth/verify-token')
     if (response.status === 200) {
       authStore.update({
+        _id: response.data._id,
         name: response.data.name,
         permission: response.data.role.permission,
         default_branch: response.data.default_branch,

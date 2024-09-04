@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export interface IAuth {
+  _id?: string
   name?: string
   permission?: { [key: string]: boolean | { [key: string]: boolean } }
   default_branch?: string
@@ -12,6 +13,7 @@ export interface IAuth {
 }
 
 export const useAuthStore = defineStore('auth-store', () => {
+  const _id = ref()
   const name = ref()
   const permission = ref()
   const project_id = ref()
@@ -22,6 +24,7 @@ export const useAuthStore = defineStore('auth-store', () => {
 
   const update = (auth: IAuth) => {
     if (auth.project_id) project_id.value = auth.project_id
+    if (auth._id) _id.value = auth._id
     if (auth.name) name.value = auth.name
     if (auth.permission) permission.value = auth.permission
     if (auth.default_branch) default_branch.value = auth.default_branch
@@ -31,6 +34,7 @@ export const useAuthStore = defineStore('auth-store', () => {
   }
 
   return {
+    _id,
     name,
     permission,
     default_branch,
