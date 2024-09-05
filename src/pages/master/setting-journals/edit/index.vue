@@ -56,14 +56,6 @@ const getSettingJournal = async () => {
   form.data.feature = response.data.feature
 
   form.data.journals = response.data.journals.map((data: IJournal) => {
-    let chart_of_account = { id: '', label: '' }
-    if (data.chart_of_account?._id) {
-      chart_of_account = {
-        id: data.chart_of_account?._id,
-        label: `[${data.chart_of_account?.number}] ${data.chart_of_account?.name}`
-      }
-    }
-
     return {
       _id: data._id,
       description: data.description,
@@ -75,7 +67,7 @@ const getSettingJournal = async () => {
       value: data.value,
       position: data.position,
       chart_of_account_id: data.chart_of_account?._id,
-      chart_of_account: chart_of_account
+      chart_of_account: data.chart_of_account
     }
   })
 }
@@ -161,15 +153,13 @@ const onUpdate = async () => {
                   </div>
                 </td>
                 <td class="w-100">
-                  <span v-if="journal.editable" class="absolute">
+                  <span v-if="journal.editable">
                     <chart-of-account-autocomplete
-                      label=""
                       v-model="journal.chart_of_account_id"
                       v-model:selected="journal.chart_of_account"
                       :category-code="journal.category"
                       :errors="form.errors[`journals.${index}.chart_of_account_id`]"
                       border="full"
-                      class="w-100"
                     />
                   </span>
                 </td>

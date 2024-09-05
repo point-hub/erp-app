@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedCustomerGroup[]>('options')
 const selected = defineModel<ISelectedCustomerGroup>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Customer Group' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getCustomerGroupsApi = useGetCustomerGroupsApi()

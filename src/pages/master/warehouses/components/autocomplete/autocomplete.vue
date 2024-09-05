@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedWarehouse[]>('options')
 const selected = defineModel<ISelectedWarehouse>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Warehouse' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getWarehousesApi = useGetWarehousesApi()

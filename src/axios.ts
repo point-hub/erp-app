@@ -13,8 +13,7 @@ instance.defaults.withCredentials = true
 instance.interceptors.request.use(
   (config) => {
     if (import.meta.env.DEV) {
-      // console.log('Request: ', config.url)
-      // console.log('Request: ', config)
+      console.log('Request: ', config.url, config)
     }
     return config
   },

@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedRole[]>('options')
 const selected = defineModel<ISelectedRole>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Role' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getRolesApi = useGetRolesApi()

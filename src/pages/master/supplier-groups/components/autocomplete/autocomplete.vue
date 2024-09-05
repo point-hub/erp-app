@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedSupplierGroup[]>('options')
 const selected = defineModel<ISelectedSupplierGroup>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Supplier Group' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getSupplierGroupsApi = useGetSupplierGroupsApi()

@@ -16,7 +16,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedItem[]>('options')
 const selected = defineModel<ISelectedItem>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Item' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getItemsApi = useGetItemsApi()

@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedAllocation[]>('options')
 const selected = defineModel<ISelectedAllocation>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Allocation' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getAllocationsApi = useGetAllocationsApi()

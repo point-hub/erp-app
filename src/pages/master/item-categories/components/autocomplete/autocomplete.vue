@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedItemCategory[]>('options')
 const selected = defineModel<ISelectedItemCategory>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Item Category' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getItemCategoriesApi = useGetItemCategoriesApi()

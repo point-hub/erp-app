@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isEmpty } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
@@ -20,7 +21,7 @@ const typeCode = defineModel<string>('typeCode', { default: '' })
 const type = defineModel<string>('type', { default: '' })
 const categoryCode = defineModel<string>('categoryCode', { default: '' })
 const category = defineModel<string>('category', { default: '' })
-const label = defineModel<string>('label', { default: 'Chart of Account' })
+const label = defineModel<string>('label')
 const border = defineModel<'full' | 'simple' | 'none'>('border')
 const errors = defineModel<string[]>('errors')
 
@@ -70,7 +71,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  if (selected.value) _id.value = selected.value?._id
+  if (!isEmpty(selected.value)) _id.value = selected.value?._id
 })
 
 onMounted(async () => {

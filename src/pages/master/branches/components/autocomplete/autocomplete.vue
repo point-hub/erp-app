@@ -15,7 +15,7 @@ const _id = defineModel<string>()
 const options = defineModel<ISelectedBranch[]>('options')
 const selected = defineModel<ISelectedBranch>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const label = defineModel<string>('label', { default: 'Branch' })
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
 const getBranchesApi = useGetBranchesApi()

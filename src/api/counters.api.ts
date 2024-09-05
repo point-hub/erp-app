@@ -15,9 +15,6 @@ export function useCountersApi() {
         }
       })
 
-      console.log(filter)
-      console.log(response)
-
       if (response.status === 200) {
         return `${response.data.data[0].code}${(Number(response.data.data[0].count) + 1).toString().padStart(4, '0')}`
       }
