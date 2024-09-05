@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetUsersApi } from './get-users.api'
 
-interface ISelected {
+interface ISelectedUser {
   _id: string
   label: string
   name: string
@@ -13,24 +13,27 @@ interface ISelected {
 }
 
 const _id = defineModel<string>()
-const selected = defineModel<ISelected>('selected')
+const options = defineModel<ISelectedUser[]>('options')
+const selected = defineModel<ISelectedUser>('selected')
+const required = defineModel<boolean>('required', { default: false })
+const label = defineModel<string>('label', { default: 'User' })
 const errors = ref<string[]>([])
 
 const getUsersApi = useGetUsersApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedUser[]>()
 
 const apiCall = async () => {
   const response = await getUsersApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: ISelected) => {
+    options.value = response.data.map((data: ISelectedUser) => {
       return {
-        label: `${data.name}`,
-        _id: `${data._id}`,
-        name: `${data.name}`,
-        username: `${data.username}`,
-        email: `${data.email}`
+        label: data.name,
+        _id: data._id,
+        name: data.name,
+        username: data.username,
+        email: data.email
       }
     })
   }
@@ -40,30 +43,38 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  isLoading.value = true
+  if (!localOptions.value) {
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 watch(selected, () => {
-  _id.value = selected.value?._id
+  if (selected.value) _id.value = selected.value?._id
 })
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 
 <template>
   <base-autocomplete
-    required
-    label="User"
+    :required="required"
+    :label="label"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

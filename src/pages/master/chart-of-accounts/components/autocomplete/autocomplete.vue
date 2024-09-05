@@ -12,6 +12,7 @@ export interface ISelectedChartOfAccount {
 }
 
 const _id = defineModel<string>()
+const options = defineModel<ISelectedChartOfAccount[]>('options')
 const selected = defineModel<ISelectedChartOfAccount>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const subledger = defineModel<string>('subledger', { default: '' })
@@ -25,28 +26,25 @@ const errors = defineModel<string[]>('errors')
 
 const getChartOfAccountsApi = useGetChartOfAccountsApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedChartOfAccount[]>()
 
 const apiCall = async () => {
-  const response = await getChartOfAccountsApi.send(
-    {
-      label: search.value,
-      subledger: subledger.value,
-      category_code: categoryCode.value,
-      category: category.value,
-      type_code: typeCode.value,
-      type: type.value
-    },
-    1
-  )
+  const response = await getChartOfAccountsApi.send({
+    label: search.value,
+    subledger: subledger.value,
+    category_code: categoryCode.value,
+    category: category.value,
+    type_code: typeCode.value,
+    type: type.value
+  })
   if (response?.data) {
     options.value = response.data.map((data: ISelectedChartOfAccount) => {
       return {
         _id: data._id,
-        label: `[${data.number}] ${data.name}`,
-        number: `${data.number}`,
-        name: `${data.name}`
+        label: data.label,
+        number: data.number,
+        name: data.name
       }
     })
   }
@@ -56,23 +54,31 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  isLoading.value = true
+  if (!localOptions.value) {
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 watch(selected, () => {
-  _id.value = selected.value?._id
+  if (selected.value) _id.value = selected.value?._id
 })
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 

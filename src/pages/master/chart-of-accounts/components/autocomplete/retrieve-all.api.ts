@@ -1,7 +1,7 @@
 import axios from '@/axios'
 
 export function useGetChartOfAccountsApi() {
-  const send = async (filter: { [key: string]: string }, page: number) => {
+  const send = async (filter: { [key: string]: string }, page = 1) => {
     try {
       const response = await axios.get('/v1/master/chart-of-accounts', {
         params: {

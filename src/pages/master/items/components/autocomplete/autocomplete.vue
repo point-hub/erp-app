@@ -13,14 +13,16 @@ export interface ISelectedItem {
 }
 
 const _id = defineModel<string>()
-const required = defineModel<boolean>('required', { default: false })
+const options = defineModel<ISelectedItem[]>('options')
 const selected = defineModel<ISelectedItem>('selected')
+const required = defineModel<boolean>('required', { default: false })
+const label = defineModel<string>('label', { default: 'Item' })
 const errors = ref<string[]>([])
 
 const getItemsApi = useGetItemsApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedItem[]>()
 
 const apiCall = async () => {
   const response = await getItemsApi.send(search.value, 1)
@@ -28,7 +30,7 @@ const apiCall = async () => {
     options.value = response.data.map((data: ISelectedItem) => {
       return {
         _id: data._id,
-        label: `[${data.code}] ${data.name}`,
+        label: data.label,
         code: data.code,
         name: data.name,
         unit: data.unit
@@ -41,30 +43,38 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  isLoading.value = true
+  if (!localOptions.value) {
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 watch(selected, () => {
-  _id.value = selected.value?._id
+  if (selected.value) _id.value = selected.value?._id
 })
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 
 <template>
   <base-autocomplete
     :required="required"
-    label="Item"
+    :label="label"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"
