@@ -29,9 +29,9 @@ const apiCall = async () => {
     options.value = response.data.map((data: ISelectedSupplier) => {
       return {
         id: data._id,
+        label: data.label,
         code: data.code,
-        name: data.name,
-        label: data.label
+        name: data.name
       }
     })
   }
