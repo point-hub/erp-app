@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 
 import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
 import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
@@ -22,7 +22,7 @@ interface IItem {
   }
 }
 
-const items = defineModel<IItem[]>('items', { default: [] })
+const items = defineModel<IItem[]>('items', { required: true })
 
 const addMore = () => {
   items.value.push({
@@ -52,10 +52,9 @@ const removeItem = (index: number) => {
   items.value.splice(index, 1)
 }
 
-const selected = ref()
-
 onMounted(() => {
-  clearAll()
+  addMore()
+  addMore()
   addMore()
 })
 </script>
@@ -80,16 +79,15 @@ onMounted(() => {
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
-              <item-choosen title="Item" v-model:selected="selected" border="full" />
+              <item-choosen title="Item" v-model:selected="item.item" border="full" />
             </td>
             <td><base-input border="full" v-model="item.notes" /></td>
             <td><base-input-number border="full" v-model="item.quantity" /></td>
-            <td><allocation-choosen v-model:selected="selected" border="full" /></td>
+            <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>
             <td>
               <base-button class="px-0! mt-1" @click="removeItem(index)">
-                <div class="flex flex-1 h-full w-full mt-1 p-0! m-0! text-white"></div>
+                <base-icon icon="i-far-trash" class="bg-red text-slate-100"></base-icon>
               </base-button>
-              <base-icon icon="i-far-trash" class="bg-red text-slate-100"></base-icon>
             </td>
           </tr>
         </tbody>

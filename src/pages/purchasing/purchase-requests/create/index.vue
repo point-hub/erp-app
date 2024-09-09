@@ -21,6 +21,7 @@ onMounted(async () => {
   if (!authStore.permission?.purchasing?.purchase_requests?.create) {
     router.push('/unauthorized')
   }
+
   if (!isEmpty(authStore.default_branch)) {
     form.data.branch = authStore.default_branch
   } else if (authStore.branches.length) {

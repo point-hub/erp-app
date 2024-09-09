@@ -37,7 +37,7 @@ interface IApprovalTo {
 export interface IForm {
   required_date?: string
   branch?: IBranch
-  items?: IItem[]
+  items: IItem[]
   approval_to?: IApprovalTo
   notes?: string
 }
@@ -52,7 +52,8 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    required_date: format(new Date(), 'dd-MM-yyyy')
+    required_date: format(new Date(), 'dd-MM-yyyy'),
+    items: []
   }
 
   const defaultFormError: IFormError = {
