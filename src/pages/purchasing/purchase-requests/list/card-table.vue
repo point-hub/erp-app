@@ -33,6 +33,7 @@ interface IPurchaseRequestItem {
 
 interface IPurchaseRequest {
   _id: string
+  form_number: string
   required_date: string
   created_date: string
   branch: {
@@ -240,7 +241,7 @@ const onDelete = async () => {
                     :to="`/purchasing/purchase-requests/${purchaseRequest._id}`"
                     class="text-blue"
                   >
-                  {{purchaseRequest.form_number}}
+                    {{ purchaseRequest.form_number }}
                   </router-link>
                 </td>
                 <td>{{ format(new Date(purchaseRequest.created_date), 'dd-MM-yyyy') }}</td>
