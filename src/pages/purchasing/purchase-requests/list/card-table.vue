@@ -236,12 +236,12 @@ const onDelete = async () => {
               <tr v-for="(item, index) in purchaseRequest.items" :key="index">
                 <td></td>
                 <td>
-                  <!-- <router-link
+                  <router-link
                     :to="`/purchasing/purchase-requests/${purchaseRequest._id}`"
                     class="text-blue"
-                  > -->
-                  UNDEFINED
-                  <!-- </router-link> -->
+                  >
+                  {{purchaseRequest.form_number}}
+                  </router-link>
                 </td>
                 <td>{{ format(new Date(purchaseRequest.created_date), 'dd-MM-yyyy') }}</td>
                 <td>{{ purchaseRequest.required_date }}</td>
