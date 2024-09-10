@@ -33,13 +33,13 @@ onMounted(() => {
       icon: 'i-far-arrow-progress'
     })
   }
-  // if (authStore?.permission?.manufacture?.formulas?.read) {
-  //   menus.value.push({
-  //     name: 'Formulas',
-  //     path: '/manufacture/formulas',
-  //     icon: 'i-far-file-check'
-  //   })
-  // }
+  if (authStore?.permission?.manufacture?.formulas?.read) {
+    menus.value.push({
+      name: 'Formulas',
+      path: '/manufacture/formulas',
+      icon: 'i-far-file-check'
+    })
+  }
   // if (authStore?.permission?.manufacture?.processing?.read) {
   //   menus.value.push({
   //     name: 'Processing',
