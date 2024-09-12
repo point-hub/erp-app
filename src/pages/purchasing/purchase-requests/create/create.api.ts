@@ -8,7 +8,6 @@ import type { IForm, IFormError } from './form'
 const { toastRef } = useToastStore()
 
 export function useCreatePurchaseRequestApi() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const send = async (data: IForm, errors: IFormError) => {
     try {
       const response = await axios.post('/v1/purchasing/purchase-requests', data)
@@ -24,7 +23,7 @@ export function useCreatePurchaseRequestApi() {
         const formErrors = error?.response?.data?.errors
         if (formErrors) {
           for (const key in formErrors) {
-            // errors[key] = formErrors[key]
+            errors[key] = formErrors[key]
             listErrors.push(formErrors[key])
           }
         }

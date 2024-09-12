@@ -22,13 +22,16 @@ const errors = defineModel<IFormError>('errors')
         label="Branch"
         v-model:selected="branch"
         v-model:options="options"
-        :errors="errors?.branch"
+        :errors="errors?.['branch._id']"
       />
+
       <base-datepicker
+        required
         v-model="required_date"
         label="Required Date"
         layout="horizontal"
         description="When is this item needed to be used?"
+        :errors="errors?.required_date"
       />
     </div>
   </base-card>

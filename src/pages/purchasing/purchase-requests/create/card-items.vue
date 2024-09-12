@@ -4,6 +4,8 @@ import { onMounted } from 'vue'
 import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
 import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
+import type { IFormError } from './form'
+
 interface IItem {
   item: {
     _id: string
@@ -22,6 +24,7 @@ interface IItem {
   }
 }
 
+const errors = defineModel<IFormError>('errors')
 const items = defineModel<IItem[]>('items', { required: true })
 
 const addMore = () => {
@@ -54,8 +57,6 @@ const removeItem = (index: number) => {
 
 onMounted(() => {
   addMore()
-  addMore()
-  addMore()
 })
 </script>
 
@@ -79,10 +80,27 @@ onMounted(() => {
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
-              <item-choosen title="Item" v-model:selected="item.item" border="full" />
+              <item-choosen
+                title="Item"
+                v-model:selected="item.item"
+                border="full"
+                :errors="errors?.[`items.${index}.item._id`]"
+              />
             </td>
-            <td><base-input border="full" v-model="item.notes" /></td>
-            <td><base-input-number border="full" v-model="item.quantity" /></td>
+            <td>
+              <base-input
+                border="full"
+                v-model="item.notes"
+                :errors="errors?.[`items.${index}.notes`]"
+              />
+            </td>
+            <td>
+              <base-input-number
+                border="full"
+                v-model="item.quantity"
+                :errors="errors?.[`items.${index}.quantity`]"
+              />
+            </td>
             <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>
             <td>
               <base-button class="px-0! mt-1" @click="removeItem(index)">

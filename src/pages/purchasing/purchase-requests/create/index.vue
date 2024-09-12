@@ -58,7 +58,7 @@ const onSave = async () => {
       :errors="form.errors"
     />
 
-    <card-items v-model:items="form.data.items" />
+    <card-items v-model:items="form.data.items" :errors="form.errors" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"

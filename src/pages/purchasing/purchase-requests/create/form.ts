@@ -1,5 +1,4 @@
-import { format } from 'date-fns/format'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 interface IItem {
   item: {
@@ -35,6 +34,7 @@ interface IApprovalTo {
 }
 
 export interface IForm {
+  [key: string]: any
   required_date?: string
   branch?: IBranch
   items: IItem[]
@@ -43,7 +43,8 @@ export interface IForm {
 }
 
 export interface IFormError {
-  branch: string[]
+  [key: string]: string[]
+  'branch._id': string[]
   required_date: string[]
   items: string[]
   approval_to: string[]
@@ -52,12 +53,12 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    required_date: format(new Date(), 'dd-MM-yyyy'),
+    required_date: '',
     items: []
   }
 
   const defaultFormError: IFormError = {
-    branch: [],
+    'branch._id': [],
     required_date: [],
     items: [],
     approval_to: [],
@@ -68,28 +69,31 @@ export function useForm() {
 
   const errors = ref<IFormError>(defaultFormError)
 
-  // watch(
-  //   () => {
-  //     const array = []
-  //     for (const key in data.value) {
-  //       if (Object.prototype.hasOwnProperty.call(data.value, key)) {
-  //         array.push(data.value[key])
-  //       }
-  //     }
-  //     return array
-  //   },
-  //   (newValue, oldValue) => {
-  //     for (let index = 0; index < newValue.length; index++) {
-  //       if (newValue[index] !== oldValue[index]) {
-  //         Object.keys(errors.value).forEach((key, i) => {
-  //           if (index === i) {
-  //             errors.value[key] = []
-  //           }
-  //         })
-  //       }
-  //     }
-  //   }
-  // )
+  watch(
+    () => {
+      const array = []
+      for (const key in data.value) {
+        if (Object.prototype.hasOwnProperty.call(data.value, key)) {
+          array.push(data.value[key])
+        }
+      }
+      return array
+    },
+    (newValue, oldValue) => {
+      for (let index = 0; index < newValue.length; index++) {
+        if (newValue[index] !== oldValue[index]) {
+          Object.keys(errors.value).forEach((key, i) => {
+            if (index === i) {
+              errors.value[key] = []
+            }
+          })
+        }
+      }
+    },
+    {
+      deep: true
+    }
+  )
 
   const reset = () => {
     data.value = defaultForm
