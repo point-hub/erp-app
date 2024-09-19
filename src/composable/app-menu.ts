@@ -29,7 +29,7 @@ export function useAppMenu() {
       // menus.value[0].menu?.push(...seedSalesPermissions())
       // menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
-      // menus.value[0].menu?.push(...seedInventoryPermissions())
+      menus.value[0].menu?.push(...seedInventoryPermissions())
       // menus.value[0].menu?.push(...seedAccountingPermissions())
     },
     {
@@ -93,21 +93,21 @@ const seedPurchasingPermissions = () => {
   if (authStore?.permission?.purchasing?.purchase_requests?.read) {
     submenu.value?.push({ name: 'Purchase Requests', path: '/purchasing/purchase-requests' })
   }
-  // if (authStore?.permission?.purchasing?.purchase_orders?.read) {
-  //   submenu.value?.push({ name: 'Purchase Orders', path: '/purchasing/purchase-orders' })
-  // }
-  // if (authStore?.permission?.purchasing?.down_payments?.read) {
-  //   submenu.value?.push({ name: 'Down Payments', path: '/purchasing/down-payments' })
-  // }
-  // if (authStore?.permission?.purchasing?.receive_orders?.read) {
-  //   submenu.value?.push({ name: 'Receive Orders', path: '/purchasing/receive-orders' })
-  // }
-  // if (authStore?.permission?.purchasing?.invoices?.read) {
-  //   submenu.value?.push({ name: 'Invoices', path: '/purchasing/invoices' })
-  // }
-  // if (authStore?.permission?.purchasing?.payment_orders?.read) {
-  //   submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
-  // }
+  if (authStore?.permission?.purchasing?.purchase_orders?.read) {
+    submenu.value?.push({ name: 'Purchase Orders', path: '/purchasing/purchase-orders' })
+  }
+  if (authStore?.permission?.purchasing?.down_payments?.read) {
+    submenu.value?.push({ name: 'Down Payments', path: '/purchasing/down-payments' })
+  }
+  if (authStore?.permission?.purchasing?.receive_orders?.read) {
+    submenu.value?.push({ name: 'Receive Orders', path: '/purchasing/receive-orders' })
+  }
+  if (authStore?.permission?.purchasing?.invoices?.read) {
+    submenu.value?.push({ name: 'Invoices', path: '/purchasing/invoices' })
+  }
+  if (authStore?.permission?.purchasing?.payment_orders?.read) {
+    submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
+  }
 
   if (authStore?.permission?.purchasing?.menu) {
     menu.value.push({ name: 'Purchasing', submenu: submenu.value })

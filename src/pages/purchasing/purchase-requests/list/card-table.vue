@@ -66,7 +66,7 @@ const pagination = ref({
   total_document: 0
 })
 const isLoading = ref(false)
-// const rowMenuRef = ref()
+const rowMenuRef = ref()
 
 const updateRouter = () => {
   router.push({
@@ -158,13 +158,13 @@ onMounted(async () => {
   pagination.value = response?.pagination
 })
 
-// const onDeleteModal = (purchaseRequest: IPurchaseRequest, index: number) => {
-//   rowMenuRef.value[index].toggle(false)
-//   deleteModalRef.value.toggleModal(true, {
-//     id: purchaseRequest._id,
-//     name: `${purchaseRequest.required_date}`
-//   })
-// }
+const onDeleteModal = (purchaseRequest: IPurchaseRequest, index: number) => {
+  rowMenuRef.value[index].toggle(false)
+  deleteModalRef.value.toggleModal(true, {
+    id: purchaseRequest._id,
+    name: `${purchaseRequest.required_date}`
+  })
+}
 
 const onDelete = async () => {
   // call api
@@ -235,7 +235,39 @@ const onDelete = async () => {
           <template v-if="!isLoading">
             <template v-for="purchaseRequest in purchaseRequests">
               <tr v-for="(item, index) in purchaseRequest.items" :key="index">
-                <td></td>
+                <td>
+                  <base-popover placement="bottom" ref="rowMenuRef">
+                    <base-button size="xs" @click="rowMenuRef[index].toggle()">
+                      <base-icon class="text-xl" icon="i-ph-dots-three-bold"></base-icon>
+                    </base-button>
+                    <template #content>
+                      <base-card class="py-1! px-2! text-sm">
+                        <div class="flex flex-col">
+                          <router-link :to="`/purchasing/purchase-request/${purchaseRequest._id}`">
+                            <base-button variant="text" color="info">
+                              <div class="flex gap-2 w-full">
+                                <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
+                                <p>View</p>
+                              </div>
+                            </base-button>
+                          </router-link>
+                          <base-divider orientation="vertical" class="my-1!"></base-divider>
+                          <base-button
+                            v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
+                            variant="text"
+                            color="danger"
+                            @click="onDeleteModal(purchaseRequest, index)"
+                          >
+                            <div class="flex gap-2 w-full">
+                              <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
+                              <p>Delete</p>
+                            </div>
+                          </base-button>
+                        </div>
+                      </base-card>
+                    </template>
+                  </base-popover>
+                </td>
                 <td>
                   <router-link
                     :to="`/purchasing/purchase-requests/${purchaseRequest._id}`"

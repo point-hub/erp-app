@@ -2,39 +2,37 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetItemsApi } from './retrieve-all.api'
+import { useGetFormulasApi } from './retrieve-all.api'
 
-export interface ISelectedItem {
+export interface ISelectedFormula {
   _id: string
   label: string
   code: string
   name: string
-  unit: string
 }
 
 const _id = defineModel<string>()
-const options = defineModel<ISelectedItem[]>('options')
-const selected = defineModel<ISelectedItem>('selected')
+const options = defineModel<ISelectedFormula[]>('options')
+const selected = defineModel<ISelectedFormula>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const title = defineModel<string>('title', { default: 'Allocation' })
+const title = defineModel<string>('title', { default: 'Formula' })
 const border = defineModel<'full' | 'simple' | 'none'>('border')
 const errors = defineModel<string[]>('errors')
 
-const getItemsApi = useGetItemsApi()
+const getFormulasApi = useGetFormulasApi()
 const search = ref('')
 const isLoading = ref<boolean>(false)
-const localOptions = ref<ISelectedItem[]>()
+const localOptions = ref<ISelectedFormula[]>()
 
 const apiCall = async () => {
-  const response = await getItemsApi.send(search.value, 1)
+  const response = await getFormulasApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: ISelectedItem) => {
+    options.value = response.data.map((data: ISelectedFormula) => {
       return {
         _id: data._id,
         label: data.label,
         code: data.code,
-        name: data.name,
-        unit: data.unit
+        name: data.name
       }
     })
   }

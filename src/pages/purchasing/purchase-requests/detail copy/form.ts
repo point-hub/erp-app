@@ -47,7 +47,7 @@ export interface IFormError {
   'branch._id': string[]
   required_date: string[]
   items: string[]
-  'approval_to._id': string[]
+  approval_to: string[]
   notes: string[]
 }
 
@@ -61,7 +61,7 @@ export function useForm() {
     'branch._id': [],
     required_date: [],
     items: [],
-    'approval_to._id': [],
+    approval_to: [],
     notes: []
   }
 

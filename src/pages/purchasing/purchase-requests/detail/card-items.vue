@@ -24,7 +24,7 @@ interface IItem {
   }
 }
 
-const errors = defineModel<IFormError>('errors', { required: true })
+const errors = defineModel<IFormError>('errors')
 const items = defineModel<IItem[]>('items', { required: true })
 
 const addMore = () => {
@@ -55,9 +55,7 @@ const removeItem = (index: number) => {
   items.value.splice(index, 1)
 }
 
-onMounted(() => {
-  addMore()
-})
+onMounted(() => {})
 </script>
 
 <template>
@@ -83,11 +81,6 @@ onMounted(() => {
               <item-choosen
                 title="Item"
                 v-model:selected="item.item"
-                @update:selected="
-                  () => {
-                    errors[`items.${index}.item._id`] = []
-                  }
-                "
                 border="full"
                 :errors="errors?.[`items.${index}.item._id`]"
               />
@@ -96,11 +89,6 @@ onMounted(() => {
               <base-input
                 border="full"
                 v-model="item.notes"
-                @update:modelValue="
-                  () => {
-                    errors[`items.${index}.notes`] = []
-                  }
-                "
                 :errors="errors?.[`items.${index}.notes`]"
               />
             </td>
@@ -108,11 +96,6 @@ onMounted(() => {
               <base-input-number
                 border="full"
                 v-model="item.quantity"
-                @update:modelValue="
-                  () => {
-                    errors[`items.${index}.quantity`] = []
-                  }
-                "
                 :errors="errors?.[`items.${index}.quantity`]"
               />
             </td>

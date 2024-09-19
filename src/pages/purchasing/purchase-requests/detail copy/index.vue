@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { isEmpty } from '@point-hub/js-utils'
-import { onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -9,37 +8,26 @@ import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
 import CardItems from './card-items.vue'
-import { useCreatePurchaseRequestApi } from './create.api'
 import { useForm } from './form'
+import { useRetrievePurchaseRequestApi } from './retrieve.api'
 
+const route = useRoute()
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const onLoading = ref(false)
-const createPurchaseRequestApi = useCreatePurchaseRequestApi()
+const retrievePurchaseRequestApi = useRetrievePurchaseRequestApi()
 
 onMounted(async () => {
-  if (!authStore.permission?.purchasing?.purchase_requests?.create) {
+  if (!authStore.permission?.purchasing?.purchase_requests?.read) {
     router.push('/unauthorized')
   }
 
-  if (!isEmpty(authStore.default_branch)) {
-    form.data.branch = authStore.default_branch
-  } else if (authStore.branches.length) {
-    form.data.branch = authStore.branches[0]
-  }
+  const response = await retrievePurchaseRequestApi.send(route.params.id.toString())
+  console.log(response)
+  form.data = response
 })
 
-const onSave = async () => {
-  onLoading.value = true
-  if (!authStore.permission?.purchasing?.purchase_requests?.create) {
-    router.push('/unauthorized')
-  }
-  const response = await createPurchaseRequestApi.send(form.data, form.errors)
-  if (response?.inserted_id) router.push('/purchasing/purchase-requests')
-
-  onLoading.value = false
-}
+const onSave = async () => {}
 </script>
 
 <template>
@@ -72,7 +60,7 @@ const onSave = async () => {
 
     <base-card class="py-4!">
       <div class="flex gap-2">
-        <base-button color="primary" @click="onSave()" :disabled="onLoading">Save</base-button>
+        <base-button color="primary" @click="onSave()">Save</base-button>
       </div>
     </base-card>
   </div>
