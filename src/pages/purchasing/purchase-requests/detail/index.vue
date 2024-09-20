@@ -23,7 +23,7 @@ onMounted(async () => {
   }
 
   const response = await retrievePurchaseRequestApi.send(route.params.id.toString())
-  console.log(response)
+
   form.data = response
   form.data.items = response.items
 })

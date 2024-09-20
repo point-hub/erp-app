@@ -15,7 +15,7 @@ import { useForm } from './form'
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const onLoading = ref(false)
+const isSaving = ref(false)
 const createPurchaseRequestApi = useCreatePurchaseRequestApi()
 
 onMounted(async () => {
@@ -31,14 +31,14 @@ onMounted(async () => {
 })
 
 const onSave = async () => {
-  onLoading.value = true
+  isSaving.value = true
   if (!authStore.permission?.purchasing?.purchase_requests?.create) {
     router.push('/unauthorized')
   }
   const response = await createPurchaseRequestApi.send(form.data, form.errors)
   if (response?.inserted_id) router.push('/purchasing/purchase-requests')
 
-  onLoading.value = false
+  isSaving.value = false
 }
 </script>
 
@@ -72,7 +72,7 @@ const onSave = async () => {
 
     <base-card class="py-4!">
       <div class="flex gap-2">
-        <base-button color="primary" @click="onSave()" :disabled="onLoading">Save</base-button>
+        <base-button color="primary" @click="onSave()" :disabled="isSaving">Save</base-button>
       </div>
     </base-card>
   </div>
