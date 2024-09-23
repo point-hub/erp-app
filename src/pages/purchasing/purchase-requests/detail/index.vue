@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -15,9 +15,11 @@ const route = useRoute()
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
+const isLoading = ref(false)
 const retrievePurchaseRequestApi = useRetrievePurchaseRequestApi()
 
 onMounted(async () => {
+  isLoading.value = true
   if (!authStore.permission?.purchasing?.purchase_requests?.read) {
     router.push('/unauthorized')
   }
@@ -26,13 +28,17 @@ onMounted(async () => {
 
   form.data = response
   form.data.items = response.items
+  isLoading.value = false
 })
 
 const onSave = async () => {}
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div v-if="isLoading" class="w-full h-full flex justify-center items-center text-2xl gap-2">
+    <base-loader />
+  </div>
+  <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
     <base-alert v-if="!form.data.branch" color="danger" icon="danger" title="Alert">

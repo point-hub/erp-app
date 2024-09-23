@@ -141,6 +141,7 @@ const onPageUpdate = async () => {
 }
 
 onMounted(async () => {
+  isLoading.value = true
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.branch = route.query['search.branch']?.toString() ?? ''
@@ -156,6 +157,8 @@ onMounted(async () => {
   )
   purchaseRequests.value = response?.data
   pagination.value = response?.pagination
+
+  isLoading.value = false
 })
 
 const onDeleteModal = (purchaseRequest: IPurchaseRequest, index: number) => {
@@ -226,9 +229,9 @@ const onDelete = async () => {
         </thead>
         <tbody>
           <tr v-if="isLoading">
-            <td colspan="5">
+            <td colspan="10">
               <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
-                <base-spinner color="primary" size="xs" /> <span>Loading</span>
+                <base-spinner color="primary" size="xs" /> <span>Loading...</span>
               </p>
             </td>
           </tr>
@@ -243,7 +246,7 @@ const onDelete = async () => {
                     <template #content>
                       <base-card class="py-1! px-2! text-sm">
                         <div class="flex flex-col">
-                          <router-link :to="`/purchasing/purchase-request/${purchaseRequest._id}`">
+                          <router-link :to="`/purchasing/purchase-requests/${purchaseRequest._id}`">
                             <base-button variant="text" color="info">
                               <div class="flex gap-2 w-full">
                                 <base-icon class="text-xl" icon="i-ph-eye"></base-icon>

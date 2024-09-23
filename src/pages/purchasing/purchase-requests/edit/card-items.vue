@@ -55,10 +55,7 @@ const removeItem = (index: number) => {
   items.value.splice(index, 1)
 }
 
-onMounted(() => {
-  addMore()
-  addMore()
-})
+onMounted(() => {})
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 
-interface IItem {
+export interface IItem {
   item: {
     _id: string
     label: string
@@ -18,14 +18,14 @@ interface IItem {
   }
 }
 
-interface IBranch {
+export interface IBranch {
   _id: string
   label: string
   code: string
   name: string
 }
 
-interface IApprovalTo {
+export interface IApprovalTo {
   _id: string
   label: string
   name: string
