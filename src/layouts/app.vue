@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   AppFooter,
-  AppPreloader,
   AppSidebar,
   useMobileBreakpoint,
   useSidebar,
@@ -45,8 +44,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <component :is="AppPreloader" />
-
   <div class="app-layout">
     <!-- Header -->
     <component :is="AppHeader" />

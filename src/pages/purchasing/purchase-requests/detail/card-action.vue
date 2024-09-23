@@ -1,0 +1,106 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+import axios from '@/axios'
+import { useAuthStore } from '@/stores/auth.store'
+
+import DeleteModal from '../components/delete/delete-modal.vue'
+import RequestDeleteModal from '../components/request-delete/delete-modal.vue'
+import type { IForm } from './form'
+
+const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+const deleteModalRef = ref()
+const requestDeleteModalRef = ref()
+
+const data = defineModel<IForm>('data')
+
+const onDeleted = async () => {
+  router.push('/purchasing/purchase-requests')
+}
+
+const onRequestDelete = async () => {
+  router.push('/purchasing/purchase-requests')
+}
+
+const onSendEmailApproval = async () => {
+  const response = axios.post(
+    `/v1/purchasing/purchase-requests/${route.params.id}/send-email-approval`
+  )
+  console.log(response)
+}
+</script>
+
+<template>
+  <base-card class="py-4!">
+    <div class="flex flex-wrap gap-2">
+      <router-link
+        v-if="authStore.permission?.purchasing?.purchase_requests?.create"
+        :to="`/purchasing/purchase-requests/create`"
+      >
+        <base-button color="info" size="sm">
+          <base-icon icon="i-far-square-plus" /> Create
+        </base-button>
+      </router-link>
+
+      <router-link
+        v-if="authStore.permission?.purchasing?.purchase_requests?.update"
+        :to="`/purchasing/purchase-requests/${route.params.id}/edit`"
+      >
+        <base-button color="info" size="sm">
+          <base-icon icon="i-far-pen-to-square" /> Edit
+        </base-button>
+      </router-link>
+
+      <router-link
+        v-if="authStore.permission?.purchasing?.purchase_requests?.update"
+        :to="`/purchasing/purchase-requests/${route.params.id}/edit`"
+      >
+        <base-button color="info" size="sm">
+          <base-icon icon="i-far-file-xmark" /> Revision
+        </base-button>
+      </router-link>
+
+      <base-button
+        v-if="authStore.permission?.purchasing?.purchase_requests?.approval"
+        color="info"
+        size="sm"
+        @click="onSendEmailApproval"
+      >
+        <base-icon icon="i-far-envelope" /> Send Email Approval
+      </base-button>
+
+      <base-button
+        v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
+        color="danger"
+        size="sm"
+        @click="
+          deleteModalRef.toggleModal(true, {
+            id: route.params.id.toString(),
+            form_number: data.form_number
+          })
+        "
+      >
+        <base-icon icon="i-far-trash" /> Delete
+      </base-button>
+
+      <base-button
+        v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
+        color="danger"
+        size="sm"
+        @click="
+          requestDeleteModalRef.toggleModal(true, {
+            id: route.params.id.toString(),
+            form_number: data.form_number
+          })
+        "
+      >
+        <base-icon icon="i-far-envelope" /> Send Request Delete
+      </base-button>
+    </div>
+    <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
+    <request-delete-modal ref="requestDeleteModalRef" @deleted="onRequestDelete" />
+  </base-card>
+</template>

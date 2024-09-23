@@ -35,11 +35,13 @@ interface IApprovalTo {
 
 export interface IForm {
   [key: string]: any
-  required_date?: string
-  branch?: IBranch
+  form_number: string
+  created_date: string
+  required_date: string
+  branch: IBranch
   items: IItem[]
-  approval_to?: IApprovalTo
-  notes?: string
+  approval_to: IApprovalTo
+  notes: string
 }
 
 export interface IFormError {

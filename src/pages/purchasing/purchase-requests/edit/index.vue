@@ -27,6 +27,7 @@ onMounted(async () => {
   const response = await retrievePurchaseRequestApi.send(route.params.id.toString())
 
   form.data = response
+  form.data.rev += 1
   form.data.items = response.items
   isLoading.value = false
 })
@@ -51,8 +52,11 @@ const onSave = async () => {}
     </base-alert>
 
     <card-form
+      v-model:form_number="form.data.form_number"
+      v-model:rev="form.data.rev"
       v-model:branch="form.data.branch"
       v-model:options="authStore.branches"
+      v-model:created_date="form.data.created_date"
       v-model:required_date="form.data.required_date"
       :errors="form.errors"
     />

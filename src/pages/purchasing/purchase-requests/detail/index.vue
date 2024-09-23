@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
+import CardAction from './card-action.vue'
 import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardForm from './card-form.vue'
@@ -41,28 +42,22 @@ const onSave = async () => {}
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <base-alert v-if="!form.data.branch" color="danger" icon="danger" title="Alert">
-      You don't have access to any branch, please
-      <router-link :to="`/master/users/${authStore._id}/edit`" class="text-blue-300">
-        edit your user
-      </router-link>
-      and add branch in your user. Or contact your Administrator if you don't have permission to
-      edit user data
-    </base-alert>
+    <card-action :data="form.data" />
 
     <card-form
-      v-model:branch="form.data.branch"
-      v-model:options="authStore.branches"
-      v-model:required_date="form.data.required_date"
-      :errors="form.errors"
+      :form_number="form.data.form_number"
+      :rev="form.data.rev"
+      :branch="form.data.branch.label"
+      :created_date="form.data.created_date"
+      :required_date="form.data.required_date"
     />
 
     <card-items v-model:items="form.data.items" :errors="form.errors" />
 
     <card-approval
-      v-model:approval_to="form.data.approval_to"
-      v-model:notes="form.data.notes"
-      :errors="form.errors"
+      :created_by="form.data.created_by.label"
+      :approval_to="form.data.approval_to.label"
+      :notes="form.data.notes"
     />
 
     <base-card class="py-4!">

@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import BranchAutocomplete, {
-  type ISelectedBranch
-} from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
+import { format } from 'date-fns/format'
+import { computed } from 'vue'
 
-import type { IFormError } from './form'
+const form_number = defineModel<string>('form_number', { required: true })
+const rev = defineModel<number>('rev', { required: true })
+const created_date = defineModel<string>('created_date', { required: true })
+const required_date = defineModel<string>('required_date', { required: true })
+const branch = defineModel<string>('branch', { required: true })
 
-const required_date = defineModel<string>('required_date')
-const options = defineModel<ISelectedBranch[]>('options')
-const branch = defineModel<ISelectedBranch>('branch')
-const errors = defineModel<IFormError>('errors')
+const computedCreatedDate = computed(() => {
+  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd   HH:mm:ss') : ''
+})
 </script>
 
 <template>
@@ -16,22 +18,21 @@ const errors = defineModel<IFormError>('errors')
     <template #header>Purchase Requests</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <branch-autocomplete
-        required
+      <base-input disabled label="Form Number" layout="horizontal" :modelValue="form_number" />
+      <base-input disabled v-if="rev > 0" label="Revision" layout="horizontal" :modelValue="rev" />
+      <base-input
+        disabled
+        label="Form Date"
         layout="horizontal"
-        label="Branch"
-        v-model:selected="branch"
-        v-model:options="options"
-        :errors="errors?.['branch._id']"
+        :modelValue="computedCreatedDate"
       />
-
-      <base-datepicker
-        required
-        v-model="required_date"
+      <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
+      <base-input
+        disabled
         label="Required Date"
         layout="horizontal"
         description="When is this item needed to be used?"
-        :errors="errors?.required_date"
+        :modelValue="required_date"
       />
     </div>
   </base-card>

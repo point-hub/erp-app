@@ -25,10 +25,10 @@ interface IItem {
 }
 
 const errors = defineModel<IFormError>('errors', { required: true })
-const items = defineModel<IItem[]>('items', { required: true })
+const details = defineModel<IItem[]>('details', { required: true })
 
 const addMore = () => {
-  items.value.push({
+  details.value.push({
     item: {
       _id: '',
       label: '',
@@ -48,11 +48,11 @@ const addMore = () => {
 }
 
 const clearAll = () => {
-  items.value = []
+  details.value = []
 }
 
 const removeItem = (index: number) => {
-  items.value.splice(index, 1)
+  details.value.splice(index, 1)
 }
 
 onMounted(() => {
@@ -75,7 +75,7 @@ onMounted(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index" class="relative">
+          <tr v-for="(item, index) in details" :key="index" class="relative">
             <td>
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
@@ -85,11 +85,11 @@ onMounted(() => {
                 v-model:selected="item.item"
                 @update:selected="
                   () => {
-                    errors[`items.${index}.item._id`] = []
+                    errors[`details.${index}.item._id`] = []
                   }
                 "
                 border="full"
-                :errors="errors?.[`items.${index}.item._id`]"
+                :errors="errors?.[`details.${index}.item._id`]"
               />
             </td>
             <td>
@@ -98,10 +98,10 @@ onMounted(() => {
                 v-model="item.notes"
                 @update:modelValue="
                   () => {
-                    errors[`items.${index}.notes`] = []
+                    errors[`details.${index}.notes`] = []
                   }
                 "
-                :errors="errors?.[`items.${index}.notes`]"
+                :errors="errors?.[`details.${index}.notes`]"
               />
             </td>
             <td>
@@ -110,10 +110,10 @@ onMounted(() => {
                 v-model="item.quantity"
                 @update:modelValue="
                   () => {
-                    errors[`items.${index}.quantity`] = []
+                    errors[`details.${index}.quantity`] = []
                   }
                 "
-                :errors="errors?.[`items.${index}.quantity`]"
+                :errors="errors?.[`details.${index}.quantity`]"
               />
             </td>
             <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>

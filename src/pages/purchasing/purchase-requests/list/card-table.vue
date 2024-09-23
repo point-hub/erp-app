@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { numberFormat } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
@@ -199,14 +200,14 @@ const onDelete = async () => {
           <tr>
             <th class="w-1"></th>
             <th class="w-30">Form</th>
-            <th>Date</th>
-            <th>Required Date</th>
+            <th class="w-30">Date</th>
+            <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
             <th>Notes</th>
-            <th>Quantity</th>
-            <th>Approval Status</th>
-            <th>Form Status</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-center">Approval Status</th>
+            <th class="text-center">Form Status</th>
           </tr>
           <!-- <tr class="bg-slate-50 dark:bg-slate-700">
             <th></th>
@@ -230,14 +231,14 @@ const onDelete = async () => {
         <tbody>
           <tr v-if="isLoading">
             <td colspan="10">
-              <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
-                <base-spinner color="primary" size="xs" /> <span>Loading...</span>
-              </p>
+              <div class="table-loader">
+                <base-loader />
+              </div>
             </td>
           </tr>
           <template v-if="!isLoading">
             <template v-for="purchaseRequest in purchaseRequests">
-              <tr v-for="(item, index) in purchaseRequest.items" :key="index">
+              <tr v-for="(detail, index) in purchaseRequest.details" :key="index">
                 <td>
                   <base-popover placement="bottom" ref="rowMenuRef">
                     <base-button size="xs" @click="rowMenuRef[index].toggle()">
@@ -247,7 +248,7 @@ const onDelete = async () => {
                       <base-card class="py-1! px-2! text-sm">
                         <div class="flex flex-col">
                           <router-link :to="`/purchasing/purchase-requests/${purchaseRequest._id}`">
-                            <base-button variant="text" color="info">
+                            <base-button variant="text" color="info" class="w-full">
                               <div class="flex gap-2 w-full">
                                 <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
                                 <p>View</p>
@@ -259,6 +260,7 @@ const onDelete = async () => {
                             v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
                             variant="text"
                             color="danger"
+                            class="w-full"
                             @click="onDeleteModal(purchaseRequest, index)"
                           >
                             <div class="flex gap-2 w-full">
@@ -279,14 +281,16 @@ const onDelete = async () => {
                     {{ purchaseRequest.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'dd-MM-yyyy') }}</td>
+                <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd HH:mm:ss') }}</td>
                 <td>{{ purchaseRequest.required_date }}</td>
                 <td>[{{ purchaseRequest.branch.code }}] {{ purchaseRequest.branch.name }}</td>
-                <td>[{{ item.item.code }}] {{ item.item.name }}</td>
-                <td>{{ item.notes }}</td>
-                <td>{{ item.quantity }} {{ item.item.unit }}</td>
-                <td><base-badge color="warning">pending</base-badge></td>
-                <td><base-badge color="warning">open</base-badge></td>
+                <td>[{{ detail.item.code }}] {{ detail.item.name }}</td>
+                <td>{{ detail.notes }}</td>
+                <td class="text-right">
+                  {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
+                </td>
+                <td class="text-center"><base-badge color="warning">pending</base-badge></td>
+                <td class="text-center"><base-badge color="warning">open</base-badge></td>
               </tr>
             </template>
           </template>
