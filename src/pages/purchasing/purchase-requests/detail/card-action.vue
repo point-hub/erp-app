@@ -15,7 +15,7 @@ const authStore = useAuthStore()
 const deleteModalRef = ref()
 const requestDeleteModalRef = ref()
 
-const data = defineModel<IForm>('data')
+const data = defineModel<IForm>('data', { required: true })
 
 const onDeleted = async () => {
   router.push('/purchasing/purchase-requests')

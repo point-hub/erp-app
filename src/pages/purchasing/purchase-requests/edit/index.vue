@@ -4,10 +4,10 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import CardApproval from './card-approval.vue'
+// import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
-import CardForm from './card-form.vue'
-import CardItems from './card-items.vue'
+// import CardForm from './card-form.vue'
+// import CardItems from './card-items.vue'
 import { useForm } from './form'
 import { useRetrievePurchaseRequestApi } from './retrieve.api'
 
@@ -51,7 +51,7 @@ const onSave = async () => {}
       edit user data
     </base-alert>
 
-    <card-form
+    <!-- <card-form
       v-model:form_number="form.data.form_number"
       v-model:rev="form.data.rev"
       v-model:branch="form.data.branch"
@@ -59,15 +59,15 @@ const onSave = async () => {}
       v-model:created_date="form.data.created_date"
       v-model:required_date="form.data.required_date"
       :errors="form.errors"
-    />
-
+    /> -->
+    <!-- 
     <card-items v-model:items="form.data.items" :errors="form.errors" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"
       v-model:notes="form.data.notes"
       :errors="form.errors"
-    />
+    /> -->
 
     <base-card class="py-4!">
       <div class="flex gap-2">

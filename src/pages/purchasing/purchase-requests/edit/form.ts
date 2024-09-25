@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 
-interface IItem {
+interface IDetail {
   item: {
     _id: string
     label: string
@@ -35,20 +35,20 @@ interface IApprovalTo {
 
 export interface IForm {
   [key: string]: any
-  form_number: string
-  created_date: string
-  required_date: string
-  branch: IBranch
-  items: IItem[]
-  approval_to: IApprovalTo
-  notes: string
+  form_number?: string
+  created_date?: string
+  required_date?: string
+  branch?: IBranch
+  details?: IDetail[]
+  approval_to?: IApprovalTo
+  notes?: string
 }
 
 export interface IFormError {
   [key: string]: string[]
   'branch._id': string[]
   required_date: string[]
-  items: string[]
+  details: string[]
   approval_to: string[]
   notes: string[]
 }
@@ -56,13 +56,13 @@ export interface IFormError {
 export function useForm() {
   const defaultForm: IForm = {
     required_date: '',
-    items: []
+    details: []
   }
 
   const defaultFormError: IFormError = {
     'branch._id': [],
     required_date: [],
-    items: [],
+    details: [],
     approval_to: [],
     notes: []
   }

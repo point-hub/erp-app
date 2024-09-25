@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IItem } from './form'
+import { type IItem } from './form'
 
 const items = defineModel<IItem[]>('items', { required: true })
 </script>

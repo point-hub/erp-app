@@ -25,11 +25,11 @@ export function useAppMenu() {
     () => {
       menus.value[0].menu = [{ name: 'Home', path: '/home' }]
       menus.value[0].menu?.push(...seedMasterPermissions())
-      menus.value[0].menu?.push(...seedPurchasingPermissions())
+      // menus.value[0].menu?.push(...seedPurchasingPermissions())
       // menus.value[0].menu?.push(...seedSalesPermissions())
       // menus.value[0].menu?.push(...seedFinancePermissions())
       menus.value[0].menu?.push(...seedManufacturePermissions())
-      menus.value[0].menu?.push(...seedInventoryPermissions())
+      // menus.value[0].menu?.push(...seedInventoryPermissions())
       // menus.value[0].menu?.push(...seedAccountingPermissions())
     },
     {

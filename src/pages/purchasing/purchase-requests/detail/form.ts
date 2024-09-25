@@ -35,6 +35,7 @@ export interface IApprovalTo {
 
 export interface IForm {
   [key: string]: any
+  form_number?: string
   rev?: number
   required_date?: string
   branch?: IBranch
