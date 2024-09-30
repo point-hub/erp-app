@@ -4,28 +4,11 @@ import { onMounted } from 'vue'
 import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
 import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
+import type { IDetail } from '../interface'
 import type { IFormError } from './form'
 
-interface IItem {
-  item: {
-    _id: string
-    label: string
-    code: string
-    name: string
-    unit: string
-  }
-  notes: string
-  quantity: number
-  allocation: {
-    _id: string
-    label: string
-    code: string
-    name: string
-  }
-}
-
 const errors = defineModel<IFormError>('errors', { required: true })
-const details = defineModel<IItem[]>('details', { required: true })
+const details = defineModel<IDetail[]>('details', { required: true })
 
 const addMore = () => {
   details.value.push({

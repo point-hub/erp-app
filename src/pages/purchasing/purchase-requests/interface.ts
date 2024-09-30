@@ -1,4 +1,5 @@
 export interface IItem {
+  lookup_from: string
   _id: string
   label: string
   code: string
@@ -7,6 +8,7 @@ export interface IItem {
 }
 
 export interface IAllocation {
+  lookup_from: string
   _id: string
   label: string
   code: string
@@ -14,6 +16,7 @@ export interface IAllocation {
 }
 
 export interface IDetail {
+  lookup_from: string
   item: IItem
   notes: string
   quantity: number
@@ -21,6 +24,7 @@ export interface IDetail {
 }
 
 export interface IBranch {
+  lookup_from: string
   _id: string
   label: string
   code: string
@@ -28,6 +32,7 @@ export interface IBranch {
 }
 
 export interface IApprovalTo {
+  lookup_from: string
   _id: string
   label: string
   name: string

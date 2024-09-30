@@ -66,6 +66,8 @@ const onSave = async () => {
       edit user data
     </base-alert>
 
+    <pre><code>{{ form.data }}</code></pre>
+
     <card-form
       v-model:branch="form.data.branch"
       v-model:options="authStore.branches"
