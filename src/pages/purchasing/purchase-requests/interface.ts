@@ -16,7 +16,6 @@ export interface IAllocation {
 }
 
 export interface IDetail {
-  lookup_from: string
   item: IItem
   notes: string
   quantity: number

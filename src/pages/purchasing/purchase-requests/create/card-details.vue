@@ -13,6 +13,7 @@ const details = defineModel<IDetail[]>('details', { required: true })
 const addMore = () => {
   details.value.push({
     item: {
+      lookup_from: 'items',
       _id: '',
       label: '',
       code: '',
@@ -22,6 +23,7 @@ const addMore = () => {
     notes: '',
     quantity: 0,
     allocation: {
+      lookup_from: 'allocations',
       _id: '',
       label: '',
       code: '',
