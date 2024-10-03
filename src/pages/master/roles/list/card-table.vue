@@ -110,6 +110,8 @@ const onPageUpdate = async () => {
 }
 
 onMounted(async () => {
+  // loading state
+  isLoading.value = true
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.code = route.query['search.code']?.toString() ?? ''
@@ -124,6 +126,8 @@ onMounted(async () => {
   )
   roles.value = response?.data
   pagination.value = response?.pagination
+
+  isLoading.value = false
 })
 
 const onDeleteModal = (role: IRole, index: number) => {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useCountersApi } from '@/api/counters.api'
@@ -18,8 +18,10 @@ const authStore = useAuthStore()
 const countersApi = useCountersApi()
 const getPermissionsApi = useGetPermissionsApi()
 const createRolesApi = useCreateRoleApi()
+const isLoading = ref(false)
 
 onMounted(async () => {
+  isLoading.value = true
   if (!authStore.permission?.master?.roles?.create) {
     router.push('/unauthorized')
   }
@@ -31,6 +33,7 @@ onMounted(async () => {
 
   const code = await countersApi.getCode('roles')
   if (code) form.data.code = code
+  isLoading.value = false
 })
 
 const onSave = async () => {
@@ -44,7 +47,10 @@ const onSave = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <base-card v-if="isLoading">
+    <base-loader />
+  </base-card>
+  <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
     <card-form
