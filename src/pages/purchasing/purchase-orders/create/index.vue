@@ -37,7 +37,7 @@ const onSave = async () => {
 
     <card-form v-model:branch="form.data.branch" :errors="form.errors" />
 
-    <card-table v-model:items="form.data.items" />
+    <!-- <card-table v-model:items="form.data.items" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"
@@ -49,7 +49,7 @@ const onSave = async () => {
       <div class="flex gap-2">
         <base-button color="primary" @click="onSave()">Save</base-button>
       </div>
-    </base-card>
+    </base-card> -->
   </div>
 </template>
 
