@@ -226,7 +226,7 @@ const onDelete = async () => {
                     </template>
                   </base-popover>
                 </td>
-                <td class="font-mono">
+                <td>
                   <router-link
                     :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
                     class="text-blue"
