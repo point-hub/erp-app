@@ -26,13 +26,6 @@ const errors = defineModel<IFormError>('errors')
         v-model:selected="branch"
         :errors="errors?.branch"
       />
-      <!-- <branch-autocomplete
-        required
-        layout="horizontal"
-        label="Branch"
-        v-model:selected="branch"
-        :errors="errors?.branch"
-      /> -->
     </div>
   </base-card>
 </template>

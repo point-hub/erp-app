@@ -42,25 +42,25 @@ const onSave = async () => {}
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-action :data="form.data" />
+    <!-- <card-action :data="form.data" /> -->
 
     <!-- <pre><code>{{ form.data }}</code></pre> -->
-
-    <!-- <card-form
+    <!-- 
+    <card-form
       :form_number="form.data.form_number"
       :rev="form.data.rev"
       :branch="form.data.branch.label"
       :created_date="form.data.created_date"
       :required_date="form.data.required_date"
-    />
+    /> -->
 
-    <card-details v-model:details="form.data.details" :errors="form.errors" /> -->
+    <!-- <card-details v-model:details="form.data.details" :errors="form.errors" /> -->
 
-    <card-approval
+    <!-- <card-approval
       :created_by="form.data.created_by.label"
       :approval_to="form.data.approval_to?.label"
       :notes="form.data.notes"
-    />
+    /> -->
 
     <base-card class="py-4!">
       <div class="flex gap-2">

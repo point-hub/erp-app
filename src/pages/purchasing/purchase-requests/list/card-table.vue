@@ -247,7 +247,7 @@ const onDelete = async () => {
                     <template #content>
                       <base-card class="py-1! px-2! text-sm">
                         <div class="flex flex-col">
-                          <router-link :to="`/purchasing/purchase-requests/${purchaseRequest._id}`">
+                          <!-- <router-link :to="`/purchasing/purchase-requests/${purchaseRequest._id}`">
                             <base-button variant="text" color="info" class="w-full">
                               <div class="flex gap-2 w-full">
                                 <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
@@ -255,7 +255,7 @@ const onDelete = async () => {
                               </div>
                             </base-button>
                           </router-link>
-                          <base-divider orientation="vertical" class="my-1!"></base-divider>
+                          <base-divider orientation="vertical" class="my-1!"></base-divider> -->
                           <base-button
                             v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
                             variant="text"
@@ -274,12 +274,12 @@ const onDelete = async () => {
                   </base-popover>
                 </td>
                 <td>
-                  <router-link
+                  <!-- <router-link
                     :to="`/purchasing/purchase-requests/${purchaseRequest._id}`"
                     class="text-blue"
-                  >
-                    {{ purchaseRequest.form_number }}
-                  </router-link>
+                  > -->
+                  {{ purchaseRequest.form_number }}
+                  <!-- </router-link> -->
                 </td>
                 <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd HH:mm:ss') }}</td>
                 <td>{{ purchaseRequest.required_date }}</td>
