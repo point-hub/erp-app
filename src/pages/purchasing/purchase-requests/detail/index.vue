@@ -4,8 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import CardAction from './card-action.vue'
-import CardApproval from './card-approval.vue'
+// import CardAction from './card-action.vue'
+// import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 // import CardDetails from './card-details.vue'
 // import CardForm from './card-form.vue'
