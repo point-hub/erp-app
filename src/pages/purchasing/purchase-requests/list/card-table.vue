@@ -256,7 +256,7 @@ const onDelete = async () => {
                             </base-button>
                           </router-link>
                           <base-divider orientation="vertical" class="my-1!"></base-divider> -->
-                          <base-button
+                          <!-- <base-button
                             v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
                             variant="text"
                             color="danger"
@@ -267,7 +267,7 @@ const onDelete = async () => {
                               <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
                               <p>Delete</p>
                             </div>
-                          </base-button>
+                          </base-button> -->
                         </div>
                       </base-card>
                     </template>

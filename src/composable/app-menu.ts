@@ -64,19 +64,19 @@ const seedMasterPermissions = () => {
   }
   if (authStore?.permission?.master?.allocations?.read) {
     submenu.value?.push({ name: 'Allocation Groups', path: '/master/allocation-groups' })
-    submenu.value?.push({ name: 'Allocation', path: '/master/allocations' })
+    submenu.value?.push({ name: 'Allocations', path: '/master/allocations' })
   }
   if (authStore?.permission?.master?.suppliers?.read) {
     submenu.value?.push({ name: 'Supplier Groups', path: '/master/supplier-groups' })
-    submenu.value?.push({ name: 'Supplier', path: '/master/suppliers' })
+    submenu.value?.push({ name: 'Suppliers', path: '/master/suppliers' })
   }
   if (authStore?.permission?.master?.customers?.read) {
     submenu.value?.push({ name: 'Customer Groups', path: '/master/customer-groups' })
-    submenu.value?.push({ name: 'Customer', path: '/master/customers' })
+    submenu.value?.push({ name: 'Customers', path: '/master/customers' })
   }
   if (authStore?.permission?.master?.items?.read) {
     submenu.value?.push({ name: 'Item Categories', path: '/master/item-categories' })
-    submenu.value?.push({ name: 'Item', path: '/master/items' })
+    submenu.value?.push({ name: 'Items', path: '/master/items' })
   }
 
   if (authStore?.permission?.master?.menu) {
@@ -93,9 +93,9 @@ const seedPurchasingPermissions = () => {
   if (authStore?.permission?.purchasing?.purchase_requests?.read) {
     submenu.value?.push({ name: 'Purchase Requests', path: '/purchasing/purchase-requests' })
   }
-  if (authStore?.permission?.purchasing?.purchase_orders?.read) {
-    submenu.value?.push({ name: 'Purchase Orders', path: '/purchasing/purchase-orders' })
-  }
+  // if (authStore?.permission?.purchasing?.purchase_orders?.read) {
+  //   submenu.value?.push({ name: 'Purchase Orders', path: '/purchasing/purchase-orders' })
+  // }
   // if (authStore?.permission?.purchasing?.down_payments?.read) {
   //   submenu.value?.push({ name: 'Down Payments', path: '/purchasing/down-payments' })
   // }
