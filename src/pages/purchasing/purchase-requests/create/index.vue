@@ -4,6 +4,7 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
+import { useToastStore } from '@/stores/toast.store'
 
 import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
@@ -12,6 +13,7 @@ import CardForm from './card-form.vue'
 import { useCreatePurchaseRequestApi } from './create.api'
 import { useForm } from './form'
 
+const { toastRef } = useToastStore()
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
@@ -41,6 +43,11 @@ const onSave = async () => {
   // check permission
   if (!authStore.permission?.purchasing?.purchase_requests?.create) {
     router.push('/unauthorized')
+  }
+  if (form.data.details.length === 0) {
+    toastRef.toast('Items is required', {
+      color: 'danger'
+    })
   }
   // api call
   const response = await createPurchaseRequestApi.send(form.data, form.errors)
