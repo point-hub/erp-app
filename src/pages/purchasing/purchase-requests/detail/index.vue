@@ -27,6 +27,14 @@ onMounted(async () => {
 
   const response = await retrievePurchaseRequestApi.send(route.params.id.toString())
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const branches = authStore.branches.map((item: any) => item._id)
+  console.log(branches)
+  console.log(response.branch._id)
+  if (!branches.includes(response.branch._id)) {
+    router.push('/unauthorized')
+  }
+
   form.data = response
   form.data.items = response.items
   isLoading.value = false
