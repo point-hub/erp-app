@@ -4,11 +4,11 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-// import CardAction from './card-action.vue'
-// import CardApproval from './card-approval.vue'
+import CardAction from './card-action.vue'
+import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
-// import CardDetails from './card-details.vue'
-// import CardForm from './card-form.vue'
+import CardDetails from './card-details.vue'
+import CardForm from './card-form.vue'
 import { useForm } from './form'
 import { useRetrievePurchaseRequestApi } from './retrieve.api'
 
@@ -42,31 +42,23 @@ const onSave = async () => {}
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <!-- <card-action :data="form.data" /> -->
+    <card-action :data="form.data" />
 
-    <!-- <pre><code>{{ form.data }}</code></pre> -->
-    <!-- 
     <card-form
       :form_number="form.data.form_number"
-      :rev="form.data.rev"
+      :revised_count="form.data.revised_count"
       :branch="form.data.branch.label"
       :created_date="form.data.created_date"
       :required_date="form.data.required_date"
-    /> -->
+    />
 
-    <!-- <card-details v-model:details="form.data.details" :errors="form.errors" /> -->
+    <card-details v-model:details="form.data.details" />
 
-    <!-- <card-approval
+    <card-approval
       :created_by="form.data.created_by.label"
       :approval_to="form.data.approval_to?.label"
       :notes="form.data.notes"
-    /> -->
-
-    <base-card class="py-4!">
-      <div class="flex gap-2">
-        <base-button color="primary" @click="onSave()">Save</base-button>
-      </div>
-    </base-card>
+    />
   </div>
 </template>
 

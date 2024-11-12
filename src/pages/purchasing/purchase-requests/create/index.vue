@@ -51,7 +51,7 @@ const onSave = async () => {
   }
   // api call
   const response = await createPurchaseRequestApi.send(form.data, form.errors)
-  if (response?.inserted_id) router.push('/purchasing/purchase-requests')
+  if (response?.inserted_id) router.push('/purchasing/purchase-requests/' + response.inserted_id)
   // state saving end
   isSaving.value = false
 }

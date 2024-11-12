@@ -7,13 +7,11 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete/delete-modal.vue'
 import { useGetWarehousesApi } from './retrieve-all'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
-const deleteModalRef = ref()
 const getWarehousesApi = useGetWarehousesApi()
 
 interface IPurchaseRequestDetail {
@@ -50,6 +48,7 @@ interface IPurchaseRequest {
     username: string
     name: string
   }
+  approval_status: string
 }
 
 const searchAll = ref('')
@@ -67,7 +66,6 @@ const pagination = ref({
   total_document: 0
 })
 const isLoading = ref(false)
-const rowMenuRef = ref()
 
 const updateRouter = () => {
   router.push({
@@ -161,24 +159,6 @@ onMounted(async () => {
 
   isLoading.value = false
 })
-
-const onDeleteModal = (purchaseRequest: IPurchaseRequest, index: number) => {
-  rowMenuRef.value[index].toggle(false)
-  deleteModalRef.value.toggleModal(true, {
-    id: purchaseRequest._id,
-    name: `${purchaseRequest.required_date}`
-  })
-}
-
-const onDelete = async () => {
-  // call api
-  const response = await getWarehousesApi.send(
-    { all: searchAll.value, ...search.value },
-    pagination.value.page
-  )
-  purchaseRequests.value = response?.data
-  pagination.value = response?.pagination
-}
 </script>
 
 <template>
@@ -209,24 +189,6 @@ const onDelete = async () => {
             <th class="text-center">Approval Status</th>
             <th class="text-center">Form Status</th>
           </tr>
-          <!-- <tr class="bg-slate-50 dark:bg-slate-700">
-            <th></th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.code" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.name" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.branch" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.address" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.phone" placeholder="Search" border="none" />
-            </th>
-          </tr> -->
         </thead>
         <tbody>
           <tr v-if="isLoading">
@@ -239,47 +201,14 @@ const onDelete = async () => {
           <template v-if="!isLoading">
             <template v-for="purchaseRequest in purchaseRequests">
               <tr v-for="(detail, index) in purchaseRequest.details" :key="index">
+                <td></td>
                 <td>
-                  <base-popover placement="bottom" ref="rowMenuRef">
-                    <base-button size="xs" @click="rowMenuRef[index].toggle()">
-                      <base-icon class="text-xl" icon="i-ph-dots-three-bold"></base-icon>
-                    </base-button>
-                    <template #content>
-                      <base-card class="py-1! px-2! text-sm">
-                        <div class="flex flex-col">
-                          <!-- <router-link :to="`/purchasing/purchase-requests/${purchaseRequest._id}`">
-                            <base-button variant="text" color="info" class="w-full">
-                              <div class="flex gap-2 w-full">
-                                <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
-                                <p>View</p>
-                              </div>
-                            </base-button>
-                          </router-link>
-                          <base-divider orientation="vertical" class="my-1!"></base-divider> -->
-                          <!-- <base-button
-                            v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
-                            variant="text"
-                            color="danger"
-                            class="w-full"
-                            @click="onDeleteModal(purchaseRequest, index)"
-                          >
-                            <div class="flex gap-2 w-full">
-                              <base-icon class="text-xl" icon="i-ph-trash"></base-icon>
-                              <p>Delete</p>
-                            </div>
-                          </base-button> -->
-                        </div>
-                      </base-card>
-                    </template>
-                  </base-popover>
-                </td>
-                <td>
-                  <!-- <router-link
+                  <router-link
                     :to="`/purchasing/purchase-requests/${purchaseRequest._id}`"
                     class="text-blue"
-                  > -->
-                  {{ purchaseRequest.form_number }}
-                  <!-- </router-link> -->
+                  >
+                    {{ purchaseRequest.form_number }}
+                  </router-link>
                 </td>
                 <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd HH:mm:ss') }}</td>
                 <td>{{ purchaseRequest.required_date }}</td>
@@ -289,7 +218,19 @@ const onDelete = async () => {
                 <td class="text-right">
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
                 </td>
-                <td class="text-center"><base-badge color="warning">pending</base-badge></td>
+                <td class="text-center">
+                  <base-badge
+                    :color="
+                      purchaseRequest.approval_status === 'rejected'
+                        ? 'danger'
+                        : purchaseRequest.approval_status === 'approved'
+                          ? 'success'
+                          : 'warning'
+                    "
+                  >
+                    {{ purchaseRequest.approval_status ?? 'pending' }}
+                  </base-badge>
+                </td>
                 <td class="text-center"><base-badge color="warning">open</base-badge></td>
               </tr>
             </template>
@@ -304,7 +245,6 @@ const onDelete = async () => {
         @update:model-value="onPageUpdate()"
       />
     </div>
-    <delete-modal ref="deleteModalRef" @deleted="onDelete" />
   </base-card>
 </template>
 

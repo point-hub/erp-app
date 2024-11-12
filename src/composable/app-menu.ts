@@ -28,7 +28,7 @@ export function useAppMenu() {
       menus.value[0].menu?.push(...seedPurchasingPermissions())
       // menus.value[0].menu?.push(...seedSalesPermissions())
       // menus.value[0].menu?.push(...seedFinancePermissions())
-      // menus.value[0].menu?.push(...seedManufacturePermissions())
+      menus.value[0].menu?.push(...seedManufacturePermissions())
       // menus.value[0].menu?.push(...seedInventoryPermissions())
       // menus.value[0].menu?.push(...seedAccountingPermissions())
     },
@@ -123,24 +123,24 @@ const seedSalesPermissions = () => {
   if (authStore?.permission?.sales?.sales_quotations?.read) {
     submenu.value?.push({ name: 'Sales Quotation', path: '/sales/sales-quotations' })
   }
-  if (authStore?.permission?.sales?.sales_orders?.read) {
-    submenu.value?.push({ name: 'Sales Orders', path: '/sales/sales-orders' })
-  }
-  if (authStore?.permission?.sales?.down_payments?.read) {
-    submenu.value?.push({ name: 'Down Payments', path: '/sales/down-payments' })
-  }
-  if (authStore?.permission?.sales?.delivery_orders?.read) {
-    submenu.value?.push({ name: 'Delivery Orders', path: '/sales/delivery-orders' })
-  }
-  if (authStore?.permission?.sales?.delivery_notes?.read) {
-    submenu.value?.push({ name: 'Delivery Notes', path: '/sales/delivery-notes' })
-  }
-  if (authStore?.permission?.sales?.invoices?.read) {
-    submenu.value?.push({ name: 'Invoices', path: '/sales/invoices' })
-  }
-  if (authStore?.permission?.sales?.payment_collections?.read) {
-    submenu.value?.push({ name: 'Payment Collections', path: '/sales/payment-collections' })
-  }
+  // if (authStore?.permission?.sales?.sales_orders?.read) {
+  //   submenu.value?.push({ name: 'Sales Orders', path: '/sales/sales-orders' })
+  // }
+  // if (authStore?.permission?.sales?.down_payments?.read) {
+  //   submenu.value?.push({ name: 'Down Payments', path: '/sales/down-payments' })
+  // }
+  // if (authStore?.permission?.sales?.delivery_orders?.read) {
+  //   submenu.value?.push({ name: 'Delivery Orders', path: '/sales/delivery-orders' })
+  // }
+  // if (authStore?.permission?.sales?.delivery_notes?.read) {
+  //   submenu.value?.push({ name: 'Delivery Notes', path: '/sales/delivery-notes' })
+  // }
+  // if (authStore?.permission?.sales?.invoices?.read) {
+  //   submenu.value?.push({ name: 'Invoices', path: '/sales/invoices' })
+  // }
+  // if (authStore?.permission?.sales?.payment_collections?.read) {
+  //   submenu.value?.push({ name: 'Payment Collections', path: '/sales/payment-collections' })
+  // }
 
   if (authStore?.permission?.sales?.menu) {
     menu.value.push({ name: 'Sales', submenu: submenu.value })

@@ -7,17 +7,15 @@ import type { IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useVerifyPasswordApi() {
-  const send = async (password: string, errors: IFormError) => {
+export function useRejectApi() {
+  const send = async (_id: string, reason: string, errors: IFormError) => {
     try {
-      const response = await axios.post(`/v1/master/auth/verify-password`, {
-        password: password
+      const response = await axios.post(`/v1/purchasing/purchase-requests/${_id}/reject`, {
+        reason: reason
       })
-      if (response.data.verified === false) {
-        errors.password = ['Wrong Password']
-        return
+      if (response.status === 200) {
+        return response
       }
-      return response
     } catch (error) {
       if (error instanceof AxiosError) {
         const listErrors: string[] = []

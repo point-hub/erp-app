@@ -4,20 +4,56 @@ import { useRoute, useRouter } from 'vue-router'
 
 import axios from '@/axios'
 import { useAuthStore } from '@/stores/auth.store'
+import { useToastStore } from '@/stores/toast.store'
 
 import DeleteModal from '../components/delete/delete-modal.vue'
+import RejectModal from '../components/reject/reject-modal.vue'
 import RequestDeleteModal from '../components/request-delete/delete-modal.vue'
+import { useApproveApi } from './approve.api'
 import type { IForm } from './form'
+
+const { toastRef } = useToastStore()
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const deleteModalRef = ref()
+const rejectModalRef = ref()
 const requestDeleteModalRef = ref()
+
+const loadingState = ref(false)
+
+const onApprove = async () => {
+  // prevent calling twice use loading state
+  if (loadingState.value) return
+  // start loading state
+  loadingState.value = true
+
+  // start api call
+  const approveApi = useApproveApi()
+  const responseApprove = await approveApi.send(data.value._id)
+  if (!responseApprove) {
+    loadingState.value = false
+    return
+  }
+
+  toastRef.toast(`Approve Purchase Request "${data.value.form_number}" success`, {
+    color: 'success'
+  })
+
+  // stop loading state
+  loadingState.value = false
+
+  router.push('/purchasing/purchase-requests')
+}
 
 const data = defineModel<IForm>('data', { required: true })
 
 const onDeleted = async () => {
+  router.push('/purchasing/purchase-requests')
+}
+
+const onRejected = async () => {
   router.push('/purchasing/purchase-requests')
 }
 
@@ -45,7 +81,7 @@ const onSendEmailApproval = async () => {
         </base-button>
       </router-link>
 
-      <router-link
+      <!-- <router-link
         v-if="authStore.permission?.purchasing?.purchase_requests?.update"
         :to="`/purchasing/purchase-requests/${route.params.id}/edit`"
       >
@@ -61,16 +97,16 @@ const onSendEmailApproval = async () => {
         <base-button color="info" size="sm">
           <base-icon icon="i-far-file-xmark" /> Revision
         </base-button>
-      </router-link>
+      </router-link> -->
 
-      <base-button
+      <!-- <base-button
         v-if="authStore.permission?.purchasing?.purchase_requests?.approval"
         color="info"
         size="sm"
         @click="onSendEmailApproval"
       >
         <base-icon icon="i-far-envelope" /> Send Email Approval
-      </base-button>
+      </base-button> -->
 
       <base-button
         v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
@@ -86,8 +122,8 @@ const onSendEmailApproval = async () => {
         <base-icon icon="i-far-trash" /> Delete
       </base-button>
 
-      <base-button
-        v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
+      <!-- <base-button
+        v-if="authStore.permission?.purchasing?.purchase_requests?.approval"
         color="danger"
         size="sm"
         @click="
@@ -98,9 +134,39 @@ const onSendEmailApproval = async () => {
         "
       >
         <base-icon icon="i-far-envelope" /> Send Request Delete
+      </base-button> -->
+
+      <base-button
+        v-if="
+          authStore.permission?.purchasing?.purchase_requests?.approval &&
+          data.approval_status === 'pending'
+        "
+        color="success"
+        size="sm"
+        @click="onApprove"
+      >
+        <base-icon icon="i-far-user-check" /> Approve Form
+      </base-button>
+
+      <base-button
+        v-if="
+          authStore.permission?.purchasing?.purchase_requests?.approval &&
+          data.approval_status === 'pending'
+        "
+        color="danger"
+        size="sm"
+        @click="
+          rejectModalRef.toggleModal(true, {
+            id: route.params.id.toString(),
+            form_number: data.form_number
+          })
+        "
+      >
+        <base-icon icon="i-far-user-xmark" /> Reject Form
       </base-button>
     </div>
     <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
+    <reject-modal ref="rejectModalRef" @rejected="onRejected" />
     <request-delete-modal ref="requestDeleteModalRef" @deleted="onRequestDelete" />
   </base-card>
 </template>
