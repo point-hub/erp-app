@@ -44,17 +44,17 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Cache Node.js modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
-            ~/.bun
+            ~/.bun/install/cache
             node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lockb') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
       - name: Cache Vite build output
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: |
             .vite
