@@ -53,6 +53,16 @@ interface IPurchaseRequest {
     name: string
   }
   approval_status: string
+  deleted_reason: string
+  deleted_by: {
+    _id: string
+    label: string
+    email: string
+    username: string
+    name: string
+  }
+  is_deleted: boolean
+  is_finished: boolean
 }
 
 const searchAll = ref('')
@@ -163,6 +173,10 @@ onMounted(async () => {
 
   isLoading.value = false
 })
+
+const formStatus = (purchaseRequest: IPurchaseRequest) => {
+  return 'color'
+}
 </script>
 
 <template>
@@ -242,7 +256,15 @@ onMounted(async () => {
                     <span class="text-xs">{{ purchaseRequest.approval_to.label }}</span>
                   </div>
                 </td>
-                <td class="text-center"><base-badge color="warning">open</base-badge></td>
+                <td class="text-center">
+                  <base-badge v-if="purchaseRequest.is_deleted" color="danger">deleted</base-badge>
+                  <base-badge v-else-if="!purchaseRequest.is_finished" color="warning"
+                    >open</base-badge
+                  >
+                  <base-badge v-else-if="purchaseRequest.is_finished" color="success"
+                    >finished</base-badge
+                  >
+                </td>
               </tr>
             </template>
           </template>

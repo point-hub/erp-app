@@ -92,7 +92,7 @@ const onRequestDelete = async () => {
       </router-link> -->
 
       <base-button
-        v-if="authStore.permission?.purchasing?.purchase_requests?.delete"
+        v-if="authStore.permission?.purchasing?.purchase_requests?.delete && !data.is_deleted"
         color="danger"
         size="sm"
         @click="
