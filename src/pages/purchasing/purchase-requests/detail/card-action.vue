@@ -74,11 +74,7 @@ const onRequestDelete = async () => {
       </router-link>
 
       <router-link
-        v-if="
-          authStore.permission?.purchasing?.purchase_requests?.update &&
-          !data.is_deleted &&
-          data.approval_status !== 'approved'
-        "
+        v-if="authStore.permission?.purchasing?.purchase_requests?.update && !data.is_deleted"
         :to="`/purchasing/purchase-requests/${route.params.id}/edit`"
       >
         <base-button color="info" size="sm">
