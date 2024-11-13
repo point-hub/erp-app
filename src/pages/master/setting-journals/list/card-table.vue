@@ -160,8 +160,8 @@ onMounted(async () => {
                         <router-link :to="`/master/setting-journals/${settingJournal._id}`">
                           <base-button variant="text" color="info">
                             <div class="flex gap-2 w-full">
-                              <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
-                              <p>Manage</p>
+                              <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
+                              <p>View</p>
                             </div>
                           </base-button>
                         </router-link>

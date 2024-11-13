@@ -1,1 +1,9 @@
 @import './base.css';
+
+.page-loader {
+  @apply w-full h-full flex justify-center items-center text-2xl gap-2;
+}
+
+.table-loader {
+  @apply w-full h-32 flex items-center justify-center gap-2 text-center text-xl;
+}

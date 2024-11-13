@@ -60,9 +60,13 @@ watchDebounced(
   { debounce: 500, maxWait: 1000 }
 )
 
-watch(selected, () => {
-  if (selected.value) _id.value = selected.value?._id
-})
+watch(
+  selected,
+  () => {
+    if (selected.value) _id.value = selected.value._id
+  },
+  { immediate: true, deep: true }
+)
 
 onMounted(async () => {
   if (!options.value) {

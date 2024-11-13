@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { numberFormat } from '@point-hub/js-utils'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -75,9 +76,14 @@ onMounted(async () => {
                 <td>
                   <p>{{ journal.account }}</p>
                   <p class="text-xs">{{ journal.description }}</p>
-                  <p class="text-xs mt-5" v-if="journal.subledger">
-                    Subledger: {{ journal.subledger }}
-                  </p>
+                  <div class="mt-2">
+                    <p class="text-xs" v-if="journal.category">
+                      <span class="font-semibold">Category:</span> {{ journal.category }}
+                    </p>
+                    <p class="text-xs" v-if="journal.subledger">
+                      <span class="font-semibold">Subledger:</span> {{ journal.subledger }}
+                    </p>
+                  </div>
                 </td>
                 <td>
                   <span v-if="journal.editable && Object.keys(journal.chart_of_account).length">
@@ -85,10 +91,14 @@ onMounted(async () => {
                   </span>
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'Debit' ? 'xxx' : '' }}
+                  {{
+                    journal.position.toLowerCase() === 'debit' ? numberFormat(journal.value) : ''
+                  }}
                 </td>
                 <td class="text-right">
-                  {{ journal.position === 'Credit' ? 'xxx' : '' }}
+                  {{
+                    journal.position.toLowerCase() === 'credit' ? numberFormat(journal.value) : ''
+                  }}
                 </td>
               </tr>
             </template>

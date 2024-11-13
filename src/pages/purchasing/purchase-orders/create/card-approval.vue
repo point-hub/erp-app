@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+import axios from '@/axios'
 import UserAutocomplete from '@/pages/master/users/components/autocomplete/user-autocomplete.vue'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -15,7 +18,30 @@ interface IApprovalTo {
 const authStore = useAuthStore()
 const approval_to = defineModel<IApprovalTo>('approval_to')
 const notes = defineModel<string>('notes')
-const errors = defineModel<IFormError>('errors')
+const errors = defineModel<IFormError>('errors', { required: true })
+const options = ref([])
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('/v1/master/users/authorized-users', {
+      params: {
+        filter: {
+          permission: 'role.permission.purchasing.purchase_orders.approval'
+        },
+        page: 1
+      }
+    })
+
+    options.value = response.data.data
+
+    return {
+      data: response.data.data,
+      pagination: response.data.pagination
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
 </script>
 
 <template>
@@ -26,10 +52,22 @@ const errors = defineModel<IFormError>('errors')
         required
         label="Request approval to"
         layout="horizontal"
+        :options="options"
         v-model:selected="approval_to"
-        :errors="errors?.approval_to"
+        @update:selected="
+          () => {
+            errors['approval_to._id'] = []
+          }
+        "
+        :errors="errors['approval_to._id']"
       />
-      <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
+      <base-textarea
+        layout="horizontal"
+        v-model="notes"
+        label="Notes"
+        :errors="errors?.notes"
+        :minHeight="128"
+      />
     </div>
   </base-card>
 </template>

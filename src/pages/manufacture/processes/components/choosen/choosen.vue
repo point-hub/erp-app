@@ -9,18 +9,20 @@ export interface ISelectedProcess {
   label: string
   code: string
   name: string
-  unit: string
 }
 
 const _id = defineModel<string>()
-const required = defineModel<boolean>('required', { default: false })
+const options = defineModel<ISelectedProcess[]>('options')
 const selected = defineModel<ISelectedProcess>('selected')
-const errors = ref<string[]>([])
+const required = defineModel<boolean>('required', { default: false })
+const title = defineModel<string>('title', { default: 'Process' })
+const border = defineModel<'full' | 'simple' | 'none'>('border')
+const errors = defineModel<string[]>('errors')
 
 const getProcessesApi = useGetProcessesApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedProcess[]>()
 
 const apiCall = async () => {
   const response = await getProcessesApi.send(search.value, 1)
@@ -28,10 +30,9 @@ const apiCall = async () => {
     options.value = response.data.map((data: ISelectedProcess) => {
       return {
         _id: data._id,
-        label: `[${data.code}] ${data.name}`,
+        label: data.label,
         code: data.code,
-        name: data.name,
-        unit: data.unit
+        name: data.name
       }
     })
   }
@@ -41,36 +42,48 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  options.value = []
-  isLoading.value = true
+  if (!localOptions.value) {
+    options.value = []
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
 
-watch(selected, () => {
-  _id.value = selected.value?._id
-})
+watch(
+  selected,
+  () => {
+    if (selected.value) _id.value = selected.value._id
+  },
+  { immediate: true, deep: true }
+)
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 
 <template>
   <base-choosen
-    title="Process"
+    :title="title"
     v-model:search="search"
     v-model:selected="selected"
     :is-loading="isLoading"
     :required="required"
     :options="options"
     :errors="errors"
-    border="full"
+    :border="border"
   />
 </template>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { useToastStore } from '@/stores/toast.store'
 
-import { useDeleteWarehouseApi } from './delete-warehouse.api'
+import { useDeleteApi } from './delete.api'
 import type { IFormError } from './form'
 import { useVerifyPasswordApi } from './verify-password.api'
 
@@ -15,18 +15,18 @@ const errors = ref<IFormError>({
   reason: []
 })
 const id = defineModel<string>('id')
-const name = defineModel<string>('name')
+const form_number = defineModel<string>('form_number')
 const emit = defineEmits(['deleted'])
 
 interface IData {
   id: string
-  name: string
+  form_number: string
 }
 const showModal = ref(false)
 const toggleModal = (state?: boolean, data?: IData) => {
   if (data) {
     id.value = data.id
-    name.value = data.name
+    form_number.value = data.form_number
   }
   let newValue = !showModal.value
   if (state === true) {
@@ -63,8 +63,8 @@ const onDelete = async () => {
     return
   }
   // start api call
-  const deleteWarehouseApi = useDeleteWarehouseApi()
-  const responseDelete = await deleteWarehouseApi.send(id.value, reason.value, errors.value)
+  const deleteApi = useDeleteApi()
+  const responseDelete = await deleteApi.send(id.value, reason.value, errors.value)
   if (!responseDelete) {
     loadingState.value = false
     return
@@ -73,7 +73,7 @@ const onDelete = async () => {
   emit('deleted')
   password.value = ''
   reason.value = ''
-  toastRef.toast(`Delete Warehouse "${name.value}" success`, { color: 'success' })
+  toastRef.toast(`Delete Purchase Request "${form_number.value}" success`, { color: 'success' })
   toggleModal(false)
 
   // stop loading state
@@ -84,7 +84,7 @@ defineExpose({
   showModal,
   toggleModal,
   id,
-  name,
+  form_number,
   loadingState
 })
 </script>
@@ -92,14 +92,14 @@ defineExpose({
 <template>
   <base-modal :is-open="showModal" @on-close="toggleModal(false)">
     <div class="max-h-90vh overflow-auto p-4">
-      <h2 class="py-4 text-2xl font-bold">Delete Warehouse</h2>
+      <h2 class="py-4 text-2xl font-bold">Delete Purchase Request</h2>
       <div class="space-y-8">
         <p>
           Please enter your reason and password to protect you from accidentally deleting your data
         </p>
         <div class="flex flex-col">
-          <span class="font-semibold">Warehouse</span>
-          <span>{{ name }}</span>
+          <span class="font-semibold">Form Number</span>
+          <span>{{ form_number }}</span>
         </div>
         <base-textarea
           required

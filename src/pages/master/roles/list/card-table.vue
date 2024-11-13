@@ -110,6 +110,8 @@ const onPageUpdate = async () => {
 }
 
 onMounted(async () => {
+  // loading state
+  isLoading.value = true
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.code = route.query['search.code']?.toString() ?? ''
@@ -124,6 +126,8 @@ onMounted(async () => {
   )
   roles.value = response?.data
   pagination.value = response?.pagination
+
+  isLoading.value = false
 })
 
 const onDeleteModal = (role: IRole, index: number) => {
@@ -194,8 +198,8 @@ const onDelete = async () => {
                         <router-link :to="`/master/roles/${role._id}`">
                           <base-button variant="text" color="info">
                             <div class="flex gap-2 w-full">
-                              <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
-                              <p>Manage</p>
+                              <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
+                              <p>View</p>
                             </div>
                           </base-button>
                         </router-link>

@@ -18,8 +18,10 @@ const getAllocationGroupApi = useGetAllocationGroupApi()
 const form = reactive(useForm())
 
 const formId = ref()
+const isLoading = ref(false)
 
 onMounted(async () => {
+  isLoading.value = true
   if (!authStore.permission?.master?.allocations?.read) {
     router.push('/unauthorized')
   }
@@ -32,11 +34,16 @@ onMounted(async () => {
     form.data.name = response.name
     form.data.notes = response.notes
   }
+
+  isLoading.value = false
 })
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <div v-if="isLoading" class="w-full h-full flex justify-center items-center text-2xl gap-2">
+    <base-loader />
+  </div>
+  <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
     <card-action v-if="authStore.permission?.master?.allocations?.read" :data="form.data" />

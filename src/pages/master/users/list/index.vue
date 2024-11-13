@@ -102,6 +102,7 @@ const getUsers = async () => {
   })
   users.value = response.data.data
   pagination.value = response.data.pagination
+  isLoading.value = false
 }
 const rowMenuRef = ref()
 const users = ref<IUser[]>()
@@ -111,6 +112,7 @@ const pagination = ref({
   total_document: 0
 })
 onMounted(async () => {
+  isLoading.value = true
   searchAll.value = route.query.search?.toString() ?? ''
   pagination.value.page = Number(route.query.page ?? 1)
   await getUsers()
@@ -167,10 +169,10 @@ const onDelete = async () => {
           </thead>
           <tbody>
             <tr v-if="isLoading">
-              <td colspan="4">
-                <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
-                  <base-spinner color="primary" size="xs" /> <span>Loading</span>
-                </p>
+              <td colspan="5">
+                <div class="table-loader">
+                  <base-loader />
+                </div>
               </td>
             </tr>
             <template v-if="!isLoading">
@@ -186,8 +188,8 @@ const onDelete = async () => {
                           <router-link :to="`/master/users/${user._id}`">
                             <base-button variant="text" color="info">
                               <div class="flex gap-2 w-full">
-                                <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
-                                <p>Manage</p>
+                                <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
+                                <p>View</p>
                               </div>
                             </base-button>
                           </router-link>

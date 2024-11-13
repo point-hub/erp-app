@@ -16,14 +16,20 @@ const errors = defineModel<IFormError>('errors')
 
 const selected = ref<ISelectedRole>()
 
-watch(role, () => {
-  selected.value = {
-    _id: `${role.value?._id}`,
-    label: `[${role.value?.code}] ${role.value?.name}`,
-    code: `${role.value?.code}`,
-    name: `${role.value?.name}`
+watch(
+  role,
+  () => {
+    selected.value = {
+      _id: `${role.value?._id}`,
+      label: `[${role.value?.code}] ${role.value?.name}`,
+      code: `${role.value?.code}`,
+      name: `${role.value?.name}`
+    }
+  },
+  {
+    immediate: true
   }
-})
+)
 </script>
 
 <template>

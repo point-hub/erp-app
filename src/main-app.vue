@@ -5,18 +5,17 @@ import { RouterView } from 'vue-router'
 
 import { useToastStore } from '@/stores/toast.store'
 
-const { loadDarkMode } = useDarkMode()
+const { setDarkMode } = useDarkMode()
 const toastStore = useToastStore()
 
 const toastRef = ref()
 toastStore.toastRef = toastRef
 
-useDarkMode()
 useScreenSize()
 
 onMounted(() => {
   // set default darkmode
-  loadDarkMode()
+  setDarkMode('light')
 })
 onBeforeUnmount(() => {})
 </script>

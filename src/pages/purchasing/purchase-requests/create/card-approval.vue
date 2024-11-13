@@ -18,7 +18,7 @@ interface IApprovalTo {
 const authStore = useAuthStore()
 const approval_to = defineModel<IApprovalTo>('approval_to')
 const notes = defineModel<string>('notes')
-const errors = defineModel<IFormError>('errors')
+const errors = defineModel<IFormError>('errors', { required: true })
 const options = ref([])
 
 onMounted(async () => {
@@ -54,7 +54,12 @@ onMounted(async () => {
         layout="horizontal"
         :options="options"
         v-model:selected="approval_to"
-        :errors="errors?.approval_to"
+        @update:selected="
+          () => {
+            errors['approval_to._id'] = []
+          }
+        "
+        :errors="errors['approval_to._id']"
       />
       <base-textarea
         layout="horizontal"

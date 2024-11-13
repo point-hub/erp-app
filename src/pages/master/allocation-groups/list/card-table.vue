@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -46,11 +46,18 @@ const updateRouter = () => {
   })
 }
 
+watch(
+  () => [searchAll.value, search.value],
+  async () => {
+    // start loading for ux
+    isLoading.value = true
+  },
+  { deep: true }
+)
+
 watchDebounced(
   searchAll,
   async () => {
-    // start loading
-    isLoading.value = true
     // reset page 1
     pagination.value.page = 1
     // call api
@@ -71,8 +78,6 @@ watchDebounced(
 watchDebounced(
   search.value,
   async () => {
-    // start loading
-    isLoading.value = true
     // reset page 1
     pagination.value.page = 1
     // call api
@@ -102,8 +107,8 @@ const onPageUpdate = async () => {
   // update url query params
   updateRouter()
 }
-
 onMounted(async () => {
+  isLoading.value = true
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.code = route.query['search.code']?.toString() ?? ''
@@ -116,6 +121,7 @@ onMounted(async () => {
   )
   allocationGroups.value = response?.data
   pagination.value = response?.pagination
+  isLoading.value = false
 })
 
 const onDeleteModal = (allocationGroup: IAllocationGroup, index: number) => {
@@ -170,10 +176,10 @@ const onDelete = async () => {
         </thead>
         <tbody>
           <tr v-if="isLoading">
-            <td colspan="5">
-              <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
-                <base-spinner color="primary" size="xs" /> <span>Loading</span>
-              </p>
+            <td colspan="3">
+              <div class="flex justify-center items-center m-10">
+                <base-loader />
+              </div>
             </td>
           </tr>
           <template v-if="!isLoading">
@@ -189,8 +195,8 @@ const onDelete = async () => {
                         <router-link :to="`/master/allocation-groups/${allocationGroup._id}`">
                           <base-button variant="text" color="info">
                             <div class="flex gap-2 w-full">
-                              <base-icon class="text-xl" icon="i-ph-pencil"></base-icon>
-                              <p>Manage</p>
+                              <base-icon class="text-xl" icon="i-ph-eye"></base-icon>
+                              <p>View</p>
                             </div>
                           </base-button>
                         </router-link>
