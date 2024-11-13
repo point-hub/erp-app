@@ -173,10 +173,6 @@ onMounted(async () => {
 
   isLoading.value = false
 })
-
-const formStatus = (purchaseRequest: IPurchaseRequest) => {
-  return 'color'
-}
 </script>
 
 <template>
@@ -239,22 +235,17 @@ const formStatus = (purchaseRequest: IPurchaseRequest) => {
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
                 </td>
                 <td class="text-center">
-                  <div class="flex flex-col">
-                    <div>
-                      <base-badge
-                        :color="
-                          purchaseRequest.approval_status === 'rejected'
-                            ? 'danger'
-                            : purchaseRequest.approval_status === 'approved'
-                              ? 'success'
-                              : 'warning'
-                        "
-                      >
-                        {{ purchaseRequest.approval_status ?? 'pending' }}
-                      </base-badge>
-                    </div>
-                    <span class="text-xs">{{ purchaseRequest.approval_to.label }}</span>
-                  </div>
+                  <base-badge
+                    :color="
+                      purchaseRequest.approval_status === 'rejected'
+                        ? 'danger'
+                        : purchaseRequest.approval_status === 'approved'
+                          ? 'success'
+                          : 'warning'
+                    "
+                  >
+                    {{ purchaseRequest.approval_status ?? 'pending' }}
+                  </base-badge>
                 </td>
                 <td class="text-center">
                   <base-badge v-if="purchaseRequest.is_deleted" color="danger">deleted</base-badge>

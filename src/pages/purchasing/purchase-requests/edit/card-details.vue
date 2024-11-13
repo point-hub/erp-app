@@ -6,7 +6,7 @@ import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
 import type { IFormError } from './form'
 
-interface IItem {
+interface IDetail {
   item: {
     _id: string
     label: string
@@ -25,10 +25,10 @@ interface IItem {
 }
 
 const errors = defineModel<IFormError>('errors')
-const items = defineModel<IItem[]>('items', { required: true })
+const details = defineModel<IDetail[]>('details', { required: true })
 
 const addMore = () => {
-  items.value.push({
+  details.value.push({
     item: {
       _id: '',
       label: '',
@@ -48,11 +48,11 @@ const addMore = () => {
 }
 
 const clearAll = () => {
-  items.value = []
+  details.value = []
 }
 
 const removeItem = (index: number) => {
-  items.value.splice(index, 1)
+  details.value.splice(index, 1)
 }
 
 onMounted(() => {})
@@ -73,7 +73,7 @@ onMounted(() => {})
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index" class="relative">
+          <tr v-for="(item, index) in details" :key="index" class="relative">
             <td>
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
@@ -82,21 +82,21 @@ onMounted(() => {})
                 title="Item"
                 v-model:selected="item.item"
                 border="full"
-                :errors="errors?.[`items.${index}.item._id`]"
+                :errors="errors?.[`details.${index}.item._id`]"
               />
             </td>
             <td>
               <base-input
                 border="full"
                 v-model="item.notes"
-                :errors="errors?.[`items.${index}.notes`]"
+                :errors="errors?.[`details.${index}.notes`]"
               />
             </td>
             <td>
               <base-input-number
                 border="full"
                 v-model="item.quantity"
-                :errors="errors?.[`items.${index}.quantity`]"
+                :errors="errors?.[`details.${index}.quantity`]"
               />
             </td>
             <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>
