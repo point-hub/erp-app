@@ -10,9 +10,7 @@ export default defineConfig({
       provider: 'google',
       fonts: {
         inter: 'Inter',
-        roboto: 'Roboto',
-        mono: 'Roboto Mono',
-        'nerko-one': 'Nerko One'
+        'open-sans': 'Open Sans'
       }
     })
   ],

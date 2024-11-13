@@ -3,18 +3,19 @@ import { AxiosError } from 'axios'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
-import type { IFormError } from './form'
+import type { IForm, IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useDeleteWarehouseApi() {
-  const send = async (_id: string, reason: string, errors: IFormError) => {
+export function useUpdatePurchaseRequestApi() {
+  const send = async (data: IForm, errors: IFormError) => {
     try {
-      const response = await axios.post(`/v1/purchasing/purchase-orders/${_id}/delete`, {
-        reason: reason
-      })
-      if (response.status === 200) {
-        return response
+      const response = await axios.post(`/v1/purchasing/purchase-requests/${data._id}`, data)
+      if (response.status === 201) {
+        toastRef.toast('Update success', { color: 'success' })
+        return {
+          inserted_id: response.data.inserted_id
+        }
       }
     } catch (error) {
       if (error instanceof AxiosError) {

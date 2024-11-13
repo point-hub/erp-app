@@ -15,12 +15,14 @@ import { useForm } from './form'
 const route = useRoute()
 const router = useRouter()
 const { toastRef } = useToastStore()
+const isLoading = ref(false)
 
 const form = reactive(useForm())
-
 const formId = ref()
 
 onMounted(async () => {
+  isLoading.value = true
+
   const response = (await axios.get(`/v1/master/users/${route.params.id}`)).data
 
   formId.value = response._id
@@ -33,6 +35,8 @@ onMounted(async () => {
   form.data.default_warehouse = response.default_warehouse._id
   form.data.branches = response.branches.map((obj: { _id: string }) => obj._id)
   form.data.warehouses = response.warehouses.map((obj: { _id: string }) => obj._id)
+
+  isLoading.value = false
 })
 
 const onUpdate = async () => {
@@ -44,7 +48,7 @@ const onUpdate = async () => {
     }
   } catch (error) {
     if (error instanceof AxiosError) {
-      var listErrors: string[] = []
+      const listErrors: string[] = []
       const formErrors = error?.response?.data?.errors
       if (formErrors) {
         for (const key in formErrors) {
@@ -62,7 +66,10 @@ const onUpdate = async () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <base-card v-if="isLoading">
+    <base-loader />
+  </base-card>
+  <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
     <card-form

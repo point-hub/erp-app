@@ -43,6 +43,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            **/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Cache Vite build output
+        uses: actions/cache@v4
+        with:
+          path: |
+            .vite
+            dist
+          key: ${{ runner.os }}-vite-build-${{ hashFiles('**/vite.config.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-vite-build-
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:

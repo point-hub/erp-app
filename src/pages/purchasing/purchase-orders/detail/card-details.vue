@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { type IItem } from './form'
+import { type IDetail } from './form'
 
-const items = defineModel<IItem[]>('items', { required: true })
+const details = defineModel<IDetail[]>('details', { required: true })
 </script>
 
 <template>
@@ -19,12 +19,12 @@ const items = defineModel<IItem[]>('items', { required: true })
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" :key="index" class="relative">
+          <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.item.label }}</td>
-            <td>{{ item.notes }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.allocation.label }}</td>
+            <td>{{ detail.item.label }}</td>
+            <td>{{ detail.notes }}</td>
+            <td>{{ detail.quantity }}</td>
+            <td>{{ detail.allocation.label }}</td>
             <td></td>
           </tr>
         </tbody>

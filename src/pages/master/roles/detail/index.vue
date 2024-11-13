@@ -17,10 +17,11 @@ const authStore = useAuthStore()
 const getRoleApi = useGetRoleApi()
 
 const form = reactive(useForm())
-
 const formId = ref()
+const isLoading = ref(false)
 
 onMounted(async () => {
+  isLoading.value = true
   if (!authStore.permission?.master?.roles?.read) {
     router.push('/unauthorized')
   }
@@ -34,11 +35,15 @@ onMounted(async () => {
     form.data.permission = response.permission
     form.data.notes = response.notes
   }
+  isLoading.value = false
 })
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <base-card v-if="isLoading">
+    <base-loader />
+  </base-card>
+  <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
     <card-action v-if="authStore.permission?.master?.roles?.read" :data="form.data" />

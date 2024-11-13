@@ -169,7 +169,7 @@ const isCategory = (_id: string) => {
                       :to="`/master/chart-of-accounts/${chartOfAccount._id}`"
                       class="text-blue"
                     >
-                      <span class="font-mono">[{{ chartOfAccount.number }}] </span>
+                      <span>[{{ chartOfAccount.number }}] </span>
                       <span>{{ chartOfAccount.name }}</span>
                     </router-link>
                   </td>

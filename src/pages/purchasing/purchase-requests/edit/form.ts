@@ -34,14 +34,15 @@ interface IApprovalTo {
 }
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
-  form_number?: string
-  created_date?: string
-  required_date?: string
-  branch?: IBranch
-  details?: IDetail[]
-  approval_to?: IApprovalTo
-  notes?: string
+  form_number: string
+  created_date: string
+  required_date: string
+  branch: IBranch
+  details: IDetail[]
+  approval_to: IApprovalTo
+  notes: string
 }
 
 export interface IFormError {
@@ -56,7 +57,23 @@ export interface IFormError {
 export function useForm() {
   const defaultForm: IForm = {
     required_date: '',
-    details: []
+    form_number: '',
+    created_date: '',
+    branch: {
+      _id: '',
+      label: '',
+      code: '',
+      name: ''
+    },
+    details: [],
+    approval_to: {
+      _id: '',
+      label: '',
+      email: '',
+      name: '',
+      username: ''
+    },
+    notes: ''
   }
 
   const defaultFormError: IFormError = {

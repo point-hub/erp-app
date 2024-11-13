@@ -15,12 +15,16 @@ import { useForm } from './form'
 const route = useRoute()
 
 const form = reactive(useForm())
+const isLoading = ref(false)
 
 const formId = ref()
 const authStore = useAuthStore()
 
 onMounted(async () => {
+  isLoading.value = true
+
   const response = (await axios.get(`/v1/master/users/${route.params.id}`)).data
+
   formId.value = response._id
   form.data.role = `[${response.role.code}] ${response.role.name}`
   form.data.name = response.name
@@ -30,11 +34,17 @@ onMounted(async () => {
   form.data.default_warehouse = response.default_warehouse._id
   form.data.branches = response.branches.map((obj: { _id: string }) => obj._id)
   form.data.warehouses = response.warehouses.map((obj: { _id: string }) => obj._id)
+
+  isLoading.value = false
 })
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
+  <base-card v-if="isLoading">
+    <base-loader />
+  </base-card>
+
+  <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
     <card-action v-if="authStore.permission?.master?.users?.read" :data="form.data" />
