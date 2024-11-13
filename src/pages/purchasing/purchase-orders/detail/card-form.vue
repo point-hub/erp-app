@@ -9,17 +9,13 @@ const required_date = defineModel<string>('required_date', { required: true })
 const branch = defineModel<string>('branch', { required: true })
 
 const computedCreatedDate = computed(() => {
-  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd') : ''
-})
-
-const computedCreatedTime = computed(() => {
-  return created_date.value ? format(new Date(created_date.value), 'HH:mm') : ''
+  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd | HH:mm:ss') : ''
 })
 </script>
 
 <template>
   <base-card>
-    <template #header>Purchase Requests</template>
+    <template #header>Purchase Orders</template>
 
     <div class="flex flex-col gap-4 mt-5">
       <base-input disabled label="Form Number" layout="horizontal" :modelValue="form_number" />
@@ -32,15 +28,9 @@ const computedCreatedTime = computed(() => {
       />
       <base-input
         disabled
-        label="Created Date"
+        label="Form Date"
         layout="horizontal"
         :modelValue="computedCreatedDate"
-      />
-      <base-input
-        disabled
-        label="Created Time"
-        layout="horizontal"
-        :modelValue="computedCreatedTime"
       />
       <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
       <base-input

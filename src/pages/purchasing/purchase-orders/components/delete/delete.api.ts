@@ -7,7 +7,7 @@ import type { IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useDeleteWarehouseApi() {
+export function useDeleteApi() {
   const send = async (_id: string, reason: string, errors: IFormError) => {
     try {
       const response = await axios.post(`/v1/purchasing/purchase-orders/${_id}/delete`, {

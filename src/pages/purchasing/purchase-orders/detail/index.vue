@@ -1,1 +1,73 @@
-<template><div></div></template>
+<script setup lang="ts">
+import { onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+import { useAuthStore } from '@/stores/auth.store'
+
+import CardAction from './card-action.vue'
+import CardApproval from './card-approval.vue'
+import CardBreadcrumbs from './card-breadcrumbs.vue'
+import CardDetails from './card-details.vue'
+import CardForm from './card-form.vue'
+import { useForm } from './form'
+import { useRetrievePurchaseOrderApi } from './retrieve.api'
+
+const route = useRoute()
+const router = useRouter()
+const form = reactive(useForm())
+const authStore = useAuthStore()
+const isLoading = ref(false)
+const retrievePurchaseOrderApi = useRetrievePurchaseOrderApi()
+
+onMounted(async () => {
+  isLoading.value = true
+  if (!authStore.permission?.purchasing?.purchase_orders?.read) {
+    router.push('/unauthorized')
+  }
+
+  const response = await retrievePurchaseOrderApi.send(route.params.id.toString())
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const branches = authStore.branches.map((item: any) => item._id)
+  console.log(branches)
+  console.log(response.branch._id)
+  if (!branches.includes(response.branch._id)) {
+    router.push('/unauthorized')
+  }
+
+  form.data = response
+  form.data.items = response.items
+  isLoading.value = false
+})
+
+const onSave = async () => {}
+</script>
+
+<template>
+  <div v-if="isLoading" class="w-full h-full flex justify-center items-center text-2xl gap-2">
+    <base-loader />
+  </div>
+  <div v-else class="flex flex-col gap-4">
+    <card-breadcrumbs />
+
+    <card-action :data="form.data" />
+
+    <card-form
+      :form_number="form.data.form_number"
+      :revised_count="form.data.revised_count"
+      :branch="form.data.branch.label"
+      :created_date="form.data.created_date"
+      :required_date="form.data.required_date"
+    />
+
+    <card-details v-model:details="form.data.details" />
+
+    <card-approval
+      :created_by="form.data.created_by.label"
+      :approval_to="form.data.approval_to?.label"
+      :notes="form.data.notes"
+    />
+  </div>
+</template>
+
+<style scoped lang="postcss"></style>

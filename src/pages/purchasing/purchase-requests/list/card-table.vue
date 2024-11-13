@@ -17,6 +17,7 @@ const getWarehousesApi = useGetWarehousesApi()
 interface IPurchaseRequestDetail {
   item: {
     _id: string
+    label: string
     code: string
     name: string
     unit: string
@@ -25,6 +26,7 @@ interface IPurchaseRequestDetail {
   notes: string
   allocation: {
     _id: string
+    label: string
     code: string
     name: string
   }
@@ -37,6 +39,7 @@ interface IPurchaseRequest {
   created_date: string
   branch: {
     _id: string
+    label: string
     code: string
     name: string
   }
@@ -44,6 +47,7 @@ interface IPurchaseRequest {
   notes: string
   approval_to: {
     _id: string
+    label: string
     email: string
     username: string
     name: string
@@ -179,8 +183,9 @@ onMounted(async () => {
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form</th>
-            <th class="w-30">Date</th>
+            <th class="w-30">Form #</th>
+            <th class="w-30">Form Date</th>
+            <th class="w-30">Time</th>
             <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
@@ -210,26 +215,32 @@ onMounted(async () => {
                     {{ purchaseRequest.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd HH:mm:ss') }}</td>
+                <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd') }}</td>
+                <td>{{ format(new Date(purchaseRequest.created_date), 'HH:mm') }}</td>
                 <td>{{ purchaseRequest.required_date }}</td>
-                <td>[{{ purchaseRequest.branch.code }}] {{ purchaseRequest.branch.name }}</td>
-                <td>[{{ detail.item.code }}] {{ detail.item.name }}</td>
+                <td>{{ purchaseRequest.branch.label }}</td>
+                <td>{{ detail.item.label }}</td>
                 <td>{{ detail.notes }}</td>
                 <td class="text-right">
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
                 </td>
                 <td class="text-center">
-                  <base-badge
-                    :color="
-                      purchaseRequest.approval_status === 'rejected'
-                        ? 'danger'
-                        : purchaseRequest.approval_status === 'approved'
-                          ? 'success'
-                          : 'warning'
-                    "
-                  >
-                    {{ purchaseRequest.approval_status ?? 'pending' }}
-                  </base-badge>
+                  <div class="flex flex-col">
+                    <div>
+                      <base-badge
+                        :color="
+                          purchaseRequest.approval_status === 'rejected'
+                            ? 'danger'
+                            : purchaseRequest.approval_status === 'approved'
+                              ? 'success'
+                              : 'warning'
+                        "
+                      >
+                        {{ purchaseRequest.approval_status ?? 'pending' }}
+                      </base-badge>
+                    </div>
+                    <span class="text-xs">{{ purchaseRequest.approval_to.label }}</span>
+                  </div>
                 </td>
                 <td class="text-center"><base-badge color="warning">open</base-badge></td>
               </tr>

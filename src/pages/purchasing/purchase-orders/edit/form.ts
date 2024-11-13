@@ -1,12 +1,45 @@
 import { ref, watch } from 'vue'
 
-import type { IApprovalTo, IBranch, IDetail } from '../interface'
+interface IDetail {
+  item: {
+    _id: string
+    label: string
+    code: string
+    name: string
+    unit: string
+  }
+  notes: string
+  quantity: number
+  allocation: {
+    _id: string
+    label: string
+    code: string
+    name: string
+  }
+}
+
+interface IBranch {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
+
+interface IApprovalTo {
+  _id: string
+  label: string
+  name: string
+  username: string
+  email: string
+}
 
 export interface IForm {
   [key: string]: any
+  form_number?: string
+  created_date?: string
   required_date?: string
   branch?: IBranch
-  details: IDetail[]
+  details?: IDetail[]
   approval_to?: IApprovalTo
   notes?: string
 }
@@ -16,7 +49,7 @@ export interface IFormError {
   'branch._id': string[]
   required_date: string[]
   details: string[]
-  'approval_to._id': string[]
+  approval_to: string[]
   notes: string[]
 }
 
@@ -30,7 +63,7 @@ export function useForm() {
     'branch._id': [],
     required_date: [],
     details: [],
-    'approval_to._id': [],
+    approval_to: [],
     notes: []
   }
 
@@ -59,7 +92,9 @@ export function useForm() {
         }
       }
     },
-    { deep: true }
+    {
+      deep: true
+    }
   )
 
   const reset = () => {
