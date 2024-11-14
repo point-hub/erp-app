@@ -66,8 +66,8 @@ onMounted(() => {})
           <tr>
             <th class="w-1">#</th>
             <th>Item</th>
-            <th>Notes</th>
             <th>Quantity</th>
+            <th>Notes</th>
             <th>Allocation</th>
             <th></th>
           </tr>
@@ -86,17 +86,17 @@ onMounted(() => {})
               />
             </td>
             <td>
-              <base-input
-                border="full"
-                v-model="item.notes"
-                :errors="errors?.[`details.${index}.notes`]"
-              />
-            </td>
-            <td>
               <base-input-number
                 border="full"
                 v-model="item.quantity"
                 :errors="errors?.[`details.${index}.quantity`]"
+              />
+            </td>
+            <td>
+              <base-input
+                border="full"
+                v-model="item.notes"
+                :errors="errors?.[`details.${index}.notes`]"
               />
             </td>
             <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>
