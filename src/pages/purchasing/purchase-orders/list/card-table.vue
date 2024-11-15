@@ -17,6 +17,7 @@ const getWarehousesApi = useGetWarehousesApi()
 interface IPurchaseOrderDetail {
   item: {
     _id: string
+    label: string
     code: string
     name: string
     unit: string
@@ -25,6 +26,7 @@ interface IPurchaseOrderDetail {
   notes: string
   allocation: {
     _id: string
+    label: string
     code: string
     name: string
   }
@@ -37,6 +39,7 @@ interface IPurchaseOrder {
   created_date: string
   branch: {
     _id: string
+    label: string
     code: string
     name: string
   }
@@ -44,11 +47,22 @@ interface IPurchaseOrder {
   notes: string
   approval_to: {
     _id: string
+    label: string
     email: string
     username: string
     name: string
   }
   approval_status: string
+  deleted_reason: string
+  deleted_by: {
+    _id: string
+    label: string
+    email: string
+    username: string
+    name: string
+  }
+  is_deleted: boolean
+  is_finished: boolean
 }
 
 const searchAll = ref('')
@@ -179,8 +193,9 @@ onMounted(async () => {
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form</th>
-            <th class="w-30">Date</th>
+            <th class="w-30">Form #</th>
+            <th class="w-30">Form Date</th>
+            <th class="w-30">Time</th>
             <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
@@ -199,21 +214,22 @@ onMounted(async () => {
             </td>
           </tr>
           <template v-if="!isLoading">
-            <template v-for="purchaseOrder in purchaseOrders">
-              <tr v-for="(detail, index) in purchaseOrder.details" :key="index">
+            <template v-for="purchaseRequest in purchaseOrders">
+              <tr v-for="(detail, index) in purchaseRequest.details" :key="index">
                 <td></td>
                 <td>
                   <router-link
-                    :to="`/purchasing/purchase-orders/${purchaseOrder._id}`"
+                    :to="`/purchasing/purchase-orders/${purchaseRequest._id}`"
                     class="text-blue"
                   >
-                    {{ purchaseOrder.form_number }}
+                    {{ purchaseRequest.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseOrder.created_date), 'yyyy-MM-dd HH:mm:ss') }}</td>
-                <td>{{ purchaseOrder.required_date }}</td>
-                <td>[{{ purchaseOrder.branch.code }}] {{ purchaseOrder.branch.name }}</td>
-                <td>[{{ detail.item.code }}] {{ detail.item.name }}</td>
+                <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd') }}</td>
+                <td>{{ format(new Date(purchaseRequest.created_date), 'HH:mm') }}</td>
+                <td>{{ purchaseRequest.required_date }}</td>
+                <td>{{ purchaseRequest.branch.label }}</td>
+                <td>{{ detail.item.label }}</td>
                 <td>{{ detail.notes }}</td>
                 <td class="text-right">
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
@@ -221,17 +237,25 @@ onMounted(async () => {
                 <td class="text-center">
                   <base-badge
                     :color="
-                      purchaseOrder.approval_status === 'rejected'
+                      purchaseRequest.approval_status === 'rejected'
                         ? 'danger'
-                        : purchaseOrder.approval_status === 'approved'
+                        : purchaseRequest.approval_status === 'approved'
                           ? 'success'
                           : 'warning'
                     "
                   >
-                    {{ purchaseOrder.approval_status ?? 'pending' }}
+                    {{ purchaseRequest.approval_status ?? 'pending' }}
                   </base-badge>
                 </td>
-                <td class="text-center"><base-badge color="warning">open</base-badge></td>
+                <td class="text-center">
+                  <base-badge v-if="purchaseRequest.is_deleted" color="danger">deleted</base-badge>
+                  <base-badge v-else-if="!purchaseRequest.is_finished" color="warning"
+                    >open</base-badge
+                  >
+                  <base-badge v-else-if="purchaseRequest.is_finished" color="success"
+                    >finished</base-badge
+                  >
+                </td>
               </tr>
             </template>
           </template>

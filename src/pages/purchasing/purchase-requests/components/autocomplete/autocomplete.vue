@@ -2,27 +2,36 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
-import { useGetWarehousesApi } from './retrieve-all.api'
+import { useGetPurchaseRequestApi } from './retrieve-all.api'
+
+export interface ISelectedPurchaseRequest {
+  _id: string
+  label: string
+  form_number: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  details: any
+}
 
 const _id = defineModel<string>()
+const options = defineModel<ISelectedPurchaseRequest[]>('options')
+const selected = defineModel<ISelectedPurchaseRequest>('selected')
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<{ id: string; label: string }>('selected')
+const label = defineModel<string>('label')
 const errors = ref<string[]>([])
 
-const getWarehousesApi = useGetWarehousesApi()
+const getPurchaseRequestsApi = useGetPurchaseRequestApi()
 const search = ref('')
-const options = ref([])
 const isLoading = ref<boolean>(false)
+const localOptions = ref<ISelectedPurchaseRequest[]>()
 
 const apiCall = async () => {
-  const response = await getWarehousesApi.send(search.value, 1)
+  const response = await getPurchaseRequestsApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelectedPurchaseRequest) => {
       return {
         _id: data._id,
-        label: `[${data.code}] ${data.name}`,
-        code: `${data.code}`,
-        name: `${data.name}`
+        label: data.form_number,
+        details: data.details
       }
     })
   }
@@ -32,30 +41,38 @@ const apiCall = async () => {
 
 watch(search, () => {
   // start loading without debounced for smooth ux
-  isLoading.value = true
+  if (!localOptions.value) {
+    isLoading.value = true
+  }
 })
 
 watchDebounced(
   search,
   async () => {
-    await apiCall()
+    if (!localOptions.value) {
+      await apiCall()
+    }
   },
   { debounce: 500, maxWait: 1000 }
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  if (selected.value) _id.value = selected.value?._id
 })
 
 onMounted(async () => {
-  await apiCall()
+  if (!options.value) {
+    await apiCall()
+  } else {
+    localOptions.value = options.value
+  }
 })
 </script>
 
 <template>
   <base-autocomplete
     :required="required"
-    label="Warehouse"
+    :label="label"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

@@ -29,8 +29,6 @@ onMounted(async () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const branches = authStore.branches.map((item: any) => item._id)
-  console.log(branches)
-  console.log(response.branch._id)
   if (!branches.includes(response.branch._id)) {
     router.push('/unauthorized')
   }
@@ -39,8 +37,6 @@ onMounted(async () => {
   form.data.items = response.items
   isLoading.value = false
 })
-
-const onSave = async () => {}
 </script>
 
 <template>
@@ -49,6 +45,52 @@ const onSave = async () => {}
   </div>
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
+
+    <base-card
+      bg-color="red"
+      title-color="white"
+      body-color="white"
+      class="py-4!"
+      v-if="form.data.approval_status === 'rejected'"
+    >
+      <div class="flex items-center gap-2">
+        <base-icon icon="i-fas-file-xmark"></base-icon>
+        <p>
+          This Form is <span class="font-extrabold">REJECTED</span> by
+          {{ form.data.approval_to.label }} because
+          {{ form.data.rejected_reason }}
+        </p>
+      </div>
+    </base-card>
+
+    <base-card
+      bg-color="green"
+      title-color="white"
+      body-color="white"
+      class="py-4!"
+      v-if="form.data.approval_status === 'approved'"
+    >
+      <div class="flex items-center gap-2">
+        <base-icon icon="i-fas-file-check"></base-icon>
+        <p>
+          This Form is <span class="font-extrabold">APPROVED</span> by
+          {{ form.data.approval_to.label }}
+        </p>
+      </div>
+    </base-card>
+
+    <base-card
+      bg-color="red"
+      title-color="white"
+      body-color="white"
+      class="py-4!"
+      v-if="form.data.is_deleted"
+    >
+      <div>
+        This Form is DELETED by {{ form.data.deleted_by.label }} because
+        {{ form.data.deleted_reason }}
+      </div>
+    </base-card>
 
     <card-action :data="form.data" />
 

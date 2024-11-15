@@ -42,6 +42,7 @@ export interface IForm {
   branch: IBranch
   details: IDetail[]
   approval_to: IApprovalTo
+  approval_status?: string
   notes?: string
 }
 

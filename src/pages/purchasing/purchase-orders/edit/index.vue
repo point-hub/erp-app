@@ -3,14 +3,18 @@ import { onMounted, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
+import { useToastStore } from '@/stores/toast.store'
 
-// import CardApproval from './card-approval.vue'
+import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
-// import CardForm from './card-form.vue'
-// import CardItems from './card-items.vue'
+import CardDetails from './card-details.vue'
+import CardForm from './card-form.vue'
 import { useForm } from './form'
 import { useRetrievePurchaseOrderApi } from './retrieve.api'
+import { useUpdatePurchaseOrderApi } from './update.api'
 
+const updatePurchaseOrderApi = useUpdatePurchaseOrderApi()
+const { toastRef } = useToastStore()
 const route = useRoute()
 const router = useRouter()
 const form = reactive(useForm())
@@ -27,12 +31,33 @@ onMounted(async () => {
   const response = await retrievePurchaseOrderApi.send(route.params.id.toString())
 
   form.data = response
-  form.data.rev += 1
+  form.data.revised_count += 1
   form.data.items = response.items
   isLoading.value = false
 })
 
-const onSave = async () => {}
+const isSaving = ref(false)
+
+const onSave = async () => {
+  // state saving start
+  isSaving.value = true
+  // check permission
+  if (!authStore.permission?.purchasing?.purchase_orders?.update) {
+    router.push('/unauthorized')
+    return
+  }
+  if (form.data.details.length === 0) {
+    toastRef.toast('Items is required', {
+      color: 'danger'
+    })
+    return
+  }
+  // api call
+  const response = await updatePurchaseOrderApi.send(form.data, form.errors)
+  if (response?.inserted_id) router.push('/purchasing/purchase-orders/' + response.inserted_id)
+  // state saving end
+  isSaving.value = false
+}
 </script>
 
 <template>
@@ -51,23 +76,23 @@ const onSave = async () => {}
       edit user data
     </base-alert>
 
-    <!-- <card-form
+    <card-form
       v-model:form_number="form.data.form_number"
-      v-model:rev="form.data.rev"
+      v-model:revised_count="form.data.revised_count"
       v-model:branch="form.data.branch"
       v-model:options="authStore.branches"
       v-model:created_date="form.data.created_date"
       v-model:required_date="form.data.required_date"
       :errors="form.errors"
-    /> -->
-    <!-- 
-    <card-items v-model:items="form.data.items" :errors="form.errors" />
+    />
+
+    <card-details v-model:details="form.data.details" :errors="form.errors" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"
       v-model:notes="form.data.notes"
       :errors="form.errors"
-    /> -->
+    />
 
     <base-card class="py-4!">
       <div class="flex gap-2">

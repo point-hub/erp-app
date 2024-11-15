@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isEmpty } from '@point-hub/js-utils'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -20,6 +20,13 @@ const authStore = useAuthStore()
 const isLoading = ref(false)
 const isSaving = ref(false)
 const createPurchaseOrderApi = useCreatePurchaseOrderApi()
+
+watch(
+  () => form.data.purchase_request,
+  () => {
+    form.data.details = form.data.purchase_request?.details
+  }
+)
 
 onMounted(async () => {
   // state loading start
@@ -43,11 +50,13 @@ const onSave = async () => {
   // check permission
   if (!authStore.permission?.purchasing?.purchase_orders?.create) {
     router.push('/unauthorized')
+    return
   }
   if (form.data.details.length === 0) {
     toastRef.toast('Items is required', {
       color: 'danger'
     })
+    return
   }
   // api call
   const response = await createPurchaseOrderApi.send(form.data, form.errors)
@@ -76,19 +85,26 @@ const onSave = async () => {
     <card-form
       v-model:branch="form.data.branch"
       v-model:options="authStore.branches"
+      v-model:supplier="form.data.supplier"
+      v-model:purchase_request="form.data.purchase_request"
       v-model:required_date="form.data.required_date"
       :errors="form.errors"
     />
 
-    <card-details v-model:details="form.data.details" :errors="form.errors" />
+    <card-details
+      v-if="form.data.purchase_request"
+      v-model:details="form.data.details"
+      :errors="form.errors"
+    />
 
     <card-approval
+      v-if="form.data.purchase_request"
       v-model:approval_to="form.data.approval_to"
       v-model:notes="form.data.notes"
       :errors="form.errors"
     />
 
-    <base-card class="py-4!">
+    <base-card class="py-4!" v-if="form.data.purchase_request">
       <div class="flex gap-2">
         <base-button color="primary" @click="onSave()" :disabled="isSaving">Save</base-button>
       </div>

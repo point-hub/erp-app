@@ -9,7 +9,7 @@ import BranchAutocomplete, {
 import type { IFormError } from './form'
 
 const form_number = defineModel<string>('form_number', { required: true })
-const rev = defineModel<number>('rev', { required: true })
+const revised_count = defineModel<number>('revised_count', { required: true })
 const created_date = defineModel<string>('created_date', { required: true })
 const required_date = defineModel<string>('required_date', { required: true })
 const options = defineModel<ISelectedBranch[]>('options', { required: true })
@@ -17,7 +17,11 @@ const branch = defineModel<ISelectedBranch>('branch', { required: true })
 const errors = defineModel<IFormError>('errors')
 
 const computedCreatedDate = computed(() => {
-  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd   HH:mm:ss') : ''
+  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd') : ''
+})
+
+const computedCreatedTime = computed(() => {
+  return created_date.value ? format(new Date(created_date.value), 'HH:mm') : ''
 })
 </script>
 
@@ -27,13 +31,20 @@ const computedCreatedDate = computed(() => {
 
     <div class="flex flex-col gap-4 mt-5">
       <base-input disabled required label="Form Number" layout="horizontal" v-model="form_number" />
-      <base-input disabled required label="Revision" layout="horizontal" v-model="rev" />
+      <base-input disabled required label="Revision" layout="horizontal" v-model="revised_count" />
       <base-input
         disabled
         required
         label="Form Date"
         layout="horizontal"
         :modelValue="computedCreatedDate"
+      />
+      <base-input
+        disabled
+        required
+        label="Form Date"
+        layout="horizontal"
+        :modelValue="computedCreatedTime"
       />
       <branch-autocomplete
         required

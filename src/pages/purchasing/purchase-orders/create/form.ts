@@ -1,11 +1,14 @@
 import { ref, watch } from 'vue'
 
-import type { IApprovalTo, IBranch, IDetail } from '../interface'
+import type { IApprovalTo, IBranch, IDetail, IPurchaseRequest, ISupplier } from '../interface'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   required_date?: string
   branch?: IBranch
+  supplier?: ISupplier
+  purchase_request?: IPurchaseRequest
   details: IDetail[]
   approval_to?: IApprovalTo
   notes?: string

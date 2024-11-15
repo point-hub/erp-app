@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import axios from '@/axios'
 import { useAuthStore } from '@/stores/auth.store'
 import { useToastStore } from '@/stores/toast.store'
 
@@ -60,13 +59,6 @@ const onRejected = async () => {
 const onRequestDelete = async () => {
   router.push('/purchasing/purchase-orders')
 }
-
-const onSendEmailApproval = async () => {
-  const response = axios.post(
-    `/v1/purchasing/purchase-orders/${route.params.id}/send-email-approval`
-  )
-  console.log(response)
-}
 </script>
 
 <template>
@@ -81,8 +73,8 @@ const onSendEmailApproval = async () => {
         </base-button>
       </router-link>
 
-      <!-- <router-link
-        v-if="authStore.permission?.purchasing?.purchase_orders?.update"
+      <router-link
+        v-if="authStore.permission?.purchasing?.purchase_orders?.update && !data.is_deleted"
         :to="`/purchasing/purchase-orders/${route.params.id}/edit`"
       >
         <base-button color="info" size="sm">
@@ -90,7 +82,7 @@ const onSendEmailApproval = async () => {
         </base-button>
       </router-link>
 
-      <router-link
+      <!-- <router-link
         v-if="authStore.permission?.purchasing?.purchase_orders?.update"
         :to="`/purchasing/purchase-orders/${route.params.id}/edit`"
       >
@@ -99,17 +91,8 @@ const onSendEmailApproval = async () => {
         </base-button>
       </router-link> -->
 
-      <!-- <base-button
-        v-if="authStore.permission?.purchasing?.purchase_orders?.approval"
-        color="info"
-        size="sm"
-        @click="onSendEmailApproval"
-      >
-        <base-icon icon="i-far-envelope" /> Send Email Approval
-      </base-button> -->
-
       <base-button
-        v-if="authStore.permission?.purchasing?.purchase_orders?.delete"
+        v-if="authStore.permission?.purchasing?.purchase_orders?.delete && !data.is_deleted"
         color="danger"
         size="sm"
         @click="
@@ -122,23 +105,10 @@ const onSendEmailApproval = async () => {
         <base-icon icon="i-far-trash" /> Delete
       </base-button>
 
-      <!-- <base-button
-        v-if="authStore.permission?.purchasing?.purchase_orders?.approval"
-        color="danger"
-        size="sm"
-        @click="
-          requestDeleteModalRef.toggleModal(true, {
-            id: route.params.id.toString(),
-            form_number: data.form_number
-          })
-        "
-      >
-        <base-icon icon="i-far-envelope" /> Send Request Delete
-      </base-button> -->
-
       <base-button
         v-if="
           authStore.permission?.purchasing?.purchase_orders?.approval &&
+          data.approval_to._id === authStore._id &&
           data.approval_status === 'pending'
         "
         color="success"
@@ -151,6 +121,7 @@ const onSendEmailApproval = async () => {
       <base-button
         v-if="
           authStore.permission?.purchasing?.purchase_orders?.approval &&
+          data.approval_to._id === authStore._id &&
           data.approval_status === 'pending'
         "
         color="danger"

@@ -2,12 +2,21 @@
 import BranchAutocomplete, {
   type ISelectedBranch
 } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
+import SupplierAutocomplete, {
+  type ISelectedSupplier
+} from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
+import PurchaseRequestAutocomplete, {
+  type ISelectedPurchaseRequest
+} from '@/pages/purchasing/purchase-requests/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
-const required_date = defineModel<string>('required_date')
 const options = defineModel<ISelectedBranch[]>('options')
 const branch = defineModel<ISelectedBranch>('branch')
+const supplierOptions = defineModel<ISelectedSupplier[]>('supplier_options')
+const supplier = defineModel<ISelectedSupplier>('supplier')
+const purchaseRequestOptions = defineModel<ISelectedPurchaseRequest[]>('purchase_request_options')
+const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request')
 const errors = defineModel<IFormError>('errors')
 </script>
 
@@ -25,13 +34,23 @@ const errors = defineModel<IFormError>('errors')
         :errors="errors?.['branch._id']"
       />
 
-      <base-datepicker
+      <purchase-request-autocomplete
         required
-        v-model="required_date"
-        label="Required Date"
         layout="horizontal"
-        description="When is this item needed to be used?"
-        :errors="errors?.required_date"
+        label="Purchase Request"
+        v-model:selected="purchaseRequest"
+        v-model:options="purchaseRequestOptions"
+        :errors="errors?.['purchaseRequest._id']"
+      />
+
+      <supplier-autocomplete
+        v-if="purchase_request"
+        required
+        layout="horizontal"
+        label="Supplier"
+        v-model:selected="supplier"
+        v-model:options="supplierOptions"
+        :errors="errors?.['supplier._id']"
       />
     </div>
   </base-card>

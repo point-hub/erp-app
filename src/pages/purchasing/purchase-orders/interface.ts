@@ -1,5 +1,4 @@
 export interface IItem {
-  lookup_from: string
   _id: string
   label: string
   code: string
@@ -8,11 +7,24 @@ export interface IItem {
 }
 
 export interface IAllocation {
-  lookup_from: string
   _id: string
   label: string
   code: string
   name: string
+}
+
+export interface ISupplier {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
+
+export interface IPurchaseRequest {
+  _id: string
+  label: string
+  form_number: string
+  details: IDetail[]
 }
 
 export interface IDetail {
