@@ -1,8 +1,12 @@
 import { ref, watch } from 'vue'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
-  allocation_group_id: string
+  allocation_group: {
+    _id: string
+    label: string
+  }
   code: string
   name: string
   notes: string
@@ -10,7 +14,8 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
-  allocation_group_id: string[]
+  'allocation_group._id': string[]
+  'allocation_group.label': string[]
   code: string[]
   name: string[]
   notes: string[]
@@ -18,14 +23,18 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    allocation_group_id: '',
+    allocation_group: {
+      _id: '',
+      label: ''
+    },
     code: '',
     name: '',
     notes: ''
   }
 
   const defaultFormError: IFormError = {
-    allocation_group_id: [],
+    'allocation_group._id': [],
+    'allocation_group.label': [],
     code: [],
     name: [],
     notes: []

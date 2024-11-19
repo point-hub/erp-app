@@ -18,9 +18,9 @@ interface IAllocation {
   _id: string
   allocation_group: {
     _id: string
-    code: string
-    name: string
+    label: string
   }
+  label: string
   code: string
   name: string
 }
@@ -130,7 +130,7 @@ const onDeleteModal = (allocation_group: IAllocation, index: number) => {
   rowMenuRef.value[index].toggle(false)
   deleteModalRef.value.toggleModal(true, {
     id: allocation_group._id,
-    name: `[${allocation_group.code}] ${allocation_group.name}`
+    name: `[${allocation_group.label}] ${allocation_group.name}`
   })
 }
 
@@ -238,9 +238,7 @@ const onDelete = async () => {
                   {{ allocation.name }}
                 </router-link>
               </td>
-              <td>
-                [{{ allocation.allocation_group.code }}] {{ allocation.allocation_group.name }}
-              </td>
+              <td>{{ allocation.allocation_group.label }}</td>
             </tr>
           </template>
         </tbody>

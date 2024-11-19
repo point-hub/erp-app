@@ -29,7 +29,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.allocation_group_id = response.allocation_group._id
+    form.data.allocation_group = response.allocation_group
     form.data.code = response.code
     form.data.name = response.name
     form.data.notes = response.notes
@@ -60,7 +60,6 @@ const onUpdate = async () => {
     <card-form
       v-if="authStore.permission?.master?.allocations?.update"
       :form-id="route.params.id.toString()"
-      v-model:allocation_group_id="form.data.allocation_group_id"
       v-model:allocation_group="allocation_group"
       v-model:code="form.data.code"
       v-model:name="form.data.name"

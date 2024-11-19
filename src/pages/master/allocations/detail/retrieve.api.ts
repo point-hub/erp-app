@@ -7,7 +7,10 @@ export function useGetAllocationApi() {
 
       return {
         _id: response.data._id,
-        allocation_group: response.data.allocation_group,
+        allocation_group: {
+          _id: response.data.allocation_group._id,
+          label: response.data.allocation_group.label
+        },
         code: response.data.code,
         name: response.data.name,
         notes: response.data.notes

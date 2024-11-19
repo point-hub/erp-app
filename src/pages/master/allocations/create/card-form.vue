@@ -6,7 +6,9 @@ import AllocationGroupAutocomplete from '@/pages/master/allocation-groups/compon
 
 import type { IFormError } from './form'
 
-const allocation_group_id = defineModel<string>('allocation_group_id')
+const allocation_group = defineModel<{ _id: string; label: string }>('allocation_group', {
+  required: true
+})
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const notes = defineModel<string>('notes')
@@ -16,6 +18,7 @@ const selected = ref()
 const countersApi = useCountersApi()
 
 watch(selected, async () => {
+  allocation_group.value = selected.value
   const selectedCode = await countersApi.getCode('allocation_groups', selected.value.code)
   if (selectedCode) code.value = selectedCode
 })
@@ -29,9 +32,9 @@ watch(selected, async () => {
       <allocation-group-autocomplete
         required
         label="Allocation Group"
-        v-model="allocation_group_id"
+        v-model="allocation_group._id"
         v-model:selected="selected"
-        :errors="errors?.allocation_group_id"
+        :errors="errors?.['allocation_group._id']"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
