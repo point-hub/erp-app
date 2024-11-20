@@ -43,13 +43,6 @@ const computedCreatedTime = computed(() => {
         :modelValue="computedCreatedTime"
       />
       <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
-      <base-input
-        disabled
-        label="Required Date"
-        layout="horizontal"
-        description="When is this item needed to be used?"
-        :modelValue="required_date"
-      />
     </div>
   </base-card>
 </template>

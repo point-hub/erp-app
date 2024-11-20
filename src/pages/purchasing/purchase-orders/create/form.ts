@@ -5,8 +5,7 @@ import type { IApprovalTo, IBranch, IDetail, IPurchaseRequest, ISupplier } from 
 export interface IForm {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
-  required_date?: string
-  branch?: IBranch
+  branch: IBranch
   supplier?: ISupplier
   purchase_request?: IPurchaseRequest
   details: IDetail[]
@@ -17,7 +16,6 @@ export interface IForm {
 export interface IFormError {
   [key: string]: string[]
   'branch._id': string[]
-  required_date: string[]
   details: string[]
   'approval_to._id': string[]
   notes: string[]
@@ -25,13 +23,17 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    required_date: '',
+    branch: {
+      _id: '',
+      label: '',
+      name: '',
+      code: ''
+    },
     details: []
   }
 
   const defaultFormError: IFormError = {
     'branch._id': [],
-    required_date: [],
     details: [],
     'approval_to._id': [],
     notes: []

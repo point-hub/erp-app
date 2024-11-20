@@ -1,44 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-
 import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
-import ItemChoosen from '@/pages/master/items/components/choosen/choosen.vue'
 
 import type { IDetail } from '../interface'
 import type { IFormError } from './form'
 
 const errors = defineModel<IFormError>('errors', { required: true })
 const details = defineModel<IDetail[]>('details', { required: true })
-
-const addMore = () => {
-  details.value.push({
-    item: {
-      _id: '',
-      label: '',
-      code: '',
-      name: '',
-      unit: ''
-    },
-    notes: '',
-    quantity: 0,
-    allocation: {
-      _id: '',
-      label: '',
-      code: '',
-      name: ''
-    }
-  })
-}
-
-const clearAll = () => {
-  details.value = []
-}
-
-const removeItem = (index: number) => {
-  details.value.splice(index, 1)
-}
-
-onMounted(() => {})
 </script>
 
 <template>

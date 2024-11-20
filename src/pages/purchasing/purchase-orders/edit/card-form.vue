@@ -11,7 +11,6 @@ import type { IFormError } from './form'
 const form_number = defineModel<string>('form_number', { required: true })
 const revised_count = defineModel<number>('revised_count', { required: true })
 const created_date = defineModel<string>('created_date', { required: true })
-const required_date = defineModel<string>('required_date', { required: true })
 const options = defineModel<ISelectedBranch[]>('options', { required: true })
 const branch = defineModel<ISelectedBranch>('branch', { required: true })
 const errors = defineModel<IFormError>('errors')
@@ -46,22 +45,7 @@ const computedCreatedTime = computed(() => {
         layout="horizontal"
         :modelValue="computedCreatedTime"
       />
-      <branch-autocomplete
-        required
-        layout="horizontal"
-        label="Branch"
-        v-model:selected="branch"
-        v-model:options="options"
-        :errors="errors?.['branch._id']"
-      />
-      <base-datepicker
-        required
-        v-model="required_date"
-        label="Required Date"
-        layout="horizontal"
-        description="When is this item needed to be used?"
-        :errors="errors?.required_date"
-      />
+      <base-input disabled required label="Branch" layout="horizontal" :modelValue="branch.label" />
     </div>
   </base-card>
 </template>

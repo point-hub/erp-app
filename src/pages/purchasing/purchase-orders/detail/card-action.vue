@@ -109,7 +109,8 @@ const onRequestDelete = async () => {
         v-if="
           authStore.permission?.purchasing?.purchase_orders?.approval &&
           data.approval_to._id === authStore._id &&
-          data.approval_status === 'pending'
+          data.approval_status === 'pending' &&
+          !data.is_deleted
         "
         color="success"
         size="sm"
@@ -122,7 +123,8 @@ const onRequestDelete = async () => {
         v-if="
           authStore.permission?.purchasing?.purchase_orders?.approval &&
           data.approval_to._id === authStore._id &&
-          data.approval_status === 'pending'
+          data.approval_status === 'pending' &&
+          !data.is_deleted
         "
         color="danger"
         size="sm"

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import BranchAutocomplete, {
-  type ISelectedBranch
-} from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
+import { type ISelectedBranch } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 import SupplierAutocomplete, {
   type ISelectedSupplier
 } from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
@@ -11,8 +9,7 @@ import PurchaseRequestAutocomplete, {
 
 import type { IFormError } from './form'
 
-const options = defineModel<ISelectedBranch[]>('options')
-const branch = defineModel<ISelectedBranch>('branch')
+const branch = defineModel<ISelectedBranch>('branch', { required: true })
 const supplierOptions = defineModel<ISelectedSupplier[]>('supplier_options')
 const supplier = defineModel<ISelectedSupplier>('supplier')
 const purchaseRequestOptions = defineModel<ISelectedPurchaseRequest[]>('purchase_request_options')
@@ -25,13 +22,12 @@ const errors = defineModel<IFormError>('errors')
     <template #header>Purchase Orders</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <branch-autocomplete
+      <base-input
+        disabled
         required
         layout="horizontal"
         label="Branch"
-        v-model:selected="branch"
-        v-model:options="options"
-        :errors="errors?.['branch._id']"
+        :modelValue="branch?.label"
       />
 
       <purchase-request-autocomplete

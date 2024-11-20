@@ -82,7 +82,6 @@ const onSave = async () => {
       v-model:branch="form.data.branch"
       v-model:options="authStore.branches"
       v-model:created_date="form.data.created_date"
-      v-model:required_date="form.data.required_date"
       :errors="form.errors"
     />
 

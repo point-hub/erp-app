@@ -35,7 +35,6 @@ export interface IDetail {
 }
 
 export interface IBranch {
-  lookup_from: string
   _id: string
   label: string
   code: string
@@ -43,7 +42,6 @@ export interface IBranch {
 }
 
 export interface IApprovalTo {
-  lookup_from: string
   _id: string
   label: string
   name: string

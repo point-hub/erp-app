@@ -26,13 +26,13 @@ onMounted(() => {
       icon: 'i-far-file-import'
     })
   }
-  // if (authStore?.permission?.purchasing?.purchase_orders?.read) {
-  //   menus.value.push({
-  //     name: 'Purchase Orders',
-  //     path: '/purchasing/purchase-orders',
-  //     icon: 'i-far-file-pen'
-  //   })
-  // }
+  if (authStore?.permission?.purchasing?.purchase_orders?.read) {
+    menus.value.push({
+      name: 'Purchase Orders',
+      path: '/purchasing/purchase-orders',
+      icon: 'i-far-file-pen'
+    })
+  }
   // if (authStore?.permission?.purchasing?.down_payments?.read) {
   //   menus.value.push({
   //     name: 'Down Payments',
