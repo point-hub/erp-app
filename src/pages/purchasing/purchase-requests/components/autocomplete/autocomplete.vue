@@ -9,6 +9,8 @@ export interface ISelectedPurchaseRequest {
   form_number: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  references: any
 }
 
 const _id = defineModel<string>()
@@ -30,7 +32,8 @@ const apiCall = async () => {
       return {
         _id: data._id,
         label: data.form_number,
-        details: data.details
+        details: data.details,
+        references: data.references
       }
     })
   }

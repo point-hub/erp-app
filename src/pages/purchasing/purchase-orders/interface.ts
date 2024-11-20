@@ -20,11 +20,23 @@ export interface ISupplier {
   name: string
 }
 
+export interface IReference {
+  ref_id: string
+  ref_name: string
+  ref_number: string
+  ref_date: Date
+  details: {
+    uuid: string
+    quantity: number
+  }[]
+}
+
 export interface IPurchaseRequest {
   _id: string
   label: string
   form_number: string
   details: IDetail[]
+  references: IReference[]
 }
 
 export interface IDetail {

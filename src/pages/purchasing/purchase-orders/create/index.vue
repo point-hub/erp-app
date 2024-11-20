@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isEmpty } from '@point-hub/js-utils'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, toRaw, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -24,7 +24,7 @@ const createPurchaseOrderApi = useCreatePurchaseOrderApi()
 watch(
   () => form.data.purchase_request,
   () => {
-    form.data.details = form.data.purchase_request?.details as any
+    form.data.details = JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
   }
 )
 
