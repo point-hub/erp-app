@@ -60,17 +60,7 @@ onMounted(() => {})
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
-              <item-choosen
-                title="Item"
-                v-model:selected="item.item"
-                @update:selected="
-                  () => {
-                    errors[`details.${index}.item._id`] = []
-                  }
-                "
-                border="full"
-                :errors="errors?.[`details.${index}.item._id`]"
-              />
+              <base-input disabled v-model="item.item.label" border="full"></base-input>
             </td>
             <td>
               <base-input-number

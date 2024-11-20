@@ -24,7 +24,7 @@ const createPurchaseOrderApi = useCreatePurchaseOrderApi()
 watch(
   () => form.data.purchase_request,
   () => {
-    form.data.details = form.data.purchase_request?.details
+    form.data.details = form.data.purchase_request?.details as any
   }
 )
 
@@ -81,6 +81,8 @@ const onSave = async () => {
       and add branch in your user. Or contact your Administrator if you don't have permission to
       edit user data
     </base-alert>
+
+    <pre><code>{{form.data}}</code></pre>
 
     <card-form
       v-model:branch="form.data.branch"
