@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 export interface IForm {
   [key: string]: any
-  supplier_group_id: string
+  supplier_group: string
   code: string
   name: string
   address: string
@@ -17,7 +17,7 @@ export interface IForm {
 
 export function useForm() {
   const defaultForm: IForm = {
-    supplier_group_id: '',
+    supplier_group: '',
     code: '',
     name: '',
     address: '',

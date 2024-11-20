@@ -29,7 +29,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.supplier_group = `[${response.supplier_group.code}] ${response.supplier_group.name}`
+    form.data.supplier_group = response.supplier_group.label
     form.data.code = response.code
     form.data.name = response.name
     form.data.address = response.address

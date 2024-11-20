@@ -18,6 +18,7 @@ interface ISupplier {
   _id: string
   supplier_group: {
     _id: string
+    label: string
     code: string
     name: string
   }
@@ -252,7 +253,7 @@ const onDelete = async () => {
               <td>{{ supplier.name }}</td>
               <td>{{ supplier.address }}</td>
               <td>{{ supplier.phone }}</td>
-              <td>[{{ supplier.supplier_group.code }}] {{ supplier.supplier_group.name }}</td>
+              <td>{{ supplier.supplier_group.label }}</td>
             </tr>
           </template>
         </tbody>

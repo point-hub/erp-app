@@ -19,7 +19,7 @@ const countersApi = useCountersApi()
 
 watch(selected, async () => {
   allocation_group.value = selected.value
-  const selectedCode = await countersApi.getCode('allocation_groups', selected.value.code)
+  const selectedCode = await countersApi.getCode('allocations', selected.value.code)
   if (selectedCode) code.value = selectedCode
 })
 </script>

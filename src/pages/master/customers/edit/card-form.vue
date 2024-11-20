@@ -26,8 +26,9 @@ const errors = defineModel<IFormError>('errors')
         label="Customer Group"
         v-model="customer_group_id"
         v-model:selected="customer_group"
-        :errors="errors?.customer_group_id"
+        :errors="errors?.['customer_group._id']"
       />
+
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
       <base-input v-model="address" label="Address" :errors="errors?.address" />

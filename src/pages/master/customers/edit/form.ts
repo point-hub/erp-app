@@ -2,7 +2,12 @@ import { ref, watch } from 'vue'
 
 export interface IForm {
   [key: string]: any
-  customer_group_id: string
+  customer_group: {
+    _id: string
+    label: string
+    code: string
+    name: string
+  }
   code: string
   name: string
   address: string
@@ -17,7 +22,7 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
-  customer_group_id: string[]
+  'customer_group._id': string[]
   code: string[]
   name: string[]
   address: string[]
@@ -32,7 +37,12 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    customer_group_id: '',
+    customer_group: {
+      _id: '',
+      label: '',
+      code: '',
+      name: ''
+    },
     code: '',
     name: '',
     address: '',
@@ -46,7 +56,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
-    customer_group_id: [],
+    'customer_group._id': [],
     code: [],
     name: [],
     address: [],

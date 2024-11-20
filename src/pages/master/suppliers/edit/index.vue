@@ -30,7 +30,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.supplier_group_id = response.supplier_group._id
+    form.data.supplier_group = response.supplier_group
     form.data.code = response.code
     form.data.name = response.name
     form.data.address = response.address

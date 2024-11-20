@@ -6,7 +6,9 @@ import CustomerGroupAutocomplete from '@/pages/master/customer-groups/components
 
 import type { IFormError } from './form'
 
-const customer_group_id = defineModel<string>('customer_group_id')
+const customer_group = defineModel<{ _id: string; label: string; code: string }>('customer_group', {
+  required: true
+})
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -19,7 +21,8 @@ const selected = ref()
 const countersApi = useCountersApi()
 
 watch(selected, async () => {
-  const selectedCode = await countersApi.getCode('customer_groups', selected.value.code)
+  customer_group.value = selected.value
+  const selectedCode = await countersApi.getCode('customers', selected.value.code)
   if (selectedCode) code.value = selectedCode
 })
 </script>
@@ -32,7 +35,7 @@ watch(selected, async () => {
       <customer-group-autocomplete
         required
         label="Customer Group"
-        v-model="customer_group_id"
+        v-model="customer_group._id"
         v-model:selected="selected"
         :errors="errors?.customer_group_id"
       />

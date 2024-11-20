@@ -6,7 +6,6 @@ import { useGetPurchaseRequestApi } from './retrieve-all.api'
 
 export interface ISelectedPurchaseRequest {
   _id: string
-  label: string
   form_number: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   details: any

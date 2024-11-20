@@ -6,7 +6,12 @@ import SupplierGroupAutocomplete from '@/pages/master/supplier-groups/components
 
 import type { IFormError } from './form'
 
-const supplier_group_id = defineModel<string>('supplier_group_id')
+const supplier_group = defineModel<{ _id: string; label: string; code: string; name: string }>(
+  'supplier_group',
+  {
+    required: true
+  }
+)
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -19,8 +24,11 @@ const selected = ref()
 const countersApi = useCountersApi()
 
 watch(selected, async () => {
-  const selectedCode = await countersApi.getCode('supplier_groups', selected.value.code)
-  if (selectedCode) code.value = selectedCode
+  if (selected.value) {
+    supplier_group.value = selected.value
+    const selectedCode = await countersApi.getCode('suppliers', selected.value.code)
+    if (selectedCode) code.value = selectedCode
+  }
 })
 </script>
 
@@ -32,9 +40,9 @@ watch(selected, async () => {
       <supplier-group-autocomplete
         required
         label="Supplier Group"
-        v-model="supplier_group_id"
+        v-model="supplier_group._id"
         v-model:selected="selected"
-        :errors="errors?.supplier_group_id"
+        :errors="errors?.['supplier_group._id']"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
