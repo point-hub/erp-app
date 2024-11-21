@@ -16,6 +16,7 @@ const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request'
 const errors = defineModel<IFormError>('errors')
 
 watch(purchaseRequest, () => {
+  console.log(purchaseRequest.value?.required_date)
   if (purchaseRequest.value) required_date.value = purchaseRequest.value.required_date
 })
 </script>

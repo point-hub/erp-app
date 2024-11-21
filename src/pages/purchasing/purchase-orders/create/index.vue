@@ -24,7 +24,7 @@ const createPurchaseOrderApi = useCreatePurchaseOrderApi()
 watch(
   () => form.data.purchase_request,
   () => {
-    form.data.details = objKeys(form.data.purchase_request).length
+    form.data.details = form.data.purchase_request
       ? JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
       : []
     form.data.details = form.data.details?.map((detail) => {
@@ -92,7 +92,7 @@ const onSave = async () => {
       and add branch in your user. Or contact your Administrator if you don't have permission to
       edit user data
     </base-alert>
-    <!-- 
+
     <card-form
       v-model:branch="form.data.branch"
       v-model:required_date="form.data.required_date"
@@ -100,7 +100,7 @@ const onSave = async () => {
       v-model:supplier="form.data.supplier"
       v-model:purchase_request="form.data.purchase_request"
       :errors="form.errors"
-    /> -->
+    />
 
     <card-details
       v-if="form.data.purchase_request"

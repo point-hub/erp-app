@@ -38,7 +38,7 @@ export interface IPurchaseRequest {
   required_date: string
   label: string
   form_number: string
-  details: any
+  details: IDetail[]
   references: IReference[]
 }
 

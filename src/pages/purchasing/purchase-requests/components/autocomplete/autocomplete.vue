@@ -3,14 +3,16 @@ import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
 import { useGetPurchaseRequestApi } from './retrieve-all.api'
-import type { IDetail, IReference } from '../../interface'
+import type { IReference } from '@/pages/purchasing/purchase-requests/interface'
+import type { IDetail } from '@/pages/purchasing/purchase-requests/interface'
 
 export interface ISelectedPurchaseRequest {
   _id: string
-  form_number: string
+  label?: string
+  form_number?: string
   required_date: string
-  details: IDetail
-  references: IReference
+  details: IDetail[]
+  references: IReference[]
 }
 
 const _id = defineModel<string>()
@@ -32,6 +34,7 @@ const apiCall = async () => {
     options.value = response.data.map((data: ISelectedPurchaseRequest) => {
       return {
         _id: data._id,
+        required_date: data.required_date,
         label: data.form_number,
         details: data.details,
         references: data.references
