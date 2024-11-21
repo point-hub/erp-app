@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isEmpty } from '@point-hub/js-utils'
+import { isEmpty, objKeys } from '@point-hub/js-utils'
 import { onMounted, reactive, ref, toRaw, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -24,10 +24,12 @@ const createPurchaseOrderApi = useCreatePurchaseOrderApi()
 watch(
   () => form.data.purchase_request,
   () => {
-    form.data.details = JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
-    form.data.details = form.data.details.map((item) => {
+    form.data.details = objKeys(form.data.purchase_request).length
+      ? JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
+      : []
+    form.data.details = form.data.details?.map((detail) => {
       return {
-        ...item,
+        ...detail,
         price: 0,
         discount: 0,
         total: 0
@@ -61,7 +63,7 @@ const onSave = async () => {
     router.push('/unauthorized')
     return
   }
-  if (form.data.details.length === 0) {
+  if (form.data.details?.length === 0) {
     toastRef.toast('Items is required', {
       color: 'danger'
     })
@@ -90,7 +92,7 @@ const onSave = async () => {
       and add branch in your user. Or contact your Administrator if you don't have permission to
       edit user data
     </base-alert>
-
+    <!-- 
     <card-form
       v-model:branch="form.data.branch"
       v-model:required_date="form.data.required_date"
@@ -98,7 +100,7 @@ const onSave = async () => {
       v-model:supplier="form.data.supplier"
       v-model:purchase_request="form.data.purchase_request"
       :errors="form.errors"
-    />
+    /> -->
 
     <card-details
       v-if="form.data.purchase_request"

@@ -3,15 +3,14 @@ import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
 import { useGetPurchaseRequestApi } from './retrieve-all.api'
+import type { IDetail, IReference } from '../../interface'
 
 export interface ISelectedPurchaseRequest {
   _id: string
   form_number: string
   required_date: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  details: any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  references: any
+  details: IDetail
+  references: IReference
 }
 
 const _id = defineModel<string>()
@@ -28,6 +27,7 @@ const localOptions = ref<ISelectedPurchaseRequest[]>()
 
 const apiCall = async () => {
   const response = await getPurchaseRequestsApi.send(search.value, 1)
+
   if (response?.data) {
     options.value = response.data.map((data: ISelectedPurchaseRequest) => {
       return {

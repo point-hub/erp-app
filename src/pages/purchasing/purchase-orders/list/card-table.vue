@@ -238,7 +238,7 @@ onMounted(async () => {
                 <td>{{ purchaseOrder.required_date }}</td>
                 <td>{{ purchaseOrder.branch.label }}</td>
                 <td>{{ detail.item.label }}</td>
-                <td>{{ detail.notes }}</td>
+                <td>{{ detail.item.label }}</td>
                 <td class="text-right">
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
                 </td>

@@ -8,13 +8,13 @@ import { useFormatNumber } from '@/composable/format-number'
 
 const { formatNumber } = useFormatNumber()
 const errors = defineModel<IFormError>('errors', { required: true })
-const details = defineModel<IDetail[]>('details', { required: true })
-const subtotal = defineModel<number>('subtotal', { required: true, default: 0 })
-const discount = defineModel<number>('discount', { required: true, default: 0 })
-const tax_base = defineModel<number>('tax_base', { required: true, default: 0 })
-const tax_type = defineModel<'include' | 'exclude' | 'non'>('tax_type', { required: true })
-const tax = defineModel<number>('tax', { required: true, default: 0 })
-const total = defineModel<number>('total', { required: true, default: 0 })
+const details = defineModel<IDetail[]>('details')
+const subtotal = defineModel<number>('subtotal', { default: 0 })
+const discount = defineModel<number>('discount', { default: 0 })
+const tax_base = defineModel<number>('tax_base', { default: 0 })
+const tax_type = defineModel<'include' | 'exclude' | 'non'>('tax_type')
+const tax = defineModel<number>('tax', { default: 0 })
+const total = defineModel<number>('total', { default: 0 })
 
 const isIncludeTax = ref<boolean>(false)
 const isExcludeTax = ref<boolean>(false)
@@ -38,30 +38,29 @@ const chooseTax = (taxType: 'include' | 'exclude' | 'non') => {
 }
 
 const calculate = () => {
-  details.value.forEach((detail) => {
+  details.value?.forEach((detail) => {
     detail.total =
       formatNumber(detail.quantity) * (formatNumber(detail.price) - formatNumber(detail.discount))
   })
 
-  subtotal.value = details.value.reduce((sum, detail) => {
-    return sum + formatNumber(detail.total)
-  }, 0)
+  subtotal.value =
+    details.value?.reduce((sum, detail) => {
+      return sum + formatNumber(detail.total)
+    }, 0) ?? 0
 
-  tax_base.value = formatNumber(subtotal.value)
-  total.value = formatNumber(tax_base.value)
+  if (tax_type.value === 'include') {
+    tax.value = (formatNumber(tax_base.value) * 11) / 100 / (1 + 11 / 100)
+    total.value = formatNumber(tax_base.value)
+  }
+  if (tax_type.value === 'exclude') {
+    tax.value = (formatNumber(tax_base.value) * 11) / 100
+    total.value = formatNumber(tax_base.value) + (formatNumber(tax_base.value) * 11) / 100
+  }
+  if (tax_type.value === 'non') {
+    tax.value = 0
+    total.value = formatNumber(tax_base.value)
+  }
 
-  // if (tax_type.value === 'include') {
-  //   tax.value = (formatNumber(tax_base.value) * 11) / 100 / (1 + 11 / 100)
-  //   total.value = formatNumber(tax_base.value)
-  // }
-  // if (tax_type.value === 'exclude') {
-  //   tax.value = (formatNumber(tax_base.value) * 11) / 100
-  //   total.value = formatNumber(tax_base.value) + (formatNumber(tax_base.value) * 11) / 100
-  // }
-  // if (tax_type.value === 'non') {
-  //   tax.value = 0
-  //   total.value = formatNumber(tax_base.value)
-  // }
   console.log(
     tax_type.value,
     subtotal.value,
@@ -176,7 +175,6 @@ watch(
             <td colspan="5" class="text-right font-bold uppercase">Discount</td>
             <td>
               <base-input-number
-                disabled
                 border="full"
                 v-model="discount"
                 @update:modelValue="

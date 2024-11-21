@@ -1,3 +1,5 @@
+export type TaxType = 'include' | 'exclude' | 'non'
+
 export interface IItem {
   _id: string
   label: string
@@ -36,7 +38,7 @@ export interface IPurchaseRequest {
   required_date: string
   label: string
   form_number: string
-  details: IDetail[]
+  details: any
   references: IReference[]
 }
 

@@ -9,14 +9,10 @@ import PurchaseRequestAutocomplete, {
 import type { IFormError } from './form'
 import { watch } from 'vue'
 
-const required_date = defineModel<Date>('required_date')
-const branch = defineModel<ISelectedBranch>('branch', { required: true })
-const supplierOptions = defineModel<ISelectedSupplier[]>('supplier_options')
+const required_date = defineModel<string>('required_date')
+const branch = defineModel<ISelectedBranch>('branch')
 const supplier = defineModel<ISelectedSupplier>('supplier')
-const purchaseRequestOptions = defineModel<ISelectedPurchaseRequest[]>('purchase_request_options')
-const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request', {
-  required: true
-})
+const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request')
 const errors = defineModel<IFormError>('errors')
 
 watch(purchaseRequest, () => {
@@ -42,7 +38,6 @@ watch(purchaseRequest, () => {
         layout="horizontal"
         label="Purchase Request"
         v-model:selected="purchaseRequest"
-        v-model:options="purchaseRequestOptions"
         :errors="errors?.['purchaseRequest._id']"
       />
 
@@ -52,7 +47,6 @@ watch(purchaseRequest, () => {
         layout="horizontal"
         label="Supplier"
         v-model:selected="supplier"
-        v-model:options="supplierOptions"
         :errors="errors?.['supplier._id']"
       />
 

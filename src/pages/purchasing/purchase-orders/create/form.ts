@@ -1,55 +1,70 @@
 import { ref, watch } from 'vue'
 
-import type { IApprovalTo, IBranch, IDetail, IPurchaseRequest, ISupplier } from '../interface'
+import type {
+  IApprovalTo,
+  IBranch,
+  IDetail,
+  IPurchaseRequest,
+  ISupplier,
+  TaxType
+} from '../interface'
 
 export interface IForm {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
-  required_date?: string
-  subtotal: number
-  discount: number
-  tax_base: number
-  tax_type: 'include' | 'exclude' | 'non'
-  tax: number
-  total: number
-  branch: IBranch
-  supplier?: ISupplier
+  branch?: IBranch
   purchase_request?: IPurchaseRequest
-  details: IDetail[]
+  supplier?: ISupplier
+  required_date?: string
+  details?: IDetail[]
+  subtotal?: number
+  discount?: number
+  tax_base?: number
+  tax_type?: TaxType
+  tax?: number
+  total?: number
   approval_to?: IApprovalTo
   notes?: string
 }
 
 export interface IFormError {
   [key: string]: string[]
-  required_date: string[]
   'branch._id': string[]
-  details: string[]
+  'purchase_request._id': string[]
+  'supplier._id': string[]
+  required_date: string[]
+  'details.item._id': string[]
+  'details.quantity': string[]
+  'details.price': string[]
+  subtotal: string[]
+  discount: string[]
+  tax_base: string[]
+  tax_type: string[]
+  tax: string[]
+  total: string[]
   'approval_to._id': string[]
   notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
-    subtotal: 0,
-    discount: 0,
-    tax_base: 0,
-    tax_type: 'non',
-    tax: 0,
-    total: 0,
-    branch: {
-      _id: '',
-      label: '',
-      name: '',
-      code: ''
-    },
     details: []
   }
 
   const defaultFormError: IFormError = {
-    required_date: [],
     'branch._id': [],
-    details: [],
+    'purchase_request._id': [],
+    'supplier._id': [],
+    required_date: [],
+    'details.item._id': [],
+    'details.quantity': [],
+    'details.price': [],
+    subtotal: [],
+    discount: [],
+    tax_base: [],
+    tax_type: [],
+    tax: [],
+    total: [],
     'approval_to._id': [],
     notes: []
   }
