@@ -38,7 +38,6 @@ export interface IForm {
   [key: string]: any
   form_number: string
   created_date: string
-  required_date: string
   branch: IBranch
   details: IDetail[]
   approval_to: IApprovalTo
@@ -48,7 +47,6 @@ export interface IForm {
 export interface IFormError {
   [key: string]: string[]
   'branch._id': string[]
-  required_date: string[]
   details: string[]
   approval_to: string[]
   notes: string[]
@@ -56,7 +54,6 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    required_date: '',
     form_number: '',
     created_date: '',
     branch: {
@@ -78,7 +75,6 @@ export function useForm() {
 
   const defaultFormError: IFormError = {
     'branch._id': [],
-    required_date: [],
     details: [],
     approval_to: [],
     notes: []

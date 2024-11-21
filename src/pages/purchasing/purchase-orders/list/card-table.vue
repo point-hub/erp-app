@@ -22,8 +22,10 @@ interface IPurchaseOrderDetail {
     name: string
     unit: string
   }
-  quantity: string
-  notes: string
+  quantity: number
+  price: number
+  discount: number
+  total: number
   allocation: {
     _id: string
     label: string
@@ -44,6 +46,12 @@ interface IPurchaseOrder {
     name: string
   }
   details: IPurchaseOrderDetail[]
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: string
+  tax: number
+  total: number
   notes: string
   approval_to: {
     _id: string
@@ -214,21 +222,21 @@ onMounted(async () => {
             </td>
           </tr>
           <template v-if="!isLoading">
-            <template v-for="purchaseRequest in purchaseOrders">
-              <tr v-for="(detail, index) in purchaseRequest.details" :key="index">
+            <template v-for="purchaseOrder in purchaseOrders">
+              <tr v-for="(detail, index) in purchaseOrder.details" :key="index">
                 <td></td>
                 <td>
                   <router-link
-                    :to="`/purchasing/purchase-orders/${purchaseRequest._id}`"
+                    :to="`/purchasing/purchase-orders/${purchaseOrder._id}`"
                     class="text-blue"
                   >
-                    {{ purchaseRequest.form_number }}
+                    {{ purchaseOrder.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd') }}</td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'HH:mm') }}</td>
-                <td>{{ purchaseRequest.required_date }}</td>
-                <td>{{ purchaseRequest.branch.label }}</td>
+                <td>{{ format(new Date(purchaseOrder.created_date), 'yyyy-MM-dd') }}</td>
+                <td>{{ format(new Date(purchaseOrder.created_date), 'HH:mm') }}</td>
+                <td>{{ purchaseOrder.required_date }}</td>
+                <td>{{ purchaseOrder.branch.label }}</td>
                 <td>{{ detail.item.label }}</td>
                 <td>{{ detail.notes }}</td>
                 <td class="text-right">
@@ -237,22 +245,22 @@ onMounted(async () => {
                 <td class="text-center">
                   <base-badge
                     :color="
-                      purchaseRequest.approval_status === 'rejected'
+                      purchaseOrder.approval_status === 'rejected'
                         ? 'danger'
-                        : purchaseRequest.approval_status === 'approved'
+                        : purchaseOrder.approval_status === 'approved'
                           ? 'success'
                           : 'warning'
                     "
                   >
-                    {{ purchaseRequest.approval_status ?? 'pending' }}
+                    {{ purchaseOrder.approval_status ?? 'pending' }}
                   </base-badge>
                 </td>
                 <td class="text-center">
-                  <base-badge v-if="purchaseRequest.is_deleted" color="danger">deleted</base-badge>
-                  <base-badge v-else-if="!purchaseRequest.is_finished" color="warning"
-                    >open</base-badge
+                  <base-badge v-if="purchaseOrder.is_deleted" color="danger">deleted</base-badge>
+                  <base-badge v-else-if="!purchaseOrder.is_finished" color="warning"
+                    >pending</base-badge
                   >
-                  <base-badge v-else-if="purchaseRequest.is_finished" color="success"
+                  <base-badge v-else-if="purchaseOrder.is_finished" color="success"
                     >finished</base-badge
                   >
                 </td>

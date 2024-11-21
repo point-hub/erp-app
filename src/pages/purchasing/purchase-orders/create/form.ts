@@ -5,6 +5,13 @@ import type { IApprovalTo, IBranch, IDetail, IPurchaseRequest, ISupplier } from 
 export interface IForm {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
+  required_date?: string
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: 'include' | 'exclude' | 'non'
+  tax: number
+  total: number
   branch: IBranch
   supplier?: ISupplier
   purchase_request?: IPurchaseRequest
@@ -15,6 +22,7 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
+  required_date: string[]
   'branch._id': string[]
   details: string[]
   'approval_to._id': string[]
@@ -23,6 +31,12 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
+    subtotal: 0,
+    discount: 0,
+    tax_base: 0,
+    tax_type: 'non',
+    tax: 0,
+    total: 0,
     branch: {
       _id: '',
       label: '',
@@ -33,6 +47,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
+    required_date: [],
     'branch._id': [],
     details: [],
     'approval_to._id': [],

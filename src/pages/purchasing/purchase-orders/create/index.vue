@@ -25,6 +25,14 @@ watch(
   () => form.data.purchase_request,
   () => {
     form.data.details = JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
+    form.data.details = form.data.details.map((item) => {
+      return {
+        ...item,
+        price: 0,
+        discount: 0,
+        total: 0
+      }
+    })
   }
 )
 
@@ -34,6 +42,7 @@ onMounted(async () => {
   if (!authStore.permission?.purchasing?.purchase_orders?.create) {
     router.push('/unauthorized')
   }
+
   // set branch requirement
   if (!isEmpty(authStore.default_branch)) {
     form.data.branch = authStore.default_branch
@@ -84,16 +93,22 @@ const onSave = async () => {
 
     <card-form
       v-model:branch="form.data.branch"
+      v-model:required_date="form.data.required_date"
       v-model:options="authStore.branches"
       v-model:supplier="form.data.supplier"
       v-model:purchase_request="form.data.purchase_request"
-      v-model:required_date="form.data.required_date"
       :errors="form.errors"
     />
 
     <card-details
       v-if="form.data.purchase_request"
       v-model:details="form.data.details"
+      v-model:subtotal="form.data.subtotal"
+      v-model:discount="form.data.discount"
+      v-model:tax_base="form.data.tax_base"
+      v-model:tax_type="form.data.tax_type"
+      v-model:tax="form.data.tax"
+      v-model:total="form.data.total"
       :errors="form.errors"
     />
 

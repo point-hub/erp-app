@@ -6,15 +6,22 @@ import SupplierAutocomplete, {
 import PurchaseRequestAutocomplete, {
   type ISelectedPurchaseRequest
 } from '@/pages/purchasing/purchase-requests/components/autocomplete/autocomplete.vue'
-
 import type { IFormError } from './form'
+import { watch } from 'vue'
 
+const required_date = defineModel<Date>('required_date')
 const branch = defineModel<ISelectedBranch>('branch', { required: true })
 const supplierOptions = defineModel<ISelectedSupplier[]>('supplier_options')
 const supplier = defineModel<ISelectedSupplier>('supplier')
 const purchaseRequestOptions = defineModel<ISelectedPurchaseRequest[]>('purchase_request_options')
-const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request')
+const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request', {
+  required: true
+})
 const errors = defineModel<IFormError>('errors')
+
+watch(purchaseRequest, () => {
+  if (purchaseRequest.value) required_date.value = purchaseRequest.value.required_date
+})
 </script>
 
 <template>
@@ -47,6 +54,16 @@ const errors = defineModel<IFormError>('errors')
         v-model:selected="supplier"
         v-model:options="supplierOptions"
         :errors="errors?.['supplier._id']"
+      />
+
+      <base-datepicker
+        required
+        v-if="purchase_request"
+        v-model="required_date"
+        label="Required Date"
+        layout="horizontal"
+        description="when the item is required to be shipped?"
+        :errors="errors?.required_date"
       />
     </div>
   </base-card>

@@ -33,6 +33,7 @@ export interface IReference {
 
 export interface IPurchaseRequest {
   _id: string
+  required_date: string
   label: string
   form_number: string
   details: IDetail[]
@@ -41,8 +42,10 @@ export interface IPurchaseRequest {
 
 export interface IDetail {
   item: IItem
-  notes: string
   quantity: number
+  price: number
+  discount: number
+  total: number
   allocation: IAllocation
 }
 

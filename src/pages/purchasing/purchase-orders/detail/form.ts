@@ -8,8 +8,10 @@ export interface IDetail {
     name: string
     unit: string
   }
-  notes: string
   quantity: number
+  price: number
+  discount: number
+  total: number
   allocation: {
     _id: string
     label: string
@@ -38,9 +40,14 @@ export interface IForm {
   [key: string]: any
   form_number: string
   revised_count: number
-  required_date: string
   branch: IBranch
   details: IDetail[]
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: string
+  tax: number
+  total: number
   approval_to: IApprovalTo
   approval_status?: string
   notes?: string
@@ -50,11 +57,16 @@ export function useForm() {
   const defaultForm: IForm = {
     form_number: '',
     revised_count: 0,
-    required_date: '',
     branch: { _id: '', code: '', name: '', label: '' },
     created_by: { _id: '', username: '', name: '', email: '', label: '' },
     approval_to: { _id: '', username: '', name: '', email: '', label: '' },
-    details: []
+    details: [],
+    subtotal: 0,
+    discount: 0,
+    tax_base: 0,
+    tax_type: 'non',
+    tax: 0,
+    total: 0
   }
 
   const data = ref<IForm>(defaultForm)

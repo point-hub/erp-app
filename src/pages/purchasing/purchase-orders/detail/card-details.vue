@@ -13,7 +13,9 @@ const details = defineModel<IDetail[]>('details', { required: true })
             <th class="w-1">#</th>
             <th>Item</th>
             <th>Quantity</th>
-            <th>Notes</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Total</th>
             <th>Allocation</th>
             <th></th>
           </tr>
@@ -23,7 +25,9 @@ const details = defineModel<IDetail[]>('details', { required: true })
             <td>{{ index + 1 }}</td>
             <td>{{ detail.item.label }}</td>
             <td>{{ detail.quantity }}</td>
-            <td>{{ detail.notes }}</td>
+            <td>{{ detail.price }}</td>
+            <td>{{ detail.discount }}</td>
+            <td>{{ detail.total }}</td>
             <td>{{ detail.allocation.label }}</td>
             <td></td>
           </tr>

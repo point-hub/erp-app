@@ -5,7 +5,6 @@ import { computed } from 'vue'
 const form_number = defineModel<string>('form_number', { required: true })
 const revised_count = defineModel<number>('revised_count', { required: true })
 const created_date = defineModel<string>('created_date', { required: true })
-const required_date = defineModel<string>('required_date', { required: true })
 const branch = defineModel<string>('branch', { required: true })
 
 const computedCreatedDate = computed(() => {
