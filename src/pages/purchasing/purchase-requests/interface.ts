@@ -16,7 +16,7 @@ export interface IAllocation {
 export interface IDetail {
   item: IItem
   quantity: number
-  notes: string
+  notes?: string
   allocation: IAllocation
 }
 

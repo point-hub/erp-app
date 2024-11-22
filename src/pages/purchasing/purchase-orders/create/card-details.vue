@@ -4,9 +4,7 @@ import AllocationChoosen from '@/pages/master/allocations/components/choosen/cho
 import type { IDetail } from '../interface'
 import type { IFormError } from './form'
 import { ref, watch } from 'vue'
-import { useFormatNumber } from '@/composable/format-number'
 
-const { formatNumber } = useFormatNumber()
 const errors = defineModel<IFormError>('errors', { required: true })
 const details = defineModel<IDetail[]>('details')
 const subtotal = defineModel<number>('subtotal', { default: 0 })
@@ -19,65 +17,55 @@ const total = defineModel<number>('total', { default: 0 })
 const isIncludeTax = ref<boolean>(false)
 const isExcludeTax = ref<boolean>(false)
 
-const chooseTax = (taxType: 'include' | 'exclude' | 'non') => {
-  if (tax_type.value === taxType && tax_type.value !== 'non') {
-    tax_type.value = 'non'
-    isIncludeTax.value = false
-    isExcludeTax.value = false
-  } else if (taxType === 'include') {
-    tax_type.value = 'include'
-    isIncludeTax.value = true
-    isExcludeTax.value = false
-  } else if (taxType === 'exclude') {
-    tax_type.value = 'exclude'
-    isIncludeTax.value = false
-    isExcludeTax.value = true
-  }
-
-  calculate()
-}
+watch(
+  () => [isIncludeTax.value, isExcludeTax.value],
+  (newVal, oldVal) => {
+    if (newVal[0] === true && newVal[1] === true) {
+      if (newVal[0] === oldVal[0]) {
+        tax_type.value = 'exclude'
+        isIncludeTax.value = false
+      } else if (newVal[1] === oldVal[1]) {
+        tax_type.value = 'include'
+        isExcludeTax.value = false
+      }
+    } else if (newVal[0] === false && newVal[1] === false) {
+      tax_type.value = 'non'
+    } else {
+      tax_type.value = isIncludeTax.value ? 'include' : 'exclude'
+    }
+  },
+  { deep: true }
+)
 
 const calculate = () => {
+  subtotal.value = 0
+  console.log(subtotal.value)
   details.value?.forEach((detail) => {
-    detail.total =
-      formatNumber(detail.quantity) * (formatNumber(detail.price) - formatNumber(detail.discount))
+    detail.total = detail.quantity * (detail.price - detail.discount)
+    subtotal.value += detail.total
+    console.log(subtotal.value, detail.total)
   })
 
-  subtotal.value =
-    details.value?.reduce((sum, detail) => {
-      return sum + formatNumber(detail.total)
-    }, 0) ?? 0
+  tax_base.value = subtotal.value - discount.value
 
-  if (tax_type.value === 'include') {
-    tax.value = (formatNumber(tax_base.value) * 11) / 100 / (1 + 11 / 100)
-    total.value = formatNumber(tax_base.value)
-  }
-  if (tax_type.value === 'exclude') {
-    tax.value = (formatNumber(tax_base.value) * 11) / 100
-    total.value = formatNumber(tax_base.value) + (formatNumber(tax_base.value) * 11) / 100
-  }
-  if (tax_type.value === 'non') {
+  if (isIncludeTax.value) {
+    tax_type.value === 'include'
+    tax.value = Math.round((tax_base.value * 11) / 100 / (1 + 11 / 100))
+    total.value = tax_base.value
+  } else if (isExcludeTax.value) {
+    tax_type.value === 'exclude'
+    tax.value = (tax_base.value * 11) / 100
+    total.value = tax_base.value + (tax_base.value * 11) / 100
+  } else {
+    tax_type.value === 'non'
     tax.value = 0
-    total.value = formatNumber(tax_base.value)
+    total.value = tax_base.value
   }
-
-  console.log(
-    tax_type.value,
-    subtotal.value,
-    discount.value,
-    tax_base.value,
-    tax.value,
-    total.value
-  )
 }
 
-watch(
-  () => [details],
-  () => {
-    calculate()
-  },
-  { deep: true, immediate: true }
-)
+const clearError = (field: string) => {
+  errors.value[field] = []
+}
 </script>
 
 <template>
@@ -96,46 +84,35 @@ watch(
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in details" :key="index" class="relative">
+          <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
-              <base-input disabled v-model="item.item.label" border="full"></base-input>
+              <base-input disabled v-model="detail.item.label" border="full"></base-input>
             </td>
             <td>
               <base-input-number
                 border="full"
-                v-model="item.quantity"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.quantity`] = []
-                  }
-                "
+                v-model="detail.quantity"
+                @update:modelValue="clearError(`details.${index}.quantity`)"
                 :errors="errors?.[`details.${index}.quantity`]"
               />
             </td>
             <td>
               <base-input-number
                 border="full"
-                v-model="item.price"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.price`] = []
-                  }
-                "
+                v-model="detail.price"
+                @keyup="calculate()"
+                @update:modelValue="clearError(`details.${index}.price`)"
                 :errors="errors?.[`details.${index}.price`]"
               />
             </td>
             <td>
               <base-input-number
                 border="full"
-                v-model="item.discount"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.discount`] = []
-                  }
-                "
+                v-model="detail.discount"
+                @update:modelValue="clearError(`details.${index}.discount`)"
                 :errors="errors?.[`details.${index}.discount`]"
               />
             </td>
@@ -143,16 +120,12 @@ watch(
               <base-input-number
                 disabled
                 border="full"
-                v-model="item.total"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.total`] = []
-                  }
-                "
+                v-model="detail.total"
+                @update:modelValue="clearError(`details.${index}.total`)"
                 :errors="errors?.[`details.${index}.total`]"
               />
             </td>
-            <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>
+            <td><allocation-choosen v-model:selected="detail.allocation" border="full" /></td>
           </tr>
           <tr>
             <td colspan="5" class="text-right font-bold uppercase">Subtotal</td>
@@ -161,11 +134,7 @@ watch(
                 disabled
                 border="full"
                 v-model="subtotal"
-                @update:modelValue="
-                  () => {
-                    errors[`subtotal`] = []
-                  }
-                "
+                @update:modelValue="clearError(`subtotal`)"
                 :errors="errors?.[`subtotal`]"
               />
             </td>
@@ -177,11 +146,7 @@ watch(
               <base-input-number
                 border="full"
                 v-model="discount"
-                @update:modelValue="
-                  () => {
-                    errors[`discount`] = []
-                  }
-                "
+                @update:modelValue="clearError(`discount`)"
                 :errors="errors?.[`discount`]"
               />
             </td>
@@ -194,11 +159,7 @@ watch(
                 disabled
                 border="full"
                 v-model="tax_base"
-                @update:modelValue="
-                  () => {
-                    errors[`tax_base`] = []
-                  }
-                "
+                @update:modelValue="clearError(`tax_base`)"
                 :errors="errors?.[`tax_base`]"
               />
             </td>
@@ -209,11 +170,11 @@ watch(
             <td>
               <div class="flex items-center gap-2 text-sm">
                 <div class="flex items-center">
-                  <base-checkbox v-model="isIncludeTax" @click.native="chooseTax('include')" />
+                  <base-checkbox v-model="isIncludeTax" />
                   <span>Include</span>
                 </div>
                 <div class="flex items-center">
-                  <base-checkbox v-model="isExcludeTax" @click.native="chooseTax('exclude')" />
+                  <base-checkbox v-model="isExcludeTax" />
                   <span>Exclude</span>
                 </div>
               </div>
@@ -230,11 +191,7 @@ watch(
                 disabled
                 border="full"
                 v-model="tax"
-                @update:modelValue="
-                  () => {
-                    errors[`tax`] = []
-                  }
-                "
+                @update:modelValue="clearError(`tax`)"
                 :errors="errors?.[`tax`]"
               />
             </td>
@@ -247,11 +204,7 @@ watch(
                 disabled
                 border="full"
                 v-model="total"
-                @update:modelValue="
-                  () => {
-                    errors[`total`] = []
-                  }
-                "
+                @update:modelValue="clearError(`total`)"
                 :errors="errors?.[`total`]"
               />
             </td>
