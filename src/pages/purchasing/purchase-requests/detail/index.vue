@@ -46,6 +46,8 @@ onMounted(async () => {
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
+    <card-action :data="form.data" />
+
     <base-card
       bg-color="red"
       title-color="white"
@@ -91,8 +93,6 @@ onMounted(async () => {
         {{ form.data.deleted_reason }}
       </div>
     </base-card>
-
-    <card-action :data="form.data" />
 
     <card-form
       :form_number="form.data.form_number"

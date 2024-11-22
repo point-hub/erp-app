@@ -2,9 +2,9 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
+import type { IDetail, IReference } from '@/pages/purchasing/purchase-requests/interface'
+
 import { useGetPurchaseRequestApi } from './retrieve-all.api'
-import type { IReference } from '@/pages/purchasing/purchase-requests/interface'
-import type { IDetail } from '@/pages/purchasing/purchase-requests/interface'
 
 export interface ISelectedPurchaseRequest {
   _id: string

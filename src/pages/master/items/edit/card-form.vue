@@ -5,7 +5,6 @@ import ItemCategoryAutocomplete, {
 
 import type { IFormError } from './form'
 
-const category_id = defineModel<string>('category_id')
 const category = defineModel<ISelectedItemCategory>('category')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
@@ -22,13 +21,12 @@ const errors = defineModel<IFormError>('errors')
       <item-category-autocomplete
         required
         label="Category"
-        v-model="category_id"
         v-model:selected="category"
         :errors="errors?.category_id"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
-      <base-input v-model="unit" label="Unit" :errors="errors?.unit" />
+      <base-input required v-model="unit" label="Unit" :errors="errors?.unit" />
       <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>

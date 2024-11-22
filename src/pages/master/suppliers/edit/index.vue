@@ -19,7 +19,6 @@ const updateSupplierApi = useUpdateSupplierApi()
 
 const form = reactive(useForm())
 const formId = ref()
-const supplier_group = ref()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.suppliers?.update) {
@@ -41,8 +40,6 @@ onMounted(async () => {
     form.data.bank_branch = response.bank_branch
     form.data.bank_account_name = response.bank_account_name
     form.data.bank_account_number = response.bank_account_number
-
-    supplier_group.value = response.supplier_group
   }
 })
 
@@ -64,8 +61,7 @@ const onUpdate = async () => {
     <card-form
       v-if="authStore.permission?.master?.suppliers?.update"
       :form-id="route.params.id.toString()"
-      v-model:supplier_group_id="form.data.supplier_group_id"
-      v-model:supplier_group="supplier_group"
+      v-model:supplier_group="form.data.supplier_group"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"

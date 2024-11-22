@@ -166,7 +166,7 @@ const isAuthenticated = async () => {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 router.beforeEach(async (to, from, next) => {
   // 1. check if client is authenticated
   if (to.meta.requiresAuth && !(await isAuthenticated())) {

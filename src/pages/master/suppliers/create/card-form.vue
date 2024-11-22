@@ -2,16 +2,15 @@
 import { ref, watch } from 'vue'
 
 import { useCountersApi } from '@/api/counters.api'
-import SupplierGroupAutocomplete from '@/pages/master/supplier-groups/components/autocomplete/autocomplete.vue'
+import SupplierGroupAutocomplete, {
+  type ISelectedSupplierGroup
+} from '@/pages/master/supplier-groups/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
-const supplier_group = defineModel<{ _id: string; label: string; code: string; name: string }>(
-  'supplier_group',
-  {
-    required: true
-  }
-)
+const supplier_group = defineModel<ISelectedSupplierGroup | undefined>('supplier_group', {
+  required: true
+})
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -35,13 +34,11 @@ watch(selected, async () => {
 <template>
   <base-card>
     <template #header>Suppliers</template>
-
     <div class="flex flex-col gap-4 mt-5">
       <supplier-group-autocomplete
         required
         label="Supplier Group"
-        v-model="supplier_group._id"
-        v-model:selected="selected"
+        v-model:selected="supplier_group"
         :errors="errors?.['supplier_group._id']"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />

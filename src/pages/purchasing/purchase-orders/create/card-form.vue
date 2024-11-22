@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+
 import { type ISelectedBranch } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 import SupplierAutocomplete, {
   type ISelectedSupplier
@@ -6,8 +8,8 @@ import SupplierAutocomplete, {
 import PurchaseRequestAutocomplete, {
   type ISelectedPurchaseRequest
 } from '@/pages/purchasing/purchase-requests/components/autocomplete/autocomplete.vue'
+
 import type { IFormError } from './form'
-import { watch } from 'vue'
 
 const required_date = defineModel<string>('required_date')
 const branch = defineModel<ISelectedBranch>('branch')
@@ -16,7 +18,6 @@ const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request'
 const errors = defineModel<IFormError>('errors')
 
 watch(purchaseRequest, () => {
-  console.log(purchaseRequest.value?.required_date)
   if (purchaseRequest.value) required_date.value = purchaseRequest.value.required_date
 })
 </script>

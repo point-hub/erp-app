@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { watch } from 'vue'
+
+import { useCountersApi } from '@/api/counters.api'
 import ProcessAutocomplete from '@/pages/manufacture/processes/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
-import { watch } from 'vue'
-import { useCountersApi } from '@/api/counters.api'
 
 interface ISelected {
   _id: string

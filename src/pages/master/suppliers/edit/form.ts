@@ -1,8 +1,10 @@
 import { ref, watch } from 'vue'
 
+import type { ISelectedSupplierGroup } from '../../supplier-groups/components/autocomplete/autocomplete.vue'
+
 export interface IForm {
   [key: string]: any
-  supplier_group_id: string
+  supplier_group: ISelectedSupplierGroup
   code: string
   name: string
   address: string
@@ -17,7 +19,7 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
-  supplier_group_id: string[]
+  supplier_group: string[]
   code: string[]
   name: string[]
   address: string[]
@@ -32,7 +34,12 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    supplier_group_id: '',
+    supplier_group: {
+      _id: '',
+      label: '',
+      code: '',
+      name: ''
+    },
     code: '',
     name: '',
     address: '',
@@ -46,7 +53,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
-    supplier_group_id: [],
+    supplier_group: [],
     code: [],
     name: [],
     address: [],

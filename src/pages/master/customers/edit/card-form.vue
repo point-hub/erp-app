@@ -5,7 +5,6 @@ import CustomerGroupAutocomplete, {
 
 import type { IFormError } from './form'
 
-const customer_group_id = defineModel<string>('customer_group_id')
 const customer_group = defineModel<ISelectedCustomerGroup>('customer_group')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
@@ -24,7 +23,6 @@ const errors = defineModel<IFormError>('errors')
       <customer-group-autocomplete
         required
         label="Customer Group"
-        v-model="customer_group_id"
         v-model:selected="customer_group"
         :errors="errors?.['customer_group._id']"
       />

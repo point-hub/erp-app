@@ -1,9 +1,12 @@
 import { ref, watch } from 'vue'
 
+import type { ISelectedChartOfAccount } from '../../chart-of-accounts/components/autocomplete/autocomplete.vue'
+import type { ISelectedItemCategory } from '../../item-categories/components/autocomplete/autocomplete.vue'
+
 export interface IForm {
   [key: string]: any
-  category_id: string
-  chart_of_account_id: string
+  category?: ISelectedItemCategory
+  chart_of_account?: ISelectedChartOfAccount
   code: string
   name: string
   unit: string
@@ -24,8 +27,6 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    category_id: '',
-    chart_of_account_id: '',
     code: '',
     name: '',
     unit: '',

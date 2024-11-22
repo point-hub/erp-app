@@ -1,7 +1,8 @@
 import { ref, watch } from 'vue'
 
-import type { IApprovalTo, IBranch, IPurchaseRequest, ISupplier, TaxType } from '../interface'
 import type { IDetail } from '@/pages/purchasing/purchase-orders/interface'
+
+import type { IApprovalTo, IBranch, IPurchaseRequest, ISupplier, TaxType } from '../interface'
 
 export interface IForm {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

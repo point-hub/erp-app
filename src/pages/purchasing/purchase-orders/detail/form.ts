@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+
 import type { TaxType } from '../interface'
 
 export interface IDetail {

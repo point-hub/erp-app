@@ -5,8 +5,7 @@ import SupplierGroupAutocomplete, {
 
 import type { IFormError } from './form'
 
-const supplier_group_id = defineModel<string>('supplier_group_id')
-const supplier_group = defineModel<ISelectedSupplierGroup>('supplier_group')
+const supplier_group = defineModel<ISelectedSupplierGroup | undefined>('supplier_group')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -24,7 +23,6 @@ const errors = defineModel<IFormError>('errors')
       <supplier-group-autocomplete
         required
         label="Supplier Group"
-        v-model="supplier_group_id"
         v-model:selected="supplier_group"
         :errors="errors?.supplier_group_id"
       />

@@ -25,7 +25,7 @@ const onSave = async () => {
     }
   } catch (error) {
     if (error instanceof AxiosError) {
-      var listErrors: string[] = []
+      const listErrors: string[] = []
       const formErrors = error?.response?.data?.errors
       if (formErrors) {
         for (const key in formErrors) {

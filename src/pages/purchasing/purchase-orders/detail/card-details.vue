@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { numberFormat } from '@point-hub/js-utils'
-import { type IDetail } from './form'
+
 import type { TaxType } from '../interface'
+import { type IDetail } from './form'
 
 const details = defineModel<IDetail[]>('details', { required: true })
 const subtotal = defineModel<number>('subtotal', { default: 0 })

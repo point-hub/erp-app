@@ -20,8 +20,6 @@ const updateItemApi = useUpdateItemApi()
 
 const form = reactive(useForm())
 const formId = ref()
-const category = ref()
-const chart_of_account = ref()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.items?.update) {
@@ -32,17 +30,14 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.category_id = response.category._id
-    form.data.chart_of_account_id = response.chart_of_account._id
+    form.data.category = response.category
+    form.data.chart_of_account = response.chart_of_account
     form.data.code = response.code
     form.data.name = response.name
     form.data.unit = response.unit
     form.data.notes = response.notes
     form.data.have_production_number = response.have_production_number
     form.data.have_an_expiry_date = response.have_an_expiry_date
-
-    category.value = response.category
-    chart_of_account.value = response.chart_of_account
   }
 })
 
@@ -61,11 +56,12 @@ const onUpdate = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
+    <pre><code>{{ form.data }}</code></pre>
+
     <card-form
       v-if="authStore.permission?.master?.items?.update"
       :form-id="route.params.id.toString()"
-      v-model:category_id="form.data.category_id"
-      v-model:category="category"
+      v-model:category="form.data.category"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:unit="form.data.unit"
@@ -75,7 +71,7 @@ const onUpdate = async () => {
 
     <card-chart-of-account
       v-model="form.data.chart_of_account_id"
-      v-model:selected="chart_of_account"
+      v-model:selected="form.data.chart_of_account"
       :errors="form.errors"
     />
 

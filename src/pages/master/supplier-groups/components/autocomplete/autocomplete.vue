@@ -13,7 +13,7 @@ export interface ISelectedSupplierGroup {
 
 const _id = defineModel<string>()
 const options = defineModel<ISelectedSupplierGroup[]>('options')
-const selected = defineModel<ISelectedSupplierGroup>('selected')
+const selected = defineModel<ISelectedSupplierGroup | undefined>('selected')
 const required = defineModel<boolean>('required', { default: false })
 const label = defineModel<string>('label')
 const errors = ref<string[]>([])

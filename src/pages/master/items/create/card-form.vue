@@ -40,7 +40,7 @@ watch(selected, async () => {
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />
-      <base-input v-model="unit" label="Unit" :errors="errors?.unit" />
+      <base-input required v-model="unit" label="Unit" :errors="errors?.unit" />
       <base-textarea v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>
