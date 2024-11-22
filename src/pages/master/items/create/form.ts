@@ -2,8 +2,18 @@ import { ref, watch } from 'vue'
 
 export interface IForm {
   [key: string]: any
-  category_id: string
-  chart_of_account_id: string
+  category: {
+    _id: string
+    label: string
+    code: string
+    name: string
+  }
+  chart_of_account: {
+    _id: string
+    label: string
+    number: string
+    name: string
+  }
   code: string
   name: string
   unit: string
@@ -13,8 +23,8 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
-  category_id: string[]
-  chart_of_account_id: string[]
+  'category._id': string[]
+  'chart_of_account._id': string[]
   code: string[]
   name: string[]
   unit: string[]
@@ -24,8 +34,18 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    category_id: '',
-    chart_of_account_id: '',
+    category: {
+      _id: '',
+      label: '',
+      code: '',
+      name: ''
+    },
+    chart_of_account: {
+      _id: '',
+      label: '',
+      number: '',
+      name: ''
+    },
     code: '',
     name: '',
     unit: '',
@@ -34,8 +54,8 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
-    category_id: [],
-    chart_of_account_id: [],
+    'category._id': [],
+    'chart_of_account._id': [],
     code: [],
     name: [],
     unit: [],

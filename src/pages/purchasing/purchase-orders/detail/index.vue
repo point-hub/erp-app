@@ -29,8 +29,6 @@ onMounted(async () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const branches = authStore.branches.map((item: any) => item._id)
-  console.log(branches)
-  console.log(response.branch._id)
   if (!branches.includes(response.branch._id)) {
     router.push('/unauthorized')
   }
@@ -39,8 +37,6 @@ onMounted(async () => {
   form.data.items = response.items
   isLoading.value = false
 })
-
-const onSave = async () => {}
 </script>
 
 <template>
@@ -52,15 +48,68 @@ const onSave = async () => {}
 
     <card-action :data="form.data" />
 
+    <base-card
+      bg-color="red"
+      title-color="white"
+      body-color="white"
+      class="py-4!"
+      v-if="form.data.approval_status === 'rejected'"
+    >
+      <div class="flex items-center gap-2">
+        <base-icon icon="i-fas-file-xmark"></base-icon>
+        <p>
+          This Form is <span class="font-extrabold">REJECTED</span> by
+          {{ form.data.approval_to.label }} because
+          {{ form.data.rejected_reason }}
+        </p>
+      </div>
+    </base-card>
+
+    <base-card
+      bg-color="green"
+      title-color="white"
+      body-color="white"
+      class="py-4!"
+      v-if="form.data.approval_status === 'approved'"
+    >
+      <div class="flex items-center gap-2">
+        <base-icon icon="i-fas-file-check"></base-icon>
+        <p>
+          This Form is <span class="font-extrabold">APPROVED</span> by
+          {{ form.data.approval_to.label }}
+        </p>
+      </div>
+    </base-card>
+
+    <base-card
+      bg-color="red"
+      title-color="white"
+      body-color="white"
+      class="py-4!"
+      v-if="form.data.is_deleted"
+    >
+      <div>
+        This Form is DELETED by {{ form.data.deleted_by.label }} because
+        {{ form.data.deleted_reason }}
+      </div>
+    </base-card>
+
     <card-form
       :form_number="form.data.form_number"
       :revised_count="form.data.revised_count"
       :branch="form.data.branch.label"
       :created_date="form.data.created_date"
-      :required_date="form.data.required_date"
     />
 
-    <card-details v-model:details="form.data.details" />
+    <card-details
+      v-model:details="form.data.details"
+      v-model:subtotal="form.data.subtotal"
+      v-model:discount="form.data.discount"
+      v-model:tax_base="form.data.tax_base"
+      v-model:tax_type="form.data.tax_type"
+      v-model:tax="form.data.tax"
+      v-model:total="form.data.total"
+    />
 
     <card-approval
       :created_by="form.data.created_by.label"

@@ -19,11 +19,13 @@ interface IItem {
   label: string
   category: {
     _id: string
+    label: string
     code: string
     name: string
   }
   chart_of_account: {
     _id: string
+    label: string
     number: string
     name: string
   }
@@ -36,9 +38,9 @@ interface IItem {
 
 const searchAll = ref('')
 const search = ref({
-  label: '',
   category: '',
   chart_of_account: '',
+  label: '',
   code: '',
   name: '',
   unit: '',
@@ -276,8 +278,8 @@ const onDelete = async () => {
                 </router-link>
               </td>
               <td>{{ item.unit }}</td>
-              <td>[{{ item.category.code }}] {{ item.category.name }}</td>
-              <td>[{{ item.chart_of_account.number }}] {{ item.chart_of_account.name }}</td>
+              <td>{{ item.category.label }}</td>
+              <td>{{ item.chart_of_account.label }}</td>
               <td>
                 <div class="flex justify-center">
                   <base-icon icon="i-far-circle-check" v-if="item.have_production_number" />

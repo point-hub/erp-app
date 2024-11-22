@@ -1,5 +1,6 @@
+export type TaxType = 'include' | 'exclude' | 'non'
+
 export interface IItem {
-  lookup_from: string
   _id: string
   label: string
   code: string
@@ -8,22 +9,49 @@ export interface IItem {
 }
 
 export interface IAllocation {
-  lookup_from: string
   _id: string
   label: string
   code: string
   name: string
 }
 
+export interface ISupplier {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
+
+export interface IReference {
+  ref_id: string
+  ref_name: string
+  ref_number: string
+  ref_date: Date
+  details: {
+    uuid: string
+    quantity: number
+  }[]
+}
+
+export interface IPurchaseRequest {
+  _id: string
+  required_date: string
+  label: string
+  form_number: string
+  details: IDetail[]
+  references: IReference[]
+}
+
 export interface IDetail {
   item: IItem
-  notes: string
   quantity: number
+  price: number
+  discount: number
+  total: number
   allocation: IAllocation
 }
 
 export interface IBranch {
-  lookup_from: string
   _id: string
   label: string
   code: string
@@ -31,7 +59,6 @@ export interface IBranch {
 }
 
 export interface IApprovalTo {
-  lookup_from: string
   _id: string
   label: string
   name: string

@@ -37,7 +37,7 @@ const onSave = async () => {
 
     <card-form
       v-if="authStore.permission?.master?.items?.create"
-      v-model:category_id="form.data.category_id"
+      v-model:category="form.data.category"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:unit="form.data.unit"
@@ -46,7 +46,7 @@ const onSave = async () => {
     />
 
     <card-chart-of-account
-      v-model:chart_of_account_id="form.data.chart_of_account_id"
+      v-model:chart_of_account="form.data.chart_of_account"
       :errors="form.errors"
     />
 

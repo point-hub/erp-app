@@ -1,12 +1,16 @@
 import axios from '@/axios'
 
-export function useGetWarehousesApi() {
+export function useGetPurchaseRequestApi() {
   const send = async (search: string, page: number) => {
     try {
       const response = await axios.get('/v1/purchasing/purchase-requests', {
         params: {
           filter: {
-            label: search
+            label: search,
+            is_finished: false,
+            is_revised: false,
+            is_deleted: false,
+            approval_status: 'approved'
           },
           page: page
         }

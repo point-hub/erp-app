@@ -249,12 +249,12 @@ onMounted(async () => {
                 </td>
                 <td class="text-center">
                   <base-badge v-if="purchaseRequest.is_deleted" color="danger">deleted</base-badge>
-                  <base-badge v-else-if="!purchaseRequest.is_finished" color="warning"
-                    >open</base-badge
-                  >
-                  <base-badge v-else-if="purchaseRequest.is_finished" color="success"
-                    >finished</base-badge
-                  >
+                  <base-badge v-else-if="!purchaseRequest.is_finished" color="warning">
+                    pending
+                  </base-badge>
+                  <base-badge v-else-if="purchaseRequest.is_finished" color="success">
+                    finished
+                  </base-badge>
                 </td>
               </tr>
             </template>

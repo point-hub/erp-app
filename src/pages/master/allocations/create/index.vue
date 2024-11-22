@@ -35,7 +35,7 @@ const onSave = async () => {
 
     <card-form
       v-if="authStore.permission?.master?.allocations?.create"
-      v-model:allocation_group_id="form.data.allocation_group_id"
+      v-model:allocation_group="form.data.allocation_group"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:notes="form.data.notes"

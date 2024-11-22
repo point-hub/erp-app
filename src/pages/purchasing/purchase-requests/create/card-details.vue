@@ -13,7 +13,6 @@ const details = defineModel<IDetail[]>('details', { required: true })
 const addMore = () => {
   details.value.push({
     item: {
-      lookup_from: 'items',
       _id: '',
       label: '',
       code: '',
@@ -23,7 +22,6 @@ const addMore = () => {
     notes: '',
     quantity: 0,
     allocation: {
-      lookup_from: 'allocations',
       _id: '',
       label: '',
       code: '',
@@ -53,8 +51,8 @@ onMounted(() => {
           <tr>
             <th class="w-1">#</th>
             <th>Item</th>
-            <th>Notes</th>
             <th>Quantity</th>
+            <th>Notes</th>
             <th>Allocation</th>
             <th></th>
           </tr>
@@ -78,18 +76,6 @@ onMounted(() => {
               />
             </td>
             <td>
-              <base-input
-                border="full"
-                v-model="item.notes"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.notes`] = []
-                  }
-                "
-                :errors="errors?.[`details.${index}.notes`]"
-              />
-            </td>
-            <td>
               <base-input-number
                 border="full"
                 v-model="item.quantity"
@@ -99,6 +85,19 @@ onMounted(() => {
                   }
                 "
                 :errors="errors?.[`details.${index}.quantity`]"
+              />
+            </td>
+
+            <td>
+              <base-input
+                border="full"
+                v-model="item.notes"
+                @update:modelValue="
+                  () => {
+                    errors[`details.${index}.notes`] = []
+                  }
+                "
+                :errors="errors?.[`details.${index}.notes`]"
               />
             </td>
             <td><allocation-choosen v-model:selected="item.allocation" border="full" /></td>

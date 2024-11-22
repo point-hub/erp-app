@@ -74,7 +74,11 @@ const onRequestDelete = async () => {
       </router-link>
 
       <router-link
-        v-if="authStore.permission?.purchasing?.purchase_requests?.update && !data.is_deleted"
+        v-if="
+          authStore.permission?.purchasing?.purchase_requests?.update &&
+          !data.is_finished &&
+          !data.is_revised
+        "
         :to="`/purchasing/purchase-requests/${route.params.id}/edit`"
       >
         <base-button color="info" size="sm">
@@ -92,7 +96,12 @@ const onRequestDelete = async () => {
       </router-link> -->
 
       <base-button
-        v-if="authStore.permission?.purchasing?.purchase_requests?.delete && !data.is_deleted"
+        v-if="
+          authStore.permission?.purchasing?.purchase_requests?.delete &&
+          !data.is_deleted &&
+          !data.is_finished &&
+          !data.is_revised
+        "
         color="danger"
         size="sm"
         @click="
@@ -109,7 +118,8 @@ const onRequestDelete = async () => {
         v-if="
           authStore.permission?.purchasing?.purchase_requests?.approval &&
           data.approval_to._id === authStore._id &&
-          data.approval_status === 'pending'
+          data.approval_status === 'pending' &&
+          !data.is_deleted
         "
         color="success"
         size="sm"
@@ -122,7 +132,8 @@ const onRequestDelete = async () => {
         v-if="
           authStore.permission?.purchasing?.purchase_requests?.approval &&
           data.approval_to._id === authStore._id &&
-          data.approval_status === 'pending'
+          data.approval_status === 'pending' &&
+          !data.is_deleted
         "
         color="danger"
         size="sm"

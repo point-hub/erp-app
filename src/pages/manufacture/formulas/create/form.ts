@@ -28,6 +28,7 @@ interface IApprovalTo {
 
 export interface IForm {
   [key: string]: any
+  code?: string
   name?: string
   process?: IBranch
   finished_goods?: IItem[]
@@ -38,6 +39,7 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
+  code: string[]
   name: string[]
   process: string[]
   finished_goods: string[]
@@ -48,6 +50,7 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
+    code: '',
     name: '',
     finished_goods: [],
     raw_materials: [],
@@ -55,6 +58,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
+    code: [],
     name: [],
     process: [],
     finished_goods: [],

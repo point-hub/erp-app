@@ -23,7 +23,7 @@ const errors = defineModel<IFormError>('errors')
         label="Allocation Group"
         v-model="allocation_group_id"
         v-model:selected="allocation_group"
-        :errors="errors?.allocation_group_id"
+        :errors="errors?.['allocation_group._id']"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />
       <base-input required v-model="name" label="Name" :errors="errors?.name" />

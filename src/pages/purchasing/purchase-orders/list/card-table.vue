@@ -17,14 +17,18 @@ const getWarehousesApi = useGetWarehousesApi()
 interface IPurchaseOrderDetail {
   item: {
     _id: string
+    label: string
     code: string
     name: string
     unit: string
   }
-  quantity: string
-  notes: string
+  quantity: number
+  price: number
+  discount: number
+  total: number
   allocation: {
     _id: string
+    label: string
     code: string
     name: string
   }
@@ -37,18 +41,36 @@ interface IPurchaseOrder {
   created_date: string
   branch: {
     _id: string
+    label: string
     code: string
     name: string
   }
   details: IPurchaseOrderDetail[]
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: string
+  tax: number
+  total: number
   notes: string
   approval_to: {
     _id: string
+    label: string
     email: string
     username: string
     name: string
   }
   approval_status: string
+  deleted_reason: string
+  deleted_by: {
+    _id: string
+    label: string
+    email: string
+    username: string
+    name: string
+  }
+  is_deleted: boolean
+  is_finished: boolean
 }
 
 const searchAll = ref('')
@@ -179,13 +201,17 @@ onMounted(async () => {
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form</th>
-            <th class="w-30">Date</th>
+            <th class="w-30">Form #</th>
+            <th class="w-30">Form Date</th>
+            <th class="w-30">Time</th>
             <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
             <th>Notes</th>
             <th class="text-right">Quantity</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Discount</th>
+            <th class="text-right">Total</th>
             <th class="text-center">Approval Status</th>
             <th class="text-center">Form Status</th>
           </tr>
@@ -210,14 +236,18 @@ onMounted(async () => {
                     {{ purchaseOrder.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseOrder.created_date), 'yyyy-MM-dd HH:mm:ss') }}</td>
+                <td>{{ format(new Date(purchaseOrder.created_date), 'yyyy-MM-dd') }}</td>
+                <td>{{ format(new Date(purchaseOrder.created_date), 'HH:mm') }}</td>
                 <td>{{ purchaseOrder.required_date }}</td>
-                <td>[{{ purchaseOrder.branch.code }}] {{ purchaseOrder.branch.name }}</td>
-                <td>[{{ detail.item.code }}] {{ detail.item.name }}</td>
-                <td>{{ detail.notes }}</td>
+                <td>{{ purchaseOrder.branch.label }}</td>
+                <td>{{ detail.item.label }}</td>
+                <td>{{ detail.item.label }}</td>
                 <td class="text-right">
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
                 </td>
+                <td class="text-right">{{ numberFormat(detail.price) }}</td>
+                <td class="text-right">{{ numberFormat(detail.discount) }}</td>
+                <td class="text-right">{{ numberFormat(detail.total) }}</td>
                 <td class="text-center">
                   <base-badge
                     :color="
@@ -231,7 +261,15 @@ onMounted(async () => {
                     {{ purchaseOrder.approval_status ?? 'pending' }}
                   </base-badge>
                 </td>
-                <td class="text-center"><base-badge color="warning">open</base-badge></td>
+                <td class="text-center">
+                  <base-badge v-if="purchaseOrder.is_deleted" color="danger">deleted</base-badge>
+                  <base-badge v-else-if="!purchaseOrder.is_finished" color="warning"
+                    >pending</base-badge
+                  >
+                  <base-badge v-else-if="purchaseOrder.is_finished" color="success"
+                    >finished</base-badge
+                  >
+                </td>
               </tr>
             </template>
           </template>

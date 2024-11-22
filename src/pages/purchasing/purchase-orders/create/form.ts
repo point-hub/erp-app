@@ -1,12 +1,22 @@
 import { ref, watch } from 'vue'
 
-import type { IApprovalTo, IBranch, IDetail } from '../interface'
+import type { IApprovalTo, IBranch, IPurchaseRequest, ISupplier, TaxType } from '../interface'
+import type { IDetail } from '@/pages/purchasing/purchase-orders/interface'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
-  required_date?: string
   branch?: IBranch
-  details: IDetail[]
+  purchase_request?: IPurchaseRequest
+  supplier?: ISupplier
+  required_date?: string
+  details?: IDetail[]
+  subtotal?: number
+  discount?: number
+  tax_base?: number
+  tax_type?: TaxType
+  tax?: number
+  total?: number
   approval_to?: IApprovalTo
   notes?: string
 }
@@ -14,22 +24,41 @@ export interface IForm {
 export interface IFormError {
   [key: string]: string[]
   'branch._id': string[]
+  'purchase_request._id': string[]
+  'supplier._id': string[]
   required_date: string[]
-  details: string[]
+  'details.item._id': string[]
+  'details.quantity': string[]
+  'details.price': string[]
+  subtotal: string[]
+  discount: string[]
+  tax_base: string[]
+  tax_type: string[]
+  tax: string[]
+  total: string[]
   'approval_to._id': string[]
   notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
-    required_date: '',
     details: []
   }
 
   const defaultFormError: IFormError = {
     'branch._id': [],
+    'purchase_request._id': [],
+    'supplier._id': [],
     required_date: [],
-    details: [],
+    'details.item._id': [],
+    'details.quantity': [],
+    'details.price': [],
+    subtotal: [],
+    discount: [],
+    tax_base: [],
+    tax_type: [],
+    tax: [],
+    total: [],
     'approval_to._id': [],
     notes: []
   }

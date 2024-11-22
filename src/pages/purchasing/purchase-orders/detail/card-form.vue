@@ -5,11 +5,14 @@ import { computed } from 'vue'
 const form_number = defineModel<string>('form_number', { required: true })
 const revised_count = defineModel<number>('revised_count', { required: true })
 const created_date = defineModel<string>('created_date', { required: true })
-const required_date = defineModel<string>('required_date', { required: true })
 const branch = defineModel<string>('branch', { required: true })
 
 const computedCreatedDate = computed(() => {
-  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd | HH:mm:ss') : ''
+  return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd') : ''
+})
+
+const computedCreatedTime = computed(() => {
+  return created_date.value ? format(new Date(created_date.value), 'HH:mm') : ''
 })
 </script>
 
@@ -28,18 +31,17 @@ const computedCreatedDate = computed(() => {
       />
       <base-input
         disabled
-        label="Form Date"
+        label="Created Date"
         layout="horizontal"
         :modelValue="computedCreatedDate"
       />
-      <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
       <base-input
         disabled
-        label="Required Date"
+        label="Created Time"
         layout="horizontal"
-        description="When is this item needed to be used?"
-        :modelValue="required_date"
+        :modelValue="computedCreatedTime"
       />
+      <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
     </div>
   </base-card>
 </template>

@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue'
 
 import { useGetSuppliersApi } from './retrieve-all.api'
 
-interface ISelectedSupplier {
+export interface ISelectedSupplier {
   _id: string
   label: string
   code: string
@@ -28,7 +28,7 @@ const apiCall = async () => {
   if (response?.data) {
     options.value = response.data.map((data: ISelectedSupplier) => {
       return {
-        id: data._id,
+        _id: data._id,
         label: data.label,
         code: data.code,
         name: data.name

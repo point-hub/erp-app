@@ -6,7 +6,10 @@ import ItemCategoryAutocomplete from '@/pages/master/item-categories/components/
 
 import type { IFormError } from './form'
 
-const category_id = defineModel<string>('category_id')
+const category = defineModel<{ _id: string; label: string; code: string; name: string }>(
+  'category',
+  { required: true }
+)
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const unit = defineModel<string>('unit')
@@ -17,7 +20,8 @@ const selected = ref()
 const countersApi = useCountersApi()
 
 watch(selected, async () => {
-  const selectedCode = await countersApi.getCode('item_categories', selected.value.code)
+  category.value = selected.value
+  const selectedCode = await countersApi.getCode('items', selected.value.code)
   if (selectedCode) code.value = selectedCode
 })
 </script>
@@ -30,7 +34,7 @@ watch(selected, async () => {
       <item-category-autocomplete
         required
         label="Item Category"
-        v-model="category_id"
+        v-model="category._id"
         v-model:selected="selected"
         :errors="errors?.category_id"
       />
