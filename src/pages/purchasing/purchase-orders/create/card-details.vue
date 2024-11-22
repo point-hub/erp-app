@@ -3,7 +3,7 @@ import AllocationChoosen from '@/pages/master/allocations/components/choosen/cho
 
 import type { IDetail } from '../interface'
 import type { IFormError } from './form'
-import { ref, watch } from 'vue'
+import { computed, ref, watch, type ComputedRef } from 'vue'
 
 const errors = defineModel<IFormError>('errors', { required: true })
 const details = defineModel<IDetail[]>('details')
@@ -37,31 +37,74 @@ watch(
   { deep: true }
 )
 
+watch(
+  () => details.value,
+  () => {
+    calculate()
+  },
+  { deep: true }
+)
+
 const calculate = () => {
-  subtotal.value = 0
-  console.log(subtotal.value)
   details.value?.forEach((detail) => {
     detail.total = detail.quantity * (detail.price - detail.discount)
-    subtotal.value += detail.total
-    console.log(subtotal.value, detail.total)
   })
-
-  tax_base.value = subtotal.value - discount.value
 
   if (isIncludeTax.value) {
     tax_type.value === 'include'
-    tax.value = Math.round((tax_base.value * 11) / 100 / (1 + 11 / 100))
-    total.value = tax_base.value
   } else if (isExcludeTax.value) {
     tax_type.value === 'exclude'
-    tax.value = (tax_base.value * 11) / 100
-    total.value = tax_base.value + (tax_base.value * 11) / 100
   } else {
     tax_type.value === 'non'
-    tax.value = 0
-    total.value = tax_base.value
   }
 }
+
+const computedSubtotal: ComputedRef<number> = computed({
+  set() {},
+  get() {
+    subtotal.value =
+      details.value?.reduce((acc, detail) => {
+        return acc + detail.quantity * (detail.price - detail.discount)
+      }, 0) ?? 0
+
+    return subtotal.value
+  }
+})
+
+const computedTaxBase: ComputedRef<number> = computed({
+  set() {},
+  get() {
+    tax_base.value = computedSubtotal.value - discount.value
+    return tax_base.value
+  }
+})
+
+const computedTax: ComputedRef<number> = computed({
+  set() {},
+  get() {
+    if (isIncludeTax.value) {
+      tax.value = Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
+    } else if (isExcludeTax.value) {
+      tax.value = (computedTaxBase.value * 11) / 100
+    } else {
+      tax.value = 0
+    }
+
+    return tax.value
+  }
+})
+
+const computedTotal: ComputedRef<number> = computed({
+  set() {},
+  get() {
+    if (isExcludeTax.value) {
+      total.value = computedTaxBase.value + computedTax.value
+    } else {
+      total.value = computedTaxBase.value
+    }
+    return total.value
+  }
+})
 
 const clearError = (field: string) => {
   errors.value[field] = []
@@ -133,7 +176,7 @@ const clearError = (field: string) => {
               <base-input-number
                 disabled
                 border="full"
-                v-model="subtotal"
+                v-model="computedSubtotal"
                 @update:modelValue="clearError(`subtotal`)"
                 :errors="errors?.[`subtotal`]"
               />
@@ -158,7 +201,7 @@ const clearError = (field: string) => {
               <base-input-number
                 disabled
                 border="full"
-                v-model="tax_base"
+                v-model="computedTaxBase"
                 @update:modelValue="clearError(`tax_base`)"
                 :errors="errors?.[`tax_base`]"
               />
@@ -190,7 +233,7 @@ const clearError = (field: string) => {
               <base-input-number
                 disabled
                 border="full"
-                v-model="tax"
+                v-model="computedTax"
                 @update:modelValue="clearError(`tax`)"
                 :errors="errors?.[`tax`]"
               />
@@ -203,7 +246,7 @@ const clearError = (field: string) => {
               <base-input-number
                 disabled
                 border="full"
-                v-model="total"
+                v-model="computedTotal"
                 @update:modelValue="clearError(`total`)"
                 :errors="errors?.[`total`]"
               />

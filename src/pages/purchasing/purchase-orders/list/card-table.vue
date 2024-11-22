@@ -209,6 +209,9 @@ onMounted(async () => {
             <th>Item</th>
             <th>Notes</th>
             <th class="text-right">Quantity</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Discount</th>
+            <th class="text-right">Total</th>
             <th class="text-center">Approval Status</th>
             <th class="text-center">Form Status</th>
           </tr>
@@ -242,6 +245,9 @@ onMounted(async () => {
                 <td class="text-right">
                   {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
                 </td>
+                <td class="text-right">{{ numberFormat(detail.price) }}</td>
+                <td class="text-right">{{ numberFormat(detail.discount) }}</td>
+                <td class="text-right">{{ numberFormat(detail.total) }}</td>
                 <td class="text-center">
                   <base-badge
                     :color="

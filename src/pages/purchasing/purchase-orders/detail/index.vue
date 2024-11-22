@@ -101,7 +101,15 @@ onMounted(async () => {
       :created_date="form.data.created_date"
     />
 
-    <card-details v-model:details="form.data.details" />
+    <card-details
+      v-model:details="form.data.details"
+      v-model:subtotal="form.data.subtotal"
+      v-model:discount="form.data.discount"
+      v-model:tax_base="form.data.tax_base"
+      v-model:tax_type="form.data.tax_type"
+      v-model:tax="form.data.tax"
+      v-model:total="form.data.total"
+    />
 
     <card-approval
       :created_by="form.data.created_by.label"
