@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { numberFormat } from '@point-hub/js-utils'
 import { type IDetail } from './form'
+import type { TaxType } from '../interface'
 
 const details = defineModel<IDetail[]>('details', { required: true })
 const subtotal = defineModel<number>('subtotal', { default: 0 })
 const discount = defineModel<number>('discount', { default: 0 })
 const tax_base = defineModel<number>('tax_base', { default: 0 })
-const tax_type = defineModel<'include' | 'exclude' | 'non'>('tax_type')
+const tax_type = defineModel<TaxType>('tax_type')
 const tax = defineModel<number>('tax', { default: 0 })
 const total = defineModel<number>('total', { default: 0 })
 </script>

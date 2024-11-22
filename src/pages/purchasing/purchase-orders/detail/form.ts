@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import type { TaxType } from '../interface'
 
 export interface IDetail {
   item: {
@@ -45,7 +46,7 @@ export interface IForm {
   subtotal: number
   discount: number
   tax_base: number
-  tax_type: string
+  tax_type: TaxType
   tax: number
   total: number
   approval_to: IApprovalTo
