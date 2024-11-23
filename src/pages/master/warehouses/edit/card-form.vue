@@ -5,7 +5,6 @@ import BranchAutocomplete, {
 
 import type { IFormError } from './form'
 
-const branch_id = defineModel<string>('branch_id')
 const branch = defineModel<ISelectedBranch>('branch')
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
@@ -23,7 +22,6 @@ const errors = defineModel<IFormError>('errors')
       <branch-autocomplete
         required
         label="Branch"
-        v-model="branch_id"
         v-model:selected="branch"
         :errors="errors?.branch_id"
       />

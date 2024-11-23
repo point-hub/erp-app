@@ -1,8 +1,9 @@
 import { ref, watch } from 'vue'
+import type { ISelectedBranch } from '../../branches/components/autocomplete/autocomplete.vue'
 
 export interface IForm {
   [key: string]: any
-  branch_id: string
+  branch?: ISelectedBranch
   code: string
   name: string
   address: string
@@ -12,7 +13,7 @@ export interface IForm {
 
 export interface IFormError {
   [key: string]: string[]
-  branch_id: string[]
+  'branch._id': string[]
   code: string[]
   name: string[]
   address: string[]
@@ -22,7 +23,6 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
-    branch_id: '',
     code: '',
     name: '',
     address: '',
@@ -31,7 +31,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
-    branch_id: [],
+    'branch._id': [],
     code: [],
     name: [],
     address: [],

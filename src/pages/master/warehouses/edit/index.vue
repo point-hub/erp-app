@@ -29,7 +29,7 @@ onMounted(async () => {
 
   if (response) {
     formId.value = response._id
-    form.data.branch_id = response.branch._id
+    form.data.branch = response.branch
     form.data.code = response.code
     form.data.name = response.name
     form.data.address = response.address
@@ -58,8 +58,7 @@ const onUpdate = async () => {
     <card-form
       v-if="authStore.permission?.master?.warehouses?.update"
       :form-id="route.params.id.toString()"
-      v-model:branch_id="form.data.branch_id"
-      v-model:branch="branch"
+      v-model:branch="form.data.branch"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"

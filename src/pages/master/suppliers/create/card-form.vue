@@ -38,7 +38,7 @@ watch(selected, async () => {
       <supplier-group-autocomplete
         required
         label="Supplier Group"
-        v-model:selected="supplier_group"
+        v-model:selected="selected"
         :errors="errors?.['supplier_group._id']"
       />
       <base-input required v-model="code" label="Code" :errors="errors?.code" />

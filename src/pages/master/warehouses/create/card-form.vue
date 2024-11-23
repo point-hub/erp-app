@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
-import BranchAutocomplete from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
-
+import { useCountersApi } from '@/api/counters.api'
+import BranchAutocomplete, {
+  type ISelectedBranch
+} from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 import type { IFormError } from './form'
 
-const branch_id = defineModel<string>('branch_id')
+const branch = defineModel<ISelectedBranch | undefined>('branch', { required: true })
 const code = defineModel<string>('code')
 const name = defineModel<string>('name')
 const address = defineModel<string>('address')
@@ -14,6 +16,15 @@ const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors')
 
 const selectedBranch = ref()
+const countersApi = useCountersApi()
+
+watch(selectedBranch, async () => {
+  if (selectedBranch.value) {
+    branch.value = selectedBranch.value
+    const selectedCode = await countersApi.getCode('warehouses', selectedBranch.value.code)
+    if (selectedCode) code.value = selectedCode
+  }
+})
 </script>
 
 <template>
@@ -24,7 +35,6 @@ const selectedBranch = ref()
       <branch-autocomplete
         required
         label="Branch"
-        v-model="branch_id"
         v-model:selected="selectedBranch"
         :errors="errors?.branch_id"
       />

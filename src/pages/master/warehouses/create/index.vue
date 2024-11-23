@@ -2,7 +2,6 @@
 import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useCountersApi } from '@/api/counters.api'
 import { useAuthStore } from '@/stores/auth.store'
 
 import CardBreadcrumbs from './card-breadcrumbs.vue'
@@ -13,15 +12,12 @@ import { useForm } from './form'
 const router = useRouter()
 const form = reactive(useForm())
 const authStore = useAuthStore()
-const countersApi = useCountersApi()
 const createWarehousesApi = useCreateWarehouseApi()
 
 onMounted(async () => {
   if (!authStore.permission?.master?.warehouses?.create) {
     router.push('/unauthorized')
   }
-  const code = await countersApi.getCode('warehouses')
-  if (code) form.data.code = code
 })
 
 const onSave = async () => {
@@ -36,10 +32,10 @@ const onSave = async () => {
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
-
+    {{ form.data }}
     <card-form
       v-if="authStore.permission?.master?.warehouses?.create"
-      v-model:branch_id="form.data.branch_id"
+      v-model:branch="form.data.branch"
       v-model:code="form.data.code"
       v-model:name="form.data.name"
       v-model:address="form.data.address"
