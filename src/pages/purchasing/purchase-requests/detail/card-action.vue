@@ -77,7 +77,8 @@ const onRequestDelete = async () => {
         v-if="
           authStore.permission?.purchasing?.purchase_requests?.update &&
           !data.is_finished &&
-          !data.is_revised
+          !data.is_revised &&
+          (!data.references || data.references.length === 0)
         "
         :to="`/purchasing/purchase-requests/${route.params.id}/edit`"
       >
@@ -100,7 +101,8 @@ const onRequestDelete = async () => {
           authStore.permission?.purchasing?.purchase_requests?.delete &&
           !data.is_deleted &&
           !data.is_finished &&
-          !data.is_revised
+          !data.is_revised &&
+          (!data.references || data.references.length === 0)
         "
         color="danger"
         size="sm"
