@@ -97,6 +97,7 @@ onMounted(async () => {
         :options="optionsType"
         :errors="errors?.type_id"
       />
+
       <base-autocomplete
         required
         label="Category"

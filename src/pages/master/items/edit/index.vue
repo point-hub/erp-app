@@ -56,8 +56,6 @@ const onUpdate = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <pre><code>{{ form.data }}</code></pre>
-
     <card-form
       v-if="authStore.permission?.master?.items?.update"
       :form-id="route.params.id.toString()"

@@ -32,7 +32,7 @@ const onSave = async () => {
 <template>
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
-    {{ form.data }}
+
     <card-form
       v-if="authStore.permission?.master?.warehouses?.create"
       v-model:branch="form.data.branch"
