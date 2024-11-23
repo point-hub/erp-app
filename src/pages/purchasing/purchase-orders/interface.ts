@@ -45,6 +45,7 @@ export interface IPurchaseRequest {
 export interface IDetail {
   item: IItem
   quantity: number
+  quantity_pending: number
   price: number
   discount: number
   total: number

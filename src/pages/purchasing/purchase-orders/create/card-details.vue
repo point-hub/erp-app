@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type ComputedRef,ref, watch } from 'vue'
+import { computed, type ComputedRef, ref, watch } from 'vue'
 
 import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
 
@@ -139,6 +139,7 @@ const clearError = (field: string) => {
               <base-input-number
                 border="full"
                 v-model="detail.quantity"
+                :helpers="[`max order is ${detail.quantity_pending} ${detail.item.unit}`]"
                 @update:modelValue="clearError(`details.${index}.quantity`)"
                 :errors="errors?.[`details.${index}.quantity`]"
               />

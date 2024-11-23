@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isEmpty, objKeys } from '@point-hub/js-utils'
-import { onMounted, reactive, ref, toRaw, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -30,6 +30,7 @@ watch(
     form.data.details = form.data.details?.map((detail) => {
       return {
         ...detail,
+        quantity: detail.quantity_pending,
         price: 0,
         discount: 0,
         total: 0
