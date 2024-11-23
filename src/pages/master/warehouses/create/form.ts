@@ -3,7 +3,7 @@ import type { ISelectedBranch } from '../../branches/components/autocomplete/aut
 
 export interface IForm {
   [key: string]: any
-  branch: ISelectedBranch
+  branch?: ISelectedBranch
   code: string
   name: string
   address: string
@@ -31,7 +31,7 @@ export function useForm() {
   }
 
   const defaultFormError: IFormError = {
-    branch_id: [],
+    'branch._id': [],
     code: [],
     name: [],
     address: [],
