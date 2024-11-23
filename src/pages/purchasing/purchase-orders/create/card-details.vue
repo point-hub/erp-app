@@ -34,6 +34,7 @@ watch(
     } else {
       tax_type.value = isIncludeTax.value ? 'include' : 'exclude'
     }
+    calculate()
   },
   { deep: true }
 )
@@ -51,59 +52,47 @@ const calculate = () => {
     detail.total = detail.quantity * (detail.price - detail.discount)
   })
 
+  subtotal.value = computedSubtotal.value
+  tax_base.value = computedTaxBase.value
+  tax.value = computedTax.value
+  total.value = computedTotal.value
+
   if (isIncludeTax.value) {
-    tax_type.value === 'include'
+    tax_type.value = 'include'
   } else if (isExcludeTax.value) {
-    tax_type.value === 'exclude'
+    tax_type.value = 'exclude'
   } else {
-    tax_type.value === 'non'
+    tax_type.value = 'non'
   }
 }
 
-const computedSubtotal: ComputedRef<number> = computed({
-  set() {},
-  get() {
-    subtotal.value =
-      details.value?.reduce((acc, detail) => {
-        return acc + detail.quantity * (detail.price - detail.discount)
-      }, 0) ?? 0
+const computedSubtotal: ComputedRef<number> = computed(() => {
+  return (
+    details.value?.reduce((acc, detail) => {
+      return acc + detail.quantity * (detail.price - detail.discount)
+    }, 0) ?? 0
+  )
+})
 
-    return subtotal.value
+const computedTaxBase: ComputedRef<number> = computed(() => {
+  return computedSubtotal.value - discount.value
+})
+
+const computedTax: ComputedRef<number> = computed(() => {
+  if (isIncludeTax.value) {
+    return Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
+  } else if (isExcludeTax.value) {
+    return Math.round((computedTaxBase.value * 11) / 100)
+  } else {
+    return 0
   }
 })
 
-const computedTaxBase: ComputedRef<number> = computed({
-  set() {},
-  get() {
-    tax_base.value = computedSubtotal.value - discount.value
-    return tax_base.value
-  }
-})
-
-const computedTax: ComputedRef<number> = computed({
-  set() {},
-  get() {
-    if (isIncludeTax.value) {
-      tax.value = Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
-    } else if (isExcludeTax.value) {
-      tax.value = (computedTaxBase.value * 11) / 100
-    } else {
-      tax.value = 0
-    }
-
-    return tax.value
-  }
-})
-
-const computedTotal: ComputedRef<number> = computed({
-  set() {},
-  get() {
-    if (isExcludeTax.value) {
-      total.value = computedTaxBase.value + computedTax.value
-    } else {
-      total.value = computedTaxBase.value
-    }
-    return total.value
+const computedTotal: ComputedRef<number> = computed(() => {
+  if (isExcludeTax.value) {
+    return computedTaxBase.value + computedTax.value
+  } else {
+    return computedTaxBase.value
   }
 })
 

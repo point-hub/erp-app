@@ -82,10 +82,20 @@ const onSave = async () => {
       v-model:branch="form.data.branch"
       v-model:options="authStore.branches"
       v-model:created_date="form.data.created_date"
+      v-model:required_date="form.data.required_date"
       :errors="form.errors"
     />
 
-    <card-details v-model:details="form.data.details" :errors="form.errors" />
+    <card-details
+      v-model:details="form.data.details"
+      v-model:subtotal="form.data.subtotal"
+      v-model:discount="form.data.discount"
+      v-model:tax_base="form.data.tax_base"
+      v-model:tax_type="form.data.tax_type"
+      v-model:tax="form.data.tax"
+      v-model:total="form.data.total"
+      :errors="form.errors"
+    />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"

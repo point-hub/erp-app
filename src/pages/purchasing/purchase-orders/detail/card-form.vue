@@ -3,6 +3,7 @@ import { format } from 'date-fns/format'
 import { computed } from 'vue'
 
 const form_number = defineModel<string>('form_number', { required: true })
+const required_date = defineModel<string>('required_date', { required: true })
 const revised_count = defineModel<number>('revised_count', { required: true })
 const created_date = defineModel<string>('created_date', { required: true })
 const branch = defineModel<string>('branch', { required: true })
@@ -41,6 +42,7 @@ const computedCreatedTime = computed(() => {
         layout="horizontal"
         :modelValue="computedCreatedTime"
       />
+      <base-input disabled label="Required Date" layout="horizontal" :modelValue="required_date" />
       <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
     </div>
   </base-card>
