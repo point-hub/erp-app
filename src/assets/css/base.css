@@ -9,22 +9,46 @@ body {
 
 /* headings */
 h1 {
-  @apply text-4xl font-inter;
-}
-
-h2 {
-  @apply text-3xl font-inter;
-}
-
-h3 {
   @apply text-2xl font-inter;
 }
 
-/* scrollbar */
-.scrollbar-hidden {
-  @apply [scrollbar-width:none]; /* Firefox */
+h2 {
+  @apply text-xl font-inter;
 }
 
-.scrollbar-hidden::-webkit-scrollbar {
-  @apply hidden;
+h3 {
+  @apply text-lg font-inter;
+}
+
+.scrollbar-hidden {
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* Webkit-based browsers (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Internet Explorer/Edge */
+  -ms-overflow-style: none;
+}
+
+/* Style the scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+/* Style the track (the part the thumb slides within) */
+::-webkit-scrollbar-track {
+  @apply bg-none;
+}
+
+/* Style the thumb (the draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-700;
+}
+
+/* Hover effect for the thumb */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-600;
 }
