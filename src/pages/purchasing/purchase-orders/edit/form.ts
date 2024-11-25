@@ -1,22 +1,6 @@
 import { ref, watch } from 'vue'
 
-interface IDetail {
-  item: {
-    _id: string
-    label: string
-    code: string
-    name: string
-    unit: string
-  }
-  notes: string
-  quantity: number
-  allocation: {
-    _id: string
-    label: string
-    code: string
-    name: string
-  }
-}
+import type { IDetail } from '../interface'
 
 interface IBranch {
   _id: string
