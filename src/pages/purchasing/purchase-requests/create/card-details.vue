@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
@@ -66,11 +67,6 @@ onMounted(() => {
               <item-choosen
                 title="Item"
                 v-model:selected="item.item"
-                @update:selected="
-                  () => {
-                    errors[`details.${index}.item._id`] = []
-                  }
-                "
                 border="full"
                 :errors="errors?.[`details.${index}.item._id`]"
               />
@@ -79,24 +75,14 @@ onMounted(() => {
               <base-input-number
                 border="full"
                 v-model="item.quantity"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.quantity`] = []
-                  }
-                "
+                :decimalLength="2"
                 :errors="errors?.[`details.${index}.quantity`]"
               />
             </td>
-
             <td>
               <base-input
                 border="full"
                 v-model="item.notes"
-                @update:modelValue="
-                  () => {
-                    errors[`details.${index}.notes`] = []
-                  }
-                "
                 :errors="errors?.[`details.${index}.notes`]"
               />
             </td>

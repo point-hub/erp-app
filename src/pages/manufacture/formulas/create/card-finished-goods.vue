@@ -53,7 +53,7 @@ onMounted(() => {
             <td>
               <item-choosen title="Item" v-model:selected="item.item" border="full" />
             </td>
-            <td><base-input-number border="full" v-model="item.quantity" /></td>
+            <td><base-input-number :decimalLength="2" border="full" v-model="item.quantity" /></td>
           </tr>
         </tbody>
       </base-table>

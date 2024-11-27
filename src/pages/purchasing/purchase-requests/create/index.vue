@@ -43,12 +43,14 @@ const onSave = async () => {
   // check permission
   if (!authStore.permission?.purchasing?.purchase_requests?.create) {
     router.push('/unauthorized')
+    isSaving.value = false
     return
   }
   if (form.data.details.length === 0) {
     toastRef.toast('Items is required', {
       color: 'danger'
     })
+    isSaving.value = false
     return
   }
   // api call

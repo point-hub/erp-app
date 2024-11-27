@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import type { IApprovalTo, IBranch, IDetail } from '../interface'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   required_date?: string
   branch?: IBranch

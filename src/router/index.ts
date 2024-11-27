@@ -161,17 +161,17 @@ const isAuthenticated = async () => {
       })
       return true
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return false
   }
 }
 
- 
 router.beforeEach(async (to, from, next) => {
   // 1. check if client is authenticated
   if (to.meta.requiresAuth && !(await isAuthenticated())) {
     // err 1. redirect to signin page if not authenticated
-    next(`/auth/signin?${new URLSearchParams(to.query as any).toString()}`)
+    next(`/auth/signin?${new URLSearchParams(to.query as Record<string, string>).toString()}`)
   } else {
     next()
   }

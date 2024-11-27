@@ -80,9 +80,9 @@ const computedTaxBase: ComputedRef<number> = computed(() => {
 
 const computedTax: ComputedRef<number> = computed(() => {
   if (isIncludeTax.value) {
-    return Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
+    return (computedTaxBase.value * 11) / 100 / (1 + 11 / 100)
   } else if (isExcludeTax.value) {
-    return Math.round((computedTaxBase.value * 11) / 100)
+    return (computedTaxBase.value * 11) / 100
   } else {
     return 0
   }
@@ -95,10 +95,6 @@ const computedTotal: ComputedRef<number> = computed(() => {
     return computedTaxBase.value
   }
 })
-
-const clearError = (field: string) => {
-  errors.value[field] = []
-}
 </script>
 
 <template>
@@ -129,7 +125,7 @@ const clearError = (field: string) => {
                 border="full"
                 v-model="detail.quantity"
                 :helpers="[`max order is ${detail.quantity_pending} ${detail.item.unit}`]"
-                @update:modelValue="clearError(`details.${index}.quantity`)"
+                :decimalLength="2"
                 :errors="errors?.[`details.${index}.quantity`]"
               />
             </td>
@@ -138,7 +134,7 @@ const clearError = (field: string) => {
                 border="full"
                 v-model="detail.price"
                 @keyup="calculate()"
-                @update:modelValue="clearError(`details.${index}.price`)"
+                :decimalLength="2"
                 :errors="errors?.[`details.${index}.price`]"
               />
             </td>
@@ -146,7 +142,7 @@ const clearError = (field: string) => {
               <base-input-number
                 border="full"
                 v-model="detail.discount"
-                @update:modelValue="clearError(`details.${index}.discount`)"
+                :decimalLength="2"
                 :errors="errors?.[`details.${index}.discount`]"
               />
             </td>
@@ -155,7 +151,7 @@ const clearError = (field: string) => {
                 disabled
                 border="full"
                 v-model="detail.total"
-                @update:modelValue="clearError(`details.${index}.total`)"
+                :decimalLength="2"
                 :errors="errors?.[`details.${index}.total`]"
               />
             </td>
@@ -168,7 +164,7 @@ const clearError = (field: string) => {
                 disabled
                 border="full"
                 v-model="computedSubtotal"
-                @update:modelValue="clearError(`subtotal`)"
+                :decimalLength="2"
                 :errors="errors?.[`subtotal`]"
               />
             </td>
@@ -180,7 +176,7 @@ const clearError = (field: string) => {
               <base-input-number
                 border="full"
                 v-model="discount"
-                @update:modelValue="clearError(`discount`)"
+                :decimalLength="2"
                 :errors="errors?.[`discount`]"
               />
             </td>
@@ -193,7 +189,7 @@ const clearError = (field: string) => {
                 disabled
                 border="full"
                 v-model="computedTaxBase"
-                @update:modelValue="clearError(`tax_base`)"
+                :decimalLength="2"
                 :errors="errors?.[`tax_base`]"
               />
             </td>
@@ -225,7 +221,7 @@ const clearError = (field: string) => {
                 disabled
                 border="full"
                 v-model="computedTax"
-                @update:modelValue="clearError(`tax`)"
+                :decimalLength="2"
                 :errors="errors?.[`tax`]"
               />
             </td>
@@ -238,7 +234,7 @@ const clearError = (field: string) => {
                 disabled
                 border="full"
                 v-model="computedTotal"
-                @update:modelValue="clearError(`total`)"
+                :decimalLength="2"
                 :errors="errors?.[`total`]"
               />
             </td>

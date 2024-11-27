@@ -1,5 +1,5 @@
 import '@unocss/reset/tailwind-compat.css'
-import '@point-hub/papp/style.css'
+import '@point-hub/papp/index.css'
 import './assets/css/main.css'
 import 'virtual:uno.css'
 

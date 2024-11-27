@@ -64,7 +64,7 @@ onMounted(() => {
             <td>
               <item-choosen title="Item" v-model:selected="item.item" border="full" />
             </td>
-            <td><base-input-number border="full" v-model="item.quantity" /></td>
+            <td><base-input-number :decimalLength="2" border="full" v-model="item.quantity" /></td>
             <td>
               <base-button class="px-0! mt-1" @click="removeItem(index)">
                 <base-icon icon="i-far-trash" />

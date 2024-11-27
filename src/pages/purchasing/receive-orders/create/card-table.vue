@@ -82,8 +82,8 @@ onMounted(() => {
             </td>
             <td><item-autocomplete label="" border="full" v-model:selected="item.item" /></td>
             <td><base-input border="full" v-model="item.notes" /></td>
-            <td><base-input-number border="full" v-model="item.quantity" /></td>
-            <td><base-input-number border="full" v-model="item.price" /></td>
+            <td><base-input-number :decimalLength="2" border="full" v-model="item.quantity" /></td>
+            <td><base-input-number :decimalLength="2" border="full" v-model="item.price" /></td>
             <td>
               <allocation-autocomplete
                 label=""

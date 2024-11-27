@@ -88,6 +88,7 @@ onMounted(() => {})
             <td>
               <base-input-number
                 border="full"
+                :decimalLength="2"
                 v-model="item.quantity"
                 :errors="errors?.[`details.${index}.quantity`]"
               />
