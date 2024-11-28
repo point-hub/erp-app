@@ -1,7 +1,9 @@
 import { ref, watch } from 'vue'
+
 import type { ISelectedBranch } from '../../branches/components/autocomplete/autocomplete.vue'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   branch?: ISelectedBranch
   code: string

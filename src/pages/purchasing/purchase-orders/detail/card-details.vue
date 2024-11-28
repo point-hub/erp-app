@@ -21,7 +21,7 @@ const total = defineModel<number>('total', { default: 0 })
           <tr>
             <th class="w-1">#</th>
             <th>Item</th>
-            <th class="text-right">Quantity</th>
+            <th class="text-right border-x">Quantity</th>
             <th class="text-right">Price</th>
             <th class="text-right">Discount</th>
             <th class="text-right">Total</th>
@@ -71,6 +71,64 @@ const total = defineModel<number>('total', { default: 0 })
             <td colspan="5" class="font-bold uppercase text-right">Total</td>
             <td class="text-right">{{ numberFormat(total) }}</td>
             <td></td>
+          </tr>
+        </tbody>
+      </base-table>
+    </div>
+  </base-card>
+  <base-card>
+    <div>
+      <h1>Purchase Request -> Purchase Order</h1>
+      <p>Track remaining quantity from purchase request to purchase order</p>
+    </div>
+    <div class="flex flex-col gap-4">
+      <base-table>
+        <thead>
+          <tr>
+            <th class="w-1">#</th>
+            <th class="w-50%">Item</th>
+            <th class="text-right w-1">Quantity Request</th>
+            <th class="text-right w-1">Quantity Order</th>
+            <th class="text-right w-1">Quantity Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(detail, index) in details" :key="index" class="relative">
+            <td>{{ index + 1 }}</td>
+            <td>{{ detail.item.label }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity_request) }}</td>
+            <td class="text-right">
+              {{ numberFormat(detail.quantity) }}
+            </td>
+            <td class="text-right">
+              {{ numberFormat(detail.quantity_request - detail.quantity) }}
+            </td>
+          </tr>
+        </tbody>
+      </base-table>
+    </div>
+  </base-card>
+  <base-card>
+    <h1>Purchase Order -> Purchase Received</h1>
+    <p>Track remaining quantity from purchase order to purchase recieved</p>
+    <div class="flex flex-col gap-4">
+      <base-table>
+        <thead>
+          <tr>
+            <th class="w-1">#</th>
+            <th class="w-50%">Item</th>
+            <th class="text-right w-1">Quantity Order</th>
+            <th class="text-right w-1">Quantity Received</th>
+            <th class="text-right w-1">Quantity Remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(detail, index) in details" :key="index" class="relative">
+            <td>{{ index + 1 }}</td>
+            <td>{{ detail.item.label }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity_pending) }}</td>
+            <td class="text-right">{{ numberFormat(0) }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity_pending) }}</td>
           </tr>
         </tbody>
       </base-table>

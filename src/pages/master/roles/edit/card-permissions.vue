@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const permission = defineModel<{ [key: string]: any }>('permission', { default: {} })
 
 const checkRows = (module: string, feature: string) => {

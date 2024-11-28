@@ -6,17 +6,19 @@ const details = defineModel<IDetail[]>('details', { required: true })
 
 <template>
   <base-card>
-    <template #header>Details</template>
+    <div>
+      <h1>Purchase Request -> Purchase Order</h1>
+      <p>Track remaining quantity from purchase request to purchase order</p>
+    </div>
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
           <tr>
             <th class="w-1">#</th>
-            <th>Item</th>
-            <th class="text-right">Quantity</th>
-            <th>Notes</th>
-            <th>Allocation</th>
-            <th></th>
+            <th class="w-50%">Item</th>
+            <th class="text-right w-1">Qty Request</th>
+            <th class="text-right w-1">Qty Order</th>
+            <th class="text-right w-1">Qty Pending</th>
           </tr>
         </thead>
         <tbody>
@@ -24,9 +26,8 @@ const details = defineModel<IDetail[]>('details', { required: true })
             <td>{{ index + 1 }}</td>
             <td>{{ detail.item.label }}</td>
             <td class="text-right">{{ detail.quantity }}</td>
-            <td>{{ detail.notes }}</td>
-            <td>{{ detail.allocation.label }}</td>
-            <td></td>
+            <td class="text-right">{{ detail.quantity - detail.quantity_pending }}</td>
+            <td class="text-right">{{ detail.quantity_pending }}</td>
           </tr>
         </tbody>
       </base-table>

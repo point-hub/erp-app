@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import type { ISelectedSupplierGroup } from '../../supplier-groups/components/autocomplete/autocomplete.vue'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   supplier_group: ISelectedSupplierGroup
   code: string

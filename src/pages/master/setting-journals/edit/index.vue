@@ -84,6 +84,7 @@ onMounted(async () => {
 
 const onUpdate = async () => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     settingJournal.value?.journals.forEach((element: any) => {
       element.chart_of_account_id = element?.chart_of_account?.id
     })

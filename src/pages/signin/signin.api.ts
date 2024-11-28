@@ -7,6 +7,7 @@ import { useToastStore } from '@/stores/toast.store'
 const { toastRef } = useToastStore()
 
 export function useSigninApi() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const send = async (data: any, errors: any) => {
     try {
       const authStore = useAuthStore()

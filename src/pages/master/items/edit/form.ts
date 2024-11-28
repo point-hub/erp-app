@@ -4,6 +4,7 @@ import type { ISelectedChartOfAccount } from '../../chart-of-accounts/components
 import type { ISelectedItemCategory } from '../../item-categories/components/autocomplete/autocomplete.vue'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   category?: ISelectedItemCategory
   chart_of_account?: ISelectedChartOfAccount

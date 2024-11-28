@@ -9,6 +9,7 @@ import CardApproval from './card-approval.vue'
 import CardBreadcrumbs from './card-breadcrumbs.vue'
 import CardDetails from './card-details.vue'
 import CardForm from './card-form.vue'
+import CardQuantityReferences from './card-quantity-references.vue'
 import { useForm } from './form'
 import { useRetrievePurchaseRequestApi } from './retrieve.api'
 
@@ -103,6 +104,8 @@ onMounted(async () => {
     />
 
     <card-details v-model:details="form.data.details" />
+
+    <card-quantity-references v-model:details="form.data.details" />
 
     <card-approval
       :created_by="form.data.created_by.label"

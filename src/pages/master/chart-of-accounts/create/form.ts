@@ -1,6 +1,7 @@
 import { ref, watch } from 'vue'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   type_id: string
   category_id: string

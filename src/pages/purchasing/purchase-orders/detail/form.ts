@@ -10,7 +10,9 @@ export interface IDetail {
     name: string
     unit: string
   }
+  quantity_request: number
   quantity: number
+  quantity_pending: number
   price: number
   discount: number
   total: number

@@ -45,5 +45,3 @@ export interface IReference {
     quantity: number
   }[]
 }
-
-export interface IPurchaseRequest {}

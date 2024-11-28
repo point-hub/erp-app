@@ -16,6 +16,7 @@ interface ISettingJournal {
   _id: string
   module: string
   feature: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   journals: { [key: string]: any }[]
 }
 

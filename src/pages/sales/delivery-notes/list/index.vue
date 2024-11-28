@@ -18,6 +18,7 @@ const onCreateClick = () => {
   toastRef.toast('Permission Denied', { color: 'danger' })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const result = ref<any[]>([])
 onMounted(() => {
   result.value = datas.value

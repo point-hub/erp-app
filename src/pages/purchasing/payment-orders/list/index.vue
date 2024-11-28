@@ -8,7 +8,7 @@ const searchAll = ref('')
 const isLoading = ref(false)
 
 const datas = ref([])
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const result = ref<any[]>([])
 onMounted(() => {
   result.value = datas.value

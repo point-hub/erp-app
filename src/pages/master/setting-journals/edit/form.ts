@@ -1,9 +1,11 @@
 import { ref, watch } from 'vue'
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   module: string
   feature: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   journals: { [key: string]: any }[]
 }
 

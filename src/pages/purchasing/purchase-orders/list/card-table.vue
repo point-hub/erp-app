@@ -194,7 +194,13 @@ onMounted(async () => {
       >
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
-      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
+      <base-input
+        disabled
+        v-model="searchAll"
+        placeholder="Search..."
+        border="full"
+        class="w-full"
+      />
     </div>
     <div class="flex flex-col gap-4">
       <base-table>

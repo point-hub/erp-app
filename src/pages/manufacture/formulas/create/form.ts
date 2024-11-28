@@ -27,6 +27,7 @@ interface IApprovalTo {
 }
 
 export interface IForm {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
   code?: string
   name?: string

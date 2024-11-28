@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+
 import type { IReference } from '../interface'
 
 export interface IDetail {

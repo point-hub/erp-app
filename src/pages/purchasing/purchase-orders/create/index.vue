@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isEmpty, objKeys } from '@point-hub/js-utils'
+import { isEmpty } from '@point-hub/js-utils'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -25,11 +25,13 @@ watch(
   () => form.data.purchase_request,
   () => {
     form.data.details = form.data.purchase_request
-      ? JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
       : []
     form.data.details = form.data.details?.map((detail) => {
       return {
         ...detail,
+        quantity_request: detail.quantity_pending,
         quantity: detail.quantity_pending,
         price: 0,
         discount: 0,
