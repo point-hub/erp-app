@@ -84,6 +84,7 @@ const onSave = async () => {
       v-model:options="authStore.branches"
       v-model:created_date="form.data.created_date"
       v-model:required_date="form.data.required_date"
+      v-model:required_down_payment="form.data.required_down_payment"
       :errors="form.errors"
     />
 

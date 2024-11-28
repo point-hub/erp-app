@@ -12,6 +12,7 @@ import PurchaseRequestAutocomplete, {
 import type { IFormError } from './form'
 
 const required_date = defineModel<string>('required_date')
+const required_down_payment = defineModel<boolean>('required_down_payment')
 const branch = defineModel<ISelectedBranch>('branch')
 const supplier = defineModel<ISelectedSupplier>('supplier')
 const purchaseRequest = defineModel<ISelectedPurchaseRequest>('purchase_request')
@@ -59,6 +60,15 @@ watch(purchaseRequest, () => {
         label="Required Date"
         layout="horizontal"
         description="when the item is required to be shipped?"
+        :errors="errors?.required_date"
+      />
+
+      <base-checkbox
+        v-if="purchase_request"
+        v-model="required_down_payment"
+        label="Required Down Payment"
+        layout="horizontal"
+        description="is down payment required before shipment"
         :errors="errors?.required_date"
       />
     </div>

@@ -99,6 +99,7 @@ const onSave = async () => {
     <card-form
       v-model:branch="form.data.branch"
       v-model:required_date="form.data.required_date"
+      v-model:required_down_payment="form.data.required_down_payment"
       v-model:options="authStore.branches"
       v-model:supplier="form.data.supplier"
       v-model:purchase_request="form.data.purchase_request"

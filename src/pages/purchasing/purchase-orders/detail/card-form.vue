@@ -3,6 +3,7 @@ import { format } from 'date-fns/format'
 import { computed } from 'vue'
 
 const form_number = defineModel<string>('form_number', { required: true })
+const required_down_payment = defineModel<boolean>('required_down_payment')
 const purchase_request = defineModel<{ label: string }>('purchase_request')
 const required_date = defineModel<string>('required_date', { required: true, default: '' })
 const revised_count = defineModel<number>('revised_count', { required: true })
@@ -51,6 +52,14 @@ const computedCreatedTime = computed(() => {
       />
       <base-input disabled label="Required Date" layout="horizontal" :modelValue="required_date" />
       <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
+
+      <base-checkbox
+        v-if="purchase_request"
+        v-model="required_down_payment"
+        label="Required Down Payment"
+        layout="horizontal"
+        description="is down payment required before shipment"
+      />
     </div>
   </base-card>
 </template>

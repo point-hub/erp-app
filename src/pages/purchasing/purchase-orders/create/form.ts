@@ -11,6 +11,7 @@ export interface IForm {
   purchase_request?: IPurchaseRequest
   supplier?: ISupplier
   required_date?: string
+  required_down_payment?: boolean
   details?: IDetail[]
   subtotal?: number
   discount?: number

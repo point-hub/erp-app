@@ -7,6 +7,7 @@ import { type ISelectedBranch } from '@/pages/master/branches/components/autocom
 import type { IFormError } from './form'
 
 const form_number = defineModel<string>('form_number', { required: true })
+const required_down_payment = defineModel<boolean>('required_down_payment')
 const purchase_request = defineModel<{ label: string }>('purchase_request')
 const revised_count = defineModel<number>('revised_count')
 const created_date = defineModel<string>('created_date', { required: true })
@@ -59,6 +60,14 @@ const computedCreatedTime = computed(() => {
         layout="horizontal"
         description="when the item is required to be shipped?"
         :errors="errors?.required_date"
+      />
+      <base-checkbox
+        v-if="purchase_request"
+        v-model="required_down_payment"
+        label="Required Down Payment"
+        layout="horizontal"
+        description="is down payment required before shipment"
+        :errors="errors?.required_down_payment"
       />
     </div>
   </base-card>
