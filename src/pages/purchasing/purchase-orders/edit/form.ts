@@ -41,6 +41,7 @@ export function useForm() {
   const defaultForm: IForm = {
     form_number: '',
     created_date: '',
+    required_down_payment: false,
     branch: {
       _id: '',
       label: '',
