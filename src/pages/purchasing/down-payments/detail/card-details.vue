@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { useFormatNumber } from '@/composable/format-number'
+import { numberFormat } from '@point-hub/js-utils'
 
 import type { TaxType } from '../interface'
 import { type IDetail } from './form'
-
-const { formatNumber } = useFormatNumber()
 
 const details = defineModel<IDetail[]>('details', { required: true })
 const subtotal = defineModel<number>('subtotal', { default: 0 })
@@ -35,28 +33,26 @@ const total = defineModel<number>('total', { default: 0 })
           <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>{{ index + 1 }}</td>
             <td>{{ detail.item.label }}</td>
-            <td class="text-right">
-              {{ formatNumber(detail.quantity) }}
-            </td>
-            <td class="text-right">{{ formatNumber(detail.price) }}</td>
-            <td class="text-right">{{ formatNumber(detail.discount) }}</td>
-            <td class="text-right">{{ formatNumber(detail.total) }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity) }}</td>
+            <td class="text-right">{{ numberFormat(detail.price) }}</td>
+            <td class="text-right">{{ numberFormat(detail.discount) }}</td>
+            <td class="text-right">{{ numberFormat(detail.total) }}</td>
             <td>{{ detail.allocation.label }}</td>
             <td></td>
           </tr>
           <tr>
             <td colspan="5" class="font-bold uppercase text-right">Subtotal</td>
-            <td class="text-right">{{ formatNumber(subtotal) }}</td>
+            <td class="text-right">{{ numberFormat(subtotal) }}</td>
             <td></td>
           </tr>
           <tr>
             <td colspan="5" class="font-bold uppercase text-right">Discount</td>
-            <td class="text-right">{{ formatNumber(discount) }}</td>
+            <td class="text-right">{{ numberFormat(discount) }}</td>
             <td></td>
           </tr>
           <tr>
             <td colspan="5" class="font-bold uppercase text-right">Tax Base</td>
-            <td class="text-right">{{ formatNumber(tax_base) }}</td>
+            <td class="text-right">{{ numberFormat(tax_base) }}</td>
             <td></td>
           </tr>
           <tr>
@@ -68,12 +64,12 @@ const total = defineModel<number>('total', { default: 0 })
                 <span>Tax</span>
               </div>
             </td>
-            <td class="text-right">{{ formatNumber(tax) }}</td>
+            <td class="text-right">{{ numberFormat(tax) }}</td>
             <td></td>
           </tr>
           <tr>
             <td colspan="5" class="font-bold uppercase text-right">Total</td>
-            <td class="text-right">{{ formatNumber(total) }}</td>
+            <td class="text-right">{{ numberFormat(total) }}</td>
             <td></td>
           </tr>
         </tbody>
@@ -82,8 +78,8 @@ const total = defineModel<number>('total', { default: 0 })
   </base-card>
   <base-card>
     <div>
-      <h1>Purchase Request -> Purchase Order</h1>
-      <p>Track remaining quantity from purchase request to purchase order</p>
+      <h1>Purchase Order -> Down Payment</h1>
+      <p>Track remaining quantity from purchase request to down payment</p>
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
@@ -100,12 +96,12 @@ const total = defineModel<number>('total', { default: 0 })
           <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>{{ index + 1 }}</td>
             <td>{{ detail.item.label }}</td>
-            <td class="text-right">{{ formatNumber(detail.quantity_request) }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity_request) }}</td>
             <td class="text-right">
-              {{ formatNumber(detail.quantity) }}
+              {{ numberFormat(detail.quantity) }}
             </td>
             <td class="text-right">
-              {{ formatNumber(detail.quantity_request - detail.quantity) }}
+              {{ numberFormat(detail.quantity_request - detail.quantity) }}
             </td>
           </tr>
         </tbody>
@@ -113,8 +109,8 @@ const total = defineModel<number>('total', { default: 0 })
     </div>
   </base-card>
   <base-card>
-    <h1>Purchase Order -> Purchase Received</h1>
-    <p>Track remaining quantity from purchase order to purchase recieved</p>
+    <h1>Down Payment -> Purchase Received</h1>
+    <p>Track remaining quantity from down payment to purchase recieved</p>
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
@@ -130,9 +126,9 @@ const total = defineModel<number>('total', { default: 0 })
           <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>{{ index + 1 }}</td>
             <td>{{ detail.item.label }}</td>
-            <td class="text-right">{{ formatNumber(detail.quantity_pending) }}</td>
-            <td class="text-right">{{ formatNumber(0) }}</td>
-            <td class="text-right">{{ formatNumber(detail.quantity_pending) }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity_pending) }}</td>
+            <td class="text-right">{{ numberFormat(0) }}</td>
+            <td class="text-right">{{ numberFormat(detail.quantity_pending) }}</td>
           </tr>
         </tbody>
       </base-table>

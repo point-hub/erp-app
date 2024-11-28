@@ -2,11 +2,21 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
+import type { IDetail, IReference } from '../../interface'
 import { useGetWarehousesApi } from './retrieve-all.api'
+
+export interface ISelectedPurchaseOrder {
+  _id: string
+  label?: string
+  form_number?: string
+  required_date: string
+  details: IDetail[]
+  references: IReference[]
+}
 
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<{ id: string; label: string }>('selected')
+const selected = defineModel<ISelectedPurchaseOrder>('selected')
 const errors = ref<string[]>([])
 
 const getWarehousesApi = useGetWarehousesApi()
@@ -17,14 +27,15 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getWarehousesApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
-      return {
-        _id: data._id,
-        label: `[${data.code}] ${data.name}`,
-        code: `${data.code}`,
-        name: `${data.name}`
+    console.log(response.data)
+    options.value = response.data.map(
+      (data: { _id: string; label: string; form_number: string }) => {
+        return {
+          _id: data._id,
+          label: `${data.form_number}`
+        }
       }
-    })
+    )
   }
   // finish loading
   isLoading.value = false
@@ -44,7 +55,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {
@@ -55,7 +66,7 @@ onMounted(async () => {
 <template>
   <base-autocomplete
     :required="required"
-    label="Warehouse"
+    label="Purchase Order"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"

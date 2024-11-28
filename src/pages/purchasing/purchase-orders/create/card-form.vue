@@ -41,7 +41,7 @@ watch(purchaseRequest, () => {
         layout="horizontal"
         label="Purchase Request"
         v-model:selected="purchaseRequest"
-        :errors="errors?.['purchaseRequest._id']"
+        :errors="errors?.['purchase_request._id']"
       />
 
       <supplier-autocomplete

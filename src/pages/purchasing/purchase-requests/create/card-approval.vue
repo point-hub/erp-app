@@ -54,11 +54,6 @@ onMounted(async () => {
         layout="horizontal"
         :options="options"
         v-model:selected="approval_to"
-        @update:selected="
-          () => {
-            errors['approval_to._id'] = []
-          }
-        "
         :errors="errors['approval_to._id']"
       />
       <base-textarea

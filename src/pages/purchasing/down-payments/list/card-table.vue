@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { numberFormat } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
@@ -6,48 +7,70 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
 
-import DeleteModal from '../components/delete/delete-modal.vue'
 import { useGetWarehousesApi } from './retrieve-all'
 
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
-const deleteModalRef = ref()
 const getWarehousesApi = useGetWarehousesApi()
 
-interface IPurchaseRequestItem {
+interface IDownPaymentDetail {
   item: {
     _id: string
+    label: string
     code: string
     name: string
     unit: string
   }
-  quantity: string
-  notes: string
+  quantity: number
+  price: number
+  discount: number
+  total: number
   allocation: {
     _id: string
+    label: string
     code: string
     name: string
   }
 }
 
-interface IPurchaseRequest {
+interface IDownPayment {
   _id: string
+  form_number: string
   required_date: string
   created_date: string
   branch: {
     _id: string
+    label: string
     code: string
     name: string
   }
-  items: IPurchaseRequestItem[]
+  details: IDownPaymentDetail[]
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: string
+  tax: number
+  total: number
   notes: string
   approval_to: {
     _id: string
+    label: string
     email: string
     username: string
     name: string
   }
+  approval_status: string
+  deleted_reason: string
+  deleted_by: {
+    _id: string
+    label: string
+    email: string
+    username: string
+    name: string
+  }
+  is_deleted: boolean
+  is_finished: boolean
 }
 
 const searchAll = ref('')
@@ -58,14 +81,13 @@ const search = ref({
   address: '',
   phone: ''
 })
-const purchaseOrders = ref<IPurchaseRequest[]>()
+const downPayments = ref<IDownPayment[]>()
 const pagination = ref({
   page: 1,
   page_size: 10,
   total_document: 0
 })
 const isLoading = ref(false)
-// const rowMenuRef = ref()
 
 const updateRouter = () => {
   router.push({
@@ -94,7 +116,7 @@ watchDebounced(
       { all: searchAll.value, ...search.value },
       pagination.value.page
     )
-    purchaseOrders.value = response?.data
+    downPayments.value = response?.data
     pagination.value = response?.pagination
     // update url query params
     updateRouter()
@@ -116,7 +138,7 @@ watchDebounced(
       { all: searchAll.value, ...search.value },
       pagination.value.page
     )
-    purchaseOrders.value = response?.data
+    downPayments.value = response?.data
     pagination.value = response?.pagination
     // update url query params
     updateRouter()
@@ -133,13 +155,14 @@ const onPageUpdate = async () => {
     { all: searchAll.value, ...search.value },
     pagination.value.page
   )
-  purchaseOrders.value = response?.data
+  downPayments.value = response?.data
   pagination.value = response?.pagination
   // update url query params
   updateRouter()
 }
 
 onMounted(async () => {
+  isLoading.value = true
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.branch = route.query['search.branch']?.toString() ?? ''
@@ -153,27 +176,11 @@ onMounted(async () => {
     { all: searchAll.value, ...search.value },
     pagination.value.page
   )
-  purchaseOrders.value = response?.data
+  downPayments.value = response?.data
   pagination.value = response?.pagination
+
+  isLoading.value = false
 })
-
-// const onDeleteModal = (purchaseRequest: IPurchaseRequest, index: number) => {
-//   rowMenuRef.value[index].toggle(false)
-//   deleteModalRef.value.toggleModal(true, {
-//     id: purchaseRequest._id,
-//     name: `${purchaseRequest.required_date}`
-//   })
-// }
-
-const onDelete = async () => {
-  // call api
-  const response = await getWarehousesApi.send(
-    { all: searchAll.value, ...search.value },
-    pagination.value.page
-  )
-  purchaseOrders.value = response?.data
-  pagination.value = response?.pagination
-}
 </script>
 
 <template>
@@ -183,69 +190,92 @@ const onDelete = async () => {
     <div class="my-5 flex gap-2">
       <router-link
         to="/purchasing/down-payments/create"
-        v-if="authStore.permission?.purchasing?.purchase_orders?.create"
+        v-if="authStore.permission?.purchasing?.down_payments?.create"
       >
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
-      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
+      <base-input
+        disabled
+        v-model="searchAll"
+        placeholder="Search..."
+        border="full"
+        class="w-full"
+      />
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form</th>
-            <th>Date</th>
+            <th class="w-30">Form #</th>
+            <th class="w-30">Form Date</th>
+            <th class="w-30">Time</th>
+            <th class="w-40">Required Date</th>
             <th>Branch</th>
-            <th>Value</th>
-            <th>Approval Status</th>
-            <th>Form Status</th>
+            <th>Item</th>
+            <th>Notes</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Discount</th>
+            <th class="text-right">Total</th>
+            <th class="text-center">Approval Status</th>
+            <th class="text-center">Form Status</th>
           </tr>
-          <!-- <tr class="bg-slate-50 dark:bg-slate-700">
-            <th></th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.code" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.name" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.branch" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.address" placeholder="Search" border="none" />
-            </th>
-            <th class="basic-table-head">
-              <base-input required v-model="search.phone" placeholder="Search" border="none" />
-            </th>
-          </tr> -->
         </thead>
         <tbody>
           <tr v-if="isLoading">
-            <td colspan="5">
-              <p class="w-full h-32 flex items-center justify-center gap-2 text-center text-xl">
-                <base-spinner color="primary" size="xs" /> <span>Loading</span>
-              </p>
+            <td colspan="10">
+              <div class="table-loader">
+                <base-loader />
+              </div>
             </td>
           </tr>
           <template v-if="!isLoading">
-            <template v-for="purchaseRequest in purchaseOrders">
-              <tr v-for="(item, index) in purchaseRequest.items" :key="index">
+            <template v-for="downPayment in downPayments">
+              <tr v-for="(detail, index) in downPayment.details" :key="index">
                 <td></td>
                 <td>
-                  <!-- <router-link
-                    :to="`/purchasing/down-payments/${purchaseRequest._id}`"
+                  <router-link
+                    :to="`/purchasing/down-payments/${downPayment._id}`"
                     class="text-blue"
-                  > -->
-                  UNDEFINED
-                  <!-- </router-link> -->
+                  >
+                    {{ downPayment.form_number }}
+                  </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'dd-MM-yyyy') }}</td>
-                <td>{{ purchaseRequest.required_date }}</td>
-                <td>[{{ purchaseRequest.branch.code }}] {{ purchaseRequest.branch.name }}</td>
-                <td>{{ item.quantity }} {{ item.item.unit }}</td>
-                <td><base-badge color="warning">pending</base-badge></td>
-                <td><base-badge color="warning">open</base-badge></td>
+                <td>{{ format(new Date(downPayment.created_date), 'yyyy-MM-dd') }}</td>
+                <td>{{ format(new Date(downPayment.created_date), 'HH:mm') }}</td>
+                <td>{{ downPayment.required_date }}</td>
+                <td>{{ downPayment.branch.label }}</td>
+                <td>{{ detail.item.label }}</td>
+                <td>{{ detail.item.label }}</td>
+                <td class="text-right">
+                  {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
+                </td>
+                <td class="text-right">{{ numberFormat(detail.price) }}</td>
+                <td class="text-right">{{ numberFormat(detail.discount) }}</td>
+                <td class="text-right">{{ numberFormat(detail.total) }}</td>
+                <td class="text-center">
+                  <base-badge
+                    :color="
+                      downPayment.approval_status === 'rejected'
+                        ? 'danger'
+                        : downPayment.approval_status === 'approved'
+                          ? 'success'
+                          : 'warning'
+                    "
+                  >
+                    {{ downPayment.approval_status ?? 'pending' }}
+                  </base-badge>
+                </td>
+                <td class="text-center">
+                  <base-badge v-if="downPayment.is_deleted" color="danger">deleted</base-badge>
+                  <base-badge v-else-if="!downPayment.is_finished" color="warning"
+                    >pending</base-badge
+                  >
+                  <base-badge v-else-if="downPayment.is_finished" color="success"
+                    >finished</base-badge
+                  >
+                </td>
               </tr>
             </template>
           </template>
@@ -259,7 +289,6 @@ const onDelete = async () => {
         @update:model-value="onPageUpdate()"
       />
     </div>
-    <delete-modal ref="deleteModalRef" @deleted="onDelete" />
   </base-card>
 </template>
 

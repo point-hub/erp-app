@@ -6,7 +6,12 @@ export function useGetWarehousesApi() {
       const response = await axios.get('/v1/purchasing/purchase-orders', {
         params: {
           filter: {
-            label: search
+            label: search,
+            is_finished: false,
+            is_revised: false,
+            is_deleted: false,
+            required_down_payment: true,
+            approval_status: 'approved'
           },
           page: page
         }

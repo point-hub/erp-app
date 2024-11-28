@@ -1,67 +1,68 @@
 import { ref, watch } from 'vue'
 
-import type { IDetail } from '@/pages/purchasing/down-payments/interface'
+import type { IDetail } from '../interface'
 
-import type { IApprovalTo, IBranch, IPurchaseOrder, ISupplier, TaxType } from '../interface'
+interface IBranch {
+  _id: string
+  label: string
+  code: string
+  name: string
+}
+
+interface IApprovalTo {
+  _id: string
+  label: string
+  name: string
+  username: string
+  email: string
+}
 
 export interface IForm {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
-  branch?: IBranch
-  purchase_order?: IPurchaseOrder
-  supplier?: ISupplier
-  required_date?: string
-  required_down_payment?: boolean
-  details?: IDetail[]
-  subtotal?: number
-  discount?: number
-  tax_base?: number
-  tax_type?: TaxType
-  tax?: number
-  total?: number
-  approval_to?: IApprovalTo
-  notes?: string
+  form_number: string
+  required_down_payment: boolean
+  created_date: string
+  branch: IBranch
+  details: IDetail[]
+  approval_to: IApprovalTo
+  notes: string
 }
 
 export interface IFormError {
   [key: string]: string[]
   'branch._id': string[]
-  'purchase_order._id': string[]
-  'supplier._id': string[]
-  required_date: string[]
-  'details.item._id': string[]
-  'details.quantity': string[]
-  'details.price': string[]
-  subtotal: string[]
-  discount: string[]
-  tax_base: string[]
-  tax_type: string[]
-  tax: string[]
-  total: string[]
-  'approval_to._id': string[]
+  details: string[]
+  approval_to: string[]
   notes: string[]
 }
 
 export function useForm() {
   const defaultForm: IForm = {
-    details: []
+    form_number: '',
+    created_date: '',
+    required_down_payment: false,
+    branch: {
+      _id: '',
+      label: '',
+      code: '',
+      name: ''
+    },
+    details: [],
+    approval_to: {
+      _id: '',
+      label: '',
+      email: '',
+      name: '',
+      username: ''
+    },
+    notes: ''
   }
 
   const defaultFormError: IFormError = {
     'branch._id': [],
-    'purchase_order._id': [],
-    'supplier._id': [],
-    required_date: [],
-    'details.item._id': [],
-    'details.quantity': [],
-    'details.price': [],
-    subtotal: [],
-    discount: [],
-    tax_base: [],
-    tax_type: [],
-    tax: [],
-    total: [],
-    'approval_to._id': [],
+    details: [],
+    approval_to: [],
     notes: []
   }
 
@@ -90,7 +91,9 @@ export function useForm() {
         }
       }
     },
-    { deep: true }
+    {
+      deep: true
+    }
   )
 
   const reset = () => {
