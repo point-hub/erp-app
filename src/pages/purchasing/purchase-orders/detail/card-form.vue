@@ -3,6 +3,7 @@ import { format } from 'date-fns/format'
 import { computed } from 'vue'
 
 const form_number = defineModel<string>('form_number', { required: true })
+const purchase_request = defineModel<{ label: string }>('purchase_request')
 const required_date = defineModel<string>('required_date', { required: true, default: '' })
 const revised_count = defineModel<number>('revised_count', { required: true })
 const created_date = defineModel<string>('created_date', { required: true, default: '' })
@@ -41,6 +42,12 @@ const computedCreatedTime = computed(() => {
         label="Created Time"
         layout="horizontal"
         :modelValue="computedCreatedTime"
+      />
+      <base-input
+        disabled
+        label="Purchase Request"
+        layout="horizontal"
+        :modelValue="purchase_request?.label"
       />
       <base-input disabled label="Required Date" layout="horizontal" :modelValue="required_date" />
       <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />

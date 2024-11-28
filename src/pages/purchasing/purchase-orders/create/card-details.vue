@@ -66,34 +66,46 @@ const calculate = () => {
   }
 }
 
-const computedSubtotal: ComputedRef<number> = computed(() => {
-  return (
-    details.value?.reduce((acc, detail) => {
-      return acc + detail.quantity * (detail.price - detail.discount)
-    }, 0) ?? 0
-  )
+const computedSubtotal: ComputedRef<number> = computed({
+  get() {
+    return (
+      details.value?.reduce((acc, detail) => {
+        return acc + detail.quantity * (detail.price - detail.discount)
+      }, 0) ?? 0
+    )
+  },
+  set() {}
 })
 
-const computedTaxBase: ComputedRef<number> = computed(() => {
-  return computedSubtotal.value - discount.value
+const computedTaxBase: ComputedRef<number> = computed({
+  get() {
+    return computedSubtotal.value - discount.value
+  },
+  set() {}
 })
 
-const computedTax: ComputedRef<number> = computed(() => {
-  if (isIncludeTax.value) {
-    return (computedTaxBase.value * 11) / 100 / (1 + 11 / 100)
-  } else if (isExcludeTax.value) {
-    return (computedTaxBase.value * 11) / 100
-  } else {
-    return 0
-  }
+const computedTax: ComputedRef<number> = computed({
+  get() {
+    if (isIncludeTax.value) {
+      return Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
+    } else if (isExcludeTax.value) {
+      return Math.round((computedTaxBase.value * 11) / 100)
+    } else {
+      return 0
+    }
+  },
+  set() {}
 })
 
-const computedTotal: ComputedRef<number> = computed(() => {
-  if (isExcludeTax.value) {
-    return computedTaxBase.value + computedTax.value
-  } else {
-    return computedTaxBase.value
-  }
+const computedTotal: ComputedRef<number> = computed({
+  get() {
+    if (isExcludeTax.value) {
+      return computedTaxBase.value + computedTax.value
+    } else {
+      return computedTaxBase.value
+    }
+  },
+  set() {}
 })
 </script>
 

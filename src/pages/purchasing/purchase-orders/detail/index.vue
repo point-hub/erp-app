@@ -96,6 +96,7 @@ onMounted(async () => {
 
     <card-form
       :form_number="form.data.form_number"
+      :purchase_request="form.data.purchase_request"
       :required_date="form.data.required_date"
       :revised_count="form.data.revised_count"
       :branch="form.data.branch.label"

@@ -7,7 +7,8 @@ import { type ISelectedBranch } from '@/pages/master/branches/components/autocom
 import type { IFormError } from './form'
 
 const form_number = defineModel<string>('form_number', { required: true })
-const revised_count = defineModel<number>('revised_count', { required: true })
+const purchase_request = defineModel<{ label: string }>('purchase_request')
+const revised_count = defineModel<number>('revised_count')
 const created_date = defineModel<string>('created_date', { required: true })
 const required_date = defineModel<string>('required_date')
 const branch = defineModel<ISelectedBranch>('branch', { required: true })
@@ -42,6 +43,13 @@ const computedCreatedTime = computed(() => {
         label="Form Date"
         layout="horizontal"
         :modelValue="computedCreatedTime"
+      />
+      <base-input
+        disabled
+        required
+        label="Purchase Request"
+        layout="horizontal"
+        :modelValue="purchase_request?.label"
       />
       <base-input disabled required label="Branch" layout="horizontal" :modelValue="branch.label" />
       <base-datepicker
