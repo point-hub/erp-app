@@ -27,7 +27,6 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getWarehousesApi.send(search.value, 1)
   if (response?.data) {
-    console.log(response.data)
     options.value = response.data.map(
       (data: { _id: string; label: string; form_number: string }) => {
         return {

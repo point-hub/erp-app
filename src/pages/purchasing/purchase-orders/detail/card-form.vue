@@ -54,6 +54,7 @@ const computedCreatedTime = computed(() => {
       <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
 
       <base-checkbox
+        disabled
         v-if="purchase_request"
         v-model="required_down_payment"
         label="Required Down Payment"
