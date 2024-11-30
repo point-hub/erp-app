@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { numberFormat } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import { useFormatNumber } from '@/composable/format-number'
 import { useAuthStore } from '@/stores/auth.store'
 
 import { useGetWarehousesApi } from './retrieve-all'
 
+const { formatNumber } = useFormatNumber()
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
@@ -249,11 +250,11 @@ onMounted(async () => {
                 <td>{{ detail.item.label }}</td>
                 <td>{{ detail.item.label }}</td>
                 <td class="text-right">
-                  {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
+                  {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}
                 </td>
-                <td class="text-right">{{ numberFormat(detail.price) }}</td>
-                <td class="text-right">{{ numberFormat(detail.discount) }}</td>
-                <td class="text-right">{{ numberFormat(detail.total) }}</td>
+                <td class="text-right">{{ formatNumber(detail.price) }}</td>
+                <td class="text-right">{{ formatNumber(detail.discount) }}</td>
+                <td class="text-right">{{ formatNumber(detail.total) }}</td>
                 <td class="text-center">
                   <base-badge
                     :color="

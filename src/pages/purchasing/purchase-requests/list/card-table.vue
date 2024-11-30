@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { numberFormat } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import { useFormatNumber } from '@/composable/format-number'
 import { useAuthStore } from '@/stores/auth.store'
 
 import { useGetWarehousesApi } from './retrieve-all'
@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const getWarehousesApi = useGetWarehousesApi()
+const { formatNumber } = useFormatNumber()
 
 interface IPurchaseRequestDetail {
   item: {
@@ -238,7 +239,7 @@ onMounted(async () => {
                 <td>{{ detail.item.label }}</td>
                 <td>{{ detail.notes }}</td>
                 <td class="text-right">
-                  {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
+                  {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}
                 </td>
                 <td class="text-center">
                   <base-badge
