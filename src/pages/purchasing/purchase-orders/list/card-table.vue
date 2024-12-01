@@ -195,13 +195,7 @@ onMounted(async () => {
       >
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
-      <base-input
-        disabled
-        v-model="searchAll"
-        placeholder="Search..."
-        border="full"
-        class="w-full"
-      />
+      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
@@ -214,7 +208,6 @@ onMounted(async () => {
             <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
-            <th>Notes</th>
             <th class="text-right">Quantity</th>
             <th class="text-right">Price</th>
             <th class="text-right">Discount</th>
@@ -247,7 +240,6 @@ onMounted(async () => {
                 <td>{{ format(new Date(purchaseOrder.created_date), 'HH:mm') }}</td>
                 <td>{{ purchaseOrder.required_date }}</td>
                 <td>{{ purchaseOrder.branch.label }}</td>
-                <td>{{ detail.item.label }}</td>
                 <td>{{ detail.item.label }}</td>
                 <td class="text-right">
                   {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}

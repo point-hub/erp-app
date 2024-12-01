@@ -7,3 +7,15 @@
 .table-loader {
   @apply w-full h-32 flex items-center justify-center gap-2 text-center text-xl;
 }
+
+.table-header-wrapper {
+  @apply flex items-center justify-between gap-2;
+}
+
+.table-header-text {
+  @apply whitespace-nowrap;
+}
+
+.table-header-sort-button {
+  @apply cursor-pointer;
+}

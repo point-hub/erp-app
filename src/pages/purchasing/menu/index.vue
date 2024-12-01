@@ -34,27 +34,27 @@ onMounted(() => {
       icon: 'i-far-file-pen'
     })
   }
-  // if (authStore?.permission?.purchasing?.down_payments?.read) {
-  //   menus.value.push({
-  //     name: 'Down Payments',
-  //     path: '/purchasing/down-payments',
-  //     icon: 'i-far-file-invoice-dollar'
-  //   })
-  // }
-  // if (authStore?.permission?.purchasing?.receive_orders?.read) {
-  //   menus.value.push({
-  //     name: 'Receive Orders',
-  //     path: '/purchasing/receive-orders',
-  //     icon: 'i-far-file-vector'
-  //   })
-  // }
-  // if (authStore?.permission?.purchasing?.invoices?.read) {
-  //   menus.value.push({
-  //     name: 'Invoices',
-  //     path: '/purchasing/invoices',
-  //     icon: 'i-far-file-invoice'
-  //   })
-  // }
+  if (authStore?.permission?.purchasing?.down_payments?.read) {
+    menus.value.push({
+      name: 'Down Payments',
+      path: '/purchasing/down-payments',
+      icon: 'i-far-file-invoice-dollar'
+    })
+  }
+  if (authStore?.permission?.purchasing?.receive_orders?.read) {
+    menus.value.push({
+      name: 'Receive Orders',
+      path: '/purchasing/receive-orders',
+      icon: 'i-far-file-vector'
+    })
+  }
+  if (authStore?.permission?.purchasing?.invoices?.read) {
+    menus.value.push({
+      name: 'Invoices',
+      path: '/purchasing/invoices',
+      icon: 'i-far-file-invoice'
+    })
+  }
   // if (authStore?.permission?.purchasing?.payment_orders?.read) {
   //   menus.value.push({
   //     name: 'Payment Orders',

@@ -1,3 +1,4 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
 import { watchDebounced } from '@vueuse/core'
 import { format } from 'date-fns/format'
@@ -65,6 +66,42 @@ interface IPurchaseRequest {
   is_deleted: boolean
   is_finished: boolean
 }
+
+// Table Setting
+const showModal = ref(false)
+const openTableSetting = () => {
+  showModal.value = true
+}
+
+const optionsPageSize = [
+  { value: 10, label: '10' },
+  { value: 25, label: '25' },
+  { value: 50, label: '50' },
+  { value: 100, label: '100' }
+]
+
+const columns = ref([
+  {
+    name: 'Checkbox',
+    isShow: true,
+    isEditable: true
+  },
+  {
+    name: 'Name',
+    isShow: true,
+    isEditable: false
+  },
+  {
+    name: 'Job',
+    isShow: true,
+    isEditable: true
+  },
+  {
+    name: 'Favorite Color',
+    isShow: true,
+    isEditable: true
+  }
+])
 
 const searchAll = ref('')
 const search = ref({
@@ -187,29 +224,88 @@ onMounted(async () => {
       >
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
-      <base-input
-        disabled
-        v-model="searchAll"
-        placeholder="Search..."
-        border="full"
-        class="w-full"
-      />
+      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
+      <!-- <base-button color="info" class="gap-1" @click="openTableSetting">
+        <base-icon class="i-far-gear" />
+      </base-button> -->
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form #</th>
-            <th class="w-30">Form Date</th>
-            <th class="w-30">Time</th>
-            <th class="w-40">Required Date</th>
-            <th>Branch</th>
-            <th>Item</th>
-            <th>Notes</th>
-            <th class="text-right">Quantity</th>
-            <th class="text-center">Approval Status</th>
-            <th class="text-center">Form Status</th>
+            <th class="w-30">
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Form #</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-dash"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th class="w-30">
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Form Date</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th class="w-40">
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Required Date</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Branch</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Item</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Notes</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Quantity</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th>
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Approval Status</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
+            <th class="text-center">
+              <div class="table-header-wrapper">
+                <span class="table-header-text">Form Status</span>
+                <span class="table-header-sort-button">
+                  <base-icon icon="i-far-angle-up"></base-icon>
+                </span>
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -232,8 +328,9 @@ onMounted(async () => {
                     {{ purchaseRequest.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd') }}</td>
-                <td>{{ format(new Date(purchaseRequest.created_date), 'HH:mm') }}</td>
+                <td class="whitespace-nowrap">
+                  {{ format(new Date(purchaseRequest.created_date), 'yyyy-MM-dd HH:mm') }}
+                </td>
                 <td>{{ purchaseRequest.required_date }}</td>
                 <td>{{ purchaseRequest.branch.label }}</td>
                 <td>{{ detail.item.label }}</td>
@@ -276,6 +373,39 @@ onMounted(async () => {
         @update:model-value="onPageUpdate()"
       />
     </div>
+    <!-- <base-modal :is-open="showModal" @on-close="(showModal = false)" size="xl">
+      <div class="max-h-90vh overflow-auto p-8 space-y-6">
+        <h2 class="text-2xl font-bold">Table Setting</h2>
+        <div class="space-y-2">
+          <h3 class="font-extrabold text-lg">Column Chooser</h3>
+          <div class="space-y-2">
+            <base-checkbox
+              v-for="(column, index) in columns"
+              :key="index"
+              :id="column.name"
+              :disabled="!column.isEditable"
+              v-model="column.isShow"
+              :text="column.name"
+            />
+          </div>
+        </div>
+        <base-divider orientation="vertical" />
+        <div class="space-y-2">
+          <h3 class="font-extrabold text-lg">Pagination</h3>
+          <base-autocomplete
+            v-model="selected"
+            :options="optionsPageSize"
+            placeholder="Search"
+            label="Page Size"
+            layout="horizontal"
+            description="data per page"
+          ></base-autocomplete>
+        </div>
+        <base-button color="primary" size="md" is-block @click="(showModal = false)">
+          Close
+        </base-button>
+      </div>
+    </base-modal> -->
   </base-card>
 </template>
 
