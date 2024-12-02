@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { numberFormat } from '@point-hub/js-utils'
 import { watchDebounced } from '@vueuse/core'
 import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import { useFormatNumber } from '@/composable/format-number'
 import { useAuthStore } from '@/stores/auth.store'
 
 import { useGetWarehousesApi } from './retrieve-all'
@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const getWarehousesApi = useGetWarehousesApi()
+const { formatNumber } = useFormatNumber()
 
 interface IDownPaymentDetail {
   item: {
@@ -52,6 +53,8 @@ interface IDownPayment {
   tax_type: string
   tax: number
   total: number
+  payment_type: 'cash' | 'credit'
+  amount: number
   notes: string
   approval_to: {
     _id: string
@@ -194,13 +197,7 @@ onMounted(async () => {
       >
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
-      <base-input
-        disabled
-        v-model="searchAll"
-        placeholder="Search..."
-        border="full"
-        class="w-full"
-      />
+      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
@@ -212,12 +209,8 @@ onMounted(async () => {
             <th class="w-30">Time</th>
             <th class="w-40">Required Date</th>
             <th>Branch</th>
-            <th>Item</th>
-            <th>Notes</th>
-            <th class="text-right">Quantity</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Discount</th>
-            <th class="text-right">Total</th>
+            <th>Payment Type</th>
+            <th>Amount</th>
             <th class="text-center">Approval Status</th>
             <th class="text-center">Form Status</th>
           </tr>
@@ -246,14 +239,8 @@ onMounted(async () => {
                 <td>{{ format(new Date(downPayment.created_date), 'HH:mm') }}</td>
                 <td>{{ downPayment.required_date }}</td>
                 <td>{{ downPayment.branch.label }}</td>
-                <td>{{ detail.item.label }}</td>
-                <td>{{ detail.item.label }}</td>
-                <td class="text-right">
-                  {{ numberFormat(detail.quantity) }} {{ detail.item.unit }}
-                </td>
-                <td class="text-right">{{ numberFormat(detail.price) }}</td>
-                <td class="text-right">{{ numberFormat(detail.discount) }}</td>
-                <td class="text-right">{{ numberFormat(detail.total) }}</td>
+                <td>{{ downPayment.payment_type }}</td>
+                <td>{{ formatNumber(downPayment.amount) }}</td>
                 <td class="text-center">
                   <base-badge
                     :color="

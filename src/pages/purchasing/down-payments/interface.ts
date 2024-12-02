@@ -1,3 +1,5 @@
+import type { ISelectedSupplier } from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
+
 export type TaxType = 'include' | 'exclude' | 'non'
 
 export interface IItem {
@@ -35,8 +37,15 @@ export interface IReference {
 
 export interface IPurchaseOrder {
   _id: string
+  supplier: ISelectedSupplier
   required_date: string
   label: string
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax: number
+  total: number
+  tax_type: 'non' | 'include' | 'exclude'
   form_number: string
   details: IDetail[]
   references: IReference[]

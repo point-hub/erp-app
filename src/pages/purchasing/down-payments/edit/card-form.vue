@@ -1,19 +1,37 @@
 <script setup lang="ts">
 import { format } from 'date-fns'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { type ISelectedBranch } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const form_number = defineModel<string>('form_number', { required: true })
-const required_down_payment = defineModel<boolean>('required_down_payment')
+const amount = defineModel<number>('amount')
+const payment_type = defineModel<string>('payment_type')
 const purchase_order = defineModel<{ label: string }>('purchase_order')
 const revised_count = defineModel<number>('revised_count')
 const created_date = defineModel<string>('created_date', { required: true })
 const required_date = defineModel<string>('required_date')
 const branch = defineModel<ISelectedBranch>('branch', { required: true })
 const errors = defineModel<IFormError>('errors')
+
+const paymentTypeOptions = [
+  {
+    label: 'Cash',
+    value: 'cash'
+  },
+  {
+    label: 'Bank',
+    value: 'bank'
+  }
+]
+
+const selectedPaymentType = ref()
+
+watch(selectedPaymentType, () => {
+  payment_type.value = selectedPaymentType.value.value
+})
 
 const computedCreatedDate = computed(() => {
   return created_date.value ? format(new Date(created_date.value), 'yyyy-MM-dd') : ''
@@ -61,13 +79,24 @@ const computedCreatedTime = computed(() => {
         description="when the item is required to be shipped?"
         :errors="errors?.required_date"
       />
-      <base-checkbox
+      <base-radio
+        required
         v-if="purchase_order"
-        v-model="required_down_payment"
-        label="Required Down Payment"
+        label="Payment Type"
+        name="radio-option"
+        :options="paymentTypeOptions"
+        v-model="selectedPaymentType"
         layout="horizontal"
-        description="is down payment required before shipment"
-        :errors="errors?.required_down_payment"
+      />
+
+      <base-input-number
+        v-if="purchase_order"
+        required
+        align="left"
+        layout="horizontal"
+        label="Amount"
+        v-model="amount"
+        :errors="errors?.['amount']"
       />
     </div>
   </base-card>

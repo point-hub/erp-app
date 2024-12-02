@@ -24,18 +24,20 @@ const createDownPaymentApi = useCreateDownPaymentApi()
 watch(
   () => form.data.purchase_order,
   () => {
+    form.data.supplier = form.data.purchase_order?.supplier
+    form.data.subtotal = form.data.purchase_order?.subtotal
+    form.data.discount = form.data.purchase_order?.discount
+    form.data.tax_base = form.data.purchase_order?.tax_base
+    form.data.tax_type = form.data.purchase_order?.tax_type
+    form.data.tax = form.data.purchase_order?.tax
+    form.data.total = form.data.purchase_order?.total
     form.data.details = form.data.purchase_order
       ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
         JSON.parse(JSON.stringify(form.data.purchase_order?.details as any))
       : []
     form.data.details = form.data.details?.map((detail) => {
       return {
-        ...detail,
-        quantity_request: detail.quantity_pending,
-        quantity: detail.quantity_pending,
-        price: 0,
-        discount: 0,
-        total: 0
+        ...detail
       }
     })
   }
@@ -64,12 +66,22 @@ const onSave = async () => {
   // check permission
   if (!authStore.permission?.purchasing?.down_payments?.create) {
     router.push('/unauthorized')
+    isSaving.value = false
     return
   }
   if (form.data.details?.length === 0) {
     toastRef.toast('Items is required', {
       color: 'danger'
     })
+    isSaving.value = false
+    return
+  }
+  const total = form.data.total ?? 0
+  if (form.data.amount > total) {
+    toastRef.toast(`Down Payment amount should not higher than ${total}`, {
+      color: 'danger'
+    })
+    isSaving.value = false
     return
   }
   // api call
@@ -96,10 +108,13 @@ const onSave = async () => {
       edit user data
     </base-alert>
 
+    <pre><code>{{ form.data }}</code></pre>
+
     <card-form
       v-model:branch="form.data.branch"
       v-model:required_date="form.data.required_date"
-      v-model:required_down_payment="form.data.required_down_payment"
+      v-model:payment_type="form.data.payment_type"
+      v-model:amount="form.data.amount"
       v-model:options="authStore.branches"
       v-model:supplier="form.data.supplier"
       v-model:purchase_order="form.data.purchase_order"
@@ -108,13 +123,13 @@ const onSave = async () => {
 
     <card-details
       v-if="form.data.purchase_order"
-      v-model:details="form.data.details"
-      v-model:subtotal="form.data.subtotal"
-      v-model:discount="form.data.discount"
-      v-model:tax_base="form.data.tax_base"
-      v-model:tax_type="form.data.tax_type"
-      v-model:tax="form.data.tax"
-      v-model:total="form.data.total"
+      v-model:details="form.data.purchase_order.details"
+      v-model:subtotal="form.data.purchase_order.subtotal"
+      v-model:discount="form.data.purchase_order.discount"
+      v-model:tax_base="form.data.purchase_order.tax_base"
+      v-model:tax_type="form.data.purchase_order.tax_type"
+      v-model:tax="form.data.purchase_order.tax"
+      v-model:total="form.data.purchase_order.total"
       :errors="form.errors"
     />
 

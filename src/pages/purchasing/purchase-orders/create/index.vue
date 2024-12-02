@@ -24,6 +24,7 @@ const createPurchaseOrderApi = useCreatePurchaseOrderApi()
 watch(
   () => form.data.purchase_request,
   () => {
+    console.log(form.data.purchase_request)
     form.data.details = form.data.purchase_request
       ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
         JSON.parse(JSON.stringify(form.data.purchase_request?.details as any))
@@ -64,12 +65,14 @@ const onSave = async () => {
   // check permission
   if (!authStore.permission?.purchasing?.purchase_orders?.create) {
     router.push('/unauthorized')
+    isSaving.value = false
     return
   }
   if (form.data.details?.length === 0) {
     toastRef.toast('Items is required', {
       color: 'danger'
     })
+    isSaving.value = false
     return
   }
   // api call

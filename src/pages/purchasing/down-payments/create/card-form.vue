@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 
 import { type ISelectedBranch } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
-import SupplierAutocomplete, {
-  type ISelectedSupplier
-} from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
+import { type ISelectedSupplier } from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
 import PurchaseOrderAutocomplete, {
   type ISelectedPurchaseOrder
 } from '@/pages/purchasing/purchase-orders/components/autocomplete/autocomplete.vue'
@@ -12,11 +10,29 @@ import PurchaseOrderAutocomplete, {
 import type { IFormError } from './form'
 
 const required_date = defineModel<string>('required_date')
-const required_down_payment = defineModel<boolean>('required_down_payment')
+const amount = defineModel<number>('amount')
+const payment_type = defineModel<string>('payment_type')
 const branch = defineModel<ISelectedBranch>('branch')
 const supplier = defineModel<ISelectedSupplier>('supplier')
 const purchaseOrder = defineModel<ISelectedPurchaseOrder>('purchase_order')
 const errors = defineModel<IFormError>('errors')
+
+const paymentTypeOptions = [
+  {
+    label: 'Cash',
+    value: 'cash'
+  },
+  {
+    label: 'Bank',
+    value: 'bank'
+  }
+]
+
+const selectedPaymentType = ref()
+
+watch(selectedPaymentType, () => {
+  payment_type.value = selectedPaymentType.value.value
+})
 
 watch(purchaseOrder, () => {
   if (purchaseOrder.value) required_date.value = purchaseOrder.value.required_date
@@ -44,17 +60,19 @@ watch(purchaseOrder, () => {
         :errors="errors?.['purchase_order._id']"
       />
 
-      <supplier-autocomplete
-        v-if="purchase_order"
+      <base-input
+        v-if="supplier"
         required
+        disabled
         layout="horizontal"
         label="Supplier"
-        v-model:selected="supplier"
+        v-model="supplier.label"
         :errors="errors?.['supplier._id']"
       />
 
       <base-datepicker
         required
+        disabled
         v-if="purchase_order"
         v-model="required_date"
         label="Required Date"
@@ -63,13 +81,24 @@ watch(purchaseOrder, () => {
         :errors="errors?.required_date"
       />
 
-      <base-checkbox
+      <base-radio
+        required
         v-if="purchase_order"
-        v-model="required_down_payment"
-        label="Required Down Payment"
+        label="Payment Type"
+        name="radio-option"
+        :options="paymentTypeOptions"
+        v-model="selectedPaymentType"
         layout="horizontal"
-        description="is down payment required before shipment"
-        :errors="errors?.required_date"
+      />
+
+      <base-input-number
+        v-if="purchase_order"
+        required
+        align="left"
+        layout="horizontal"
+        label="Amount"
+        v-model="amount"
+        :errors="errors?.['amount']"
       />
     </div>
   </base-card>

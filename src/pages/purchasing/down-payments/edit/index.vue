@@ -44,12 +44,22 @@ const onSave = async () => {
   // check permission
   if (!authStore.permission?.purchasing?.down_payments?.update) {
     router.push('/unauthorized')
+    isSaving.value = false
     return
   }
   if (form.data.details.length === 0) {
     toastRef.toast('Items is required', {
       color: 'danger'
     })
+    isSaving.value = false
+    return
+  }
+  const total = form.data.total ?? 0
+  if (form.data.amount > total) {
+    toastRef.toast(`Down Payment amount should not higher than ${total}`, {
+      color: 'danger'
+    })
+    isSaving.value = false
     return
   }
   // api call
@@ -84,7 +94,8 @@ const onSave = async () => {
       v-model:options="authStore.branches"
       v-model:created_date="form.data.created_date"
       v-model:required_date="form.data.required_date"
-      v-model:required_down_payment="form.data.required_down_payment"
+      v-model:payment_type="form.data.payment_type"
+      v-model:amount="form.data.amount"
       :errors="form.errors"
     />
 

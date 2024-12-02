@@ -134,9 +134,9 @@ const computedTotal: ComputedRef<number> = computed({
             </td>
             <td>
               <base-input-number
+                disabled
                 border="full"
                 v-model="detail.quantity"
-                :helpers="[`max order is ${detail.quantity_pending} ${detail.item.unit}`]"
                 :decimalLength="2"
                 :errors="errors?.[`details.${index}.quantity`]"
               />
@@ -144,6 +144,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td>
               <base-input-number
                 border="full"
+                disabled
                 v-model="detail.price"
                 @keyup="calculate()"
                 :decimalLength="2"
@@ -153,6 +154,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td>
               <base-input-number
                 border="full"
+                disabled
                 v-model="detail.discount"
                 :decimalLength="2"
                 :errors="errors?.[`details.${index}.discount`]"
@@ -160,14 +162,16 @@ const computedTotal: ComputedRef<number> = computed({
             </td>
             <td>
               <base-input-number
-                disabled
                 border="full"
+                disabled
                 v-model="detail.total"
                 :decimalLength="2"
                 :errors="errors?.[`details.${index}.total`]"
               />
             </td>
-            <td><allocation-choosen v-model:selected="detail.allocation" border="full" /></td>
+            <td>
+              <allocation-choosen v-model:selected="detail.allocation" border="full" disabled />
+            </td>
           </tr>
           <tr>
             <td colspan="5" class="text-right font-bold uppercase">Subtotal</td>
@@ -187,6 +191,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td>
               <base-input-number
                 border="full"
+                disabled
                 v-model="discount"
                 :decimalLength="2"
                 :errors="errors?.[`discount`]"
@@ -212,11 +217,11 @@ const computedTotal: ComputedRef<number> = computed({
             <td>
               <div class="flex items-center gap-2 text-sm">
                 <div class="flex items-center">
-                  <base-checkbox v-model="isIncludeTax" />
+                  <base-checkbox disabled v-model="isIncludeTax" />
                   <span>Include</span>
                 </div>
                 <div class="flex items-center">
-                  <base-checkbox v-model="isExcludeTax" />
+                  <base-checkbox disabled v-model="isExcludeTax" />
                   <span>Exclude</span>
                 </div>
               </div>

@@ -2,16 +2,25 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
+import type { ISelectedSupplier } from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
+
 import type { IDetail, IReference } from '../../interface'
 import { useGetWarehousesApi } from './retrieve-all.api'
 
 export interface ISelectedPurchaseOrder {
   _id: string
   label?: string
+  supplier?: ISelectedSupplier
   form_number?: string
   required_date: string
   details: IDetail[]
   references: IReference[]
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: 'non' | 'include' | 'exclude'
+  tax: number
+  total: number
 }
 
 const _id = defineModel<string>()
@@ -27,14 +36,22 @@ const isLoading = ref<boolean>(false)
 const apiCall = async () => {
   const response = await getWarehousesApi.send(search.value, 1)
   if (response?.data) {
-    options.value = response.data.map(
-      (data: { _id: string; label: string; form_number: string }) => {
-        return {
-          _id: data._id,
-          label: `${data.form_number}`
-        }
+    options.value = response.data.map((data: ISelectedPurchaseOrder) => {
+      return {
+        _id: data._id,
+        required_date: data.required_date,
+        supplier: data.supplier,
+        label: data.form_number,
+        details: data.details,
+        references: data.references,
+        subtotal: data.subtotal,
+        discount: data.discount,
+        tax_base: data.tax_base,
+        tax_type: data.tax_type,
+        tax: data.tax,
+        total: data.total
       }
-    )
+    })
   }
   // finish loading
   isLoading.value = false
