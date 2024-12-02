@@ -136,7 +136,6 @@ onMounted(() => {
               <base-input-number
                 border="full"
                 v-model="detail.quantity"
-                :helpers="[`max order is ${detail.quantity_pending} ${detail.item.unit}`]"
                 :decimalLength="2"
                 :errors="errors?.[`details.${index}.quantity`]"
               />
