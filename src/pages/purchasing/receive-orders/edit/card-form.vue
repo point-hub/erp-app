@@ -3,16 +3,20 @@ import { format } from 'date-fns'
 import { computed } from 'vue'
 
 import { type ISelectedBranch } from '@/pages/master/branches/components/autocomplete/autocomplete.vue'
+import type { ISelectedWarehouse } from '@/pages/master/warehouses/components/autocomplete/autocomplete.vue'
 
 import type { IFormError } from './form'
 
 const form_number = defineModel<string>('form_number', { required: true })
-const required_down_payment = defineModel<boolean>('required_down_payment')
 const purchase_order = defineModel<{ label: string }>('purchase_order')
 const revised_count = defineModel<number>('revised_count')
 const created_date = defineModel<string>('created_date', { required: true })
 const required_date = defineModel<string>('required_date')
 const branch = defineModel<ISelectedBranch>('branch', { required: true })
+const warehouse = defineModel<ISelectedWarehouse>('warehouse', { required: true })
+const warehouse_options = defineModel<ISelectedWarehouse[]>('warehouse_options')
+const driver = defineModel<string>('driver')
+const license_plate = defineModel<string>('license_plate')
 const errors = defineModel<IFormError>('errors')
 
 const computedCreatedDate = computed(() => {
@@ -53,21 +57,35 @@ const computedCreatedTime = computed(() => {
         :modelValue="purchase_order?.label"
       />
       <base-input disabled required label="Branch" layout="horizontal" :modelValue="branch.label" />
-      <base-datepicker
+      <warehouse-autocomplete
         required
+        layout="horizontal"
+        label="Warehouse"
+        v-model:options="warehouse_options"
+        v-model:selected="warehouse"
+        :errors="errors?.['warehouse._id']"
+      />
+      <base-input
+        disabled
         v-model="required_date"
         label="Required Date"
         layout="horizontal"
-        description="when the item is required to be shipped?"
         :errors="errors?.required_date"
       />
-      <base-checkbox
+      <base-input
         v-if="purchase_order"
-        v-model="required_down_payment"
-        label="Required Down Payment"
         layout="horizontal"
-        description="is down payment required before shipment"
-        :errors="errors?.required_down_payment"
+        label="Driver"
+        v-model="driver"
+        :errors="errors?.['driver']"
+      />
+
+      <base-input
+        v-if="purchase_order"
+        layout="horizontal"
+        label="License Plate"
+        v-model="license_plate"
+        :errors="errors?.['license_plate']"
       />
     </div>
   </base-card>

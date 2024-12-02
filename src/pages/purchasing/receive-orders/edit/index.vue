@@ -83,23 +83,18 @@ const onSave = async () => {
       v-model:purchase_order="form.data.purchase_order"
       v-model:revised_count="form.data.revised_count"
       v-model:branch="form.data.branch"
+      v-model:warehouse_options="authStore.warehouses"
+      v-model:warehouse="form.data.warehouse"
       v-model:options="authStore.branches"
+      v-model:driver="form.data.driver"
+      v-model:license_plate="form.data.license_plate"
       v-model:created_date="form.data.created_date"
       v-model:required_date="form.data.required_date"
       v-model:required_down_payment="form.data.required_down_payment"
       :errors="form.errors"
     />
 
-    <card-details
-      v-model:details="form.data.details"
-      v-model:subtotal="form.data.subtotal"
-      v-model:discount="form.data.discount"
-      v-model:tax_base="form.data.tax_base"
-      v-model:tax_type="form.data.tax_type"
-      v-model:tax="form.data.tax"
-      v-model:total="form.data.total"
-      :errors="form.errors"
-    />
+    <card-details v-model:details="form.data.details" :errors="form.errors" />
 
     <card-approval
       v-model:approval_to="form.data.approval_to"

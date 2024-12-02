@@ -73,14 +73,14 @@ const onRequestDelete = async () => {
         </base-button>
       </router-link>
 
-      <router-link
+      <!-- <router-link
         v-if="authStore.permission?.purchasing?.purchase_orders?.update && !data.is_deleted"
         :to="`/purchasing/purchase-orders/${route.params.id}/edit`"
       >
         <base-button color="info" size="sm">
           <base-icon icon="i-far-pen-to-square" /> Edit
         </base-button>
-      </router-link>
+      </router-link> -->
 
       <!-- <router-link
         v-if="authStore.permission?.purchasing?.purchase_orders?.update"
