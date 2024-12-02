@@ -7,12 +7,12 @@ import type { IForm, IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useCreateReceiveOrderApi() {
+export function useUpdateReceiveOrderApi() {
   const send = async (data: IForm, errors: IFormError) => {
     try {
-      const response = await axios.post('/v1/purchasing/receive-orders', data)
+      const response = await axios.post(`/v1/purchasing/receive-orders/${data._id}`, data)
       if (response.status === 201) {
-        toastRef.toast('Create success', { color: 'success' })
+        toastRef.toast('Update success', { color: 'success' })
         return {
           inserted_id: response.data.inserted_id
         }

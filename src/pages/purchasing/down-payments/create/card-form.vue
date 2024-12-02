@@ -54,6 +54,7 @@ watch(purchaseOrder, () => {
 
       <purchase-order-autocomplete
         required
+        :required_down_payment="true"
         layout="horizontal"
         label="Purchase Order"
         v-model:selected="purchaseOrder"

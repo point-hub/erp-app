@@ -3,19 +3,14 @@ import { AxiosError } from 'axios'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
-import type { IForm, IFormError } from './form'
-
 const { toastRef } = useToastStore()
 
-export function useCreateReceiveOrderApi() {
-  const send = async (data: IForm, errors: IFormError) => {
+export function useRetrieveReceiveOrderApi() {
+  const send = async (_id: string) => {
     try {
-      const response = await axios.post('/v1/purchasing/receive-orders', data)
-      if (response.status === 201) {
-        toastRef.toast('Create success', { color: 'success' })
-        return {
-          inserted_id: response.data.inserted_id
-        }
+      const response = await axios.get('/v1/purchasing/receive-orders/' + _id)
+      if (response.status === 200) {
+        return response.data
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -23,7 +18,6 @@ export function useCreateReceiveOrderApi() {
         const formErrors = error?.response?.data?.errors
         if (formErrors) {
           for (const key in formErrors) {
-            errors[key] = formErrors[key]
             listErrors.push(formErrors[key])
           }
         }

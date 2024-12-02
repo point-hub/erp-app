@@ -25,6 +25,7 @@ export interface ISelectedPurchaseOrder {
 
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
+const required_down_payment = defineModel<boolean>('required_down_payment', { default: false })
 const selected = defineModel<ISelectedPurchaseOrder>('selected')
 const errors = ref<string[]>([])
 
@@ -34,7 +35,7 @@ const options = ref([])
 const isLoading = ref<boolean>(false)
 
 const apiCall = async () => {
-  const response = await getWarehousesApi.send(search.value, 1)
+  const response = await getWarehousesApi.send(search.value, 1, required_down_payment.value)
   if (response?.data) {
     options.value = response.data.map((data: ISelectedPurchaseOrder) => {
       return {

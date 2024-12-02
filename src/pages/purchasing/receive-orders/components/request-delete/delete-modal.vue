@@ -92,7 +92,7 @@ defineExpose({
 <template>
   <base-modal :is-open="showModal" @on-close="toggleModal(false)">
     <div class="max-h-90vh overflow-auto p-4">
-      <h2 class="py-4 text-2xl font-bold">Delete Receive Order</h2>
+      <h2 class="py-4 text-2xl font-bold">Request Delete Receive Order</h2>
       <div class="space-y-8">
         <p>
           Please enter your reason and password to protect you from accidentally deleting your data
@@ -119,7 +119,7 @@ defineExpose({
         />
         <div class="flex gap-2">
           <base-button color="danger" size="sm" @click="onDelete()" :disabled="loadingState">
-            Confirm
+            Send Request
           </base-button>
           <base-button color="secondary" size="sm" @click="toggleModal(false)">
             Cancel

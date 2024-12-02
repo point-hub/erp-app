@@ -41,13 +41,13 @@ onMounted(() => {
       icon: 'i-far-file-invoice-dollar'
     })
   }
-  // if (authStore?.permission?.purchasing?.receive_orders?.read) {
-  //   menus.value.push({
-  //     name: 'Receive Orders',
-  //     path: '/purchasing/receive-orders',
-  //     icon: 'i-far-file-vector'
-  //   })
-  // }
+  if (authStore?.permission?.purchasing?.receive_orders?.read) {
+    menus.value.push({
+      name: 'Receive Orders',
+      path: '/purchasing/receive-orders',
+      icon: 'i-far-file-vector'
+    })
+  }
   // if (authStore?.permission?.purchasing?.invoices?.read) {
   //   menus.value.push({
   //     name: 'Invoices',
