@@ -11,7 +11,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(() => {
-  if (!authStore.permission?.purchasing?.purchase_orders?.read) {
+  if (!authStore.permission?.purchasing?.invoices?.read) {
     router.push('/unauthorized')
   }
 })

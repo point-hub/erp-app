@@ -3,19 +3,18 @@ import { AxiosError } from 'axios'
 import axios from '@/axios'
 import { useToastStore } from '@/stores/toast.store'
 
-import type { IForm, IFormError } from './form'
+import type { IFormError } from './form'
 
 const { toastRef } = useToastStore()
 
-export function useCreatePurchaseInvoiceApi() {
-  const send = async (data: IForm, errors: IFormError) => {
+export function useDeleteApi() {
+  const send = async (_id: string, reason: string, errors: IFormError) => {
     try {
-      const response = await axios.post('/v1/purchasing/invoices', data)
-      if (response.status === 201) {
-        toastRef.toast('Create success', { color: 'success' })
-        return {
-          inserted_id: response.data.inserted_id
-        }
+      const response = await axios.post(`/v1/purchasing/invoices/${_id}/delete`, {
+        reason: reason
+      })
+      if (response.status === 200) {
+        return response
       }
     } catch (error) {
       if (error instanceof AxiosError) {

@@ -213,7 +213,6 @@ onMounted(async () => {
             <th>License Plate</th>
             <th>Item</th>
             <th class="text-right">Quantity</th>
-            <th class="text-center">Approval Status</th>
             <th class="text-center">Form Status</th>
           </tr>
         </thead>
@@ -248,22 +247,9 @@ onMounted(async () => {
                   {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}
                 </td>
                 <td class="text-center">
-                  <base-badge
-                    :color="
-                      receiveOrder.approval_status === 'rejected'
-                        ? 'danger'
-                        : receiveOrder.approval_status === 'approved'
-                          ? 'success'
-                          : 'warning'
-                    "
-                  >
-                    {{ receiveOrder.approval_status ?? 'pending' }}
-                  </base-badge>
-                </td>
-                <td class="text-center">
                   <base-badge v-if="receiveOrder.is_deleted" color="danger">deleted</base-badge>
                   <base-badge v-else-if="!receiveOrder.is_finished" color="warning"
-                    >pending</base-badge
+                    >finished</base-badge
                   >
                   <base-badge v-else-if="receiveOrder.is_finished" color="success"
                     >finished</base-badge

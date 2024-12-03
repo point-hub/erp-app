@@ -102,9 +102,9 @@ const seedPurchasingPermissions = () => {
   if (authStore?.permission?.purchasing?.receive_orders?.read) {
     submenu.value?.push({ name: 'Receive Orders', path: '/purchasing/receive-orders' })
   }
-  // if (authStore?.permission?.purchasing?.invoices?.read) {
-  //   submenu.value?.push({ name: 'Invoices', path: '/purchasing/invoices' })
-  // }
+  if (authStore?.permission?.purchasing?.invoices?.read) {
+    submenu.value?.push({ name: 'Invoices', path: '/purchasing/invoices' })
+  }
   // if (authStore?.permission?.purchasing?.payment_orders?.read) {
   //   submenu.value?.push({ name: 'Payment Orders', path: '/purchasing/payment-orders' })
   // }

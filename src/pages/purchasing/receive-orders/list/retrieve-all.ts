@@ -20,6 +20,7 @@ export function useGetWarehousesApi() {
             address: search.address,
             phone: search.phone
           },
+          sort: '-form_number',
           page: page
         }
       })

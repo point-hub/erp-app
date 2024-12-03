@@ -2,11 +2,31 @@
 import { watchDebounced } from '@vueuse/core'
 import { onMounted, ref, watch } from 'vue'
 
+import type { ISelectedSupplier } from '@/pages/master/suppliers/components/autocomplete/autocomplete.vue'
+
+import type { IDetail, IReference } from '../../interface'
 import { useGetWarehousesApi } from './retrieve-all.api'
+
+export interface ISelectedPurchaseInvoice {
+  _id: string
+  label?: string
+  supplier?: ISelectedSupplier
+  form_number?: string
+  required_date: string
+  details: IDetail[]
+  references: IReference[]
+  subtotal: number
+  discount: number
+  tax_base: number
+  tax_type: 'non' | 'include' | 'exclude'
+  tax: number
+  total: number
+}
 
 const _id = defineModel<string>()
 const required = defineModel<boolean>('required', { default: false })
-const selected = defineModel<{ id: string; label: string }>('selected')
+const required_down_payment = defineModel<boolean>('required_down_payment', { default: false })
+const selected = defineModel<ISelectedPurchaseInvoice>('selected')
 const errors = ref<string[]>([])
 
 const getWarehousesApi = useGetWarehousesApi()
@@ -15,14 +35,22 @@ const options = ref([])
 const isLoading = ref<boolean>(false)
 
 const apiCall = async () => {
-  const response = await getWarehousesApi.send(search.value, 1)
+  const response = await getWarehousesApi.send(search.value, 1, required_down_payment.value)
   if (response?.data) {
-    options.value = response.data.map((data: { _id: string; code: string; name: string }) => {
+    options.value = response.data.map((data: ISelectedPurchaseInvoice) => {
       return {
         _id: data._id,
-        label: `[${data.code}] ${data.name}`,
-        code: `${data.code}`,
-        name: `${data.name}`
+        required_date: data.required_date,
+        supplier: data.supplier,
+        label: data.form_number,
+        details: data.details,
+        references: data.references,
+        subtotal: data.subtotal,
+        discount: data.discount,
+        tax_base: data.tax_base,
+        tax_type: data.tax_type,
+        tax: data.tax,
+        total: data.total
       }
     })
   }
@@ -44,7 +72,7 @@ watchDebounced(
 )
 
 watch(selected, () => {
-  _id.value = selected.value?.id
+  _id.value = selected.value?._id
 })
 
 onMounted(async () => {
@@ -55,7 +83,7 @@ onMounted(async () => {
 <template>
   <base-autocomplete
     :required="required"
-    label="Warehouse"
+    label="Purchase Invoice"
     v-model="selected"
     v-model:query="search"
     :is-loading="isLoading"
