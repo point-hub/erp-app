@@ -205,7 +205,6 @@ onMounted(async () => {
             <th class="w-30">Form #</th>
             <th class="w-30">Form Date</th>
             <th class="w-30">Time</th>
-            <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
             <th class="text-right">Quantity</th>
@@ -238,7 +237,6 @@ onMounted(async () => {
                 </td>
                 <td>{{ format(new Date(purchaseInvoice.created_date), 'yyyy-MM-dd') }}</td>
                 <td>{{ format(new Date(purchaseInvoice.created_date), 'HH:mm') }}</td>
-                <td>{{ purchaseInvoice.required_date }}</td>
                 <td>{{ purchaseInvoice.branch.label }}</td>
                 <td>{{ detail.item.label }}</td>
                 <td class="text-right">

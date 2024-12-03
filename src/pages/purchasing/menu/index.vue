@@ -48,13 +48,13 @@ onMounted(() => {
       icon: 'i-far-file-vector'
     })
   }
-  // if (authStore?.permission?.purchasing?.invoices?.read) {
-  //   menus.value.push({
-  //     name: 'Invoices',
-  //     path: '/purchasing/invoices',
-  //     icon: 'i-far-file-invoice'
-  //   })
-  // }
+  if (authStore?.permission?.purchasing?.invoices?.read) {
+    menus.value.push({
+      name: 'Invoices',
+      path: '/purchasing/invoices',
+      icon: 'i-far-file-invoice'
+    })
+  }
   // if (authStore?.permission?.purchasing?.payment_orders?.read) {
   //   menus.value.push({
   //     name: 'Payment Orders',
