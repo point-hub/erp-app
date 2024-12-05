@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, type ComputedRef, ref, watch } from 'vue'
 
-import AllocationChoosen from '@/pages/master/allocations/components/choosen/choosen.vue'
-
 import type { IDetail } from '../interface'
 import type { IFormError } from './form'
 

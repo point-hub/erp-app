@@ -34,7 +34,7 @@ import masterUserRoutes from '@/pages/master/users/routes'
 import masterWarehouseRoutes from '@/pages/master/warehouses/routes'
 import purchasingDownpaymentRoutes from '@/pages/purchasing/down-payments/routes'
 import purchasingInvoiceRoutes from '@/pages/purchasing/invoices/routes'
-import purchasingPaymentOrderRoutes from '@/pages/purchasing/payment-orders/routes'
+// import purchasingPaymentOrderRoutes from '@/pages/purchasing/payment-orders/routes'
 import purchasingPurchaseOrderRoutes from '@/pages/purchasing/purchase-orders/routes'
 import purchasingPurchaseRequestRoutes from '@/pages/purchasing/purchase-requests/routes'
 import purchasingReceiveOrderRoutes from '@/pages/purchasing/receive-orders/routes'
@@ -93,7 +93,7 @@ const router = createRouter({
         purchasingDownpaymentRoutes,
         purchasingReceiveOrderRoutes,
         purchasingInvoiceRoutes,
-        purchasingPaymentOrderRoutes,
+        // purchasingPaymentOrderRoutes,
         // sales routes
         salesRoutes,
         salesQuotationRoutes,
