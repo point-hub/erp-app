@@ -220,6 +220,7 @@ onMounted(async () => {
             <th class="text-right">Price</th>
             <th class="text-right">Discount</th>
             <th class="text-right">Total</th>
+            <th class="text-right">Total Invoice</th>
             <th class="text-center">Approval Status</th>
             <th class="text-center">Form Status</th>
           </tr>
@@ -256,6 +257,7 @@ onMounted(async () => {
                 <td class="text-right">{{ formatNumber(detail.price) }}</td>
                 <td class="text-right">{{ formatNumber(detail.discount) }}</td>
                 <td class="text-right">{{ formatNumber(detail.total) }}</td>
+                <td class="text-right">{{ formatNumber(purchaseInvoice.total) }}</td>
                 <td class="text-center">
                   <base-badge
                     :color="
