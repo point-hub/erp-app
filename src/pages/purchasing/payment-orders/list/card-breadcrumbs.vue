@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppBreadcrumb from '@/components/app-breadcrumb.vue'
+
 const breadcrumbs = [
   {
     name: 'Menu',
@@ -10,7 +11,7 @@ const breadcrumbs = [
     path: '/purchasing'
   },
   {
-    name: 'Payment Orders'
+    name: 'Purchase Invoices'
   }
 ]
 </script>

@@ -2,21 +2,11 @@
 import { onMounted, ref } from 'vue'
 
 import axios from '@/axios'
-import UserAutocomplete from '@/pages/master/users/components/autocomplete/user-autocomplete.vue'
 import { useAuthStore } from '@/stores/auth.store'
 
 import type { IFormError } from './form'
 
-interface IApprovalTo {
-  _id: string
-  label: string
-  name: string
-  username: string
-  email: string
-}
-
 const authStore = useAuthStore()
-const approval_to = defineModel<IApprovalTo>('approval_to')
 const notes = defineModel<string>('notes')
 const errors = defineModel<IFormError>('errors', { required: true })
 const options = ref([])
@@ -48,19 +38,6 @@ onMounted(async () => {
   <base-card>
     <div class="flex flex-col gap-4">
       <base-input label="Created by" disabled layout="horizontal" v-model="authStore.name" />
-      <user-autocomplete
-        required
-        label="Request approval to"
-        layout="horizontal"
-        :options="options"
-        v-model:selected="approval_to"
-        @update:selected="
-          () => {
-            errors['approval_to._id'] = []
-          }
-        "
-        :errors="errors['approval_to._id']"
-      />
       <base-textarea
         layout="horizontal"
         v-model="notes"

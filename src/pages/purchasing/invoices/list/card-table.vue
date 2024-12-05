@@ -27,6 +27,7 @@ interface IPurchaseInvoiceDetail {
   price: number
   discount: number
   total: number
+  notes: string
   allocation: {
     _id: string
     label: string
@@ -41,6 +42,12 @@ interface IPurchaseInvoice {
   required_date: string
   created_date: string
   branch: {
+    _id: string
+    label: string
+    code: string
+    name: string
+  }
+  supplier: {
     _id: string
     label: string
     code: string
@@ -205,8 +212,10 @@ onMounted(async () => {
             <th class="w-30">Form #</th>
             <th class="w-30">Form Date</th>
             <th class="w-30">Time</th>
+            <th>Supplier</th>
             <th>Branch</th>
             <th>Item</th>
+            <th>Notes</th>
             <th class="text-right">Quantity</th>
             <th class="text-right">Price</th>
             <th class="text-right">Discount</th>
@@ -237,8 +246,10 @@ onMounted(async () => {
                 </td>
                 <td>{{ format(new Date(purchaseInvoice.created_date), 'yyyy-MM-dd') }}</td>
                 <td>{{ format(new Date(purchaseInvoice.created_date), 'HH:mm') }}</td>
+                <td>{{ purchaseInvoice.supplier.label }}</td>
                 <td>{{ purchaseInvoice.branch.label }}</td>
                 <td>{{ detail.item.label }}</td>
+                <td>{{ detail.notes }}</td>
                 <td class="text-right">
                   {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}
                 </td>

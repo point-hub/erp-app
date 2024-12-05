@@ -167,7 +167,9 @@ const computedTotal: ComputedRef<number> = computed({
                 :errors="errors?.[`details.${index}.total`]"
               />
             </td>
-            <td><allocation-choosen v-model:selected="detail.allocation" border="full" /></td>
+            <td>
+              <base-input disabled v-model="detail.allocation.label" border="full" />
+            </td>
           </tr>
           <tr>
             <td colspan="5" class="text-right font-bold uppercase">Subtotal</td>
