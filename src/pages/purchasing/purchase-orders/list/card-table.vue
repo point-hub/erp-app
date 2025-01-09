@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useFormatNumber } from '@/composable/format-number'
 import { useAuthStore } from '@/stores/auth.store'
 
+import type { ISupplier } from '../interface'
 import { useGetWarehousesApi } from './retrieve-all'
 
 const { formatNumber } = useFormatNumber()
@@ -40,6 +41,7 @@ interface IPurchaseOrder {
   form_number: string
   required_date: string
   created_date: string
+  supplier: ISupplier
   branch: {
     _id: string
     label: string
@@ -204,7 +206,7 @@ onMounted(async () => {
             <th class="w-1"></th>
             <th class="w-30">Form #</th>
             <th class="w-30">Form Date</th>
-            <th class="w-30">Time</th>
+            <th class="w-30">Supplier</th>
             <th class="w-40">Required Date</th>
             <th>Branch</th>
             <th>Item</th>
@@ -236,8 +238,8 @@ onMounted(async () => {
                     {{ purchaseOrder.form_number }}
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseOrder.created_date), 'yyyy-MM-dd') }}</td>
-                <td>{{ format(new Date(purchaseOrder.created_date), 'HH:mm') }}</td>
+                <td>{{ format(new Date(purchaseOrder.created_date), 'yyyy-MM-dd HH:mm') }}</td>
+                <td>{{ purchaseOrder.supplier?.label }}</td>
                 <td>{{ purchaseOrder.required_date }}</td>
                 <td>{{ purchaseOrder.branch.label }}</td>
                 <td>{{ detail.item.label }}</td>
