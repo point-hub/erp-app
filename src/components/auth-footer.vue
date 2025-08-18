@@ -2,7 +2,7 @@
 
 <template>
   <div class="w-full max-w-xl flex justify-between gap-4">
-    <div>Pointhub ©2023-2024</div>
+    <div>Pointhub ©2025</div>
     <div class="flex gap-4">
       <a href="https://pointhub.net/privacy">Privacy</a>
       <a href="https://pointhub.net/terms">Terms</a>
