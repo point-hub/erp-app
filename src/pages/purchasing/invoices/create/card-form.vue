@@ -25,32 +25,14 @@ watch(purchase_order, () => {
     <template #header>Purchase Invoices</template>
 
     <div class="flex flex-col gap-4 mt-5">
-      <base-input
-        disabled
-        required
-        layout="horizontal"
-        label="Branch"
-        :modelValue="branch?.label"
-      />
+      <base-input disabled required layout="horizontal" label="Branch" :modelValue="branch?.label" />
 
-      <purchase-order-autocomplete
-        required
-        layout="horizontal"
-        label="Purchase Order"
-        :is_finished="true"
-        :has_invoice="false"
-        v-model:selected="purchase_order"
-        :errors="errors?.['purchase_order._id']"
-      />
+      <purchase-order-autocomplete required layout="horizontal" label="Purchase Receive" :is_finished="true"
+        :has_invoice="false" v-model:selected="purchase_order" :errors="errors?.['purchase_order._id']" />
 
-      <base-input
-        v-if="supplier"
-        required
-        disabled
-        layout="horizontal"
-        label="Supplier"
-        :modelValue="supplier.label"
-      />
+      <base-input v-if="supplier" required disabled layout="horizontal" label="Supplier" :modelValue="supplier.label" />
+
+      <base-datepicker v-if="purchase_order" v-model="purchase_order.due_date" label="Due Date" />
     </div>
   </base-card>
 </template>

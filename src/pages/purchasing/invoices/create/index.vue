@@ -27,7 +27,7 @@ watch(
     form.data.supplier = form.data.purchase_order?.supplier
     form.data.details = form.data.purchase_order
       ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        JSON.parse(JSON.stringify(form.data.purchase_order?.details as any))
+      JSON.parse(JSON.stringify(form.data.purchase_order?.details as any))
       : []
     form.data.details = form.data.details?.map((detail) => {
       return {
@@ -94,32 +94,17 @@ const onSave = async () => {
       edit user data
     </base-alert>
 
-    <card-form
-      v-model:branch="form.data.branch"
-      v-model:options="authStore.branches"
-      v-model:supplier="form.data.supplier"
-      v-model:purchase_order="form.data.purchase_order"
-      :errors="form.errors"
-    />
+    <card-form v-model:branch="form.data.branch" v-model:options="authStore.branches"
+      v-model:supplier="form.data.supplier" v-model:purchase_order="form.data.purchase_order" :errors="form.errors" />
 
-    <card-details
-      v-if="form.data.purchase_order"
-      v-model:details="form.data.details"
-      v-model:subtotal="form.data.subtotal"
-      v-model:discount="form.data.discount"
-      v-model:tax_base="form.data.tax_base"
-      v-model:tax_type="form.data.tax_type"
-      v-model:tax="form.data.tax"
-      v-model:total="form.data.total"
-      :errors="form.errors"
-    />
+    <card-details v-if="form.data.purchase_order" v-model:details="form.data.details"
+      v-model:subtotal="form.data.subtotal" v-model:discount_type="form.data.discount_type"
+      v-model:discount="form.data.discount" v-model:tax_base="form.data.tax_base" v-model:tax_type="form.data.tax_type"
+      v-model:tax="form.data.tax" v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total"
+      :errors="form.errors" />
 
-    <card-approval
-      v-if="form.data.purchase_order"
-      v-model:approval_to="form.data.approval_to"
-      v-model:notes="form.data.notes"
-      :errors="form.errors"
-    />
+    <card-approval v-if="form.data.purchase_order" v-model:approval_to="form.data.approval_to"
+      v-model:notes="form.data.notes" :errors="form.errors" />
 
     <base-card class="py-4!" v-if="form.data.purchase_order">
       <div class="flex gap-2">

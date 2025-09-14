@@ -12,14 +12,17 @@ export interface ISelectedPurchaseOrder {
   label?: string
   supplier?: ISelectedSupplier
   form_number?: string
+  due_date: string
   required_date: string
   details: IDetail[]
   references: IReference[]
   subtotal: number
   discount: number
+  discount_type: string
   tax_base: number
   tax_type: 'non' | 'include' | 'exclude'
   tax: number
+  expedition_fee: number
   total: number
 }
 
@@ -42,7 +45,7 @@ const apiCall = async () => {
     is_finished: is_finished.value,
     has_invoice: has_invoice.value
   })
-  console.log(response)
+
   if (response?.data) {
     options.value = response.data.map((data: ISelectedPurchaseOrder) => {
       return {
@@ -88,13 +91,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <base-autocomplete
-    :required="required"
-    label="Purchase Order"
-    v-model="selected"
-    v-model:query="search"
-    :is-loading="isLoading"
-    :options="options"
-    :errors="errors"
-  />
+  <base-autocomplete :required="required" label="Purchase Order" v-model="selected" v-model:query="search"
+    :is-loading="isLoading" :options="options" :errors="errors" />
 </template>

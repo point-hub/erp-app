@@ -15,7 +15,9 @@ export interface IForm {
   required_down_payment?: boolean
   details?: IDetail[]
   subtotal?: number
+  expedition_fee?: number
   discount?: number
+  discount_type?: string
   tax_base?: number
   tax_type?: TaxType
   tax?: number
@@ -35,6 +37,7 @@ export interface IFormError {
   'details.price': string[]
   subtotal: string[]
   discount: string[]
+  discount_type: string[]
   tax_base: string[]
   tax_type: string[]
   tax: string[]
@@ -58,6 +61,7 @@ export function useForm() {
     'details.price': [],
     subtotal: [],
     discount: [],
+    discount_type: [],
     tax_base: [],
     tax_type: [],
     tax: [],
