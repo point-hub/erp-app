@@ -6,10 +6,13 @@ import { type ISelectedSupplier } from '@/pages/master/suppliers/components/auto
 import PurchaseOrderAutocomplete, {
   type ISelectedPurchaseOrder
 } from '@/pages/purchasing/purchase-orders/components/autocomplete/autocomplete.vue'
+import { useCheckedStore } from "@/stores/invoice.store"
 
 import type { IFormError } from './form'
 
+const checkedStore = useCheckedStore()
 const required_date = defineModel<string>('required_date')
+const due_date = defineModel<string>('due_date')
 const branch = defineModel<ISelectedBranch>('branch')
 const supplier = defineModel<ISelectedSupplier>('supplier')
 const purchase_order = defineModel<ISelectedPurchaseOrder>('purchase_order')
@@ -27,12 +30,10 @@ watch(purchase_order, () => {
     <div class="flex flex-col gap-4 mt-5">
       <base-input disabled required layout="horizontal" label="Branch" :modelValue="branch?.label" />
 
-      <purchase-order-autocomplete required layout="horizontal" label="Purchase Receive" :is_finished="true"
-        :has_invoice="false" v-model:selected="purchase_order" :errors="errors?.['purchase_order._id']" />
+      <base-input required disabled layout="horizontal" label="Supplier"
+        :modelValue="checkedStore.$state.items[0]?.supplier?.label" />
 
-      <base-input v-if="supplier" required disabled layout="horizontal" label="Supplier" :modelValue="supplier.label" />
-
-      <base-datepicker v-if="purchase_order" v-model="purchase_order.due_date" label="Due Date" />
+      <base-datepicker required v-model="due_date" layout="horizontal" label="Due Date" />
     </div>
   </base-card>
 </template>

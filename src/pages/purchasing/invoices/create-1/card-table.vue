@@ -15,7 +15,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 const getWarehousesApi = useGetWarehousesApi()
 
-interface IPurchaseInvoiceDetail {
+interface IReceiveOrderDetail {
   item: {
     _id: string
     label: string
@@ -27,7 +27,6 @@ interface IPurchaseInvoiceDetail {
   price: number
   discount: number
   total: number
-  notes: string
   allocation: {
     _id: string
     label: string
@@ -36,7 +35,7 @@ interface IPurchaseInvoiceDetail {
   }
 }
 
-interface IPurchaseInvoice {
+interface IReceiveOrder {
   _id: string
   form_number: string
   required_date: string
@@ -47,19 +46,15 @@ interface IPurchaseInvoice {
     code: string
     name: string
   }
-  supplier: {
+  warehouse: {
     _id: string
     label: string
     code: string
     name: string
   }
-  details: IPurchaseInvoiceDetail[]
-  subtotal: number
-  discount: number
-  tax_base: number
-  tax_type: string
-  tax: number
-  total: number
+  details: IReceiveOrderDetail[]
+  driver: string
+  license_plate: string
   notes: string
   approval_to: {
     _id: string
@@ -89,7 +84,7 @@ const search = ref({
   address: '',
   phone: ''
 })
-const purchaseInvoices = ref<IPurchaseInvoice[]>()
+const receiveOrders = ref<IReceiveOrder[]>()
 const pagination = ref({
   page: 1,
   page_size: 10,
@@ -99,7 +94,7 @@ const isLoading = ref(false)
 
 const updateRouter = () => {
   router.push({
-    path: '/purchasing/invoices',
+    path: '/purchasing/receive-orders',
     query: {
       search: searchAll.value,
       page: pagination.value.page,
@@ -124,7 +119,7 @@ watchDebounced(
       { all: searchAll.value, ...search.value },
       pagination.value.page
     )
-    purchaseInvoices.value = response?.data
+    receiveOrders.value = response?.data
     pagination.value = response?.pagination
     // update url query params
     updateRouter()
@@ -146,7 +141,7 @@ watchDebounced(
       { all: searchAll.value, ...search.value },
       pagination.value.page
     )
-    purchaseInvoices.value = response?.data
+    receiveOrders.value = response?.data
     pagination.value = response?.pagination
     // update url query params
     updateRouter()
@@ -163,7 +158,7 @@ const onPageUpdate = async () => {
     { all: searchAll.value, ...search.value },
     pagination.value.page
   )
-  purchaseInvoices.value = response?.data
+  receiveOrders.value = response?.data
   pagination.value = response?.pagination
   // update url query params
   updateRouter()
@@ -184,42 +179,46 @@ onMounted(async () => {
     { all: searchAll.value, ...search.value },
     pagination.value.page
   )
-  purchaseInvoices.value = response?.data
+  // receiveOrders.value = response?.data
+
+  // Group by supplier
+  const grouped = response?.data.reduce((acc, item) => {
+    const supplierId = item.supplier._id;
+
+    if (!acc[supplierId]) {
+      acc[supplierId] = {
+        supplier: item.supplier,
+        forms: []
+      };
+    }
+
+    acc[supplierId].forms.push(item);
+    return acc;
+  }, {});
+
+
+  receiveOrders.value = Object.values(grouped);
   pagination.value = response?.pagination
 
   isLoading.value = false
 })
+
 </script>
 
 <template>
   <base-card>
-    <template #header>Purchase Invoices</template>
+    <template #header>Create Invoice Step-1</template>
 
     <div class="my-5 flex gap-2">
-      <router-link to="/purchasing/invoices/create-1" v-if="authStore.permission?.purchasing?.invoices?.create">
-        <base-button color="info" shape="sharp">Create</base-button>
-      </router-link>
-      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
+      <!-- <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" /> -->
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form #</th>
-            <th class="w-30">Form Date</th>
-            <th class="w-30">Time</th>
-            <th>Supplier</th>
-            <th>Branch</th>
-            <th>Item</th>
-            <th>Notes</th>
-            <th class="text-right">Quantity</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Discount</th>
-            <th class="text-right">Total</th>
-            <th class="text-right">Total Invoice</th>
-            <th class="text-center">Approval Status</th>
-            <th class="text-center">Form Status</th>
+            <th class="w-30">Supplier</th>
+            <th class="w-30">Purchase Received</th>
           </tr>
         </thead>
         <tbody>
@@ -231,41 +230,18 @@ onMounted(async () => {
             </td>
           </tr>
           <template v-if="!isLoading">
-            <template v-for="purchaseInvoice in purchaseInvoices">
-              <tr v-for="(detail, index) in purchaseInvoice.details" :key="index">
-                <td></td>
-                <td>
-                  <router-link :to="`/purchasing/invoices/${purchaseInvoice._id}`" class="text-blue">
-                    {{ purchaseInvoice.form_number }}
+            <template v-for="receiveOrder in receiveOrders" :key="receiveOrder">
+              <tr>
+                <td class="w-1">
+                  <router-link :to="`/purchasing/invoices/create-2/${receiveOrder.supplier._id}`">
+                    <base-button color="primary" size="xs">Create Invoice</base-button>
                   </router-link>
                 </td>
-                <td>{{ format(new Date(purchaseInvoice.created_date), 'yyyy-MM-dd') }}</td>
-                <td>{{ format(new Date(purchaseInvoice.created_date), 'HH:mm') }}</td>
-                <td>{{ purchaseInvoice.supplier.label }}</td>
-                <td>{{ purchaseInvoice.branch.label }}</td>
-                <td>{{ detail.item.label }}</td>
-                <td>{{ detail.notes }}</td>
-                <td class="text-right">
-                  {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}
+                <td>
+                  {{ receiveOrder.supplier.label }}
                 </td>
-                <td class="text-right">{{ formatNumber(detail.price) }}</td>
-                <td class="text-right">{{ formatNumber(detail.discount) }}</td>
-                <td class="text-right">{{ formatNumber(detail.total) }}</td>
-                <td class="text-right">{{ formatNumber(purchaseInvoice.total) }}</td>
-                <td class="text-center">
-                  <base-badge :color="purchaseInvoice.approval_status === 'rejected'
-                      ? 'danger'
-                      : purchaseInvoice.approval_status === 'approved'
-                        ? 'success'
-                        : 'warning'
-                    ">
-                    {{ purchaseInvoice.approval_status ?? 'pending' }}
-                  </base-badge>
-                </td>
-                <td class="text-center">
-                  <base-badge v-if="purchaseInvoice.is_deleted" color="danger">deleted</base-badge>
-                  <base-badge v-else-if="!purchaseInvoice.is_finished" color="warning">pending</base-badge>
-                  <base-badge v-else-if="purchaseInvoice.is_finished" color="success">finished</base-badge>
+                <td>
+                  {{receiveOrder.forms.map(f => f.form_number).join(", ")}}
                 </td>
               </tr>
             </template>

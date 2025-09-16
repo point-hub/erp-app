@@ -13,7 +13,7 @@ export interface IForm {
   supplier?: ISupplier
   required_date?: string
   required_down_payment?: boolean
-  details?: IDetail[]
+  details: IDetail[]
   subtotal?: number
   expedition_fee?: number
   discount?: number

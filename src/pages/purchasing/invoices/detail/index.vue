@@ -46,7 +46,7 @@ onMounted(async () => {
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-action :data="form.data" />
+    <!-- <card-action :data="form.data" /> -->
 
     <base-card bg-color="red" title-color="white" body-color="white" class="py-4!" v-if="form.data.is_deleted">
       <div>
@@ -56,12 +56,13 @@ onMounted(async () => {
     </base-card>
 
     <card-form :form_number="form.data.form_number" :supplier="form.data.supplier"
-      :purchase_order="form.data.purchase_order" :revised_count="form.data.revised_count"
-      :branch="form.data.branch.label" :created_date="form.data.created_date" />
+      :revised_count="form.data.revised_count" :branch="form.data.branch.label" :created_date="form.data.created_date"
+      :due_date="form.data.due_date" />
 
-    <card-details v-model:details="form.data.details" v-model:subtotal="form.data.subtotal"
-      v-model:discount="form.data.discount" v-model:tax_base="form.data.tax_base" v-model:tax_type="form.data.tax_type"
-      v-model:tax="form.data.tax" v-model:total="form.data.total" />
+    <card-details v-model:details="form.data.details" v-model:discount_type="form.data.discount_type"
+      v-model:subtotal="form.data.subtotal" v-model:discount="form.data.discount" v-model:tax_base="form.data.tax_base"
+      v-model:tax_type="form.data.tax_type" v-model:tax="form.data.tax"
+      v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" />
 
     <card-approval :created_by="form.data.created_by.label" :notes="form.data.notes" />
   </div>
