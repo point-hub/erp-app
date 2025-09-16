@@ -4,6 +4,7 @@ import { format } from 'date-fns/format'
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import BaseDatepicker from '@/components/base-datepicker.vue'
 import { useFormatNumber } from '@/composable/format-number'
 import { useAuthStore } from '@/stores/auth.store'
 
@@ -87,7 +88,11 @@ const search = ref({
   code: '',
   name: '',
   address: '',
-  phone: ''
+  phone: '',
+  start_date: '',
+  end_date: '',
+  approval_status: '',
+  form_status: '',
 })
 const purchaseInvoices = ref<IPurchaseInvoice[]>()
 const pagination = ref({
@@ -104,10 +109,10 @@ const updateRouter = () => {
       search: searchAll.value,
       page: pagination.value.page,
       'search.branch': search.value.branch,
-      'search.code': search.value.code,
-      'search.name': search.value.name,
-      'search.address': search.value.address,
-      'search.phone': search.value.phone
+      'search.start_date': search.value.start_date,
+      'search.end_date': search.value.end_date,
+      'search.approval_status': search.value.approval_status,
+      'search.form_status': search.value.form_status
     }
   })
 }
@@ -174,10 +179,10 @@ onMounted(async () => {
   // set default value
   searchAll.value = route.query.search?.toString() ?? ''
   search.value.branch = route.query['search.branch']?.toString() ?? ''
-  search.value.code = route.query['search.code']?.toString() ?? ''
-  search.value.name = route.query['search.name']?.toString() ?? ''
-  search.value.address = route.query['search.address']?.toString() ?? ''
-  search.value.phone = route.query['search.phone']?.toString() ?? ''
+  search.value.start_date = route.query['search.start_date']?.toString() ?? ''
+  search.value.end_date = route.query['search.end_date']?.toString() ?? ''
+  search.value.form_status = route.query['search.form_status']?.toString() ?? ''
+  search.value.approval_status = route.query['search.approval_status']?.toString() ?? ''
   pagination.value.page = Number(route.query.page ?? 1)
   // call api
   const response = await getWarehousesApi.send(
@@ -189,13 +194,35 @@ onMounted(async () => {
 
   isLoading.value = false
 })
+
+const options: any[] = [
+  { id: 1, label: 'Approved', value: 'approved' },
+]
+
+const options2: any[] = [
+  { id: 1, label: 'Pending', value: 'pending' },
+  { id: 2, label: 'Done', value: 'done' },
+  { id: 3, label: 'Deleted', value: 'deleted' },
+]
+const selectedValue = ref('')
 </script>
 
 <template>
   <base-card>
     <template #header>Purchase Invoices</template>
 
-    <div class="my-5 flex gap-2">
+    <div class="my-5 flex justify-end gap-4">
+      <div class="flex gap-2">
+        <base-datepicker v-model="search.start_date" border="full" placeholder="Start Date" class="h-full" />
+        <base-datepicker v-model="search.end_date" border="full" placeholder="End Date" class="h-full" />
+        <base-select v-model="search.approval_status" :options="options" v-model:selectedValue="selectedValue"
+          border="full" placeholder="Approval Status" />
+        <base-select v-model="search.form_status" :options="options2" v-model:selectedValue="selectedValue"
+          border="full" placeholder="Form Status" />
+
+      </div>
+    </div>
+    <div class="flex gap-2">
       <router-link to="/purchasing/invoices/create-1" v-if="authStore.permission?.purchasing?.invoices?.create">
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
@@ -254,10 +281,10 @@ onMounted(async () => {
                 <td class="text-right">{{ formatNumber(purchaseInvoice.total) }}</td>
                 <td class="text-center">
                   <base-badge :color="purchaseInvoice.approval_status === 'rejected'
-                      ? 'danger'
-                      : purchaseInvoice.approval_status === 'approved'
-                        ? 'success'
-                        : 'warning'
+                    ? 'danger'
+                    : purchaseInvoice.approval_status === 'approved'
+                      ? 'success'
+                      : 'warning'
                     ">
                     {{ purchaseInvoice.approval_status ?? 'pending' }}
                   </base-badge>
