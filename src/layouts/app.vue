@@ -46,18 +46,12 @@ onMounted(() => {
 <template>
   <div class="app-layout">
     <!-- Header -->
-    <component :is="AppHeader" />
+    <component :is="AppHeader" class="print:hidden!" />
 
     <!-- Sidebar -->
-    <component
-      :is="AppSidebar"
-      :title="choosenTitle"
-      :apps="appMenu.menus"
-      :menus="appMenu.menus[choosenAppIndex].menu ?? []"
-      :is-sidebar-open="sidebarStore.isSidebarOpen"
-      :is-mobile="mobileBreakpoint.isMobile()"
-      @choose="onChooseApp"
-    />
+    <component :is="AppSidebar" :title="choosenTitle" :apps="appMenu.menus"
+      :menus="appMenu.menus[choosenAppIndex].menu ?? []" :is-sidebar-open="sidebarStore.isSidebarOpen"
+      :is-mobile="mobileBreakpoint.isMobile()" @choose="onChooseApp" class="print:hidden!" />
 
     <!-- Main Container -->
     <div class="main-container">
@@ -67,7 +61,7 @@ onMounted(() => {
       </main>
 
       <!-- Footer -->
-      <component :is="AppFooter" :version="version" />
+      <component :is="AppFooter" :version="version" class="print:hidden!" />
     </div>
   </div>
 </template>

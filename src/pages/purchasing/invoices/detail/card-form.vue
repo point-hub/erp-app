@@ -31,11 +31,13 @@ const computedCreatedTime = computed(() => {
     <div class="flex flex-col gap-4 mt-5">
       <base-input disabled label="Form Number" layout="horizontal" :modelValue="form_number" />
       <base-input disabled v-if="revised_count > 0" label="Revision" layout="horizontal" :modelValue="revised_count" />
-      <base-input disabled label="Due Date" layout="horizontal" :modelValue="computedDueDate" />
-      <base-input disabled label="Created Date" layout="horizontal" :modelValue="computedCreatedDate" />
-      <base-input disabled label="Created Time" layout="horizontal" :modelValue="computedCreatedTime" />
       <base-input v-if="supplier" disabled label="Supplier" layout="horizontal" :modelValue="supplier?.label" />
-      <base-input disabled label="Branch" layout="horizontal" :modelValue="branch" />
+      <base-input class="print:hidden!" disabled label="Branch" layout="horizontal" :modelValue="branch" />
+      <base-input disabled label="Due Date" layout="horizontal" :modelValue="computedDueDate" />
+      <base-input class="print:hidden!" disabled label="Created Date" layout="horizontal"
+        :modelValue="computedCreatedDate" />
+      <base-input class="print:hidden!" disabled label="Created Time" layout="horizontal"
+        :modelValue="computedCreatedTime" />
     </div>
   </base-card>
 </template>

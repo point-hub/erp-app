@@ -12,6 +12,7 @@ import CardForm from './card-form.vue'
 import { useForm } from './form'
 import { useRetrievePurchaseInvoiceApi } from './retrieve.api'
 
+
 const route = useRoute()
 const router = useRouter()
 const form = reactive(useForm())
@@ -43,10 +44,10 @@ onMounted(async () => {
   <div v-if="isLoading" class="w-full h-full flex justify-center items-center text-2xl gap-2">
     <base-loader />
   </div>
-  <div v-else class="flex flex-col gap-4">
-    <card-breadcrumbs />
+  <div v-else class="flex flex-col gap-4" ref="pdfContent">
+    <card-breadcrumbs class="print:hidden!" />
 
-    <!-- <card-action :data="form.data" /> -->
+    <card-action :data="form.data" class="print:hidden!" />
 
     <base-card bg-color="red" title-color="white" body-color="white" class="py-4!" v-if="form.data.is_deleted">
       <div>
@@ -65,6 +66,7 @@ onMounted(async () => {
       v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" />
 
     <card-approval :created_by="form.data.created_by.label" :notes="form.data.notes" />
+
   </div>
 </template>
 

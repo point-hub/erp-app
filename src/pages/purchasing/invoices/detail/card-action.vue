@@ -23,6 +23,10 @@ const onDeleted = async () => {
 const onRequestDelete = async () => {
   router.push('/purchasing/invoices')
 }
+
+const exportPdf = () => {
+  window.print()
+}
 </script>
 
 <template>
@@ -33,6 +37,10 @@ const onRequestDelete = async () => {
           <base-icon icon="i-far-square-plus" /> Create
         </base-button>
       </router-link>
+
+      <base-button @click="exportPdf" color="info" size="sm">
+        <base-icon icon="i-far-square-plus" /> Export PDF
+      </base-button>
 
       <!-- <router-link
         v-if="authStore.permission?.purchasing?.invoices?.update && !data.is_deleted"
@@ -52,7 +60,7 @@ const onRequestDelete = async () => {
         </base-button>
       </router-link> -->
 
-      <base-button v-if="authStore.permission?.purchasing?.invoices?.delete && !data.is_deleted" color="danger"
+      <!-- <base-button v-if="authStore.permission?.purchasing?.invoices?.delete && !data.is_deleted" color="danger"
         size="sm" @click="
           deleteModalRef.toggleModal(true, {
             id: route.params.id.toString(),
@@ -60,7 +68,7 @@ const onRequestDelete = async () => {
           })
           ">
         <base-icon icon="i-far-trash" /> Delete
-      </base-button>
+      </base-button> -->
 
     </div>
     <delete-modal ref="deleteModalRef" @deleted="onDeleted" />
