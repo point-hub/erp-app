@@ -37,28 +37,14 @@ onMounted(async () => {
     form.data.branch = authStore.branches[0]
   }
 
-  // form.data.details = form.data.details?.map((detail) => {
-  //   return {
-  //     ...detail
-  //   }
-  // })
-
   for (const item of checkedStore.$state.items) {
     form.data.supplier = item.supplier
+
     for (const detail of item.details) {
-      console.log({
-        item: detail.item,
-        // notes: detail.notes,
-        quantity: detail.quantity,
-        allocation: detail.allocation,
-        // uuid: detail.uuid,
-        quantity_pending: detail.pending,
-        // quantity_request: detail.request,
-        price: detail.price,
-        discount: detail.discount,
-        total: detail.total,
-      })
       form.data.details.push({
+        receive_order: {
+          _id: item._id
+        },
         item: detail.item,
         // notes: detail.notes,
         quantity: detail.quantity,

@@ -19,6 +19,7 @@ export function useGetWarehousesApi() {
             name: search.name,
             address: search.address,
             phone: search.phone,
+            has_invoice: false,
             is_finished: false
           },
           sort: '-form_number',
