@@ -30,7 +30,7 @@ const exportPdf = () => {
 </script>
 
 <template>
-  <base-card class="py-4!">
+  <base-card class="py-4! print:hidden!">
     <div class="flex flex-wrap gap-2">
       <router-link v-if="authStore.permission?.purchasing?.invoices?.create" :to="`/purchasing/invoices/create`">
         <base-button color="info" size="sm">

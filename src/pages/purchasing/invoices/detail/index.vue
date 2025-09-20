@@ -49,7 +49,8 @@ onMounted(async () => {
 
     <card-action :data="form.data" class="print:hidden!" />
 
-    <base-card bg-color="red" title-color="white" body-color="white" class="py-4!" v-if="form.data.is_deleted">
+    <base-card bg-color="red" title-color="white" body-color="white" class="py-4! print:hidden!"
+      v-if="form.data.is_deleted">
       <div>
         This Form is DELETED by {{ form.data.deleted_by.label }} because
         {{ form.data.deleted_reason }}

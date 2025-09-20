@@ -49,9 +49,11 @@ onMounted(() => {
     <component :is="AppHeader" class="print:hidden!" />
 
     <!-- Sidebar -->
-    <component :is="AppSidebar" :title="choosenTitle" :apps="appMenu.menus"
-      :menus="appMenu.menus[choosenAppIndex].menu ?? []" :is-sidebar-open="sidebarStore.isSidebarOpen"
-      :is-mobile="mobileBreakpoint.isMobile()" @choose="onChooseApp" class="print:hidden!" />
+    <div class="print:hidden!">
+      <component :is="AppSidebar" :title="choosenTitle" :apps="appMenu.menus"
+        :menus="appMenu.menus[choosenAppIndex].menu ?? []" :is-sidebar-open="sidebarStore.isSidebarOpen"
+        :is-mobile="mobileBreakpoint.isMobile()" @choose="onChooseApp" class="print:hidden!" />
+    </div>
 
     <!-- Main Container -->
     <div class="main-container">
@@ -89,5 +91,27 @@ onMounted(() => {
 
 .main-content-body {
   @apply flex flex-col space-y-5;
+}
+
+@media print {
+  .is-sidebar-open .main-container {
+    @apply lg:w-full lg:ml-0;
+    /* Remove sidebar-specific width and margin for print */
+  }
+
+  .card {
+    @apply border-none;
+  }
+
+  .main-content {
+    @apply mt-0 px-0 flex-1;
+  }
+
+  .sidebar,
+  .sidebar-panel,
+  .sidebar-menu {
+    display: none;
+    /* Hide sidebar elements on print */
+  }
 }
 </style>
