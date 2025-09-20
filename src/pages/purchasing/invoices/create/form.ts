@@ -20,6 +20,7 @@ export interface IForm {
   discount_type?: string
   tax_base?: number
   tax_type?: TaxType
+  tax_percentage?: number
   tax?: number
   total?: number
   approval_to?: IApprovalTo
@@ -40,6 +41,7 @@ export interface IFormError {
   discount_type: string[]
   tax_base: string[]
   tax_type: string[]
+  tax_percentage: string[]
   tax: string[]
   total: string[]
   'approval_to._id': string[]
@@ -64,6 +66,7 @@ export function useForm() {
     discount_type: [],
     tax_base: [],
     tax_type: [],
+    tax_percentage: [],
     tax: [],
     total: [],
     'approval_to._id': [],

@@ -12,6 +12,7 @@ const discount_type = defineModel<string>('discount_type')
 const discount = defineModel<number>('discount', { default: 0 })
 const tax_base = defineModel<number>('tax_base', { default: 0 })
 const tax_type = defineModel<TaxType>('tax_type')
+const tax_percentage = defineModel<number>('tax_percentage', { default: 0 })
 const tax = defineModel<number>('tax', { default: 0 })
 const expedition_fee = defineModel<number>('expedition_fee', { default: 0 })
 const total = defineModel<number>('total', { default: 0 })
@@ -60,17 +61,23 @@ const total = defineModel<number>('total', { default: 0 })
             </td>
             <td></td>
           </tr>
-          <tr>
+          <tr v-if="tax_type !== 'non'">
             <td colspan="5" class="font-bold uppercase text-right">Tax Base</td>
             <td class="text-right">{{ formatNumber(tax_base) }}</td>
             <td></td>
           </tr>
-          <tr>
+          <tr v-if="tax_type !== 'non'">
             <td colspan="5" class="font-bold uppercase text-right">
               <div class="flex flex-row gap-2 justify-end items-center">
-                <span v-if="tax_type !== 'non'" class="font-normal text-xs">
-                  {{ tax_type }} 11%
-                </span>
+                <span>Tax Percentage - {{ tax_type }}</span>
+              </div>
+            </td>
+            <td class="text-right">{{ formatNumber(tax_percentage) }}</td>
+            <td></td>
+          </tr>
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="5" class="font-bold uppercase text-right">
+              <div class="flex flex-row gap-2 justify-end items-center">
                 <span>Tax</span>
               </div>
             </td>

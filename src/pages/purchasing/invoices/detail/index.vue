@@ -63,8 +63,8 @@ onMounted(async () => {
 
     <card-details v-model:details="form.data.details" v-model:discount_type="form.data.discount_type"
       v-model:subtotal="form.data.subtotal" v-model:discount="form.data.discount" v-model:tax_base="form.data.tax_base"
-      v-model:tax_type="form.data.tax_type" v-model:tax="form.data.tax"
-      v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" />
+      v-model:tax_type="form.data.tax_type" v-model:tax_percentage="form.data.tax_percentage"
+      v-model:tax="form.data.tax" v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" />
 
     <card-approval :created_by="form.data.created_by.label" :notes="form.data.notes" />
 

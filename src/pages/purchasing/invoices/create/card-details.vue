@@ -12,6 +12,7 @@ const discount_type = defineModel<string>('discount_type', { default: 'value' })
 const expedition_fee = defineModel<number>('expedition_fee', { default: 0 })
 const tax_base = defineModel<number>('tax_base', { default: 0 })
 const tax_type = defineModel<'include' | 'exclude' | 'non'>('tax_type')
+const tax_percentage = defineModel<number>('tax_percentage', { default: 11 })
 const tax = defineModel<number>('tax', { default: 0 })
 const total = defineModel<number>('total', { default: 0 })
 
@@ -114,9 +115,9 @@ const computedTaxBase: ComputedRef<number> = computed({
 const computedTax: ComputedRef<number> = computed({
   get() {
     if (isIncludeTax.value) {
-      return Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
+      return Math.round((computedTaxBase.value * tax_percentage.value) / 100 / (1 + tax_percentage.value / 100))
     } else if (isExcludeTax.value) {
-      return Math.round((computedTaxBase.value * 11) / 100)
+      return Math.round((computedTaxBase.value * tax_percentage.value) / 100)
     } else {
       return 0
     }
@@ -230,8 +231,21 @@ const computedTotal: ComputedRef<number> = computed({
           </tr>
           <tr>
             <td colspan="5" class="text-right font-bold uppercase">
+              <div>Tax Percentage</div>
+            </td>
+            <td>
+              <base-input-number :disabled="tax_type === 'non'" border="full" v-model="tax_percentage"
+                :decimalLength="2" :errors="errors?.[`tax`]">
+                <template #suffix>
+                  <base-button>%</base-button>
+                </template>
+              </base-input-number>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="5" class="text-right font-bold uppercase">
               <div>Tax</div>
-              <div class="text-xs font-normal">11%</div>
             </td>
             <td>
               <base-input-number disabled border="full" v-model="computedTax" :decimalLength="2"

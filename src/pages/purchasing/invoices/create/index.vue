@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isEmpty } from '@point-hub/js-utils'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth.store'
@@ -108,7 +108,8 @@ const onSave = async () => {
 
     <card-details v-model:details="form.data.details" v-model:subtotal="form.data.subtotal"
       v-model:discount_type="form.data.discount_type" v-model:discount="form.data.discount"
-      v-model:tax_base="form.data.tax_base" v-model:tax_type="form.data.tax_type" v-model:tax="form.data.tax"
+      v-model:tax_base="form.data.tax_base" v-model:tax_type="form.data.tax_type"
+      v-model:tax_percentage="form.data.tax_percentage" v-model:tax="form.data.tax"
       v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" :errors="form.errors" />
 
     <card-approval v-model:approval_to="form.data.approval_to" v-model:notes="form.data.notes" :errors="form.errors" />
