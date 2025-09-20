@@ -50,6 +50,7 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
+    tax_percentage: 11,
     details: []
   }
 
