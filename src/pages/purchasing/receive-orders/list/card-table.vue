@@ -191,10 +191,8 @@ onMounted(async () => {
     <template #header>Receive Orders</template>
 
     <div class="my-5 flex gap-2">
-      <router-link
-        to="/purchasing/receive-orders/create"
-        v-if="authStore.permission?.purchasing?.receive_orders?.create"
-      >
+      <router-link to="/purchasing/receive-orders/create"
+        v-if="authStore.permission?.purchasing?.receive_orders?.create">
         <base-button color="info" shape="sharp">Create</base-button>
       </router-link>
       <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
@@ -229,10 +227,7 @@ onMounted(async () => {
               <tr v-for="(detail, index) in receiveOrder.details" :key="index">
                 <td></td>
                 <td>
-                  <router-link
-                    :to="`/purchasing/receive-orders/${receiveOrder._id}`"
-                    class="text-blue"
-                  >
+                  <router-link :to="`/purchasing/receive-orders/${receiveOrder._id}`" class="text-blue">
                     {{ receiveOrder.form_number }}
                   </router-link>
                 </td>
@@ -248,25 +243,16 @@ onMounted(async () => {
                 </td>
                 <td class="text-center">
                   <base-badge v-if="receiveOrder.is_deleted" color="danger">deleted</base-badge>
-                  <base-badge v-else-if="!receiveOrder.is_finished" color="warning"
-                    >finished</base-badge
-                  >
-                  <base-badge v-else-if="receiveOrder.is_finished" color="success"
-                    >finished</base-badge
-                  >
+                  <base-badge v-else-if="!receiveOrder.has_invoice" color="warning">pending</base-badge>
+                  <base-badge v-else-if="receiveOrder.has_invoice" color="success">finished</base-badge>
                 </td>
               </tr>
             </template>
           </template>
         </tbody>
       </base-table>
-      <base-pagination
-        v-if="!isLoading"
-        v-model="pagination.page"
-        :page-size="pagination.page_size"
-        :total-document="pagination.total_document"
-        @update:model-value="onPageUpdate()"
-      />
+      <base-pagination v-if="!isLoading" v-model="pagination.page" :page-size="pagination.page_size"
+        :total-document="pagination.total_document" @update:model-value="onPageUpdate()" />
     </div>
   </base-card>
 </template>
