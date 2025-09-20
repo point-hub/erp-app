@@ -112,8 +112,6 @@ const onSave = async () => {
       v-model:tax_percentage="form.data.tax_percentage" v-model:tax="form.data.tax"
       v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" :errors="form.errors" />
 
-    {{ form.data }}%
-
     <card-approval v-model:approval_to="form.data.approval_to" v-model:notes="form.data.notes" :errors="form.errors" />
 
     <base-card class="py-4!">
