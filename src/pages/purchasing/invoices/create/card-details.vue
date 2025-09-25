@@ -144,6 +144,7 @@ const computedTotal: ComputedRef<number> = computed({
         <thead>
           <tr>
             <th class="w-1">#</th>
+            <th>Purchase Received</th>
             <th>Item</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -156,6 +157,9 @@ const computedTotal: ComputedRef<number> = computed({
           <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>
               <base-button class="px-0!">{{ index + 1 }}</base-button>
+            </td>
+            <td>
+              <base-input disabled v-model="detail.receive_order.form_number" border="full"></base-input>
             </td>
             <td>
               <base-input disabled v-model="detail.item.label" border="full"></base-input>

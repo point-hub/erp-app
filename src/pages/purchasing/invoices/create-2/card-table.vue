@@ -225,8 +225,8 @@ const onCheck = (item) => {
           <tr>
             <th class="w-1"></th>
             <th class="w-30">Date</th>
-            <th class="w-30">Form Number</th>
             <th class="w-30">Purchase Received</th>
+            <th class="w-30">Supplier</th>
             <th class="w-30">Warehouse</th>
             <th class="w-30">Items</th>
           </tr>

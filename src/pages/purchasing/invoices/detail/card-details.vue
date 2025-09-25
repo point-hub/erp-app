@@ -25,6 +25,7 @@ const total = defineModel<number>('total', { default: 0 })
         <thead>
           <tr>
             <th class="w-1">#</th>
+            <th>Purchase Received</th>
             <th>Item</th>
             <th class="text-right border-x">Quantity</th>
             <th class="text-right">Price</th>
@@ -37,6 +38,7 @@ const total = defineModel<number>('total', { default: 0 })
         <tbody>
           <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>{{ index + 1 }}</td>
+            <td>{{ detail.receive_order.form_number }}</td>
             <td>{{ detail.item.label }}</td>
             <td class="text-right">
               {{ formatNumber(detail.quantity) }}

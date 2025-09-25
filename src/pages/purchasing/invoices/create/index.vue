@@ -43,7 +43,8 @@ onMounted(async () => {
     for (const detail of item.details) {
       form.data.details.push({
         receive_order: {
-          _id: item._id
+          _id: item._id,
+          form_number: item.form_number
         },
         item: detail.item,
         // notes: detail.notes,
