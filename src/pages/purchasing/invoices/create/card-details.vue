@@ -190,7 +190,7 @@ const computedTotal: ComputedRef<number> = computed({
             </td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Subtotal</td>
+            <td colspan="6" class="text-right font-bold uppercase">Subtotal</td>
             <td>
               <base-input-number disabled border="full" v-model="computedSubtotal" :decimalLength="2"
                 :errors="errors?.[`subtotal`]" />
@@ -198,7 +198,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Discount</td>
+            <td colspan="6" class="text-right font-bold uppercase">Discount</td>
             <td>
               <base-input-number border="full" v-model="discount" :decimalLength="2" :errors="errors?.[`discount`]">
                 <template #suffix>
@@ -210,7 +210,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Tax Base</td>
+            <td colspan="6" class="text-right font-bold uppercase">Tax Base</td>
             <td>
               <base-input-number disabled border="full" v-model="computedTaxBase" :decimalLength="2"
                 :errors="errors?.[`tax_base`]" />
@@ -218,7 +218,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Tax Options</td>
+            <td colspan="6" class="text-right font-bold uppercase">Tax Options</td>
             <td>
               <div class="flex items-center gap-2 text-sm">
                 <div class="flex items-center">
@@ -233,8 +233,8 @@ const computedTotal: ComputedRef<number> = computed({
             </td>
             <td></td>
           </tr>
-          <tr>
-            <td colspan="5" class="text-right font-bold uppercase">
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="text-right font-bold uppercase">
               <div>Tax Percentage</div>
             </td>
             <td>
@@ -247,8 +247,8 @@ const computedTotal: ComputedRef<number> = computed({
             </td>
             <td></td>
           </tr>
-          <tr>
-            <td colspan="5" class="text-right font-bold uppercase">
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="text-right font-bold uppercase">
               <div>Tax</div>
             </td>
             <td>
@@ -258,7 +258,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Expedition Fee</td>
+            <td colspan="6" class="text-right font-bold uppercase">Expedition Fee</td>
             <td>
               <base-input-number border="full" v-model="expedition_fee" :decimalLength="2"
                 :errors="errors?.[`expedition_fee`]" />
@@ -266,7 +266,7 @@ const computedTotal: ComputedRef<number> = computed({
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Total</td>
+            <td colspan="6" class="text-right font-bold uppercase">Total</td>
             <td>
               <base-input-number disabled border="full" v-model="computedTotal" :decimalLength="2"
                 :errors="errors?.[`total`]" />

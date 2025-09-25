@@ -52,33 +52,33 @@ const total = defineModel<number>('total', { default: 0 })
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Subtotal</td>
+            <td colspan="6" class="font-bold uppercase text-right">Subtotal</td>
             <td class="text-right">{{ formatNumber(subtotal) }}</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Discount</td>
+            <td colspan="6" class="font-bold uppercase text-right">Discount</td>
             <td class="text-right">{{ formatNumber(discount) }} <template
                 v-if="discount_type === 'percentage'">%</template>
             </td>
             <td></td>
           </tr>
           <tr v-if="tax_type !== 'non'">
-            <td colspan="5" class="font-bold uppercase text-right">Tax Base</td>
+            <td colspan="6" class="font-bold uppercase text-right">Tax Base</td>
             <td class="text-right">{{ formatNumber(tax_base) }}</td>
             <td></td>
           </tr>
           <tr v-if="tax_type !== 'non'">
-            <td colspan="5" class="font-bold uppercase text-right">
+            <td colspan="6" class="font-bold uppercase text-right">
               <div class="flex flex-row gap-2 justify-end items-center">
                 <span>Tax Percentage - {{ tax_type }}</span>
               </div>
             </td>
-            <td class="text-right">{{ formatNumber(tax_percentage) }}</td>
+            <td class="text-right">{{ formatNumber(tax_percentage) }}%</td>
             <td></td>
           </tr>
           <tr v-if="tax_type !== 'non'">
-            <td colspan="5" class="font-bold uppercase text-right">
+            <td colspan="6" class="font-bold uppercase text-right">
               <div class="flex flex-row gap-2 justify-end items-center">
                 <span>Tax</span>
               </div>
@@ -87,12 +87,12 @@ const total = defineModel<number>('total', { default: 0 })
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Expedition Fee</td>
+            <td colspan="6" class="font-bold uppercase text-right">Expedition Fee</td>
             <td class="text-right">{{ formatNumber(expedition_fee) }}</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Total</td>
+            <td colspan="6" class="font-bold uppercase text-right">Total</td>
             <td class="text-right">{{ formatNumber(total) }}</td>
             <td></td>
           </tr>
