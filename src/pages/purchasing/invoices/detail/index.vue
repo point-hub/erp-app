@@ -12,6 +12,7 @@ import CardForm from './card-form.vue'
 import { useForm } from './form'
 import { useRetrievePurchaseInvoiceApi } from './retrieve.api'
 
+
 const route = useRoute()
 const router = useRouter()
 const form = reactive(useForm())
@@ -43,81 +44,30 @@ onMounted(async () => {
   <div v-if="isLoading" class="w-full h-full flex justify-center items-center text-2xl gap-2">
     <base-loader />
   </div>
-  <div v-else class="flex flex-col gap-4">
-    <card-breadcrumbs />
+  <div v-else class="flex flex-col gap-4" ref="pdfContent">
+    <card-breadcrumbs class="print:hidden!" />
 
-    <card-action :data="form.data" />
+    <card-action :data="form.data" class="print:hidden!" />
 
-    <base-card
-      bg-color="red"
-      title-color="white"
-      body-color="white"
-      class="py-4!"
-      v-if="form.data.approval_status === 'rejected'"
-    >
-      <div class="flex items-center gap-2">
-        <base-icon icon="i-fas-file-xmark"></base-icon>
-        <p>
-          This Form is <span class="font-extrabold">REJECTED</span> by
-          {{ form.data.approval_to.label }} because
-          {{ form.data.rejected_reason }}
-        </p>
-      </div>
-    </base-card>
-
-    <base-card
-      bg-color="green"
-      title-color="white"
-      body-color="white"
-      class="py-4!"
-      v-if="form.data.approval_status === 'approved'"
-    >
-      <div class="flex items-center gap-2">
-        <base-icon icon="i-fas-file-check"></base-icon>
-        <p>
-          This Form is <span class="font-extrabold">APPROVED</span> by
-          {{ form.data.approval_to.label }}
-        </p>
-      </div>
-    </base-card>
-
-    <base-card
-      bg-color="red"
-      title-color="white"
-      body-color="white"
-      class="py-4!"
-      v-if="form.data.is_deleted"
-    >
+    <base-card bg-color="red" title-color="white" body-color="white" class="py-4! print:hidden!"
+      v-if="form.data.is_deleted">
       <div>
         This Form is DELETED by {{ form.data.deleted_by.label }} because
         {{ form.data.deleted_reason }}
       </div>
     </base-card>
 
-    <card-form
-      :form_number="form.data.form_number"
-      :supplier="form.data.supplier"
-      :purchase_order="form.data.purchase_order"
-      :revised_count="form.data.revised_count"
-      :branch="form.data.branch.label"
-      :created_date="form.data.created_date"
-    />
+    <card-form :form_number="form.data.form_number" :supplier="form.data.supplier"
+      :revised_count="form.data.revised_count" :branch="form.data.branch.label" :created_date="form.data.created_date"
+      :due_date="form.data.due_date" />
 
-    <card-details
-      v-model:details="form.data.details"
-      v-model:subtotal="form.data.subtotal"
-      v-model:discount="form.data.discount"
-      v-model:tax_base="form.data.tax_base"
-      v-model:tax_type="form.data.tax_type"
-      v-model:tax="form.data.tax"
-      v-model:total="form.data.total"
-    />
+    <card-details v-model:details="form.data.details" v-model:discount_type="form.data.discount_type"
+      v-model:subtotal="form.data.subtotal" v-model:discount="form.data.discount" v-model:tax_base="form.data.tax_base"
+      v-model:tax_type="form.data.tax_type" v-model:tax_percentage="form.data.tax_percentage"
+      v-model:tax="form.data.tax" v-model:expedition_fee="form.data.expedition_fee" v-model:total="form.data.total" />
 
-    <card-approval
-      :created_by="form.data.created_by.label"
-      :approval_to="form.data.approval_to?.label"
-      :notes="form.data.notes"
-    />
+    <card-approval :created_by="form.data.created_by.label" :notes="form.data.notes" />
+
   </div>
 </template>
 

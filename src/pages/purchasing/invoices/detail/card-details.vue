@@ -8,10 +8,13 @@ const { formatNumber } = useFormatNumber()
 
 const details = defineModel<IDetail[]>('details', { required: true })
 const subtotal = defineModel<number>('subtotal', { default: 0 })
+const discount_type = defineModel<string>('discount_type')
 const discount = defineModel<number>('discount', { default: 0 })
 const tax_base = defineModel<number>('tax_base', { default: 0 })
 const tax_type = defineModel<TaxType>('tax_type')
+const tax_percentage = defineModel<number>('tax_percentage', { default: 0 })
 const tax = defineModel<number>('tax', { default: 0 })
+const expedition_fee = defineModel<number>('expedition_fee', { default: 0 })
 const total = defineModel<number>('total', { default: 0 })
 </script>
 
@@ -22,6 +25,7 @@ const total = defineModel<number>('total', { default: 0 })
         <thead>
           <tr>
             <th class="w-1">#</th>
+            <th>Purchase Received</th>
             <th>Item</th>
             <th class="text-right border-x">Quantity</th>
             <th class="text-right">Price</th>
@@ -34,37 +38,48 @@ const total = defineModel<number>('total', { default: 0 })
         <tbody>
           <tr v-for="(detail, index) in details" :key="index" class="relative">
             <td>{{ index + 1 }}</td>
+            <td>{{ detail.receive_order.form_number }}</td>
             <td>{{ detail.item.label }}</td>
             <td class="text-right">
               {{ formatNumber(detail.quantity) }}
             </td>
             <td class="text-right">{{ formatNumber(detail.price) }}</td>
-            <td class="text-right">{{ formatNumber(detail.discount) }}</td>
+            <td class="text-right">{{ formatNumber(detail.discount) }} <template
+                v-if="discount_type === 'percentage'">%</template>
+            </td>
             <td class="text-right">{{ formatNumber(detail.total) }}</td>
             <td>{{ detail.allocation.label }}</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Subtotal</td>
+            <td colspan="6" class="font-bold uppercase text-right">Subtotal</td>
             <td class="text-right">{{ formatNumber(subtotal) }}</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Discount</td>
-            <td class="text-right">{{ formatNumber(discount) }}</td>
+            <td colspan="6" class="font-bold uppercase text-right">Discount</td>
+            <td class="text-right">{{ formatNumber(discount) }} <template
+                v-if="discount_type === 'percentage'">%</template>
+            </td>
             <td></td>
           </tr>
-          <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Tax Base</td>
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="font-bold uppercase text-right">Tax Base</td>
             <td class="text-right">{{ formatNumber(tax_base) }}</td>
             <td></td>
           </tr>
-          <tr>
-            <td colspan="5" class="font-bold uppercase text-right">
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="font-bold uppercase text-right">
               <div class="flex flex-row gap-2 justify-end items-center">
-                <span v-if="tax_type !== 'non'" class="font-normal text-xs">
-                  {{ tax_type }} 11%
-                </span>
+                <span>Tax Percentage - {{ tax_type }}</span>
+              </div>
+            </td>
+            <td class="text-right">{{ formatNumber(tax_percentage) }}%</td>
+            <td></td>
+          </tr>
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="font-bold uppercase text-right">
+              <div class="flex flex-row gap-2 justify-end items-center">
                 <span>Tax</span>
               </div>
             </td>
@@ -72,7 +87,12 @@ const total = defineModel<number>('total', { default: 0 })
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="font-bold uppercase text-right">Total</td>
+            <td colspan="6" class="font-bold uppercase text-right">Expedition Fee</td>
+            <td class="text-right">{{ formatNumber(expedition_fee) }}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="6" class="font-bold uppercase text-right">Total</td>
             <td class="text-right">{{ formatNumber(total) }}</td>
             <td></td>
           </tr>

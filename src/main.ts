@@ -9,7 +9,6 @@ import { createApp } from 'vue'
 
 import MainApp from './main-app.vue'
 import router from './router'
-
 const app = createApp(MainApp)
 
 app.use(router)

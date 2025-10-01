@@ -10,6 +10,16 @@ export default {
           meta: { requiresAuth: true }
         },
         {
+          path: 'create-1',
+          component: () => import('@/pages/purchasing/invoices/create-1/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: 'create-2/:id',
+          component: () => import('@/pages/purchasing/invoices/create-2/index.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
           path: 'create',
           component: () => import('@/pages/purchasing/invoices/create/index.vue'),
           meta: { requiresAuth: true }

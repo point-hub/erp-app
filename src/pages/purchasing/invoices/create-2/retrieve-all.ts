@@ -2,24 +2,29 @@ import axios from '@/axios'
 
 interface ISearch {
   all: string
-  start_date: string
-  end_date: string
-  approval_status: string
-  form_status: string
+  code: string
+  name: string
+  address: string
+  phone: string
+  supplier: string
 }
 
 export function useGetWarehousesApi() {
   const send = async (search: ISearch, page: number) => {
     try {
-      const response = await axios.get('/v1/purchasing/invoices', {
+      const response = await axios.get('/v1/purchasing/receive-orders', {
         params: {
           filter: {
             search: search.all,
-            start_date: search.start_date,
-            end_date: search.end_date,
-            approval_status: search.approval_status,
-            form_status: search.form_status
+            code: search.code,
+            name: search.name,
+            address: search.address,
+            phone: search.phone,
+            is_finished: false,
+            has_invoice: false,
+            supplier: search.supplier
           },
+          sort: '-form_number',
           page: page
         }
       })

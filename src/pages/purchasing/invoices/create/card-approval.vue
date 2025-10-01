@@ -48,26 +48,7 @@ onMounted(async () => {
   <base-card>
     <div class="flex flex-col gap-4">
       <base-input label="Created by" disabled layout="horizontal" v-model="authStore.name" />
-      <user-autocomplete
-        required
-        label="Request approval to"
-        layout="horizontal"
-        :options="options"
-        v-model:selected="approval_to"
-        @update:selected="
-          () => {
-            errors['approval_to._id'] = []
-          }
-        "
-        :errors="errors['approval_to._id']"
-      />
-      <base-textarea
-        layout="horizontal"
-        v-model="notes"
-        label="Notes"
-        :errors="errors?.notes"
-        :minHeight="128"
-      />
+      <base-textarea layout="horizontal" v-model="notes" label="Notes" :errors="errors?.notes" :minHeight="128" />
     </div>
   </base-card>
 </template>

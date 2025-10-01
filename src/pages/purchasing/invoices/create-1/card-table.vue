@@ -179,39 +179,46 @@ onMounted(async () => {
     { all: searchAll.value, ...search.value },
     pagination.value.page
   )
-  receiveOrders.value = response?.data
+  // receiveOrders.value = response?.data
+
+  // Group by supplier
+  const grouped = response?.data.reduce((acc, item) => {
+    const supplierId = item.supplier._id;
+
+    if (!acc[supplierId]) {
+      acc[supplierId] = {
+        supplier: item.supplier,
+        forms: []
+      };
+    }
+
+    acc[supplierId].forms.push(item);
+    return acc;
+  }, {});
+
+
+  receiveOrders.value = Object.values(grouped);
   pagination.value = response?.pagination
 
   isLoading.value = false
 })
+
 </script>
 
 <template>
   <base-card>
-    <template #header>Receive Orders</template>
+    <template #header>Create Invoice Step-1</template>
 
     <div class="my-5 flex gap-2">
-      <router-link to="/purchasing/receive-orders/create"
-        v-if="authStore.permission?.purchasing?.receive_orders?.create">
-        <base-button color="info" shape="sharp">Create</base-button>
-      </router-link>
-      <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" />
+      <!-- <base-input v-model="searchAll" placeholder="Search..." border="full" class="w-full" /> -->
     </div>
     <div class="flex flex-col gap-4">
       <base-table>
         <thead>
           <tr>
             <th class="w-1"></th>
-            <th class="w-30">Form #</th>
-            <th class="w-30">Form Date</th>
-            <th class="w-30">Time</th>
-            <th class="w-40">Required Date</th>
-            <th>Branch</th>
-            <th>Driver</th>
-            <th>License Plate</th>
-            <th>Item</th>
-            <th class="text-right">Quantity</th>
-            <th class="text-center">Form Status</th>
+            <th class="w-30">Supplier</th>
+            <th class="w-30">Purchase Received</th>
           </tr>
         </thead>
         <tbody>
@@ -223,28 +230,18 @@ onMounted(async () => {
             </td>
           </tr>
           <template v-if="!isLoading">
-            <template v-for="receiveOrder in receiveOrders">
-              <tr v-for="(detail, index) in receiveOrder.details" :key="index">
-                <td></td>
-                <td>
-                  <router-link :to="`/purchasing/receive-orders/${receiveOrder._id}`" class="text-blue">
-                    {{ receiveOrder.form_number }}
+            <template v-for="receiveOrder in receiveOrders" :key="receiveOrder">
+              <tr>
+                <td class="w-1">
+                  <router-link :to="`/purchasing/invoices/create-2/${receiveOrder.supplier._id}`">
+                    <base-button color="primary" size="xs">Create Invoice</base-button>
                   </router-link>
                 </td>
-                <td>{{ format(new Date(receiveOrder.created_date), 'yyyy-MM-dd') }}</td>
-                <td>{{ format(new Date(receiveOrder.created_date), 'HH:mm') }}</td>
-                <td>{{ receiveOrder.required_date }}</td>
-                <td>{{ receiveOrder.branch.label }}</td>
-                <td>{{ receiveOrder.driver }}</td>
-                <td>{{ receiveOrder.license_plate }}</td>
-                <td>{{ detail.item.label }}</td>
-                <td class="text-right">
-                  {{ formatNumber(detail.quantity) }} {{ detail.item.unit }}
+                <td>
+                  {{ receiveOrder.supplier.label }}
                 </td>
-                <td class="text-center">
-                  <base-badge v-if="receiveOrder.is_deleted" color="danger">deleted</base-badge>
-                  <base-badge v-else-if="!receiveOrder.has_invoice" color="warning">pending</base-badge>
-                  <base-badge v-else-if="receiveOrder.has_invoice" color="success">finished</base-badge>
+                <td>
+                  {{receiveOrder.forms.map(f => f.form_number).join(", ")}}
                 </td>
               </tr>
             </template>

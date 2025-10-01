@@ -43,6 +43,7 @@ export interface IPurchaseOrder {
 }
 
 export interface IDetail {
+  receive_order: IReceiveOrder
   item: IItem
   quantity: number
   quantity_pending: number
@@ -57,6 +58,10 @@ export interface IBranch {
   label: string
   code: string
   name: string
+}
+
+export interface IReceiveOrder {
+  _id: string
 }
 
 export interface IApprovalTo {

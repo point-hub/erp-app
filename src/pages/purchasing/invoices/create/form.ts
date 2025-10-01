@@ -13,11 +13,14 @@ export interface IForm {
   supplier?: ISupplier
   required_date?: string
   required_down_payment?: boolean
-  details?: IDetail[]
+  details: IDetail[]
   subtotal?: number
+  expedition_fee?: number
   discount?: number
+  discount_type?: string
   tax_base?: number
   tax_type?: TaxType
+  tax_percentage?: number
   tax?: number
   total?: number
   approval_to?: IApprovalTo
@@ -35,8 +38,10 @@ export interface IFormError {
   'details.price': string[]
   subtotal: string[]
   discount: string[]
+  discount_type: string[]
   tax_base: string[]
   tax_type: string[]
+  tax_percentage: string[]
   tax: string[]
   total: string[]
   'approval_to._id': string[]
@@ -45,6 +50,7 @@ export interface IFormError {
 
 export function useForm() {
   const defaultForm: IForm = {
+    tax_percentage: 11,
     details: []
   }
 
@@ -58,8 +64,10 @@ export function useForm() {
     'details.price': [],
     subtotal: [],
     discount: [],
+    discount_type: [],
     tax_base: [],
     tax_type: [],
+    tax_percentage: [],
     tax: [],
     total: [],
     'approval_to._id': [],

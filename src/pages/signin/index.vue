@@ -19,6 +19,7 @@ onMounted(() => {
 
 const onSubmit = async () => {
   const response = await signinApi.send(form.data, form.errors)
+  console.log(response)
   if (response?.status === 200) {
     router.push('/')
   }
@@ -31,7 +32,7 @@ const onSubmit = async () => {
       <div class="flex flex-col gap-4">
         <div class="-mt-4">
           <h3 class="font-semibold">Sign in with Pointhub</h3>
-          to continue to ERP
+          to continue to Docuremind
         </div>
         <div v-show="false">
           You can’t sign in because this app sent an invalid request. You can try again later, or

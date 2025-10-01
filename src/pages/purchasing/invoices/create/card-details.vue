@@ -8,13 +8,24 @@ const errors = defineModel<IFormError>('errors', { required: true })
 const details = defineModel<IDetail[]>('details')
 const subtotal = defineModel<number>('subtotal', { default: 0 })
 const discount = defineModel<number>('discount', { default: 0 })
+const discount_type = defineModel<string>('discount_type', { default: 'value' })
+const expedition_fee = defineModel<number>('expedition_fee', { default: 0 })
 const tax_base = defineModel<number>('tax_base', { default: 0 })
 const tax_type = defineModel<'include' | 'exclude' | 'non'>('tax_type')
+const tax_percentage = defineModel<number>('tax_percentage', { default: 11 })
 const tax = defineModel<number>('tax', { default: 0 })
 const total = defineModel<number>('total', { default: 0 })
 
 const isIncludeTax = ref<boolean>(false)
 const isExcludeTax = ref<boolean>(false)
+
+const changeDiscount = () => {
+  if (discount_type.value === 'value') {
+    discount_type.value = 'percentage'
+  } else {
+    discount_type.value = 'value'
+  }
+}
 
 watch(
   () => [isIncludeTax.value, isExcludeTax.value],
@@ -38,7 +49,7 @@ watch(
 )
 
 watch(
-  () => details.value,
+  () => [details.value, discount_type.value],
   () => {
     calculate()
   },
@@ -46,9 +57,16 @@ watch(
 )
 
 const calculate = () => {
-  details.value?.forEach((detail) => {
-    detail.total = detail.quantity * (detail.price - detail.discount)
-  })
+  console.log('calculatex ' + discount_type.value)
+  if (discount_type.value === 'value') {
+    details.value?.forEach((detail) => {
+      detail.total = detail.quantity * (detail.price - detail.discount)
+    })
+  } else {
+    details.value?.forEach((detail) => {
+      detail.total = detail.quantity * (detail.price * (1 - detail.discount / 100));
+    })
+  }
 
   subtotal.value = computedSubtotal.value
   tax_base.value = computedTaxBase.value
@@ -66,44 +84,56 @@ const calculate = () => {
 
 const computedSubtotal: ComputedRef<number> = computed({
   get() {
-    return (
-      details.value?.reduce((acc, detail) => {
-        return acc + detail.quantity * (detail.price - detail.discount)
-      }, 0) ?? 0
-    )
+    if (discount_type.value === 'value') {
+      return (
+        details.value?.reduce((acc, detail) => {
+          return acc + detail.quantity * (detail.price - detail.discount)
+        }, 0) ?? 0
+      )
+    } else {
+      return (
+        details.value?.reduce((acc, detail) => {
+          return acc + detail.quantity * (detail.price * (1 - detail.discount / 100));
+        }, 0) ?? 0
+      )
+    }
   },
-  set() {}
+  set() { }
 })
 
 const computedTaxBase: ComputedRef<number> = computed({
   get() {
-    return computedSubtotal.value - discount.value
+    if (discount_type.value === 'value') {
+      return computedSubtotal.value - discount.value
+    } else {
+      return computedSubtotal.value * (1 - discount.value / 100)
+    }
   },
-  set() {}
+  set() { }
 })
 
 const computedTax: ComputedRef<number> = computed({
   get() {
     if (isIncludeTax.value) {
-      return Math.round((computedTaxBase.value * 11) / 100 / (1 + 11 / 100))
+      return Math.round((computedTaxBase.value * tax_percentage.value) / 100 / (1 + tax_percentage.value / 100))
     } else if (isExcludeTax.value) {
-      return Math.round((computedTaxBase.value * 11) / 100)
+      return Math.round((computedTaxBase.value * tax_percentage.value) / 100)
     } else {
       return 0
     }
   },
-  set() {}
+  set() { }
 })
 
 const computedTotal: ComputedRef<number> = computed({
   get() {
     if (isExcludeTax.value) {
-      return computedTaxBase.value + computedTax.value
+      return computedTaxBase.value + computedTax.value + expedition_fee.value
     } else {
-      return computedTaxBase.value
+      return computedTaxBase.value + expedition_fee.value
     }
   },
-  set() {}
+  set() { }
 })
 </script>
 
@@ -114,6 +144,7 @@ const computedTotal: ComputedRef<number> = computed({
         <thead>
           <tr>
             <th class="w-1">#</th>
+            <th>Purchase Received</th>
             <th>Item</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -128,87 +159,66 @@ const computedTotal: ComputedRef<number> = computed({
               <base-button class="px-0!">{{ index + 1 }}</base-button>
             </td>
             <td>
+              <base-input disabled v-model="detail.receive_order.form_number" border="full"></base-input>
+            </td>
+            <td>
               <base-input disabled v-model="detail.item.label" border="full"></base-input>
             </td>
             <td>
-              <base-input-number
-                disabled
-                border="full"
-                v-model="detail.quantity"
-                :decimalLength="2"
-                :errors="errors?.[`details.${index}.quantity`]"
-              />
+              <base-input-number disabled border="full" v-model="detail.quantity" :decimalLength="2"
+                :errors="errors?.[`details.${index}.quantity`]" />
             </td>
             <td>
-              <base-input-number
-                border="full"
-                v-model="detail.price"
-                @keyup="calculate()"
-                :decimalLength="2"
-                :errors="errors?.[`details.${index}.price`]"
-              />
+              <base-input-number border="full" v-model="detail.price" @keyup="calculate()" :decimalLength="2"
+                :errors="errors?.[`details.${index}.price`]" />
             </td>
             <td>
-              <base-input-number
-                border="full"
-                v-model="detail.discount"
-                :decimalLength="2"
-                :errors="errors?.[`details.${index}.discount`]"
-              />
+              <base-input-number border="full" v-model="detail.discount" :decimalLength="2"
+                :errors="errors?.[`details.${index}.discount`]">
+                <template #suffix>
+                  <base-button v-if="discount_type === 'value'" @click="changeDiscount">RP</base-button>
+                  <base-button v-if="discount_type === 'percentage'" @click="changeDiscount">%</base-button>
+                </template>
+              </base-input-number>
             </td>
             <td>
-              <base-input-number
-                disabled
-                border="full"
-                v-model="detail.total"
-                :decimalLength="2"
-                :errors="errors?.[`details.${index}.total`]"
-              />
+              <base-input-number disabled border="full" v-model="detail.total" :decimalLength="2"
+                :errors="errors?.[`details.${index}.total`]" />
             </td>
             <td>
               <base-input disabled v-model="detail.allocation.label" border="full" />
             </td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Subtotal</td>
+            <td colspan="6" class="text-right font-bold uppercase">Subtotal</td>
             <td>
-              <base-input-number
-                disabled
-                border="full"
-                v-model="computedSubtotal"
-                :decimalLength="2"
-                :errors="errors?.[`subtotal`]"
-              />
+              <base-input-number disabled border="full" v-model="computedSubtotal" :decimalLength="2"
+                :errors="errors?.[`subtotal`]" />
             </td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Discount</td>
+            <td colspan="6" class="text-right font-bold uppercase">Discount</td>
             <td>
-              <base-input-number
-                border="full"
-                v-model="discount"
-                :decimalLength="2"
-                :errors="errors?.[`discount`]"
-              />
+              <base-input-number border="full" v-model="discount" :decimalLength="2" :errors="errors?.[`discount`]">
+                <template #suffix>
+                  <base-button v-if="discount_type === 'value'" @click="changeDiscount">RP</base-button>
+                  <base-button v-if="discount_type === 'percentage'" @click="changeDiscount">%</base-button>
+                </template>
+              </base-input-number>
             </td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Tax Base</td>
+            <td colspan="6" class="text-right font-bold uppercase">Tax Base</td>
             <td>
-              <base-input-number
-                disabled
-                border="full"
-                v-model="computedTaxBase"
-                :decimalLength="2"
-                :errors="errors?.[`tax_base`]"
-              />
+              <base-input-number disabled border="full" v-model="computedTaxBase" :decimalLength="2"
+                :errors="errors?.[`tax_base`]" />
             </td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Tax Options</td>
+            <td colspan="6" class="text-right font-bold uppercase">Tax Options</td>
             <td>
               <div class="flex items-center gap-2 text-sm">
                 <div class="flex items-center">
@@ -223,32 +233,43 @@ const computedTotal: ComputedRef<number> = computed({
             </td>
             <td></td>
           </tr>
-          <tr>
-            <td colspan="5" class="text-right font-bold uppercase">
-              <div>Tax</div>
-              <div class="text-xs font-normal">11%</div>
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="text-right font-bold uppercase">
+              <div>Tax Percentage</div>
             </td>
             <td>
-              <base-input-number
-                disabled
-                border="full"
-                v-model="computedTax"
-                :decimalLength="2"
-                :errors="errors?.[`tax`]"
-              />
+              <base-input-number :disabled="tax_type === 'non'" border="full" v-model="tax_percentage"
+                :decimalLength="2" :errors="errors?.[`tax`]">
+                <template #suffix>
+                  <base-button>%</base-button>
+                </template>
+              </base-input-number>
+            </td>
+            <td></td>
+          </tr>
+          <tr v-if="tax_type !== 'non'">
+            <td colspan="6" class="text-right font-bold uppercase">
+              <div>Tax</div>
+            </td>
+            <td>
+              <base-input-number disabled border="full" v-model="computedTax" :decimalLength="2"
+                :errors="errors?.[`tax`]" />
             </td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right font-bold uppercase">Total</td>
+            <td colspan="6" class="text-right font-bold uppercase">Expedition Fee</td>
             <td>
-              <base-input-number
-                disabled
-                border="full"
-                v-model="computedTotal"
-                :decimalLength="2"
-                :errors="errors?.[`total`]"
-              />
+              <base-input-number border="full" v-model="expedition_fee" :decimalLength="2"
+                :errors="errors?.[`expedition_fee`]" />
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="6" class="text-right font-bold uppercase">Total</td>
+            <td>
+              <base-input-number disabled border="full" v-model="computedTotal" :decimalLength="2"
+                :errors="errors?.[`total`]" />
             </td>
             <td></td>
           </tr>
