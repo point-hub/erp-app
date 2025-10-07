@@ -63,7 +63,10 @@ onMounted(() => {
       </main>
 
       <!-- Footer -->
-      <component :is="AppFooter" :version="version" class="print:hidden!" />
+      <div class="flex justify-between px-4">
+        <p>Teraplst.id &copy; 2025</p>
+        <p class="self-end">v0.0.1</p>
+      </div>
     </div>
   </div>
 </template>

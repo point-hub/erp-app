@@ -72,26 +72,8 @@ const onUpdate = async () => {
   <div v-else class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form
-      :form-id="route.params.id.toString()"
-      v-model:role_id="form.data.role_id"
-      v-model:role="form.data.role"
-      v-model:name="form.data.name"
-      v-model:username="form.data.username"
-      v-model:email="form.data.email"
-    />
-
-    <card-branches
-      v-model:default_branch="form.data.default_branch"
-      v-model:branches="form.data.branches"
-      :errors="form.errors"
-    />
-
-    <card-warehouses
-      v-model:default_warehouse="form.data.default_warehouse"
-      v-model:warehouses="form.data.warehouses"
-      :errors="form.errors"
-    />
+    <card-form :form-id="route.params.id.toString()" v-model:role_id="form.data.role_id" v-model:role="form.data.role"
+      v-model:name="form.data.name" v-model:username="form.data.username" v-model:email="form.data.email" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">

@@ -35,18 +35,18 @@ onMounted(() => {
     })
   }
   if (authStore?.permission?.master?.branches?.read) {
-    menus.value.push({
-      name: 'Branches',
-      path: '/master/branches',
-      icon: 'i-far-sitemap'
-    })
+    // menus.value.push({
+    //   name: 'Branches',
+    //   path: '/master/branches',
+    //   icon: 'i-far-sitemap'
+    // })
   }
   if (authStore?.permission?.master?.warehouses?.read) {
-    menus.value.push({
-      name: 'Warehouses',
-      path: '/master/warehouses',
-      icon: 'i-far-warehouse'
-    })
+    // menus.value.push({
+    //   name: 'Warehouses',
+    //   path: '/master/warehouses',
+    //   icon: 'i-far-warehouse'
+    // })
   }
   if (authStore?.permission?.master?.chart_of_accounts?.read) {
     menus.value.push({
@@ -56,23 +56,23 @@ onMounted(() => {
     })
   }
   if (authStore?.permission?.master?.setting_journals?.read) {
-    menus.value.push({
-      name: 'Setting Journals',
-      path: '/master/setting-journals',
-      icon: 'i-far-notebook'
-    })
+    // menus.value.push({
+    //   name: 'Setting Journals',
+    //   path: '/master/setting-journals',
+    //   icon: 'i-far-notebook'
+    // })
   }
   if (authStore?.permission?.master?.allocations?.read) {
-    menus.value.push({
-      name: 'Allocation Groups',
-      path: '/master/allocation-groups',
-      icon: 'i-far-notes'
-    })
-    menus.value.push({
-      name: 'Allocations',
-      path: '/master/allocations',
-      icon: 'i-far-note'
-    })
+    // menus.value.push({
+    //   name: 'Allocation Groups',
+    //   path: '/master/allocation-groups',
+    //   icon: 'i-far-notes'
+    // })
+    // menus.value.push({
+    //   name: 'Allocations',
+    //   path: '/master/allocations',
+    //   icon: 'i-far-note'
+    // })
   }
   if (authStore?.permission?.master?.suppliers?.read) {
     menus.value.push({

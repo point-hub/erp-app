@@ -49,24 +49,7 @@ onMounted(async () => {
 
     <card-action v-if="authStore.permission?.master?.users?.read" :data="form.data" />
 
-    <card-form
-      :form-id="route.params.id.toString()"
-      v-model:role="form.data.role"
-      v-model:name="form.data.name"
-      v-model:username="form.data.username"
-      v-model:email="form.data.email"
-    />
-
-    <card-branches
-      v-model:default_branch="form.data.default_branch"
-      v-model:branches="form.data.branches"
-      :errors="form.errors"
-    />
-
-    <card-warehouses
-      v-model:default_warehouse="form.data.default_warehouse"
-      v-model:warehouses="form.data.warehouses"
-      :errors="form.errors"
-    />
+    <card-form :form-id="route.params.id.toString()" v-model:role="form.data.role" v-model:name="form.data.name"
+      v-model:username="form.data.username" v-model:email="form.data.email" />
   </div>
 </template>

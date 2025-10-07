@@ -36,55 +36,31 @@ const onSignout = () => {
         <base-popover ref="accountPopoverRef" placement="bottom-end">
           <button type="button" class="flex gap-2" @click="accountPopoverRef.toggle()">
             <div class="hidden lg:flex flex-col justify-center items-end">
-              <p class="text-sm truncate font-semibold">GMB</p>
+              <p class="text-sm truncate font-extrabold">Teraplast</p>
               <p class="text-sm truncate">{{ authStore.name }}</p>
             </div>
-            <base-avatar
-              size="xs"
-              src="https://via.placeholder.com/150"
-              shape="squircle"
-              name="John Doe"
-            />
+            <base-avatar size="xs" src="https://placehold.co/150" shape="squircle" name="John Doe" />
           </button>
           <template #content>
             <div class="popper-root p-2">
-              <base-button
-                variant="text"
-                color="primary"
-                size="sm"
-                class="text-slate-900 dark:text-slate-50 flex justify-left!"
-              >
-                <base-avatar
-                  size="xs"
-                  src="https://via.placeholder.com/150"
-                  shape="squircle"
-                  name="John Doe"
-                />
+              <base-button variant="text" color="primary" size="sm"
+                class="text-slate-900 dark:text-slate-50 flex justify-left!">
+                <base-avatar size="xs" src="https://placehold.co/150" shape="squircle" name="John Doe" />
                 <div class="flex flex-col justify-center items-start text-left text-sm">
-                  <p class="font-semibold line-clamp-2">Organization Name</p>
-                  <p class="line-clamp-2">Username</p>
+                  <p class="font-semibold line-clamp-2">Teraplast</p>
+                  <p class="line-clamp-2">{{ authStore.name }}</p>
                 </div>
               </base-button>
               <base-divider orientation="vertical" />
 
-              <base-button
-                variant="text"
-                color="primary"
-                size="sm"
-                @click="toggleDarkMode()"
-                class="text-slate-900 dark:text-slate-50 flex justify-left!"
-              >
+              <base-button variant="text" color="primary" size="sm" @click="toggleDarkMode()"
+                class="text-slate-900 dark:text-slate-50 flex justify-left!">
                 <BaseIcon v-if="isDarkMode" icon="i-ph-sun-duotone" class="text-2xl" />
                 <BaseIcon v-else icon="i-ph-moon-duotone" class="text-2xl" />
                 <p>Dark Mode</p>
               </base-button>
-              <base-button
-                variant="text"
-                color="danger"
-                size="sm"
-                class="text-slate-900 dark:text-slate-50 flex justify-left!"
-                @click="onSignout()"
-              >
+              <base-button variant="text" color="danger" size="sm"
+                class="text-slate-900 dark:text-slate-50 flex justify-left!" @click="onSignout()">
                 <BaseIcon icon="i-ph-sign-out-duotone" class="text-2xl" />
                 <p>Sign Out</p>
               </base-button>

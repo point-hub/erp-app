@@ -46,26 +46,8 @@ const onSave = async () => {
   <div class="flex flex-col gap-4">
     <card-breadcrumbs />
 
-    <card-form
-      v-model:role_id="form.data.role_id"
-      v-model:name="form.data.name"
-      v-model:username="form.data.username"
-      v-model:email="form.data.email"
-      v-model:password="form.data.password"
-      :errors="form.errors"
-    />
-
-    <card-branches
-      v-model:default_branch="form.data.default_branch"
-      v-model:branches="form.data.branches"
-      :errors="form.errors"
-    />
-
-    <card-warehouses
-      v-model:default_warehouse="form.data.default_warehouse"
-      v-model:warehouses="form.data.warehouses"
-      :errors="form.errors"
-    />
+    <card-form v-model:role_id="form.data.role_id" v-model:name="form.data.name" v-model:username="form.data.username"
+      v-model:email="form.data.email" v-model:password="form.data.password" :errors="form.errors" />
 
     <base-card class="py-4!">
       <div class="flex gap-2">
